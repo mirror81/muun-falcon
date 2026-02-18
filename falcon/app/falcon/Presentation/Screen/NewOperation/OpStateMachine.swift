@@ -63,7 +63,7 @@ protocol NewOpStateMachineDelegate: BasePresenterDelegate {
     func operationCompleted(_ operation: Operation)
 
     // Errors
-    func operationError()
+    func operationError(_ error: Error)
     func showExchangeRateWindowTooOldError()
     func notEnoughBalance(amountPlusFee: MonetaryAmount, totalBalance: MonetaryAmount)
     func expiredInvoice()
@@ -71,7 +71,7 @@ protocol NewOpStateMachineDelegate: BasePresenterDelegate {
     func swapError(_ error: NewOpError)
     func amountBelowDust()
     func invoiceMissingAmount()
-    func unexpectedError()
+    func unexpectedError(_ error: Error)
 
     func setExpires(_ expiresTime: Double)
     func cancel(confirm: Bool)

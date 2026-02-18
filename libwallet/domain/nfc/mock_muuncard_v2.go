@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"github.com/muun/libwallet/app_provided_data"
 	"github.com/muun/libwallet/cryptography"
-	"log/slog"
 	"math/big"
 )
 
@@ -55,8 +54,6 @@ func NewMockMuunCardV2() (*MockMuunCardV2, error) {
 		return nil, err
 	}
 
-	slog.Debug("MockMuunCardV2 generated global keypair")
-
 	// Initialize card metadata with default values
 	metadata := &Metadata{
 		cardVendor:      [2]byte{0x4D, 0x55}, // "MU" for Muun
@@ -81,7 +78,7 @@ func (c *MockMuunCardV2) getAppletId() string {
 func (c *MockMuunCardV2) processCommand(apdu []byte) (*app_provided_data.NfcBridgeResponse, error) {
 	ins := apdu[iso7816OffsetIns]
 
-	slog.Debug("MockMuunCardV2 command apdu", "apdu", hex.EncodeToString(apdu))
+	fmt.Printf("MockMuunCardV2 command apdu %s\n", hex.EncodeToString(apdu))
 
 	switch ins {
 	case insMuuncardV2GetVersion:
@@ -223,6 +220,8 @@ func (c *MockMuunCardV2) handlePairCard(apdu []byte) (*app_provided_data.NfcBrid
 
 	// Mark slot as used
 	c.pairingSlotsBitmap |= 1 << slot
+
+	fmt.Printf("MockMuunCardV2 pair response %s\n", hex.EncodeToString(response[:]))
 
 	return newSuccessResponse(response), nil
 }
@@ -427,7 +426,7 @@ func (c *MockMuunCardV2) computePairingMac(
 func (c *MockMuunCardV2) signWithGlobalKey(data []byte) ([]byte, error) {
 	hash := sha256.Sum256(data)
 
-	slog.Debug("MockMuunCardV2 mac hash", "hash", hex.EncodeToString(hash[:]))
+	fmt.Printf("MockMuunCardV2 mac hash %s\n", hex.EncodeToString(hash[:]))
 
 	// Create ECDSA private key. Sadly, PublicKey also needs to be initialized here. Apparently,
 	// ecdsa.PrivateKey represents the whole keypair and ecdsa.Sign() uses X and Y from Public key.

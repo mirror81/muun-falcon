@@ -242,6 +242,10 @@ extension HomeViewController: HomeViewDelegate {
         presenter.setTooltipSeen()
     }
 
+    func securityCardsMarketplaceTap() {
+        navigationController?.pushViewController(MarketplaceViewController(), animated: true)
+    }
+
 }
 
 extension HomeViewController: TransactionListViewControllerDelegate {

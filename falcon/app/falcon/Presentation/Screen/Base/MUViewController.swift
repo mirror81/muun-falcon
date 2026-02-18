@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class MUViewController: UIViewController {
 
     var loadingView: LoadingView?

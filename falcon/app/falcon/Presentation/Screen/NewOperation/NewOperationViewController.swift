@@ -83,6 +83,7 @@ class NewOperationViewController: MUViewController {
         case .lnurlWithdraw:
             Logger.fatal("Intent is not handled by this view controller: \(paymentIntent)")
         }
+        newOpParams["has_2fa"] = "\(presenter.hasNfc2fa)"
     }
 
     override func loadView() {
@@ -220,8 +221,8 @@ extension NewOperationViewController: NewOpViewDelegate {
 
 extension NewOperationViewController: NewOpStateMachineDelegate {
 
-    func unexpectedError() {
-        displayErrorView(type: .unexpected)
+    func unexpectedError(_ error: Error) {
+        displayErrorView(type: .unexpected(error: error))
     }
 
     private func pushToSupportScreen() {
@@ -341,7 +342,10 @@ extension NewOperationViewController: NewOpStateMachineDelegate {
            style: .cancel,
            handler: { _ in
                alert.dismiss(animated: true)
-               self.reportNewOpAction(type: "cancel_disable_flag")
+               AnalyticsHelper.logEvent(NewOpActionEvent(
+                   type: .cancelDisableFlag,
+                   has2fa: self.presenter.hasNfc2fa
+               ))
            }
        ))
 
@@ -349,7 +353,10 @@ extension NewOperationViewController: NewOpStateMachineDelegate {
            title: L10n.NewOperationViewController.s9,
            style: .default,
            handler: { _ in
-               self.reportNewOpAction(type: "disable_flag")
+               AnalyticsHelper.logEvent(NewOpActionEvent(
+                    type: .disableFlag,
+                    has2fa: self.presenter.hasNfc2fa
+               ))
                self.forceHideKeyboard()
                self.presenter.disableSecurityCardFlag()
            }
@@ -358,7 +365,10 @@ extension NewOperationViewController: NewOpStateMachineDelegate {
        alert.view.tintColor = Asset.Colors.muunGrayDark.color
 
        self.navigationController!.present(alert, animated: true) {
-           self.reportNewOpAction(type: "disable_flag_dialog_shown")
+           AnalyticsHelper.logEvent(NewOpActionEvent(
+                type: .disableFlagDialogShown,
+                has2fa: self.presenter.hasNfc2fa
+           ))
        }
     }
 
@@ -373,7 +383,10 @@ extension NewOperationViewController: NewOpStateMachineDelegate {
             style: .default,
             handler: { _ in
                 alert.dismiss(animated: true)
-                self.reportNewOpAction(type: "cancel_abort")
+                AnalyticsHelper.logEvent(NewOpActionEvent(
+                    type: .cancelAbort,
+                    has2fa: self.presenter.hasNfc2fa
+                ))
                 self.presenter.cancelAbort()
             }
         ))
@@ -382,7 +395,10 @@ extension NewOperationViewController: NewOpStateMachineDelegate {
             title: L10n.NewOperationViewController.s6,
             style: .destructive,
             handler: { _ in
-                self.reportNewOpAction(type: "abort")
+                AnalyticsHelper.logEvent(NewOpActionEvent(
+                    type: .abort,
+                    has2fa: self.presenter.hasNfc2fa
+                ))
                 self.forceHideKeyboard()
                 self.navigationController!.popToRootViewController(animated: true)
             }
@@ -396,7 +412,6 @@ extension NewOperationViewController: NewOpStateMachineDelegate {
     func requestFinish(_ operation: Operation) {
         toggleUserInteraction(isEnabled: false)
         newOpView.isLoading = true
-        newOpParams["has_2fa"] = presenter.hasNfc2fa
 
         logEvent("\(screenLoggingName)_submitted", parameters: newOpParams)
     }
@@ -411,12 +426,12 @@ extension NewOperationViewController: NewOpStateMachineDelegate {
         self.navigationController!.popToRootViewController(animated: true)
     }
 
-    func operationError() {
+    func operationError(_ error: Error) {
         logEvent("\(screenLoggingName)_error")
 
         toggleUserInteraction(isEnabled: true)
         newOpView.isLoading = false
-        displayErrorView(type: .unexpected)
+        displayErrorView(type: .unexpected(error: error))
     }
 
     func nfc2faError(_ error: NewOpError) {
@@ -425,13 +440,6 @@ extension NewOperationViewController: NewOpStateMachineDelegate {
 
     private func showDustError() {
         displayErrorView(type: .amountBelowDust)
-    }
-
-    private func reportNewOpAction(type: String) {
-        var parameters: [String: Any] = [:]
-        parameters["type"] = type
-        parameters["has_2fa"] = self.presenter.hasNfc2fa
-        AnalyticsHelper.logEvent("new_op_action", parameters: parameters)
     }
 }
 
@@ -457,8 +465,12 @@ extension NewOperationViewController {
 
 extension NewOperationViewController: ErrorViewDelegate {
 
-    func logErrorView(_ name: String, params: [String: Any]?) {
-        logScreen(name, parameters: params)
+    func logErrorEvent(_ event: AnalyticsEvent) {
+        var extraParameters: [String: AnalyticsValue] = ["has_nfc_2fa": "\(presenter.hasNfc2fa)"]
+        if let swapUUID = presenter.submarineSwapCreated?.swap.swapUuid() {
+            extraParameters["swap_uuid"] = swapUUID
+        }
+        AnalyticsHelper.logEvent(event, extraParameters: extraParameters)
     }
 
     func secondaryButtonTouched() {

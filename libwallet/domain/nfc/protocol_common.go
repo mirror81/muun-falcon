@@ -3,7 +3,6 @@ package nfc
 import (
 	"bytes"
 	"crypto/sha256"
-	"errors"
 	"fmt"
 	"github.com/muun/libwallet/cryptography"
 	"io"
@@ -89,7 +88,7 @@ func parseMetadata(data []byte) (*CardMetadata, error) {
 //   - Pairing Slot (2 bytes): Index identifying the pairing slot on the card
 //   - Metadata (75 bytes): Card metadata information (parsed separately)
 //   - MAC (32 bytes): Message Authentication Code for integrity verification
-//   - Global Signature (variable, 70-72 bytes): Digital signature for authentication
+//   - Global Signature (variable, max 72 bytes): Digital signature for authentication
 //
 // The total expected format is: P (65) || index (2) || metadata (75) || mac (32) || signature (variable)
 //
@@ -101,9 +100,9 @@ func parseMetadata(data []byte) (*CardMetadata, error) {
 //   - error: Parsing error if data is malformed, too short, or contains invalid values
 //
 // The function validates:
-//   - Minimum data length (must be at least PairResponseSize)
+//   - Minimum data length (must be at least PairResponseSize). Ignores signature's length
 //   - Card public key format (must be a valid Secp256r1 point)
-//   - Global signature length (must be between 70-72 bytes)
+//   - Global signature length (must be maximum 72 bytes)
 func parsePairingResponse(data []byte) (*PairingResponse, error) {
 
 	// TODO: this doesn't take into account signature size
@@ -155,8 +154,9 @@ func parsePairingResponse(data []byte) (*PairingResponse, error) {
 	}
 	pairingResp.GlobalSignature = remainingBytes
 
-	if len(pairingResp.GlobalSignature) < 70 || len(pairingResp.GlobalSignature) > 72 {
-		return nil, errors.New("invalid global signature length")
+	globalSignatureLength := len(pairingResp.GlobalSignature)
+	if globalSignatureLength > 72 {
+		return nil, fmt.Errorf("invalid global signature length: %v", globalSignatureLength)
 	}
 
 	err = cryptography.ValidateSecp256r1PublicKey(pairingResp.CardPublicKey)

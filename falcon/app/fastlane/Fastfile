@@ -43,11 +43,20 @@ platform :ios do
   end
 
   desc "Publish a Dogfood app, pointing to production by default.
-  Required envars ->
-  FASTLANE_USER => email of an user with Appstore Connect permissions [App Manager for dogfood or greater required].
-  INDIVIDUAL_API_KEY_CONTENT_BASE64 => Individual api key belonging to the fastlane user. export.
-  INDIVIDUAL_API_KEY_ID => "" ID.
-  FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD => App specific password for the appstore connect user"
+
+  Required environment variables (all relative to FASTLANE_USER):
+  - FASTLANE_USER: App Store Connect email (App Manager+ permissions)
+  - INDIVIDUAL_API_KEY_CONTENT_BASE64: API key belonging to the fastlane user
+    (base64)
+  - INDIVIDUAL_API_KEY_ID: API key ID
+  - FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: App-specific password
+
+  CI environment variables (set by infra team, rotated annually on certificate
+  expiration):
+  - distribution_notifications_mobileprovision_base64
+  - distribution_mobileprovision_base64
+  - apple_distribution_muun_cert_base64
+  - apple_distribution_muun_cert_password"
   lane :dogfood do |options|
     Actions.lane_context[SharedValues::ENVIRONMENT] = ENV_DOGFOOD
     set_appstore_connect_auth

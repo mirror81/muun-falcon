@@ -80,11 +80,37 @@ class AnalyticsHelper: Resolver {
     static func setAnalyticsCollection(enabled: Bool) {
         Analytics.setAnalyticsCollectionEnabled(enabled)
     }
-
+    
+    @available(
+        *,
+        deprecated,
+        message: "Use logEvent(_:) with AnalyticsEvent to enable typed, maintainable analytics tracking."
+    )
     static func logEvent(_ event: String, parameters: [String: Any]? = nil) {
         let eventName = "e_\(event)"
 
         actuallyLogEvent(eventName, parameters: parameters)
+    }
+
+    /// Preferred way of tracking analytics events.
+    /// Accepts an `AnalyticsEvent`, converts its typed parameters to raw values,
+    /// and delegates to the legacy logging pipeline.
+    static func logEvent(_ event: AnalyticsEvent) {
+        guard let parameters = event.parameters else {
+            actuallyLogEvent(event.name)
+            return
+        }
+        let processedParams = safelyTrimParamValue(parameters)
+        actuallyLogEvent(event.name, parameters: processedParams)
+    }
+
+    /// Same as `logEvent(_:)` but allows enriching parameters at call site.
+    /// Useful when additional context is only available at a higher layer.
+    static func logEvent(_ event: AnalyticsEvent, extraParameters: [String: AnalyticsValue]) {
+        var params = event.parameters ?? [:]
+        params.merge(extraParameters) { _, new in new } // hidrate with extra data
+        let processedParams = safelyTrimParamValue(params)
+        actuallyLogEvent(event.name, parameters: processedParams)
     }
 
     static func logScreen(_ name: String, parameters: [String: Any]?) {
@@ -183,5 +209,14 @@ class AnalyticsHelper: Resolver {
         var finalParams: [String: Any] = params ?? [:]
         finalParams.merge(deviceParams) { (_, new) in new }
         return finalParams
+    }
+
+    /// BQ accepts parameters value until 100 characteres, so truncate extra char if it is needed.
+    /// If the maximum length exceeds the number of elements in the collection,
+    /// the result contains all the elements in the collection.
+    private static func safelyTrimParamValue(_ params: [String : any AnalyticsValue]) -> [String : String] {
+        return params.mapValues {
+            $0.trackingValue.truncate(maxLength: maxLengthEventParameterValue)
+        }
     }
 }

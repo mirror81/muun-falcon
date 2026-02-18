@@ -16,7 +16,7 @@ protocol NewOpLoadingPresenterDelegate: BasePresenterDelegate {
     func expiredInvoice()
     func invalidAddress()
     func swapError(_ error: NewOpError)
-    func unexpectedError()
+    func unexpectedError(_ error: Error)
     func invoiceMissingAmount()
 }
 
@@ -34,7 +34,7 @@ class NewOpLoadingPresenter<Delegate: NewOpLoadingPresenterDelegate>: BasePresen
     private let submarineSwapAction: SubmarineSwapAction
     private let bip70Action: BIP70Action
     private let preloadFeeDataAction: PreloadFeeDataAction
-    private let featureFlagsRepository: FeatureFlagsRepository
+    private let featureFlagsSelector: FeatureFlagsSelector
     private let feeBumpFunctionsProvider: FeeBumpFunctionsProvider
 
     init(delegate: Delegate,
@@ -44,7 +44,7 @@ class NewOpLoadingPresenter<Delegate: NewOpLoadingPresenterDelegate>: BasePresen
          submarineSwapAction: SubmarineSwapAction,
          bip70Action: BIP70Action,
          preloadFeeDataAction: PreloadFeeDataAction,
-         featureFlagsRepository: FeatureFlagsRepository,
+         featureFlagsSelector: FeatureFlagsSelector,
          feeBumpFunctionsProvider: FeeBumpFunctionsProvider) {
         self.paymentIntent = state
         self.feeCalculatorAction = feeCalculatorAction
@@ -52,7 +52,7 @@ class NewOpLoadingPresenter<Delegate: NewOpLoadingPresenterDelegate>: BasePresen
         self.submarineSwapAction = submarineSwapAction
         self.bip70Action = bip70Action
         self.preloadFeeDataAction = preloadFeeDataAction
-        self.featureFlagsRepository = featureFlagsRepository
+        self.featureFlagsSelector = featureFlagsSelector
         self.feeBumpFunctionsProvider = feeBumpFunctionsProvider
 
         super.init(delegate: delegate)
@@ -110,8 +110,8 @@ class NewOpLoadingPresenter<Delegate: NewOpLoadingPresenterDelegate>: BasePresen
     }
 
     private func shouldLoadFeeData() -> Bool {
-        let isEffectiveFeesCalculationTurnedOn = featureFlagsRepository.fetch()
-            .contains(.effectiveFeesCalculation)
+        let isEffectiveFeesCalculationTurnedOn = featureFlagsSelector
+            .isFlagEnabled(.effectiveFeesCalculation)
         let areFeeBumpFunctionsInvalidated = feeBumpFunctionsProvider.areFeeBumpFunctionsInvalidated()
         return isEffectiveFeesCalculationTurnedOn && areFeeBumpFunctionsInvalidated
     }
@@ -157,7 +157,7 @@ class NewOpLoadingPresenter<Delegate: NewOpLoadingPresenterDelegate>: BasePresen
         } else if let swapError = swapError(e) {
             delegate.swapError(swapError)
         } else {
-            delegate.unexpectedError()
+            delegate.unexpectedError(e)
         }
     }
 

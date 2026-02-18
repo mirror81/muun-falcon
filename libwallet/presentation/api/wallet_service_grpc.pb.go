@@ -39,6 +39,7 @@ const (
 	WalletService_SaveBatch_FullMethodName                     = "/rpc.WalletService/SaveBatch"
 	WalletService_GetBatch_FullMethodName                      = "/rpc.WalletService/GetBatch"
 	WalletService_GetByPrefix_FullMethodName                   = "/rpc.WalletService/GetByPrefix"
+	WalletService_GetSecurityCardsMarketplace_FullMethodName   = "/rpc.WalletService/GetSecurityCardsMarketplace"
 )
 
 // WalletServiceClient is the client API for WalletService service.
@@ -67,6 +68,8 @@ type WalletServiceClient interface {
 	SaveBatch(ctx context.Context, in *SaveBatchRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetBatch(ctx context.Context, in *GetBatchRequest, opts ...grpc.CallOption) (*GetBatchResponse, error)
 	GetByPrefix(ctx context.Context, in *GetByPrefixRequest, opts ...grpc.CallOption) (*GetBatchResponse, error)
+	// Marketplace
+	GetSecurityCardsMarketplace(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetSecurityCardsMarketplaceResponse, error)
 }
 
 type walletServiceClient struct {
@@ -276,6 +279,16 @@ func (c *walletServiceClient) GetByPrefix(ctx context.Context, in *GetByPrefixRe
 	return out, nil
 }
 
+func (c *walletServiceClient) GetSecurityCardsMarketplace(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetSecurityCardsMarketplaceResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetSecurityCardsMarketplaceResponse)
+	err := c.cc.Invoke(ctx, WalletService_GetSecurityCardsMarketplace_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // WalletServiceServer is the server API for WalletService service.
 // All implementations must embed UnimplementedWalletServiceServer
 // for forward compatibility.
@@ -302,6 +315,8 @@ type WalletServiceServer interface {
 	SaveBatch(context.Context, *SaveBatchRequest) (*emptypb.Empty, error)
 	GetBatch(context.Context, *GetBatchRequest) (*GetBatchResponse, error)
 	GetByPrefix(context.Context, *GetByPrefixRequest) (*GetBatchResponse, error)
+	// Marketplace
+	GetSecurityCardsMarketplace(context.Context, *emptypb.Empty) (*GetSecurityCardsMarketplaceResponse, error)
 	mustEmbedUnimplementedWalletServiceServer()
 }
 
@@ -368,6 +383,9 @@ func (UnimplementedWalletServiceServer) GetBatch(context.Context, *GetBatchReque
 }
 func (UnimplementedWalletServiceServer) GetByPrefix(context.Context, *GetByPrefixRequest) (*GetBatchResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetByPrefix not implemented")
+}
+func (UnimplementedWalletServiceServer) GetSecurityCardsMarketplace(context.Context, *emptypb.Empty) (*GetSecurityCardsMarketplaceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSecurityCardsMarketplace not implemented")
 }
 func (UnimplementedWalletServiceServer) mustEmbedUnimplementedWalletServiceServer() {}
 func (UnimplementedWalletServiceServer) testEmbeddedByValue()                       {}
@@ -725,6 +743,24 @@ func _WalletService_GetByPrefix_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _WalletService_GetSecurityCardsMarketplace_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WalletServiceServer).GetSecurityCardsMarketplace(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WalletService_GetSecurityCardsMarketplace_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WalletServiceServer).GetSecurityCardsMarketplace(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // WalletService_ServiceDesc is the grpc.ServiceDesc for WalletService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -803,6 +839,10 @@ var WalletService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetByPrefix",
 			Handler:    _WalletService_GetByPrefix_Handler,
+		},
+		{
+			MethodName: "GetSecurityCardsMarketplace",
+			Handler:    _WalletService_GetSecurityCardsMarketplace_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
