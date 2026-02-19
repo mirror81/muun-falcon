@@ -19,6 +19,7 @@ import (
 	"github.com/muun/libwallet/domain/action/diagnostic_mode_reports"
 	"github.com/muun/libwallet/domain/action/nfc"
 	"github.com/muun/libwallet/domain/action/recovery"
+	"github.com/muun/libwallet/domain/action/security_cards_marketplace"
 	"github.com/muun/libwallet/domain/diagnostic_mode"
 	apierrors "github.com/muun/libwallet/errors"
 	"github.com/muun/libwallet/presentation/api"
@@ -31,23 +32,24 @@ import (
 
 type WalletServer struct {
 	api.UnsafeWalletServiceServer
-	nfcBridge                 app_provided_data.NfcBridge
-	keyProvider               keys.KeyProvider
-	network                   *libwallet.Network
-	houstonService            service.HoustonService
-	keyValueStorage           *storage.KeyValueStorage
-	startChallengeSetup       *challenge_keys.StartChallengeSetupAction
-	finishChallengeSetup      *challenge_keys.FinishChallengeSetupAction
-	populateEncryptedMuunKey  *recovery.PopulateEncryptedMuunKeyAction
-	scanForFunds              *recovery.ScanForFundsAction
-	submitDiagnostic          *diagnostic_mode_reports.SubmitDiagnosticAction
-	buildSweepTx              *recovery.BuildSweepTxAction
-	signSweepTx               *recovery.SignSweepTxAction
-	pairSecurityCard          *nfc.PairSecurityCardAction
-	resetSecurityCard         *nfc.ResetSecurityCardAction
-	signMessageSecurityCard   *nfc.SignMessageSecurityCardAction
-	pairSecurityCardV2        *nfc.PairSecurityCardActionV2
-	signMessageSecurityCardV2 *nfc.SignMessageSecurityCardActionV2
+	nfcBridge                   app_provided_data.NfcBridge
+	keyProvider                 keys.KeyProvider
+	network                     *libwallet.Network
+	houstonService              service.HoustonService
+	keyValueStorage             *storage.KeyValueStorage
+	startChallengeSetup         *challenge_keys.StartChallengeSetupAction
+	finishChallengeSetup        *challenge_keys.FinishChallengeSetupAction
+	populateEncryptedMuunKey    *recovery.PopulateEncryptedMuunKeyAction
+	scanForFunds                *recovery.ScanForFundsAction
+	submitDiagnostic            *diagnostic_mode_reports.SubmitDiagnosticAction
+	buildSweepTx                *recovery.BuildSweepTxAction
+	signSweepTx                 *recovery.SignSweepTxAction
+	pairSecurityCard            *nfc.PairSecurityCardAction
+	resetSecurityCard           *nfc.ResetSecurityCardAction
+	signMessageSecurityCard     *nfc.SignMessageSecurityCardAction
+	pairSecurityCardV2          *nfc.PairSecurityCardActionV2
+	signMessageSecurityCardV2   *nfc.SignMessageSecurityCardActionV2
+	getSecurityCardsMarketplace *security_cards_marketplace.GetSecurityCardsMarketplaceAction
 }
 
 func NewWalletServer(
@@ -68,26 +70,28 @@ func NewWalletServer(
 	signMessageSecurityCard *nfc.SignMessageSecurityCardAction,
 	pairSecurityCardV2 *nfc.PairSecurityCardActionV2,
 	signMessageSecurityCardV2 *nfc.SignMessageSecurityCardActionV2,
+	getSecurityCardsMarketplace *security_cards_marketplace.GetSecurityCardsMarketplaceAction,
 ) *WalletServer {
 
 	return &WalletServer{
-		nfcBridge:                 nfcBridge,
-		keyProvider:               keyProvider,
-		network:                   network,
-		houstonService:            houstonService,
-		keyValueStorage:           keyValueStorage,
-		startChallengeSetup:       startChallengeSetup,
-		finishChallengeSetup:      finishChallengeSetup,
-		populateEncryptedMuunKey:  obtainVerifiedEncryptedMuunKeyIfAbsent,
-		scanForFunds:              scanForFunds,
-		submitDiagnostic:          submitDiagnostic,
-		buildSweepTx:              buildSweepTx,
-		signSweepTx:               signSweepTxAction,
-		pairSecurityCard:          pairSecurityCard,
-		resetSecurityCard:         resetSecurityCard,
-		signMessageSecurityCard:   signMessageSecurityCard,
-		pairSecurityCardV2:        pairSecurityCardV2,
-		signMessageSecurityCardV2: signMessageSecurityCardV2,
+		nfcBridge:                   nfcBridge,
+		keyProvider:                 keyProvider,
+		network:                     network,
+		houstonService:              houstonService,
+		keyValueStorage:             keyValueStorage,
+		startChallengeSetup:         startChallengeSetup,
+		finishChallengeSetup:        finishChallengeSetup,
+		populateEncryptedMuunKey:    obtainVerifiedEncryptedMuunKeyIfAbsent,
+		scanForFunds:                scanForFunds,
+		submitDiagnostic:            submitDiagnostic,
+		buildSweepTx:                buildSweepTx,
+		signSweepTx:                 signSweepTxAction,
+		pairSecurityCard:            pairSecurityCard,
+		resetSecurityCard:           resetSecurityCard,
+		signMessageSecurityCard:     signMessageSecurityCard,
+		pairSecurityCardV2:          pairSecurityCardV2,
+		signMessageSecurityCardV2:   signMessageSecurityCardV2,
+		getSecurityCardsMarketplace: getSecurityCardsMarketplace,
 	}
 }
 
@@ -521,6 +525,38 @@ func (ws WalletServer) GetByPrefix(_ context.Context, req *api.GetByPrefixReques
 
 	return api.GetBatchResponse_builder{
 		Items: protoItems,
+	}.Build(), nil
+}
+
+func (ws WalletServer) GetSecurityCardsMarketplace(
+	ctx context.Context, req *emptypb.Empty,
+) (*api.GetSecurityCardsMarketplaceResponse, error) {
+
+	marketplace, err := ws.getSecurityCardsMarketplace.Run()
+	if err != nil {
+		return nil, NewGrpcError(fmt.Errorf("failed to get security cards marketplace data: %w", err))
+	}
+
+	providers := make([]*api.SecurityCardsProvider, 0, len(marketplace.Providers))
+	for _, provider := range marketplace.Providers {
+
+		securityCards := make([]*api.SecurityCard, 0, len(provider.SecurityCards))
+		for _, securityCard := range provider.SecurityCards {
+
+			securityCards = append(securityCards, api.SecurityCard_builder{
+				Image: securityCard.Image,
+			}.Build())
+		}
+
+		providers = append(providers, api.SecurityCardsProvider_builder{
+			Name:          provider.Name,
+			SecurityCards: securityCards,
+			Currency:      provider.CurrencyCode,
+		}.Build())
+	}
+
+	return api.GetSecurityCardsMarketplaceResponse_builder{
+		Providers: providers,
 	}.Build(), nil
 }
 

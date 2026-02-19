@@ -16,6 +16,7 @@ protocol HomeViewDelegate: AnyObject {
     func companionTap()
     func balanceTap()
     func didShowTransactionListTooltip()
+    func securityCardsMarketplaceTap()
 }
 
 final class HomeView: UIView {
@@ -29,6 +30,18 @@ final class HomeView: UIView {
     private var blockClockContainer = UIView()
     private var currentCompanionView: UIView?
     private var chevronView: ChevronView!
+
+    private lazy var securityCardsButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let image = UIImage(systemName: "creditcard")
+        button.setImage(image, for: .normal)
+        button.backgroundColor = Asset.Colors.title.color
+        button.tintColor = Asset.Colors.cellBackground.color
+        button.roundCorners(cornerRadius: .securityCardsCornerRadius)
+        button.addTarget(self, action: #selector(securityCardsFabTapped), for: .touchUpInside)
+        return button
+    }()
 
     private weak var delegate: HomeViewDelegate?
 
@@ -50,6 +63,9 @@ final class HomeView: UIView {
         setUpContentView()
         setUpChevronView()
         setUpBlockClock()
+        #if DEBUG
+            setUpSecurityCardsFab()
+        #endif
         actionCardView.delegate = self
 
         makeViewTestable()
@@ -72,6 +88,18 @@ final class HomeView: UIView {
         blockClock.addGestureRecognizer(UITapGestureRecognizer(
             target: self, action: #selector(blockClockTapped)
         ))
+    }
+
+    private func setUpSecurityCardsFab() {
+        addSubview(securityCardsButton)
+
+        NSLayoutConstraint.activate([
+            securityCardsButton.widthAnchor.constraint(equalToConstant: .securityCardsButtonWidth),
+            securityCardsButton.heightAnchor.constraint(equalToConstant: .securityCardsButtonWidth),
+            securityCardsButton
+                .trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
+            securityCardsButton.bottomAnchor.constraint(equalTo: chevronView.topAnchor, constant: -.spacing)
+        ])
     }
 
     private func setUpChevronView() {
@@ -216,6 +244,10 @@ final class HomeView: UIView {
     @objc func blockClockTapped() {
         delegate?.companionTap()
     }
+
+    @objc private func securityCardsFabTapped() {
+        delegate?.securityCardsMarketplaceTap()
+    }
 }
 
 extension HomeView: ActionCardDelegate {
@@ -255,4 +287,9 @@ extension HomeView: UITestablePage {
         makeViewTestable(chevronView, using: .chevron)
     }
 
+}
+
+private extension CGFloat {
+    static let securityCardsButtonWidth: CGFloat = 56
+    static let securityCardsCornerRadius: CGFloat = 28
 }

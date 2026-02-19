@@ -33,7 +33,11 @@ target 'Muun' do
   target 'falconTests' do
       inherit! :search_paths
   end
-  
+
+  target 'falconUITests' do
+      inherit! :complete
+  end
+
 end
 
 target 'falconPushNotifications' do
@@ -41,12 +45,6 @@ target 'falconPushNotifications' do
   pod 'FirebaseCrashlytics'
   pod 'Firebase'
 
-end
-
-target 'falconUITests' do
-  use_frameworks! :linkage => :static
-  pod 'FirebaseCrashlytics'
-  pod 'Firebase'
 end
 
 pre_install do |installer|

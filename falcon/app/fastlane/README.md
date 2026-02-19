@@ -39,6 +39,20 @@ Export an IPA pointing to prod env
 
 Publish a Dogfood app, pointing to production by default.
 
+  Required environment variables (all relative to FASTLANE_USER):
+  - FASTLANE_USER: App Store Connect email (App Manager+ permissions)
+  - INDIVIDUAL_API_KEY_CONTENT_BASE64: API key belonging to the fastlane user
+    (base64)
+  - INDIVIDUAL_API_KEY_ID: API key ID
+  - FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: App-specific password
+
+  CI environment variables (set by infra team, rotated annually on certificate
+  expiration):
+  - distribution_notifications_mobileprovision_base64
+  - distribution_mobileprovision_base64
+  - apple_distribution_muun_cert_base64
+  - apple_distribution_muun_cert_password
+
 ### ios dev
 
 ```sh

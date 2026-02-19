@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double Pods_falconUITestsVersionNumber;
-FOUNDATION_EXPORT const unsigned char Pods_falconUITestsVersionString[];
+FOUNDATION_EXPORT double Pods_Muun_falconUITestsVersionNumber;
+FOUNDATION_EXPORT const unsigned char Pods_Muun_falconUITestsVersionString[];
 

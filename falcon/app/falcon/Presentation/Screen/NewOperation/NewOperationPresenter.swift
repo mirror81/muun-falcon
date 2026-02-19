@@ -22,7 +22,7 @@ protocol NewOperationPresenterDelegate: BasePresenterDelegate {
     func operationCompleted(_ operation: Operation)
 
     // Errors
-    func operationError()
+    func operationError(_ error: Error)
     func showExchangeRateWindowTooOldError()
     func showSwapFailedError()
     func notEnoughBalance(amountPlusFee: MonetaryAmount, totalBalance: MonetaryAmount)
@@ -31,7 +31,7 @@ protocol NewOperationPresenterDelegate: BasePresenterDelegate {
     func swapError(_ error: NewOpError)
     func amountBelowDust()
     func invoiceMissingAmount()
-    func unexpectedError()
+    func unexpectedError(_ error: Error)
     func nfc2faError(_ error: NewOpError)
     func nfcNoSlotsAvailable()
 
@@ -54,12 +54,13 @@ class NewOperationPresenter<Delegate: NewOperationPresenterDelegate>: BasePresen
     var lastSelectedCurrency: Currency?
 
     var hasNfc2fa: Bool {
-        featureFlagsSelector.isSecurityCardFlagEnabled() || featureFlagsSelector.fetch().contains(.nfcCard)
+        let featureFlags = featureFlagsSelector.fetch()
+        return featureFlags.contains(.nfcCardV2) || featureFlags.contains(.nfcCard)
     }
 
     private let userRepository: UserRepository = resolve()
     private let featureFlagsSelector: FeatureFlagsSelector = resolve()
-    private let featureFlagsOverridesRepository: FeatureFlagsLocalOverridesRepository = resolve()
+    private let featureFlagsOverridesRepository: FeatureFlagsOverridesRepository = resolve()
     private let signMessageAction: SignMessageAction = SignMessageAction()
     private let signMessageActionV2: SignMessageActionV2 = SignMessageActionV2()
     private var signMessageDisposable: Disposable?
@@ -453,7 +454,7 @@ class NewOperationPresenter<Delegate: NewOperationPresenterDelegate>: BasePresen
     func disableSecurityCardFlag() {
         // Temporary UX shortcut for internal dogfood testing.
         // Will be removed once the security card feature is stable.
-        featureFlagsOverridesRepository.setOverrideNfcCardV2(isDisabled: true)
+        featureFlagsOverridesRepository.setFlag(.nfcCardV2, isDisabled: true)
     }
 
     override func handleError(_ e: Error) {
@@ -463,7 +464,7 @@ class NewOperationPresenter<Delegate: NewOperationPresenterDelegate>: BasePresen
             delegate.showSwapFailedError()
         } else {
             super.handleError(e)
-            delegate.operationError()
+            delegate.operationError(e)
         }
     }
 
@@ -560,7 +561,7 @@ extension NewOperationPresenter: NewOperationTransitions {
                 // log as unknown error
                 logSecurityCardError(nil)
                 Logger.log(.err, "Unexpected NFC error: \(error.localizedDescription)")
-                delegate.nfc2faError(.unexpected)
+                delegate.nfc2faError(.unexpected(error: grpcError))
             }
             logSecurityCardError(grpcError)
             Logger.log(.err, grpcError.errorDetail?.message ?? "Unknown error")
@@ -568,7 +569,7 @@ extension NewOperationPresenter: NewOperationTransitions {
             // log as unknown error
             logSecurityCardError(nil)
             Logger.log(.err, "Unexpected NFC error: \(error.localizedDescription)")
-            delegate.nfc2faError(.unexpected)
+            delegate.nfc2faError(.unexpected(error: error))
         }
     }
 
@@ -618,8 +619,8 @@ extension NewOperationPresenter: OpLoadingTransitions {
         delegate.swapError(error)
     }
 
-    func unexpectedError() {
-        delegate.unexpectedError()
+    func unexpectedError(_ error: Error) {
+        delegate.unexpectedError(error)
     }
 
     func invoiceMissingAmount() {
@@ -631,9 +632,10 @@ extension NewOperationPresenter: OpLoadingTransitions {
 extension NewOperationPresenter: OpConfirmTransitions {
     func didConfirm() {
         signMessageDisposable?.dispose()
-        if featureFlagsSelector.isSecurityCardFlagEnabled() {
+        let featureFlags = featureFlagsSelector.fetch()
+        if featureFlags.contains(.nfcCardV2) {
             signWithSecurityCardV2AndCreateOperation()
-        } else if featureFlagsSelector.fetch().contains(.nfcCard) {
+        } else if featureFlags.contains(.nfcCard) {
             signWithSecurityCardAndCreateOperation()
         } else {
             createOperation()

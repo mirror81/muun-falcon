@@ -2,19 +2,21 @@ package libwallet_init
 
 import (
 	"errors"
+	"log/slog"
+	"net"
+	"path"
+	"runtime/debug"
+
 	"github.com/grpc-ecosystem/go-grpc-middleware"
 	"github.com/muun/libwallet/data/keys"
 	"github.com/muun/libwallet/domain/action/challenge_keys"
 	"github.com/muun/libwallet/domain/action/diagnostic_mode_reports"
 	nfcActions "github.com/muun/libwallet/domain/action/nfc"
 	"github.com/muun/libwallet/domain/action/recovery"
+	"github.com/muun/libwallet/domain/action/security_cards_marketplace"
 	"github.com/muun/libwallet/domain/nfc"
 	"github.com/muun/libwallet/electrum"
 	"github.com/muun/libwallet/storage"
-	"log/slog"
-	"net"
-	"path"
-	"runtime/debug"
 
 	"github.com/muun/libwallet"
 	"github.com/muun/libwallet/app_provided_data"
@@ -30,7 +32,7 @@ var cfg *app_provided_data.Config
 var keyValueStorage *storage.KeyValueStorage
 var network *libwallet.Network
 var houstonService service.HoustonService
-var mockHoustonService *service.MockHoustonService
+var mockHoustonService service.HoustonService
 var keyProvider keys.KeyProvider
 var startChallengeSetupAction *challenge_keys.StartChallengeSetupAction
 var finishChallengeSetupAction *challenge_keys.FinishChallengeSetupAction
@@ -45,6 +47,7 @@ var resetSecurityCardAction *nfcActions.ResetSecurityCardAction
 var signMessageSecurityCardAction *nfcActions.SignMessageSecurityCardAction
 var pairSecurityCardActionV2 *nfcActions.PairSecurityCardActionV2
 var signMessageSecurityCardActionV2 *nfcActions.SignMessageSecurityCardActionV2
+var securityCardsMarketplaceAction *security_cards_marketplace.GetSecurityCardsMarketplaceAction
 
 // Init configures libwallet
 func Init(c *app_provided_data.Config) {
@@ -122,6 +125,7 @@ func Init(c *app_provided_data.Config) {
 		keyValueStorage,
 		pairSecurityCardActionV2,
 	)
+	securityCardsMarketplaceAction = security_cards_marketplace.NewGetSecurityCardsMarketplaceAction()
 }
 
 func StartServer() error {
@@ -162,6 +166,7 @@ func StartServer() error {
 		signMessageSecurityCardAction,
 		pairSecurityCardActionV2,
 		signMessageSecurityCardActionV2,
+		securityCardsMarketplaceAction,
 	))
 
 	listener, err := net.Listen("unix", cfg.SocketPath)

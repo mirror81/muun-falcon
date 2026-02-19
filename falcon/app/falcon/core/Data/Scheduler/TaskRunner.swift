@@ -18,24 +18,25 @@ public class TaskRunner {
     let refreshInvoicesAction: RefreshInvoicesAction
     let fcmTokenAction: FCMTokenAction
     private let preloadFeeDataAction: PreloadFeeDataAction
-    private let featureFlagsRepository: FeatureFlagsRepository
-    private let disposeBag = DisposeBag()
+    private var disposeBag = DisposeBag()
 
     public init(syncExternalAddressesAction: SyncExternalAddresses,
                 fetchNotificationsAction: FetchNotificationsAction,
                 refreshInvoicesAction: RefreshInvoicesAction,
                 fcmTokenAction: FCMTokenAction,
-                preloadFeeDataAction: PreloadFeeDataAction,
-                featureFlagsRepository: FeatureFlagsRepository) {
+                preloadFeeDataAction: PreloadFeeDataAction) {
         self.syncExternalAddressesAction = syncExternalAddressesAction
         self.fetchNotificationsAction = fetchNotificationsAction
         self.refreshInvoicesAction = refreshInvoicesAction
         self.fcmTokenAction = fcmTokenAction
         self.preloadFeeDataAction = preloadFeeDataAction
-        self.featureFlagsRepository = featureFlagsRepository
     }
 
     public func run() {
+        // Since TaskRunner is a long-lived instance, we reset the disposeBag
+        // to cancel any previous timers or pending tasks and prevent duplicating execution.
+        disposeBag = DisposeBag()
+
         // This isn't a critical action so delay to avoid stepping on other requests
         schedule(after: .seconds(2)) {
             self.run(action: self.syncExternalAddressesAction)
@@ -75,6 +76,8 @@ public class TaskRunner {
 
                 let level: LogLevel
                 if err.isNetworkError() {
+                    // There is no need to do retries when the session is already expired.
+                    guard !err.isKindOf(.sessionExpired) else { return }
                     level = .info
                 } else {
                     level = .warn

@@ -16,7 +16,7 @@ protocol OpLoadingTransitions: AnyObject {
     func expiredInvoice()
     func invalidAddress()
     func swapError(_ error: NewOpError)
-    func unexpectedError()
+    func unexpectedError(_ error: Error)
     func invoiceMissingAmount()
 }
 
@@ -62,8 +62,8 @@ class NewOpLoadingView: MUView, PresenterInstantior {
 
 extension NewOpLoadingView: NewOpLoadingPresenterDelegate {
 
-    func unexpectedError() {
-        delegate?.unexpectedError()
+    func unexpectedError(_ error: Error) {
+        delegate?.unexpectedError(error)
     }
 
     func invoiceMissingAmount() {

@@ -32,6 +32,9 @@ service WalletService {
   rpc SaveBatch(SaveBatchRequest) returns (google.protobuf.Empty);
   rpc GetBatch(GetBatchRequest) returns (GetBatchResponse);
   rpc GetByPrefix(GetByPrefixRequest) returns (GetBatchResponse);
+
+  // Marketplace
+  rpc GetSecurityCardsMarketplace(google.protobuf.Empty) returns (GetSecurityCardsMarketplaceResponse);
 }
 
 enum ErrorType {
@@ -185,4 +188,18 @@ message GetBatchResponse {
 
 message GetByPrefixRequest {
   string prefix = 1;
+}
+
+message SecurityCardsProvider {
+  string name = 1;
+  repeated SecurityCard security_cards = 2;
+  string currency = 3;
+}
+
+message SecurityCard {
+  string image = 1;
+}
+
+message GetSecurityCardsMarketplaceResponse {
+  repeated SecurityCardsProvider providers = 1;
 }
