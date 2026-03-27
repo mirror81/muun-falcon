@@ -112,7 +112,7 @@ enum Constant {
     static let requestTimeoutInterval = TimeInterval(32)
 
     public enum FeeProtocol {
-        public static let minProtocolFeeRate: FeeRate = FeeRate(satsPerVByte: 1)
+        public static let minProtocolFeeRate: FeeRate = FeeRate(satsPerVByte: 0.1)
         // TODO: Check this max number
         public static let maxFeeRateAllowed: FeeRate = FeeRate(satsPerVByte: 1000)
     }
