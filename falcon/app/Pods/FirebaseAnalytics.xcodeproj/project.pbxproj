@@ -154,8 +154,8 @@
 		F154BCC1EC183799C5A4E6E008947EA9 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1500;
-				LastUpgradeCheck = 1500;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
 			};
 			buildConfigurationList = 94BEE24D9EBC9A6A27050CD616B878DC /* Build configuration list for PBXProject "FirebaseAnalytics" */;
 			compatibilityVersion = "Xcode 15.0";
@@ -166,6 +166,8 @@
 				en,
 			);
 			mainGroup = ABED8298F9702BBB04A2C8E21C240953;
+			minimizedProjectReferenceProxies = 0;
+			preferredProjectObjectVersion = 77;
 			productRefGroup = 20DBDF24DAD334020E6058803FB0031E /* Products */;
 			projectDirPath = "";
 			projectReferences = (

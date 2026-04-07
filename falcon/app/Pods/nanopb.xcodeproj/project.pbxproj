@@ -7,21 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		28FCCC7182BB4940D341E793BE9776CE /* pb_common.c in Sources */ = {isa = PBXBuildFile; fileRef = 81D750C0351DF94C43C67A0024117DD8 /* pb_common.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc -fno-objc-arc -fno-objc-arc"; }; };
-		2B785DCAB84157E9808E64892A02CCAB /* pb_encode.c in Sources */ = {isa = PBXBuildFile; fileRef = 0377580C8A1FB625D699474C595C126E /* pb_encode.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc -fno-objc-arc"; }; };
-		3E4CFE22919CA8A7C4D540C627BF560F /* pb_encode.h in Headers */ = {isa = PBXBuildFile; fileRef = F5541FCCAE961E1136A99B255C192DB8 /* pb_encode.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5600F13E1E3530A95135B2CEFB518FBF /* nanopb-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = D49EFA8F99568747E75611B4317CAC1F /* nanopb-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6410124F60AE11DE254B283E765F958C /* pb_decode.h in Headers */ = {isa = PBXBuildFile; fileRef = 7D72C242415AFB80BC7B260135EE244C /* pb_decode.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8935F43E270A4AFD21D49DF9FBCCF49A /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = C6876F3BE5887890D110B73D234FA89D /* PrivacyInfo.xcprivacy */; };
-		948C8736A6D2980B51C612A0C09A870F /* nanopb-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A6929492C726C0219C3F9E91122D196 /* nanopb-dummy.m */; };
-		95B00438A2F44CDA4CD1A031A51F5A4C /* pb_decode.c in Sources */ = {isa = PBXBuildFile; fileRef = 93026D8CCCFC59269FFBBF6A466FDA12 /* pb_decode.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc -fno-objc-arc"; }; };
-		9FB35007539CF60BC7A0578A9E87A3DE /* pb_common.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DD02BE6DF20F286BE7E37DFA0999F21 /* pb_common.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E8EF573EDBEC6DFEE51A1835EDD01CFA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66EEAE7624461F33106F37782E51FA0B /* Foundation.framework */; };
-		EF25D6802635C179FD6A3E3F31F3E26F /* pb.h in Headers */ = {isa = PBXBuildFile; fileRef = 05C4A84D44B19642116AA259F78FA8DA /* pb.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0C3B7DE55CE9EBB6CC8911B6EF178ABE /* nanopb-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A6929492C726C0219C3F9E91122D196 /* nanopb-dummy.m */; };
+		0D8CB097F8E34612DC0A813C9DD672B7 /* pb_encode.c in Sources */ = {isa = PBXBuildFile; fileRef = 0377580C8A1FB625D699474C595C126E /* pb_encode.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc -fno-objc-arc"; }; };
+		256A67FAFD329A496D259335C23B34D6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 611C04BECF7853A69BFA37BFFE220654 /* Foundation.framework */; };
+		3E1EC6BAD8E451B860563E7772DC6496 /* pb_common.c in Sources */ = {isa = PBXBuildFile; fileRef = 81D750C0351DF94C43C67A0024117DD8 /* pb_common.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc -fno-objc-arc -fno-objc-arc"; }; };
+		3FFEE79F6129CD17F867FBC25A0E80DF /* pb_decode.c in Sources */ = {isa = PBXBuildFile; fileRef = 93026D8CCCFC59269FFBBF6A466FDA12 /* pb_decode.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc -fno-objc-arc"; }; };
+		4150E69238FF373A052FA8A9C3F030AE /* pb_decode.h in Headers */ = {isa = PBXBuildFile; fileRef = 7D72C242415AFB80BC7B260135EE244C /* pb_decode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		47EB4BDEEE1750517D5864F8E0E84DAB /* pb_common.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DD02BE6DF20F286BE7E37DFA0999F21 /* pb_common.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4DBE76971B84769AE87F39AA889F2C96 /* pb_encode.h in Headers */ = {isa = PBXBuildFile; fileRef = F5541FCCAE961E1136A99B255C192DB8 /* pb_encode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A964DB27E1864E4279C526DF8FC69B9E /* pb.h in Headers */ = {isa = PBXBuildFile; fileRef = 05C4A84D44B19642116AA259F78FA8DA /* pb.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AD0D4D9AE61A933112CDF910B716E161 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = C6876F3BE5887890D110B73D234FA89D /* PrivacyInfo.xcprivacy */; };
+		D6A273E62BC0CEB653E95CC37458CBD3 /* nanopb-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = D49EFA8F99568747E75611B4317CAC1F /* nanopb-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		4C2DA4DA84CFC7DC2914E3705E7CDA7F /* PBXContainerItemProxy */ = {
+		ECDB10C96F42EC3392B7FD4AFDC12C93 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 71F8533AE75309759041404D25E534DE /* Project object */;
 			proxyType = 1;
@@ -36,7 +36,7 @@
 		22DA1E83CE8C65EDF522B1EC24297482 /* ResourceBundle-nanopb_Privacy-nanopb-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-nanopb_Privacy-nanopb-Info.plist"; sourceTree = "<group>"; };
 		2A55235CC0449F6BDD1B387E97C368FE /* nanopb.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = nanopb.debug.xcconfig; sourceTree = "<group>"; };
 		4DD02BE6DF20F286BE7E37DFA0999F21 /* pb_common.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = pb_common.h; sourceTree = "<group>"; };
-		66EEAE7624461F33106F37782E51FA0B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		611C04BECF7853A69BFA37BFFE220654 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		7D72C242415AFB80BC7B260135EE244C /* pb_decode.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = pb_decode.h; sourceTree = "<group>"; };
 		81D750C0351DF94C43C67A0024117DD8 /* pb_common.c */ = {isa = PBXFileReference; includeInIndex = 1; path = pb_common.c; sourceTree = "<group>"; };
 		8A6929492C726C0219C3F9E91122D196 /* nanopb-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "nanopb-dummy.m"; sourceTree = "<group>"; };
@@ -53,18 +53,18 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		5D4DCB8EDE07A61A4E3F6EDD0A41A37F /* Frameworks */ = {
+		C3FEEC18FC3BAF44D888B10B7EB9633D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		99A042A2F0A743AB0D5E20A9B87D7A92 /* Frameworks */ = {
+		D8AF905E2C38FAF91919037F8D83A834 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E8EF573EDBEC6DFEE51A1835EDD01CFA /* Foundation.framework in Frameworks */,
+				256A67FAFD329A496D259335C23B34D6 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,10 +146,10 @@
 			);
 			sourceTree = "<group>";
 		};
-		F300FFE0D568955D5B40F13387124330 /* iOS */ = {
+		F6EA1A76AA97B743E95BBDE8476CD6C0 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				66EEAE7624461F33106F37782E51FA0B /* Foundation.framework */,
+				611C04BECF7853A69BFA37BFFE220654 /* Foundation.framework */,
 			);
 			name = iOS;
 			sourceTree = "<group>";
@@ -157,7 +157,7 @@
 		FC532DF073BD3AB5B72D6F9D8A9020A8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				F300FFE0D568955D5B40F13387124330 /* iOS */,
+				F6EA1A76AA97B743E95BBDE8476CD6C0 /* iOS */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -165,15 +165,15 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		711C112F61DE40B5C07F7891DB46D31E /* Headers */ = {
+		FA2CCD8FC101C1C9E4A6D22D2320E900 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5600F13E1E3530A95135B2CEFB518FBF /* nanopb-umbrella.h in Headers */,
-				EF25D6802635C179FD6A3E3F31F3E26F /* pb.h in Headers */,
-				9FB35007539CF60BC7A0578A9E87A3DE /* pb_common.h in Headers */,
-				6410124F60AE11DE254B283E765F958C /* pb_decode.h in Headers */,
-				3E4CFE22919CA8A7C4D540C627BF560F /* pb_encode.h in Headers */,
+				D6A273E62BC0CEB653E95CC37458CBD3 /* nanopb-umbrella.h in Headers */,
+				A964DB27E1864E4279C526DF8FC69B9E /* pb.h in Headers */,
+				47EB4BDEEE1750517D5864F8E0E84DAB /* pb_common.h in Headers */,
+				4150E69238FF373A052FA8A9C3F030AE /* pb_decode.h in Headers */,
+				4DBE76971B84769AE87F39AA889F2C96 /* pb_encode.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -182,17 +182,17 @@
 /* Begin PBXNativeTarget section */
 		052B66B57BF269A4B160A5659F7D46D4 /* nanopb */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 79F2E009484BA3804E2DCADB8426028E /* Build configuration list for PBXNativeTarget "nanopb" */;
+			buildConfigurationList = 1291712A7E97FFBC84A3E7C918A54687 /* Build configuration list for PBXNativeTarget "nanopb" */;
 			buildPhases = (
-				711C112F61DE40B5C07F7891DB46D31E /* Headers */,
-				B77B875752E42E5686FBB551D3204F54 /* Sources */,
-				99A042A2F0A743AB0D5E20A9B87D7A92 /* Frameworks */,
-				8F2F4798684B90257F9C7FF84FE8FBC5 /* Resources */,
+				FA2CCD8FC101C1C9E4A6D22D2320E900 /* Headers */,
+				4DDE7EE0453270AFE127894D92AE84D0 /* Sources */,
+				D8AF905E2C38FAF91919037F8D83A834 /* Frameworks */,
+				AED6AA0472CB686716EA2F5852268F10 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				7CD4C1478662D085C6290AF1AD7258A3 /* PBXTargetDependency */,
+				5EB4EAC81E4FA61D929AC5A8A905DFA0 /* PBXTargetDependency */,
 			);
 			name = nanopb;
 			productName = nanopb;
@@ -201,11 +201,11 @@
 		};
 		7704CDBC4BA6B09568BDB06A548DCDE8 /* nanopb-nanopb_Privacy */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 607DA7E55F544A0C4486C7C74D23BD9A /* Build configuration list for PBXNativeTarget "nanopb-nanopb_Privacy" */;
+			buildConfigurationList = 7EC30AB9B2AB5CB4C2BF23CD64FF9337 /* Build configuration list for PBXNativeTarget "nanopb-nanopb_Privacy" */;
 			buildPhases = (
-				ABDD931532D7601AA4556475A92A44CB /* Sources */,
-				5D4DCB8EDE07A61A4E3F6EDD0A41A37F /* Frameworks */,
-				FEF2B5C7B8C80415E42EE1A937696E69 /* Resources */,
+				22839B7876F8BB3B202AA8B3CF84EA6A /* Sources */,
+				C3FEEC18FC3BAF44D888B10B7EB9633D /* Frameworks */,
+				63A06F6B6947677CF9E56638090D0BD3 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -222,8 +222,8 @@
 		71F8533AE75309759041404D25E534DE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1500;
-				LastUpgradeCheck = 1500;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
 			};
 			buildConfigurationList = 2A9D98A90AF7FA09325E25E198DA7FED /* Build configuration list for PBXProject "nanopb" */;
 			compatibilityVersion = "Xcode 15.0";
@@ -234,6 +234,8 @@
 				en,
 			);
 			mainGroup = F2DB4CF37E2E32D2131A0B7792811734;
+			minimizedProjectReferenceProxies = 0;
+			preferredProjectObjectVersion = 77;
 			productRefGroup = 02306E1C8A7D553D5CF11BC17E42A0DF /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -245,92 +247,92 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		8F2F4798684B90257F9C7FF84FE8FBC5 /* Resources */ = {
+		63A06F6B6947677CF9E56638090D0BD3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AD0D4D9AE61A933112CDF910B716E161 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FEF2B5C7B8C80415E42EE1A937696E69 /* Resources */ = {
+		AED6AA0472CB686716EA2F5852268F10 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8935F43E270A4AFD21D49DF9FBCCF49A /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		ABDD931532D7601AA4556475A92A44CB /* Sources */ = {
+		22839B7876F8BB3B202AA8B3CF84EA6A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B77B875752E42E5686FBB551D3204F54 /* Sources */ = {
+		4DDE7EE0453270AFE127894D92AE84D0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				948C8736A6D2980B51C612A0C09A870F /* nanopb-dummy.m in Sources */,
-				28FCCC7182BB4940D341E793BE9776CE /* pb_common.c in Sources */,
-				95B00438A2F44CDA4CD1A031A51F5A4C /* pb_decode.c in Sources */,
-				2B785DCAB84157E9808E64892A02CCAB /* pb_encode.c in Sources */,
+				0C3B7DE55CE9EBB6CC8911B6EF178ABE /* nanopb-dummy.m in Sources */,
+				3E1EC6BAD8E451B860563E7772DC6496 /* pb_common.c in Sources */,
+				3FFEE79F6129CD17F867FBC25A0E80DF /* pb_decode.c in Sources */,
+				0D8CB097F8E34612DC0A813C9DD672B7 /* pb_encode.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		7CD4C1478662D085C6290AF1AD7258A3 /* PBXTargetDependency */ = {
+		5EB4EAC81E4FA61D929AC5A8A905DFA0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "nanopb-nanopb_Privacy";
 			target = 7704CDBC4BA6B09568BDB06A548DCDE8 /* nanopb-nanopb_Privacy */;
-			targetProxy = 4C2DA4DA84CFC7DC2914E3705E7CDA7F /* PBXContainerItemProxy */;
+			targetProxy = ECDB10C96F42EC3392B7FD4AFDC12C93 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		3754971697929F56BF678F0874C3832A /* Release */ = {
+		1C5399AC904900F6CDDA9AB7039328DC /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9608F5322822BFC7DEB53BFEBDD0343F /* nanopb.release.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/nanopb";
 				DEVELOPMENT_TEAM = 5YYLBTUB6W;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/nanopb/nanopb-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/nanopb/nanopb-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IBSC_MODULE = nanopb;
+				INFOPLIST_FILE = "Target Support Files/nanopb/ResourceBundle-nanopb_Privacy-nanopb-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/nanopb/nanopb.modulemap";
-				PRODUCT_MODULE_NAME = nanopb;
-				PRODUCT_NAME = nanopb;
+				PRODUCT_NAME = nanopb_Privacy;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
+				WRAPPER_EXTENSION = bundle;
 			};
 			name = Release;
 		};
-		47FB83DC21F3D9312403ABB8A71839D6 /* Debug */ = {
+		1D9DA80335357823976C569472E15909 /* Release-Dogfood */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9608F5322822BFC7DEB53BFEBDD0343F /* nanopb.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/nanopb";
+				DEVELOPMENT_TEAM = 5YYLBTUB6W;
+				IBSC_MODULE = nanopb;
+				INFOPLIST_FILE = "Target Support Files/nanopb/ResourceBundle-nanopb_Privacy-nanopb-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_NAME = nanopb_Privacy;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = "Release-Dogfood";
+		};
+		2112907ECE3B8C7034253E305EBCB5AA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2A55235CC0449F6BDD1B387E97C368FE /* nanopb.debug.xcconfig */;
 			buildSettings = {
@@ -366,42 +368,23 @@
 			};
 			name = Debug;
 		};
-		54B80D81C0AD19FFF8312E93F3F44293 /* Release-Dogfood */ = {
+		27BEC45C3FB74A3DE30BA71125CD3FEE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9608F5322822BFC7DEB53BFEBDD0343F /* nanopb.release.xcconfig */;
+			baseConfigurationReference = 2A55235CC0449F6BDD1B387E97C368FE /* nanopb.debug.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/nanopb";
 				DEVELOPMENT_TEAM = 5YYLBTUB6W;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/nanopb/nanopb-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/nanopb/nanopb-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IBSC_MODULE = nanopb;
+				INFOPLIST_FILE = "Target Support Files/nanopb/ResourceBundle-nanopb_Privacy-nanopb-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/nanopb/nanopb.modulemap";
-				PRODUCT_MODULE_NAME = nanopb;
-				PRODUCT_NAME = nanopb;
+				PRODUCT_NAME = nanopb_Privacy;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
+				WRAPPER_EXTENSION = bundle;
 			};
-			name = "Release-Dogfood";
+			name = Debug;
 		};
 		62F3CA93FD890DB5E7BB3AD1B1F46371 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -465,24 +448,6 @@
 				SYMROOT = "${SRCROOT}/../build";
 			};
 			name = Release;
-		};
-		98FC78166904DC8E036345A0177E46F0 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2A55235CC0449F6BDD1B387E97C368FE /* nanopb.debug.xcconfig */;
-			buildSettings = {
-				CODE_SIGNING_ALLOWED = NO;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/nanopb";
-				DEVELOPMENT_TEAM = 5YYLBTUB6W;
-				IBSC_MODULE = nanopb;
-				INFOPLIST_FILE = "Target Support Files/nanopb/ResourceBundle-nanopb_Privacy-nanopb-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				PRODUCT_NAME = nanopb_Privacy;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Debug;
 		};
 		B3F8C13AFF8E8E2487D879E9FA2CE06E /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -551,43 +516,6 @@
 			};
 			name = Debug;
 		};
-		C043E4974017D051DFDFBF36E97982DB /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9608F5322822BFC7DEB53BFEBDD0343F /* nanopb.release.xcconfig */;
-			buildSettings = {
-				CODE_SIGNING_ALLOWED = NO;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/nanopb";
-				DEVELOPMENT_TEAM = 5YYLBTUB6W;
-				IBSC_MODULE = nanopb;
-				INFOPLIST_FILE = "Target Support Files/nanopb/ResourceBundle-nanopb_Privacy-nanopb-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				PRODUCT_NAME = nanopb_Privacy;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Release;
-		};
-		C6C101FF91DE0BD684C325234D54D37C /* Release-Dogfood */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9608F5322822BFC7DEB53BFEBDD0343F /* nanopb.release.xcconfig */;
-			buildSettings = {
-				CODE_SIGNING_ALLOWED = NO;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/nanopb";
-				DEVELOPMENT_TEAM = 5YYLBTUB6W;
-				IBSC_MODULE = nanopb;
-				INFOPLIST_FILE = "Target Support Files/nanopb/ResourceBundle-nanopb_Privacy-nanopb-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				PRODUCT_NAME = nanopb_Privacy;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = "Release-Dogfood";
-		};
 		D46C61795D7BF5C59AE3A82AA61E9D19 /* Release-Dogfood */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -651,9 +579,93 @@
 			};
 			name = "Release-Dogfood";
 		};
+		D7070E34A64DBF7F08F06737F07065AC /* Release-Dogfood */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9608F5322822BFC7DEB53BFEBDD0343F /* nanopb.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 5YYLBTUB6W;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/nanopb/nanopb-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/nanopb/nanopb-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/nanopb/nanopb.modulemap";
+				PRODUCT_MODULE_NAME = nanopb;
+				PRODUCT_NAME = nanopb;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = "Release-Dogfood";
+		};
+		FF0AD931718C7E301A5800FCC53865E5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9608F5322822BFC7DEB53BFEBDD0343F /* nanopb.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 5YYLBTUB6W;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/nanopb/nanopb-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/nanopb/nanopb-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/nanopb/nanopb.modulemap";
+				PRODUCT_MODULE_NAME = nanopb;
+				PRODUCT_NAME = nanopb;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1291712A7E97FFBC84A3E7C918A54687 /* Build configuration list for PBXNativeTarget "nanopb" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2112907ECE3B8C7034253E305EBCB5AA /* Debug */,
+				FF0AD931718C7E301A5800FCC53865E5 /* Release */,
+				D7070E34A64DBF7F08F06737F07065AC /* Release-Dogfood */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		2A9D98A90AF7FA09325E25E198DA7FED /* Build configuration list for PBXProject "nanopb" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -664,22 +676,12 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		607DA7E55F544A0C4486C7C74D23BD9A /* Build configuration list for PBXNativeTarget "nanopb-nanopb_Privacy" */ = {
+		7EC30AB9B2AB5CB4C2BF23CD64FF9337 /* Build configuration list for PBXNativeTarget "nanopb-nanopb_Privacy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				98FC78166904DC8E036345A0177E46F0 /* Debug */,
-				C043E4974017D051DFDFBF36E97982DB /* Release */,
-				C6C101FF91DE0BD684C325234D54D37C /* Release-Dogfood */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		79F2E009484BA3804E2DCADB8426028E /* Build configuration list for PBXNativeTarget "nanopb" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				47FB83DC21F3D9312403ABB8A71839D6 /* Debug */,
-				3754971697929F56BF678F0874C3832A /* Release */,
-				54B80D81C0AD19FFF8312E93F3F44293 /* Release-Dogfood */,
+				27BEC45C3FB74A3DE30BA71125CD3FEE /* Debug */,
+				1C5399AC904900F6CDDA9AB7039328DC /* Release */,
+				1D9DA80335357823976C569472E15909 /* Release-Dogfood */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

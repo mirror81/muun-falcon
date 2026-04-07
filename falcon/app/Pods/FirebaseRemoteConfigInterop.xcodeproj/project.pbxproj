@@ -7,20 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2C537500009A83717D66164F9AE62B3D /* RemoteConfigConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95649B54A0C10D9014B738C82AAD4D8 /* RemoteConfigConstants.swift */; };
-		36FF8F6534B54F5369CC4373F1CDA927 /* RolloutAssignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9364F0D89C2DD6E6CD75A05B639DF257 /* RolloutAssignment.swift */; };
-		62AF281D5D6A89582422CCD3F568C74B /* FirebaseRemoteConfigInterop-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = DB04C2B33656302D39AA01EA5C1908BC /* FirebaseRemoteConfigInterop-dummy.m */; };
-		922F83029ED15614E0AD6003C49E9856 /* RemoteConfigInterop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AF9037BF7AB5D3D8023A800BAF5989 /* RemoteConfigInterop.swift */; };
-		B062F8BBC339D2DD8BDF3BA2069B295C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61D7C30B6623CDD6259ABDD0FA887F0F /* Foundation.framework */; };
-		BDBC1199F33212B685AC61259FE83090 /* FirebaseRemoteConfigInterop-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A8ADCF5AE83771E90F3EF00BB7EED93 /* FirebaseRemoteConfigInterop-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D25D800AE9CF7C68A2968683137194A9 /* RolloutsStateSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = A776E8B124A7BFDC4B24804E743A9C65 /* RolloutsStateSubscriber.swift */; };
+		60897E4C0747D1FA24D69FFCBD978498 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EDBB9A53B240D5D5426C9622367F1E0 /* Foundation.framework */; };
+		6412E9A504338F33DCD71B37C7FF29DB /* RolloutAssignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9364F0D89C2DD6E6CD75A05B639DF257 /* RolloutAssignment.swift */; };
+		8FFCDF8C9357CBC2F949471FE29EC629 /* RemoteConfigConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95649B54A0C10D9014B738C82AAD4D8 /* RemoteConfigConstants.swift */; };
+		A67C4D6186B86D8D4A2CC6EA8ED2ED6C /* FirebaseRemoteConfigInterop-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A8ADCF5AE83771E90F3EF00BB7EED93 /* FirebaseRemoteConfigInterop-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B45562850633487D48495765614C7565 /* RolloutsStateSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = A776E8B124A7BFDC4B24804E743A9C65 /* RolloutsStateSubscriber.swift */; };
+		D76464523759F1C835588BA0BCDA4A0D /* FirebaseRemoteConfigInterop-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = DB04C2B33656302D39AA01EA5C1908BC /* FirebaseRemoteConfigInterop-dummy.m */; };
+		F9034B85BFE2660C58B37C98FF304F95 /* RemoteConfigInterop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AF9037BF7AB5D3D8023A800BAF5989 /* RemoteConfigInterop.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2EDBB9A53B240D5D5426C9622367F1E0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		350A735087486575A305C10B40B51CAC /* FirebaseRemoteConfigInterop-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "FirebaseRemoteConfigInterop-Info.plist"; sourceTree = "<group>"; };
 		52AF9037BF7AB5D3D8023A800BAF5989 /* RemoteConfigInterop.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RemoteConfigInterop.swift; path = FirebaseRemoteConfig/Interop/RemoteConfigInterop.swift; sourceTree = "<group>"; };
 		5641396F461A1D26E3A0E6B01B45A472 /* FirebaseRemoteConfigInterop.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = FirebaseRemoteConfigInterop.modulemap; sourceTree = "<group>"; };
-		61D7C30B6623CDD6259ABDD0FA887F0F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		6A8ADCF5AE83771E90F3EF00BB7EED93 /* FirebaseRemoteConfigInterop-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FirebaseRemoteConfigInterop-umbrella.h"; sourceTree = "<group>"; };
 		75AF30E7E21E48BB0ECDE498B5576405 /* FirebaseRemoteConfigInterop */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = FirebaseRemoteConfigInterop; path = FirebaseRemoteConfigInterop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9364F0D89C2DD6E6CD75A05B639DF257 /* RolloutAssignment.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RolloutAssignment.swift; path = FirebaseRemoteConfig/Interop/RolloutAssignment.swift; sourceTree = "<group>"; };
@@ -32,11 +32,11 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		DCEA848C5486590F02180E8F6BDDE22C /* Frameworks */ = {
+		8ED01410C276FCDE5CA867F26CDF93BA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B062F8BBC339D2DD8BDF3BA2069B295C /* Foundation.framework in Frameworks */,
+				60897E4C0747D1FA24D69FFCBD978498 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,10 +70,10 @@
 			path = "../Target Support Files/FirebaseRemoteConfigInterop";
 			sourceTree = "<group>";
 		};
-		779FA397E88CEEED355E8B62DF355971 /* iOS */ = {
+		BE1C2DDB0D785E3A467F70909BEF26FC /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				61D7C30B6623CDD6259ABDD0FA887F0F /* Foundation.framework */,
+				2EDBB9A53B240D5D5426C9622367F1E0 /* Foundation.framework */,
 			);
 			name = iOS;
 			sourceTree = "<group>";
@@ -81,7 +81,7 @@
 		CDB8F781660B4E692F905E2A0C1D1735 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				779FA397E88CEEED355E8B62DF355971 /* iOS */,
+				BE1C2DDB0D785E3A467F70909BEF26FC /* iOS */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -106,11 +106,11 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		619D7E2EA035E84C432054E07BC03CFA /* Headers */ = {
+		4883C8824DEA1945ABF06C86CE528691 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BDBC1199F33212B685AC61259FE83090 /* FirebaseRemoteConfigInterop-umbrella.h in Headers */,
+				A67C4D6186B86D8D4A2CC6EA8ED2ED6C /* FirebaseRemoteConfigInterop-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,12 +119,12 @@
 /* Begin PBXNativeTarget section */
 		B0AF320DC874CA8819AE2752BD84CC6E /* FirebaseRemoteConfigInterop */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 39FD381E69E3233D970577BF7CA8BD9B /* Build configuration list for PBXNativeTarget "FirebaseRemoteConfigInterop" */;
+			buildConfigurationList = 09D05B6230FAF0C5F42307D117C0968A /* Build configuration list for PBXNativeTarget "FirebaseRemoteConfigInterop" */;
 			buildPhases = (
-				619D7E2EA035E84C432054E07BC03CFA /* Headers */,
-				C441582C7381CFC5B493B9A964DCBF9A /* Sources */,
-				DCEA848C5486590F02180E8F6BDDE22C /* Frameworks */,
-				49BC4D4183241ADFE0DD15956E78A9EF /* Resources */,
+				4883C8824DEA1945ABF06C86CE528691 /* Headers */,
+				417E88294C302798964CC68189D2EC43 /* Sources */,
+				8ED01410C276FCDE5CA867F26CDF93BA /* Frameworks */,
+				CC1293B6CD3C28F58171025AD0371BD2 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -141,8 +141,8 @@
 		416022F8ED580F5179B78CE06EAD3C2A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1500;
-				LastUpgradeCheck = 1500;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
 			};
 			buildConfigurationList = 130807E804C4FF5A04133C7F4E5C836F /* Build configuration list for PBXProject "FirebaseRemoteConfigInterop" */;
 			compatibilityVersion = "Xcode 15.0";
@@ -153,6 +153,8 @@
 				en,
 			);
 			mainGroup = F6E2F272D20548176FE02DBEB2064A3E;
+			minimizedProjectReferenceProxies = 0;
+			preferredProjectObjectVersion = 77;
 			productRefGroup = F96FF296613408066F7ACED257B26238 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -163,7 +165,7 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		49BC4D4183241ADFE0DD15956E78A9EF /* Resources */ = {
+		CC1293B6CD3C28F58171025AD0371BD2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -173,15 +175,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		C441582C7381CFC5B493B9A964DCBF9A /* Sources */ = {
+		417E88294C302798964CC68189D2EC43 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				62AF281D5D6A89582422CCD3F568C74B /* FirebaseRemoteConfigInterop-dummy.m in Sources */,
-				2C537500009A83717D66164F9AE62B3D /* RemoteConfigConstants.swift in Sources */,
-				922F83029ED15614E0AD6003C49E9856 /* RemoteConfigInterop.swift in Sources */,
-				36FF8F6534B54F5369CC4373F1CDA927 /* RolloutAssignment.swift in Sources */,
-				D25D800AE9CF7C68A2968683137194A9 /* RolloutsStateSubscriber.swift in Sources */,
+				D76464523759F1C835588BA0BCDA4A0D /* FirebaseRemoteConfigInterop-dummy.m in Sources */,
+				8FFCDF8C9357CBC2F949471FE29EC629 /* RemoteConfigConstants.swift in Sources */,
+				F9034B85BFE2660C58B37C98FF304F95 /* RemoteConfigInterop.swift in Sources */,
+				6412E9A504338F33DCD71B37C7FF29DB /* RolloutAssignment.swift in Sources */,
+				B45562850633487D48495765614C7565 /* RolloutsStateSubscriber.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,6 +250,80 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = "Release-Dogfood";
+		};
+		19B1CBA33DAA2180A8E29935D605AFC5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C9BC869C7684483BE1E001836FB31D80 /* FirebaseRemoteConfigInterop.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 5YYLBTUB6W;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/FirebaseRemoteConfigInterop/FirebaseRemoteConfigInterop-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/FirebaseRemoteConfigInterop/FirebaseRemoteConfigInterop.modulemap";
+				PRODUCT_MODULE_NAME = FirebaseRemoteConfigInterop;
+				PRODUCT_NAME = FirebaseRemoteConfigInterop;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.3;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		4775219D5095D23D7BF756137A4697A2 /* Release-Dogfood */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C9BC869C7684483BE1E001836FB31D80 /* FirebaseRemoteConfigInterop.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 5YYLBTUB6W;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/FirebaseRemoteConfigInterop/FirebaseRemoteConfigInterop-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/FirebaseRemoteConfigInterop/FirebaseRemoteConfigInterop.modulemap";
+				PRODUCT_MODULE_NAME = FirebaseRemoteConfigInterop;
+				PRODUCT_NAME = FirebaseRemoteConfigInterop;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.3;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = "Release-Dogfood";
 		};
@@ -318,116 +394,6 @@
 			};
 			name = Debug;
 		};
-		A13E56CF2F2C2E8301EFA1CB5CE2B0D7 /* Release-Dogfood */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = C9BC869C7684483BE1E001836FB31D80 /* FirebaseRemoteConfigInterop.release.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 5YYLBTUB6W;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/FirebaseRemoteConfigInterop/FirebaseRemoteConfigInterop-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/FirebaseRemoteConfigInterop/FirebaseRemoteConfigInterop.modulemap";
-				PRODUCT_MODULE_NAME = FirebaseRemoteConfigInterop;
-				PRODUCT_NAME = FirebaseRemoteConfigInterop;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.3;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = "Release-Dogfood";
-		};
-		D005521D53140C3B79F52CCA52910F02 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = C9BC869C7684483BE1E001836FB31D80 /* FirebaseRemoteConfigInterop.release.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 5YYLBTUB6W;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/FirebaseRemoteConfigInterop/FirebaseRemoteConfigInterop-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/FirebaseRemoteConfigInterop/FirebaseRemoteConfigInterop.modulemap";
-				PRODUCT_MODULE_NAME = FirebaseRemoteConfigInterop;
-				PRODUCT_NAME = FirebaseRemoteConfigInterop;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.3;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		D2F091B3A808518C0D4CE996C6064403 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = FBCDE8FD0D7E2FD1E61FB884D90E05F8 /* FirebaseRemoteConfigInterop.debug.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 5YYLBTUB6W;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/FirebaseRemoteConfigInterop/FirebaseRemoteConfigInterop-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/FirebaseRemoteConfigInterop/FirebaseRemoteConfigInterop.modulemap";
-				PRODUCT_MODULE_NAME = FirebaseRemoteConfigInterop;
-				PRODUCT_NAME = FirebaseRemoteConfigInterop;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.3;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
 		D63BFA5B67C3366B1F84FA7C41F3DF29 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -491,25 +457,61 @@
 			};
 			name = Release;
 		};
+		F3EA3EA55B0073679028B5C0431DFFB6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FBCDE8FD0D7E2FD1E61FB884D90E05F8 /* FirebaseRemoteConfigInterop.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 5YYLBTUB6W;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/FirebaseRemoteConfigInterop/FirebaseRemoteConfigInterop-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/FirebaseRemoteConfigInterop/FirebaseRemoteConfigInterop.modulemap";
+				PRODUCT_MODULE_NAME = FirebaseRemoteConfigInterop;
+				PRODUCT_NAME = FirebaseRemoteConfigInterop;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.3;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		09D05B6230FAF0C5F42307D117C0968A /* Build configuration list for PBXNativeTarget "FirebaseRemoteConfigInterop" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F3EA3EA55B0073679028B5C0431DFFB6 /* Debug */,
+				19B1CBA33DAA2180A8E29935D605AFC5 /* Release */,
+				4775219D5095D23D7BF756137A4697A2 /* Release-Dogfood */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		130807E804C4FF5A04133C7F4E5C836F /* Build configuration list for PBXProject "FirebaseRemoteConfigInterop" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7F7E01030C75D6F3E3F1E1F6B8A19E31 /* Debug */,
 				D63BFA5B67C3366B1F84FA7C41F3DF29 /* Release */,
 				17DB6B754071FAAD270811C16183B973 /* Release-Dogfood */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		39FD381E69E3233D970577BF7CA8BD9B /* Build configuration list for PBXNativeTarget "FirebaseRemoteConfigInterop" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D2F091B3A808518C0D4CE996C6064403 /* Debug */,
-				D005521D53140C3B79F52CCA52910F02 /* Release */,
-				A13E56CF2F2C2E8301EFA1CB5CE2B0D7 /* Release-Dogfood */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

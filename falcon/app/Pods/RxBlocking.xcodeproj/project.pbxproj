@@ -7,27 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		10004B72B0A85A0F14F16A9560405226 /* BlockingObservable+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BD2C9B5EB5FAAEC9A4411CDB05336C /* BlockingObservable+Operators.swift */; };
-		1CE60AEB08CF59FEEC42132F5D64090F /* Platform.Linux.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF76E34C91C784E66ECB9CACE9DE99E9 /* Platform.Linux.swift */; };
-		1FE7BF9707EE14F8519A490E17CBA484 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF38079F31CFB7AE848327922F6CCF2 /* Queue.swift */; };
-		46CF6FF5C3CBFA0D663B5817581156B9 /* RxBlocking-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = B570BDA97EA6A724C602F484D8C4BEB8 /* RxBlocking-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		53D357FE1A8B702767F140A4D9400E52 /* Platform.Darwin.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED95D446AABB4B532699F8767A28E269 /* Platform.Darwin.swift */; };
-		67AAA26F22972F94D32AB35357A2B008 /* RxBlocking-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E9C203B4C5FABD89E250D0E87796A2 /* RxBlocking-dummy.m */; };
-		70491E5564C0233FA215306DF5B324AC /* InfiniteSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = F080C65A8D57962979ECED70FCAEFBCF /* InfiniteSequence.swift */; };
-		8352D4B21FABF24116317B3AFF64C294 /* RunLoopLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DA4E7A302DF17532EEE095361A7917 /* RunLoopLock.swift */; };
-		91ED7149B2A44A72AA680501D0D8DB95 /* PriorityQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5F697A2C2DA8249C889E6B97317722 /* PriorityQueue.swift */; };
-		99EB2D9FE9500319D4D85A7159845E7C /* AtomicInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C27884330A1FA538196F550294AE2CC /* AtomicInt.swift */; };
-		A420CE5EA1826887FD577807AF3789F7 /* DispatchQueue+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5499973AED7CE88C96CC6A6385EA4DAE /* DispatchQueue+Extensions.swift */; };
-		A96CDA8055391D4DC8B0871814BD834A /* BlockingObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D217870C0D60CFDAD3B0F319836A3DB6 /* BlockingObservable.swift */; };
-		C49008E0B651882C7EA5753185DC88B2 /* ObservableConvertibleType+Blocking.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AC33997682590D5665BAC2A4525FC6 /* ObservableConvertibleType+Blocking.swift */; };
-		C6FB297519AB987862A08FC33D7E7854 /* Bag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CCBEC6B421DED7C158644AE3B19420 /* Bag.swift */; };
-		D0E7776E617CCAFF5D034A3623BEC984 /* Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725C7A978363E4817DADD50DC0397FE3 /* Resources.swift */; };
-		DF02C5FFC779544B67960A04957C762E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22F00C5EE3700DB760376A9D7931E875 /* Foundation.framework */; };
-		FE0314CD54816CD25EB70DE3E1D27084 /* RecursiveLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EC99A1BD3EA3C38B3BE1C8F083160D2 /* RecursiveLock.swift */; };
+		026EB720065D4A6CC73016048DA4BD2B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B12A72BA368A201616E69159210B4112 /* Foundation.framework */; };
+		06A25B90CCCE354D91D36C65551DC170 /* DispatchQueue+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5499973AED7CE88C96CC6A6385EA4DAE /* DispatchQueue+Extensions.swift */; };
+		18ADE84326F4EC41D2C5114ABBF85AD8 /* Bag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CCBEC6B421DED7C158644AE3B19420 /* Bag.swift */; };
+		21C7B6E36F68F5F6107ED5761AD5E3B9 /* Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725C7A978363E4817DADD50DC0397FE3 /* Resources.swift */; };
+		21FC748078A1F219E92C8F8D59914A5E /* RxBlocking-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = B570BDA97EA6A724C602F484D8C4BEB8 /* RxBlocking-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5001423C86A99A2E8109A60C2C6CAA37 /* ObservableConvertibleType+Blocking.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AC33997682590D5665BAC2A4525FC6 /* ObservableConvertibleType+Blocking.swift */; };
+		9272E263BCB63F94FF1CDB38DA139115 /* Platform.Darwin.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED95D446AABB4B532699F8767A28E269 /* Platform.Darwin.swift */; };
+		A1A26AB75FC796DE9773166C6189B5A5 /* RunLoopLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DA4E7A302DF17532EEE095361A7917 /* RunLoopLock.swift */; };
+		B3EF3D894B217C8F740037B28C9C0B8A /* PriorityQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5F697A2C2DA8249C889E6B97317722 /* PriorityQueue.swift */; };
+		C3D542BFB29AF9B6892484CEE212ECBA /* AtomicInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C27884330A1FA538196F550294AE2CC /* AtomicInt.swift */; };
+		C3EB3C298CDA69C58D6B4418DDC92600 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF38079F31CFB7AE848327922F6CCF2 /* Queue.swift */; };
+		C7A66D87BDB6DA835DB1D3A25ED5DAEF /* InfiniteSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = F080C65A8D57962979ECED70FCAEFBCF /* InfiniteSequence.swift */; };
+		D1B2C0BE82C8FB1FF73260C103FAC4D9 /* Platform.Linux.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF76E34C91C784E66ECB9CACE9DE99E9 /* Platform.Linux.swift */; };
+		D85D6BD5F684D81A2D30D8DD63D443BB /* BlockingObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D217870C0D60CFDAD3B0F319836A3DB6 /* BlockingObservable.swift */; };
+		EBE1950F16D5B8FC04BF0CC6B87A50E1 /* BlockingObservable+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BD2C9B5EB5FAAEC9A4411CDB05336C /* BlockingObservable+Operators.swift */; };
+		F1D8200AD1A2DE2F320BDC7574EC58E3 /* RecursiveLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EC99A1BD3EA3C38B3BE1C8F083160D2 /* RecursiveLock.swift */; };
+		F95F056D41576040A6F5A7952DBB8907 /* RxBlocking-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E9C203B4C5FABD89E250D0E87796A2 /* RxBlocking-dummy.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		0EF6FA7544950512A3F17507B6E02401 /* PBXContainerItemProxy */ = {
+		C93D6B19D8C9A8CBF056FF3D036FB051 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 39EB15E384143AFAB35D7F00778E0C43 /* RxSwift.xcodeproj */;
 			proxyType = 1;
@@ -38,7 +38,6 @@
 
 /* Begin PBXFileReference section */
 		10E37D24561D030D582EF598F6E6E0C7 /* RxBlocking */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = RxBlocking; path = RxBlocking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		22F00C5EE3700DB760376A9D7931E875 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		39EB15E384143AFAB35D7F00778E0C43 /* RxSwift */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RxSwift; path = RxSwift.xcodeproj; sourceTree = "<group>"; };
 		439C22628C52F57223CE2D5A1DF8CAA7 /* RxBlocking.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = RxBlocking.release.xcconfig; sourceTree = "<group>"; };
 		4A983B3553D57BC0BA2FFE33E12F7123 /* RxBlocking.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = RxBlocking.modulemap; sourceTree = "<group>"; };
@@ -50,6 +49,7 @@
 		86CCBEC6B421DED7C158644AE3B19420 /* Bag.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Bag.swift; path = Platform/DataStructures/Bag.swift; sourceTree = "<group>"; };
 		9EC99A1BD3EA3C38B3BE1C8F083160D2 /* RecursiveLock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RecursiveLock.swift; path = Platform/RecursiveLock.swift; sourceTree = "<group>"; };
 		A7DA4E7A302DF17532EEE095361A7917 /* RunLoopLock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RunLoopLock.swift; path = RxBlocking/RunLoopLock.swift; sourceTree = "<group>"; };
+		B12A72BA368A201616E69159210B4112 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		B570BDA97EA6A724C602F484D8C4BEB8 /* RxBlocking-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "RxBlocking-umbrella.h"; sourceTree = "<group>"; };
 		BA5F697A2C2DA8249C889E6B97317722 /* PriorityQueue.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PriorityQueue.swift; path = Platform/DataStructures/PriorityQueue.swift; sourceTree = "<group>"; };
 		CF76E34C91C784E66ECB9CACE9DE99E9 /* Platform.Linux.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Platform.Linux.swift; path = Platform/Platform.Linux.swift; sourceTree = "<group>"; };
@@ -64,11 +64,11 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		C382FFBF63985BC976FBF3A17458B534 /* Frameworks */ = {
+		202C226A321C9B123A7DBF5A3C9D0FA5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DF02C5FFC779544B67960A04957C762E /* Foundation.framework in Frameworks */,
+				026EB720065D4A6CC73016048DA4BD2B /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,7 +111,7 @@
 		3A32B20023DC42F55B3907FFD274CD3C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7DAB3277DE10BBFFA770A7FE84227D02 /* iOS */,
+				D9152BFCA8A161C20936AC21A49CF643 /* iOS */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -124,10 +124,10 @@
 			name = Dependencies;
 			sourceTree = "<group>";
 		};
-		7DAB3277DE10BBFFA770A7FE84227D02 /* iOS */ = {
+		D9152BFCA8A161C20936AC21A49CF643 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				22F00C5EE3700DB760376A9D7931E875 /* Foundation.framework */,
+				B12A72BA368A201616E69159210B4112 /* Foundation.framework */,
 			);
 			name = iOS;
 			sourceTree = "<group>";
@@ -158,11 +158,11 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		B7469EB7E553FE6FA77318A08DC5459F /* Headers */ = {
+		5EC91C43056896240E36C4893C5885A9 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46CF6FF5C3CBFA0D663B5817581156B9 /* RxBlocking-umbrella.h in Headers */,
+				21FC748078A1F219E92C8F8D59914A5E /* RxBlocking-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -171,17 +171,17 @@
 /* Begin PBXNativeTarget section */
 		C791DBA507D577C5DCDBE4909DA9C7C7 /* RxBlocking */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CEBDDE63BE31DE0F16BE75BA67A01429 /* Build configuration list for PBXNativeTarget "RxBlocking" */;
+			buildConfigurationList = 01E5CF9AA85A84E85157AAC072476577 /* Build configuration list for PBXNativeTarget "RxBlocking" */;
 			buildPhases = (
-				B7469EB7E553FE6FA77318A08DC5459F /* Headers */,
-				A464167B8C31413DE154563B77DCF514 /* Sources */,
-				C382FFBF63985BC976FBF3A17458B534 /* Frameworks */,
-				1A9188D35C2F6660404D58FF07FC5FB4 /* Resources */,
+				5EC91C43056896240E36C4893C5885A9 /* Headers */,
+				010E5A52DAAB6BA4D758D542E13FEC9E /* Sources */,
+				202C226A321C9B123A7DBF5A3C9D0FA5 /* Frameworks */,
+				CB5EBAAEA6D5F56EB0EDADE88A318A0C /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				F9831609E2F7036DFE64CF60D6D2CD1F /* PBXTargetDependency */,
+				3B2E70AA76E69B68CBB317C4B6D0CA89 /* PBXTargetDependency */,
 			);
 			name = RxBlocking;
 			productName = RxBlocking;
@@ -194,8 +194,8 @@
 		40E692F192B73FBE7F2FC2CAA07ABFC8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1500;
-				LastUpgradeCheck = 1500;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
 			};
 			buildConfigurationList = 5DB721B394D04DE68363B715D7A5594C /* Build configuration list for PBXProject "RxBlocking" */;
 			compatibilityVersion = "Xcode 15.0";
@@ -206,6 +206,8 @@
 				en,
 			);
 			mainGroup = 29A38AE15C8D37E60330BE7489EB7C5E;
+			minimizedProjectReferenceProxies = 0;
+			preferredProjectObjectVersion = 77;
 			productRefGroup = E3765BFAAC8DFEC69C2072E7296299F3 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
@@ -221,7 +223,7 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		1A9188D35C2F6660404D58FF07FC5FB4 /* Resources */ = {
+		CB5EBAAEA6D5F56EB0EDADE88A318A0C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -231,35 +233,35 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		A464167B8C31413DE154563B77DCF514 /* Sources */ = {
+		010E5A52DAAB6BA4D758D542E13FEC9E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				99EB2D9FE9500319D4D85A7159845E7C /* AtomicInt.swift in Sources */,
-				C6FB297519AB987862A08FC33D7E7854 /* Bag.swift in Sources */,
-				A96CDA8055391D4DC8B0871814BD834A /* BlockingObservable.swift in Sources */,
-				10004B72B0A85A0F14F16A9560405226 /* BlockingObservable+Operators.swift in Sources */,
-				A420CE5EA1826887FD577807AF3789F7 /* DispatchQueue+Extensions.swift in Sources */,
-				70491E5564C0233FA215306DF5B324AC /* InfiniteSequence.swift in Sources */,
-				C49008E0B651882C7EA5753185DC88B2 /* ObservableConvertibleType+Blocking.swift in Sources */,
-				53D357FE1A8B702767F140A4D9400E52 /* Platform.Darwin.swift in Sources */,
-				1CE60AEB08CF59FEEC42132F5D64090F /* Platform.Linux.swift in Sources */,
-				91ED7149B2A44A72AA680501D0D8DB95 /* PriorityQueue.swift in Sources */,
-				1FE7BF9707EE14F8519A490E17CBA484 /* Queue.swift in Sources */,
-				FE0314CD54816CD25EB70DE3E1D27084 /* RecursiveLock.swift in Sources */,
-				D0E7776E617CCAFF5D034A3623BEC984 /* Resources.swift in Sources */,
-				8352D4B21FABF24116317B3AFF64C294 /* RunLoopLock.swift in Sources */,
-				67AAA26F22972F94D32AB35357A2B008 /* RxBlocking-dummy.m in Sources */,
+				C3D542BFB29AF9B6892484CEE212ECBA /* AtomicInt.swift in Sources */,
+				18ADE84326F4EC41D2C5114ABBF85AD8 /* Bag.swift in Sources */,
+				D85D6BD5F684D81A2D30D8DD63D443BB /* BlockingObservable.swift in Sources */,
+				EBE1950F16D5B8FC04BF0CC6B87A50E1 /* BlockingObservable+Operators.swift in Sources */,
+				06A25B90CCCE354D91D36C65551DC170 /* DispatchQueue+Extensions.swift in Sources */,
+				C7A66D87BDB6DA835DB1D3A25ED5DAEF /* InfiniteSequence.swift in Sources */,
+				5001423C86A99A2E8109A60C2C6CAA37 /* ObservableConvertibleType+Blocking.swift in Sources */,
+				9272E263BCB63F94FF1CDB38DA139115 /* Platform.Darwin.swift in Sources */,
+				D1B2C0BE82C8FB1FF73260C103FAC4D9 /* Platform.Linux.swift in Sources */,
+				B3EF3D894B217C8F740037B28C9C0B8A /* PriorityQueue.swift in Sources */,
+				C3EB3C298CDA69C58D6B4418DDC92600 /* Queue.swift in Sources */,
+				F1D8200AD1A2DE2F320BDC7574EC58E3 /* RecursiveLock.swift in Sources */,
+				21C7B6E36F68F5F6107ED5761AD5E3B9 /* Resources.swift in Sources */,
+				A1A26AB75FC796DE9773166C6189B5A5 /* RunLoopLock.swift in Sources */,
+				F95F056D41576040A6F5A7952DBB8907 /* RxBlocking-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		F9831609E2F7036DFE64CF60D6D2CD1F /* PBXTargetDependency */ = {
+		3B2E70AA76E69B68CBB317C4B6D0CA89 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = RxSwift;
-			targetProxy = 0EF6FA7544950512A3F17507B6E02401 /* PBXContainerItemProxy */;
+			targetProxy = C93D6B19D8C9A8CBF056FF3D036FB051 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -394,80 +396,7 @@
 			};
 			name = "Release-Dogfood";
 		};
-		62ABBAD5D29ED081B9876D887E827E45 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = E47174CA15ECC5C232D0347545C651B7 /* RxBlocking.debug.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 5YYLBTUB6W;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/RxBlocking/RxBlocking-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/RxBlocking/RxBlocking-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/RxBlocking/RxBlocking.modulemap";
-				PRODUCT_MODULE_NAME = RxBlocking;
-				PRODUCT_NAME = RxBlocking;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		74FED84149DA214064B863D608C62651 /* Release-Dogfood */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 439C22628C52F57223CE2D5A1DF8CAA7 /* RxBlocking.release.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 5YYLBTUB6W;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/RxBlocking/RxBlocking-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/RxBlocking/RxBlocking-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/RxBlocking/RxBlocking.modulemap";
-				PRODUCT_MODULE_NAME = RxBlocking;
-				PRODUCT_NAME = RxBlocking;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = "Release-Dogfood";
-		};
-		88769FBF6846A93A320EBC7D8A46090F /* Release */ = {
+		42B79F246AE4CD1BA7A442C86F921679 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 439C22628C52F57223CE2D5A1DF8CAA7 /* RxBlocking.release.xcconfig */;
 			buildSettings = {
@@ -503,6 +432,42 @@
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
+		};
+		571F88BC6CBF0E90F1A8847EBE8CC19D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E47174CA15ECC5C232D0347545C651B7 /* RxBlocking.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 5YYLBTUB6W;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/RxBlocking/RxBlocking-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/RxBlocking/RxBlocking-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/RxBlocking/RxBlocking.modulemap";
+				PRODUCT_MODULE_NAME = RxBlocking;
+				PRODUCT_NAME = RxBlocking;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
 		};
 		CAD4769F6CC76508724114800D632CE5 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -567,25 +532,62 @@
 			};
 			name = Release;
 		};
+		CCEF35DE40F73A6E1E73B617FD1A0B3C /* Release-Dogfood */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 439C22628C52F57223CE2D5A1DF8CAA7 /* RxBlocking.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 5YYLBTUB6W;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/RxBlocking/RxBlocking-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/RxBlocking/RxBlocking-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/RxBlocking/RxBlocking.modulemap";
+				PRODUCT_MODULE_NAME = RxBlocking;
+				PRODUCT_NAME = RxBlocking;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = "Release-Dogfood";
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		01E5CF9AA85A84E85157AAC072476577 /* Build configuration list for PBXNativeTarget "RxBlocking" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				571F88BC6CBF0E90F1A8847EBE8CC19D /* Debug */,
+				42B79F246AE4CD1BA7A442C86F921679 /* Release */,
+				CCEF35DE40F73A6E1E73B617FD1A0B3C /* Release-Dogfood */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		5DB721B394D04DE68363B715D7A5594C /* Build configuration list for PBXProject "RxBlocking" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2208B79E377B5375FA0FF5F2EEDE975D /* Debug */,
 				CAD4769F6CC76508724114800D632CE5 /* Release */,
 				2D9E8C55BE6A2DD676C37AB93463CE1A /* Release-Dogfood */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		CEBDDE63BE31DE0F16BE75BA67A01429 /* Build configuration list for PBXNativeTarget "RxBlocking" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				62ABBAD5D29ED081B9876D887E827E45 /* Debug */,
-				88769FBF6846A93A320EBC7D8A46090F /* Release */,
-				74FED84149DA214064B863D608C62651 /* Release-Dogfood */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

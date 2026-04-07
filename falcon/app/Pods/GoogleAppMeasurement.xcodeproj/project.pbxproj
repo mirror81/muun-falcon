@@ -142,8 +142,8 @@
 		9734F3A095509732DDB39E501DB2D7DA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1500;
-				LastUpgradeCheck = 1500;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
 			};
 			buildConfigurationList = 126CAB7AFD888E3BE809CFAB0D4121F4 /* Build configuration list for PBXProject "GoogleAppMeasurement" */;
 			compatibilityVersion = "Xcode 15.0";
@@ -154,6 +154,8 @@
 				en,
 			);
 			mainGroup = A8D04577D0DC866A4AB06E790CAAD9E1;
+			minimizedProjectReferenceProxies = 0;
+			preferredProjectObjectVersion = 77;
 			productRefGroup = 3B647B3A008BCD59F2938FB128EC1650 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
