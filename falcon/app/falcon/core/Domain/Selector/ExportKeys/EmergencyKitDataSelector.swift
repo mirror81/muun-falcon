@@ -16,11 +16,16 @@ public struct EmergencyKitData {
 
 public class EmergencyKitDataSelector: BaseOptionalSelector<EmergencyKitData> {
 
-    init(keysRepository: KeysRepository) {
+    init(keysRepository: KeysRepository, timeTracker: TimeTracker) {
         super.init({
             do {
-                let muunKey = try keysRepository.getMuunPrivateKey()
+                let dataFetchingTrace = timeTracker.start(.ekNewDataFetching)
 
+                let tMuunKey = dataFetchingTrace.child(EmergencyKitChildTrace.muunKey.rawValue)
+                let muunKey = try keysRepository.getMuunPrivateKey()
+                tMuunKey.finish()
+
+                let tUserKey = dataFetchingTrace.child(EmergencyKitChildTrace.userKey.rawValue)
                 let privateKey = try keysRepository.getBasePrivateKey()
                 let challengeKey = try keysRepository.getChallengeKey(with: .RECOVERY_CODE)
 
@@ -28,17 +33,28 @@ public class EmergencyKitDataSelector: BaseOptionalSelector<EmergencyKitData> {
                                                                                challengeKey: challengeKey,
                                                                                privateKey: privateKey,
                                                                                muunPrivateKey: muunKey)
+                tUserKey.finish()
 
+                let tRcChecksum = dataFetchingTrace.child(EmergencyKitChildTrace.rcChecksum.rawValue)
                 let rcChecksum = try challengeKey.getChecksum()
+                tRcChecksum.finish()
+
+                let tUserFp = dataFetchingTrace.child(EmergencyKitChildTrace.userFingerprint.rawValue)
+                let userFingerprint = try keysRepository.getUserKeyFingerprint()
+                tUserFp.finish()
+
+                let tMuunFp = dataFetchingTrace.child(EmergencyKitChildTrace.muunFingerprint.rawValue)
+                let muunFingerprint = try keysRepository.getMuunKeyFingerprint()
+                tMuunFp.finish()
 
                 let data = EmergencyKitData(
                     userKey: encryptedKey,
-                    userFingerprint: try keysRepository.getUserKeyFingerprint(),
+                    userFingerprint: userFingerprint,
                     muunKey: muunKey,
-                    muunFingerprint: try keysRepository.getMuunKeyFingerprint(),
+                    muunFingerprint: muunFingerprint,
                     rcChecksum: rcChecksum
                 )
-
+                dataFetchingTrace.finish()
                 return Observable.just(data)
             } catch {
                 return Observable.error(error)

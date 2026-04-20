@@ -43,17 +43,21 @@ public class SubmarineSwapAction: AsyncAction<SubmarineSwapCreated> {
                     let userKey = try self.keysRepository.getBasePublicKey()
                     let muunKey = try self.keysRepository.getCosigningKey()
 
-                    _ = try doWithError({ err in
-                        LibwalletValidateSubmarineSwap(
-                            invoice,
-                            userKey.key,
-                            muunKey.key,
-                            swapCreated.swap,
-                            Int64(swapExpirationInBlocks),
-                            Environment.current.network,
-                            err
-                        )
-                    })
+                    do {
+                        _ = try doWithError({ err in
+                            LibwalletValidateSubmarineSwap(
+                                invoice,
+                                userKey.key,
+                                muunKey.key,
+                                swapCreated.swap,
+                                Int64(swapExpirationInBlocks),
+                                Environment.current.network,
+                                err
+                            )
+                        })
+                    } catch {
+                        throw MuunError(DomainError.invalidSwap)
+                    }
 
                     self.verifyLockTime(swapCreated.swap, expirationInBlocks: swapExpirationInBlocks)
 

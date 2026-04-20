@@ -8,11 +8,14 @@
 
 import RxSwift
 
-
 protocol BasePresenterDelegate: AnyObject {
     func showMessage(_ message: String)
     func pushTo(_ vc: MUViewController)
-    func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)?)
+    func present(
+        _ viewControllerToPresent: UIViewController,
+        animated flag: Bool,
+        completion: (() -> Void)?
+    )
 }
 
 class BasePresenter<Delegate> where Delegate: BasePresenterDelegate {
@@ -20,6 +23,7 @@ class BasePresenter<Delegate> where Delegate: BasePresenterDelegate {
     weak var delegate: Delegate!
     var compositeDisposable: CompositeDisposable?
     private var sessionActions: SessionActions = resolve()
+    private var hasUnverifiedRecoveryCodeAction: HasUnverifiedRecoveryCodeAction = resolve()
 
     lazy private var className = String(describing: type(of: self))
         .components(separatedBy: ".")
@@ -37,7 +41,6 @@ class BasePresenter<Delegate> where Delegate: BasePresenterDelegate {
 
         Logger.log(.debug, "\(className) Set Up")
     }
-
 
     /// Adds a `subscribeOn` parameter that defaults to a `background` queue,
     /// helping avoid refresh delays caused by lower-priority queues when needed.
@@ -107,9 +110,16 @@ class BasePresenter<Delegate> where Delegate: BasePresenterDelegate {
     }
 
     private func handleSessionExpired(_ e: Error) {
-        // If the user is unrecoverable we can't wipe her data because that will cause the user to lose her money.
-        // So instead we just display an error toast and the app will be bricked until we fix it in the backend.
-        if sessionActions.isUnrecoverableUser() {
+        // If the user is unrecoverable we can't wipe her data because
+        // that will cause the user to lose her money.
+        // So instead we just display an error toast and the app will
+        // be bricked until we fix it in the backend.
+        //
+        // Exception: if the user has an unverified RC, they can recover
+        // via the session expired flow. Please note that if the user
+        // received a session_expired from server, we have confirmation that
+        // user has recovered their wallet in another device.
+        if sessionActions.isUnrecoverableUser() && !hasUnverifiedRecoveryCodeAction.run() {
             Logger.log(error: e)
             delegate.showMessage(
                 L10n.BasePresenter.s6
@@ -148,9 +158,10 @@ class BasePresenter<Delegate> where Delegate: BasePresenterDelegate {
             case .sessionExpired:
                 handleSessionExpired(e)
 
-            case .nonUserFacing, .emailNotRegistered, .invoiceUnreachableNode, .recoveryCodeNotSetUp,
-                    .invalidEmail, .emailAlreadyUsed, .invalidChallengeSignature, .exchangeRateWindowTooOld,
-                    .invalidInvoice, .invoiceAlreadyUsed, .invoiceExpiresTooSoon, .noPaymentRoute, .cyclicalSwap,
+            case .nonUserFacing, .emailNotRegistered, .invoiceUnreachableNode,
+                    .recoveryCodeNotSetUp, .invalidEmail, .emailAlreadyUsed,
+                    .invalidChallengeSignature, .exchangeRateWindowTooOld, .invalidInvoice,
+                    .invoiceAlreadyUsed, .invoiceExpiresTooSoon, .noPaymentRoute, .cyclicalSwap,
                     .incomingSwapAlreadyFulfilled, .amountLessInvoicesNotSupported, .swapFailed:
                 let error = devError.developerMessage ?? devError.message
                 Logger.log(LogLevel.debug, error)

@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"github.com/muun/libwallet/domain/action/emergency_kit"
 	"log/slog"
 
 	"github.com/btcsuite/btcd/btcec/v2"
@@ -50,6 +51,7 @@ type WalletServer struct {
 	pairSecurityCardV2          *nfc.PairSecurityCardActionV2
 	signMessageSecurityCardV2   *nfc.SignMessageSecurityCardActionV2
 	getSecurityCardsMarketplace *security_cards_marketplace.GetSecurityCardsMarketplaceAction
+	generateEmergencyKitPDF     *emergency_kit.GenerateEmergencyKitPDFAction
 }
 
 func NewWalletServer(
@@ -71,6 +73,7 @@ func NewWalletServer(
 	pairSecurityCardV2 *nfc.PairSecurityCardActionV2,
 	signMessageSecurityCardV2 *nfc.SignMessageSecurityCardActionV2,
 	getSecurityCardsMarketplace *security_cards_marketplace.GetSecurityCardsMarketplaceAction,
+	generateEmergencyKitPDF *emergency_kit.GenerateEmergencyKitPDFAction,
 ) *WalletServer {
 
 	return &WalletServer{
@@ -92,6 +95,7 @@ func NewWalletServer(
 		pairSecurityCardV2:          pairSecurityCardV2,
 		signMessageSecurityCardV2:   signMessageSecurityCardV2,
 		getSecurityCardsMarketplace: getSecurityCardsMarketplace,
+		generateEmergencyKitPDF:     generateEmergencyKitPDF,
 	}
 }
 
@@ -545,6 +549,7 @@ func (ws WalletServer) GetSecurityCardsMarketplace(
 
 			securityCards = append(securityCards, api.SecurityCard_builder{
 				Image: securityCard.Image,
+				Stock: securityCard.Stock,
 			}.Build())
 		}
 
@@ -552,6 +557,10 @@ func (ws WalletServer) GetSecurityCardsMarketplace(
 			Name:          provider.Name,
 			SecurityCards: securityCards,
 			Currency:      provider.CurrencyCode,
+			ColorHex:      provider.ColorHex,
+			Material:      provider.Material,
+			Price:         provider.Price,
+			ShippingCost:  provider.ShippingCost,
 		}.Build())
 	}
 
@@ -634,4 +643,35 @@ func toProtoValueMap(items map[string]any) (*api.Struct, error) {
 		protoItems[key] = protoItem
 	}
 	return api.Struct_builder{Fields: protoItems}.Build(), nil
+}
+
+// GenerateEmergencyKitPDF outputPath must be the full path where the PDF should be saved (including filename).
+// Example: "/path/to/documents/expected_kit_name.pdf"
+// The directory will be created if it doesn't exist.
+func (ws WalletServer) GenerateEmergencyKitPDF(
+	ctx context.Context,
+	request *api.GenerateEmergencyKitPDFRequest,
+) (*api.GenerateEmergencyKitPDFResponse, error) {
+	ekInput := request.GetEkInput()
+	ekParams := &libwallet.EKInput{
+		FirstEncryptedKey:  ekInput.GetFirstEncryptedKey(),
+		FirstFingerprint:   ekInput.GetFirstFingerprint(),
+		SecondEncryptedKey: ekInput.GetSecondEncryptedKey(),
+		SecondFingerprint:  ekInput.GetSecondFingerprint(),
+		RcChecksum:         ekInput.GetRcChecksum(),
+	}
+
+	result, err := ws.generateEmergencyKitPDF.Run(
+		ekParams,
+		request.GetOutputPath(),
+		request.GetLanguage(),
+	)
+	if err != nil {
+		return nil, NewGrpcError(fmt.Errorf("failed to generate emergency kit PDF: %w", err))
+	}
+
+	return api.GenerateEmergencyKitPDFResponse_builder{
+		VerificationCode: result.VerificationCode,
+		Version:          int32(result.Version),
+	}.Build(), nil
 }

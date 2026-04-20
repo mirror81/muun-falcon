@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "sc_constellations_scorpius.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

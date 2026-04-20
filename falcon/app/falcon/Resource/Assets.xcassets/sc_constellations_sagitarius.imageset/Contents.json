@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "sc_constellations_sagitarius.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

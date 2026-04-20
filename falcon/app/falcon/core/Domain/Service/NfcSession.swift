@@ -21,7 +21,10 @@ enum CardNfcError: Error {
 }
 
 protocol NfcSession {
-    func connect(alertMessage: String) -> Completable
+    /// Unlike Apollo where a new NfcSession is created per use case, this is a singleton
+    /// registered in DataDependencyContainer. Therefore, the textProvider must be passed
+    /// in connect() since different use cases could require different texts.
+    func connect(textProvider: NfcTextProvider) -> Completable
     func transmit(message: Data) -> Single<CardNfcResponse>
     func close(withErrorMessage msg: String?)
 }

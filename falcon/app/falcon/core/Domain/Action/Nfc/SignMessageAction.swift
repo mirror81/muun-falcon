@@ -17,7 +17,7 @@ final class SignMessageAction: Resolver {
     func run(message: String) -> Single<[UInt8]> {
         return Single.create { single in
             let connectionDisposable = self.nfcSession
-                .connect(alertMessage: "Approve transaction with you card")
+                .connect(textProvider: SecurityCardTextProvider(flow: .challenge))
                 .subscribe(onCompleted: {
                     self.walletService.signMessageWithSecurityCard(messageHex: message)
                         .subscribe(onSuccess: { signedMessageBytes in

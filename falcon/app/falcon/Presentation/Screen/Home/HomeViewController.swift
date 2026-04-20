@@ -210,7 +210,7 @@ extension HomeViewController: HomeViewDelegate {
 
         case .activateTaproot:
             pushTo(SlidesViewController(
-                configuration: .taprootActivation(successFeedback: FeedbackInfo.taprootActive)
+                configuration: EmergencyKitSlidesConfiguration.taprootActivation(successFeedback: FeedbackInfo.taprootActive)
             ))
 
         case .highFeesHomeBanner, .iOSUnder15:
@@ -219,7 +219,7 @@ extension HomeViewController: HomeViewDelegate {
         case .preactiveTaproot(let blocksLeft):
             let feedbackInfo = FeedbackInfo.taprootPreactived(blocksLeft: blocksLeft)
             pushTo(SlidesViewController(
-                configuration: .taprootActivation(successFeedback: feedbackInfo)
+                configuration: EmergencyKitSlidesConfiguration.taprootActivation(successFeedback: feedbackInfo)
             ))
 
         case .blockClock(let blocksLeft):
@@ -243,7 +243,10 @@ extension HomeViewController: HomeViewDelegate {
     }
 
     func securityCardsMarketplaceTap() {
-        navigationController?.pushViewController(MarketplaceViewController(), animated: true)
+        navigationController?.pushViewController(
+            SlidesViewController(configuration: SecurityCardsSlidesConfiguration.onboarding),
+            animated: true
+        )
     }
 
 }

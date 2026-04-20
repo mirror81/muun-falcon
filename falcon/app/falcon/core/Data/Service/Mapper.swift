@@ -1383,5 +1383,25 @@ extension Array: APIConvertible where Element: APIConvertible {
     }
 }
 
+extension Rpc_GetSecurityCardsMarketplaceResponse: ModelConvertible {
+
+    func toModel() -> [SecurityCardProvider] {
+        return providers.map { provider in
+            SecurityCardProvider(
+                name: provider.name,
+                colorHex: provider.colorHex,
+                material: provider.material,
+                price: provider.price,
+                shippingCost: provider.shippingCost,
+                currencyCode: provider.currency,
+                cards: provider.securityCards.map { card in
+                    SecurityCard(imageName: card.image, stock: card.stock)
+                }
+            )
+        }
+    }
+
+}
+
 // swiftlint:enable cyclomatic_complexity
 // swiftlint:enable file_length

@@ -74,6 +74,7 @@ public extension DependencyContainer {
             container.register(.singleton, factory: SetupChallengeAction.init)
             container.register(.singleton, factory: StartRecoverCodeSetupAction.init)
             container.register(.singleton, factory: FinishRecoverCodeSetupAction.init)
+            container.register(.singleton, factory: HasUnverifiedRecoveryCodeAction.init)
             container.register(.singleton, factory: BuildChallengeSetupAction.init)
             container.register(.singleton, factory: SupportAction.init)
             container.register(.singleton, factory: ChangeCurrencyAction.init)
@@ -104,6 +105,7 @@ public extension DependencyContainer {
             container.register(.singleton, factory: UpdateUserPreferencesAction.init)
             container.register(.singleton, factory: VerifyFulfillableAction.init)
             container.register(.singleton, factory: LNURLWithdrawAction.init)
+            container.register(.singleton, factory: GetSecurityCardsMarketplaceAction.init)
 
             container.register(.singleton, factory: UserSelector.init)
             container.register(.singleton, factory: EmergencyKitDataSelector.init)
@@ -136,6 +138,8 @@ public extension DependencyContainer {
                     appInfoProvider: try container.resolve())
             }
             container.register(.singleton, factory: ApiMigrationsManager.init)
+
+            container.register(factory: TimeTracker.init)
 
             container.register(.singleton) {
                 SyncAction(houstonService: $0,

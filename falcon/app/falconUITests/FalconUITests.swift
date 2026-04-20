@@ -16,7 +16,7 @@ class FalconUITests: XCTestCase {
     var securityCenterTests: SecurityCenterTests!
 
     let genericPassword = "MuunRulesTheWorld"
-    let genericPin = "1111"
+    let genericPin = "111111"
 
     var isNotificationsPermissionAvailable: Bool?
 

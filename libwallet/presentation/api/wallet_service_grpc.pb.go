@@ -40,6 +40,7 @@ const (
 	WalletService_GetBatch_FullMethodName                      = "/rpc.WalletService/GetBatch"
 	WalletService_GetByPrefix_FullMethodName                   = "/rpc.WalletService/GetByPrefix"
 	WalletService_GetSecurityCardsMarketplace_FullMethodName   = "/rpc.WalletService/GetSecurityCardsMarketplace"
+	WalletService_GenerateEmergencyKitPDF_FullMethodName       = "/rpc.WalletService/GenerateEmergencyKitPDF"
 )
 
 // WalletServiceClient is the client API for WalletService service.
@@ -70,6 +71,8 @@ type WalletServiceClient interface {
 	GetByPrefix(ctx context.Context, in *GetByPrefixRequest, opts ...grpc.CallOption) (*GetBatchResponse, error)
 	// Marketplace
 	GetSecurityCardsMarketplace(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetSecurityCardsMarketplaceResponse, error)
+	// Emergency Kit PDF Generation
+	GenerateEmergencyKitPDF(ctx context.Context, in *GenerateEmergencyKitPDFRequest, opts ...grpc.CallOption) (*GenerateEmergencyKitPDFResponse, error)
 }
 
 type walletServiceClient struct {
@@ -289,6 +292,16 @@ func (c *walletServiceClient) GetSecurityCardsMarketplace(ctx context.Context, i
 	return out, nil
 }
 
+func (c *walletServiceClient) GenerateEmergencyKitPDF(ctx context.Context, in *GenerateEmergencyKitPDFRequest, opts ...grpc.CallOption) (*GenerateEmergencyKitPDFResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GenerateEmergencyKitPDFResponse)
+	err := c.cc.Invoke(ctx, WalletService_GenerateEmergencyKitPDF_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // WalletServiceServer is the server API for WalletService service.
 // All implementations must embed UnimplementedWalletServiceServer
 // for forward compatibility.
@@ -317,6 +330,8 @@ type WalletServiceServer interface {
 	GetByPrefix(context.Context, *GetByPrefixRequest) (*GetBatchResponse, error)
 	// Marketplace
 	GetSecurityCardsMarketplace(context.Context, *emptypb.Empty) (*GetSecurityCardsMarketplaceResponse, error)
+	// Emergency Kit PDF Generation
+	GenerateEmergencyKitPDF(context.Context, *GenerateEmergencyKitPDFRequest) (*GenerateEmergencyKitPDFResponse, error)
 	mustEmbedUnimplementedWalletServiceServer()
 }
 
@@ -386,6 +401,9 @@ func (UnimplementedWalletServiceServer) GetByPrefix(context.Context, *GetByPrefi
 }
 func (UnimplementedWalletServiceServer) GetSecurityCardsMarketplace(context.Context, *emptypb.Empty) (*GetSecurityCardsMarketplaceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSecurityCardsMarketplace not implemented")
+}
+func (UnimplementedWalletServiceServer) GenerateEmergencyKitPDF(context.Context, *GenerateEmergencyKitPDFRequest) (*GenerateEmergencyKitPDFResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GenerateEmergencyKitPDF not implemented")
 }
 func (UnimplementedWalletServiceServer) mustEmbedUnimplementedWalletServiceServer() {}
 func (UnimplementedWalletServiceServer) testEmbeddedByValue()                       {}
@@ -761,6 +779,24 @@ func _WalletService_GetSecurityCardsMarketplace_Handler(srv interface{}, ctx con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _WalletService_GenerateEmergencyKitPDF_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GenerateEmergencyKitPDFRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WalletServiceServer).GenerateEmergencyKitPDF(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WalletService_GenerateEmergencyKitPDF_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WalletServiceServer).GenerateEmergencyKitPDF(ctx, req.(*GenerateEmergencyKitPDFRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // WalletService_ServiceDesc is the grpc.ServiceDesc for WalletService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -843,6 +879,10 @@ var WalletService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetSecurityCardsMarketplace",
 			Handler:    _WalletService_GetSecurityCardsMarketplace_Handler,
+		},
+		{
+			MethodName: "GenerateEmergencyKitPDF",
+			Handler:    _WalletService_GenerateEmergencyKitPDF_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

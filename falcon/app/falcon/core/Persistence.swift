@@ -47,7 +47,7 @@ public enum Persistence: String, CaseIterable {
 
     case lastOwnAddressCopied
 
-    case isBalanceHidden // Bool
+
     case displayBTCasSAT // Bool
 
     case hasRecoveryCode // Bool
@@ -87,4 +87,9 @@ public enum Persistence: String, CaseIterable {
 
     case lastBackgroundBeginTime
     case backgroundTimes
+
+    // LibWallet Storage Keys
+
+    case pinLength
+    case isBalanceHidden
 }

@@ -9,13 +9,20 @@
 import CoreNFC
 import RxSwift
 
+protocol NfcTextProvider {
+    var startMessage: String { get }
+    var multipleTagsFound: String { get }
+    var notDetected: String { get }
+}
+
 final class NfcSessionImpl: NSObject, NfcSession {
 
     private var session: NFCTagReaderSession?
     private var connectSubject: PublishSubject<Void>?
+    private var textProvider: NfcTextProvider?
 
     /// Initiates an NFC tag reading session.
-    func connect(alertMessage: String) -> Completable {
+    func connect(textProvider: NfcTextProvider) -> Completable {
         // Ensure no previous session is left open
         close()
 
@@ -25,7 +32,9 @@ final class NfcSessionImpl: NSObject, NfcSession {
         session = NFCTagReaderSession(pollingOption: .iso14443,
                                       delegate: self,
                                       queue: .global(qos: .userInitiated))
-        session?.alertMessage = alertMessage
+
+        self.textProvider = textProvider
+        session?.alertMessage = textProvider.startMessage
         session?.begin()
 
         return subject.ignoreElements()
@@ -107,13 +116,13 @@ extension NfcSessionImpl: NFCTagReaderSessionDelegate {
 
     func tagReaderSession(_ session: NFCTagReaderSession, didDetect tags: [NFCTag]) {
         if tags.count > 1 {
-            session.alertMessage = "More than 1 tags found. Use only Muuncard"
+            session.alertMessage = textProvider?.multipleTagsFound ?? ""
             session.restartPolling()
             return
         }
 
         guard let firstTag = tags.first, case .iso7816 = firstTag else {
-            session.invalidate(errorMessage: "No NFC tag detected.")
+            session.invalidate(errorMessage: textProvider?.notDetected ?? "")
             Logger.log(.err, "No NFC ISO7816 tag detected.")
             connectSubject?.onError(MuunError(CardNfcError.unsupportedTagConnected))
             return

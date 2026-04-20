@@ -16,7 +16,7 @@ final class PairNfcCardAction: Resolver {
 
     func run(seed: String, slot: UInt8) -> Completable {
         return Completable.create { completable in
-            self.nfcSession.connect(alertMessage: "Pair your Muun security card")
+            self.nfcSession.connect(textProvider: SecurityCardTextProvider(flow: .pairing))
                 .subscribe(onCompleted: {
                     self.walletService.pairSecurityCard()
                         .subscribe(onCompleted: {

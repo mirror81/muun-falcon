@@ -203,8 +203,15 @@ platform :ios do
       UI.user_error!("Build number version mismatch! Current plist version '#{plist_version_part}' does not match dogfood version '#{tf_version_part}'.") if plist_version_part < tf_version_part
 
       new_dogfood_index = tf_dogfood_index + 1
+      # Use the higher version part so the build number advances when production bumps
+      version_part = [plist_version_part, tf_version_part].max
 
-      new_build_number = "#{tf_version_part}#{format('%03d', new_dogfood_index)}#{DOGFOOD_ARCH_SUFFIX}"
+      # Floor to recover from the dogfood_index reset caused by PR #15700.
+      # Build 16020011 was uploaded with dogfood_index=1, but previous builds had
+      # dogfood_index up to 164. Safe to remove once dogfood_index naturally exceeds 164.
+      new_dogfood_index = [new_dogfood_index, 165].max
+
+      new_build_number = "#{version_part}#{format('%03d', new_dogfood_index)}#{DOGFOOD_ARCH_SUFFIX}"
 
       increment_build_number(
         build_number: new_build_number
@@ -246,6 +253,8 @@ platform :ios do
 | `13160002`                       | `13160002`         | `dogfood`    | `increment_build_number(build_number: "13160011")`                                                                |
 | `13160102`                       | `13160002`         | `dogfood`    | `increment_build_number(build_number: "13160111")`                                                                |
 | `13161002`                       | `13160002`         | `dogfood`    | `increment_build_number(build_number: "13161011")`                                                                |
+| `13161641`                       | `16000002`         | `dogfood`    | `increment_build_number(build_number: "16001651")` (plist version advanced, index keeps incrementing)             |
+| `16020011`                       | `16020002`         | `dogfood`    | `increment_build_number(build_number: "16021651")` (floor applied: max(2, 165) = 165)                            |
 | `12349991`                       | `12340002`         | `dogfood`    | `UI.user_error!("Max dogfood build number index reached")`                                                       |
 | `1234567`                        | `12340002`         | `dogfood`    | `UI.user_error!("testflight build number: '1234567' must be 8 digits.")`                                         |
 | `123456789`                      | `12340002`         | `dogfood`    | `UI.user_error!("testflight build number: '123456789' must be 8 digits.")`                                       |

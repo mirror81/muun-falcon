@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "sc_planets_mars.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

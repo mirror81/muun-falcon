@@ -17,8 +17,10 @@ protocol PinViewDelegate: AnyObject {
 @IBDesignable
 class PinView: MUView {
 
-    @IBOutlet private var pinViews: [UIView]!
+    @IBOutlet private weak var stackView: UIStackView!
     @IBOutlet private weak var pinViewContainer: UIView!
+
+    private var pinViews: [UIView] = []
 
     var filledPins = 0
     weak var delegate: PinViewDelegate?
@@ -28,16 +30,27 @@ class PinView: MUView {
     static let successColor = Asset.Colors.muunGreen.color
     static let failedColor = Asset.Colors.muunRed.color
 
-    override func setUp() {
-        setUpPinViews()
-    }
+    private let pinBulletViewWidth = 12.0
 
-    fileprivate func setUpPinViews() {
-        for view in pinViews {
+    public func setUp(length: Int) {
+        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        pinViews.removeAll()
+
+        for _ in 0..<length {
+            let view = UIView(
+                frame: CGRect(x: 0, y: 0, width: pinBulletViewWidth, height: pinBulletViewWidth)
+            )
+            view.translatesAutoresizingMaskIntoConstraints = false
+            view.heightAnchor.constraint(equalToConstant: pinBulletViewWidth).isActive = true
+            view.widthAnchor.constraint(equalToConstant: pinBulletViewWidth).isActive = true
+
             view.circleView()
             view.backgroundColor = PinView.unfilledColor
             view.layer.borderWidth = 1
             view.layer.borderColor = PinView.filledColor.cgColor
+
+            stackView.addArrangedSubview(view)
+            pinViews.append(view)
         }
     }
 

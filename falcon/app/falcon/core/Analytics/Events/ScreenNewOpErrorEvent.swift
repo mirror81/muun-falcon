@@ -19,6 +19,7 @@ struct ScreenNewOpErrorEvent: AnalyticsEvent {
         case amountBelowDust = "amount_below_dust"
         case exchangeRateWindowTooOld = "exchange_rate_window_too_old"
         case swapFailed = "swap_failed"
+        case invalidSwap = "invalid_swap"
         case other
         // NOTE: The following cases are currently not defined in the analytics spreadsheet
         case invoiceUnreachableNode = "invoice_unreachable_node"
