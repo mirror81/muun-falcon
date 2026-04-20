@@ -28,7 +28,9 @@ class KeyboardView: MUView {
     @IBOutlet private weak var biometricsImageView: UIImageView!
 
     weak var delegate: KeyboardViewDelegate?
-    private let notification = UINotificationFeedbackGenerator() // This is used to notify success or error to the user
+
+    // Provides haptic feedback when keyboard button is pressed
+    private let impactFeedback = UIImpactFeedbackGenerator(style: .light)
 
     public var isEraseEnabled: Bool {
         get { return eraseImageView.isUserInteractionEnabled }
@@ -42,6 +44,9 @@ class KeyboardView: MUView {
 
     override func setUp() {
         setUpLabels()
+
+        // Warm up haptic engine to ensure feedback works on first tap
+        impactFeedback.prepare()
 
         addNumberViewActions()
         addDeleteAction()
@@ -66,39 +71,60 @@ class KeyboardView: MUView {
         for view in numberViews {
             view.isAccessibilityElement = true
             view.isUserInteractionEnabled = true
-            view.addGestureRecognizer(
-                UITapGestureRecognizer(target: self, action: .keyboardViewTouched)
-            )
+            view.addGestureRecognizer(createLongPressGesture(action: .keyboardViewTouched))
         }
     }
 
     fileprivate func addDeleteAction() {
         eraseView.isUserInteractionEnabled = true
-        eraseView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: .eraseViewTouched))
+        eraseView.addGestureRecognizer(createLongPressGesture(action: .eraseViewTouched))
     }
 
     fileprivate func addBiometricsAction() {
         biometricsView.isUserInteractionEnabled = true
-        biometricsView.addGestureRecognizer(
-            UITapGestureRecognizer(target: self, action: .biometricsViewTouched)
-        )
+        biometricsView.addGestureRecognizer(createLongPressGesture(action: .biometricsViewTouched))
     }
 
-    @objc fileprivate func viewTouched(withSender sender: AnyObject) {
-        if let number = sender.view?.accessibilityLabel {
-            notification.notificationOccurred(.warning)
-            delegate?.onNumberPressed(number: number)
+    private func createLongPressGesture(action: Selector) -> UILongPressGestureRecognizer {
+        let longPress = UILongPressGestureRecognizer(target: self, action: action)
+        longPress.minimumPressDuration = 0
+        return longPress
+    }
+
+    @objc fileprivate func viewTouched(withSender sender: UILongPressGestureRecognizer) {
+        guard let view = sender.view else { return }
+
+        handleButtonTouched(sender) {
+            if let number = view.accessibilityLabel {
+                delegate?.onNumberPressed(number: number)
+            }
         }
     }
 
-    @objc fileprivate func eraseViewTouched() {
-        notification.notificationOccurred(.warning)
-        delegate?.onErasePressed()
+    @objc fileprivate func eraseViewTouched(_ sender: UILongPressGestureRecognizer) {
+        handleButtonTouched(sender) {
+            delegate?.onErasePressed()
+        }
     }
 
-    @objc fileprivate func biometricsViewTouched() {
-        notification.notificationOccurred(.warning)
-        delegate?.onBiometricsPressed()
+    @objc fileprivate func biometricsViewTouched(_ sender: UILongPressGestureRecognizer) {
+        handleButtonTouched(sender) {
+            delegate?.onBiometricsPressed()
+        }
+    }
+
+    private func handleButtonTouched(_ sender: UILongPressGestureRecognizer, completion: () -> Void) {
+        switch sender.state {
+        case .began:
+            // Trigger haptic immediately on touch down
+            impactFeedback.impactOccurred()
+
+        case .ended:
+            completion()
+
+        default:
+            break
+        }
     }
 
     fileprivate func setEraseEnabled(_ isEnabled: Bool) {

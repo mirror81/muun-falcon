@@ -186,7 +186,7 @@ class IncomingSwapUITests: FalconUITests {
         sleep(1)
 
         addSection("login in and spend all funds using preimage and htlcKeypath from IncomingSwapJson")
-        _ = signInUITest?.signIn(email: email, code: rc, pin: "1111")
+        _ = signInUITest?.signIn(email: email, code: rc, pin: "111111")
 
         homePage.assert(balance: expectedBalance)
 

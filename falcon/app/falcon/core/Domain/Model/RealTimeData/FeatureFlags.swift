@@ -17,6 +17,7 @@ public enum FeatureFlags: String, RawRepresentable, CaseIterable {
     case nfcCard = "NFC_CARD"
     case nfcCardV2 = "NFC_CARD_V2"
     case securityCardsMarketplace = "SECURITY_CARDS_MARKETPLACE"
+    case ekGoRendering = "EK_GO_RENDERING"
 }
 
 enum FeatureFlagOverrideInfo {
@@ -58,6 +59,11 @@ extension FeatureFlags {
             return .overridable(
                 humanReadableDescription: "Enables NFC Security Card V2 support",
                 libwalletKeySuffix: "nfcCardV2"
+            )
+        case .ekGoRendering:
+            return .overridable(
+                humanReadableDescription: "Enables Go-based emergency kit rendering",
+                libwalletKeySuffix: "ekGoRendering"
             )
         }
     }

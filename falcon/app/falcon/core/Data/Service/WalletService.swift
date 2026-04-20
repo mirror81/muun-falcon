@@ -77,6 +77,35 @@ public class WalletService {
         return performAsyncRequest(call).asCompletable()
     }
 
+    func generateEmergencyKitPDF(data: EmergencyKitData, outputPath: String, language: String) throws -> Rpc_GenerateEmergencyKitPDFResponse {
+        guard let client = client else {
+            throw MuunError(ServiceError.defaultError)
+        }
+
+        let request = Rpc_GenerateEmergencyKitPDFRequest.with { req in
+            req.ekInput = Rpc_EKInputRequest.with { ekInput in
+                ekInput.firstEncryptedKey = data.userKey
+                ekInput.firstFingerprint = data.userFingerprint
+                ekInput.secondEncryptedKey = data.muunKey
+                ekInput.secondFingerprint = data.muunFingerprint
+                ekInput.rcChecksum = data.rcChecksum
+            }
+            req.outputPath = outputPath
+            req.language = language
+        }
+
+        let call = client.generateEmergencyKitPDF(request)
+        return try performSyncRequest(call)
+    }
+
+    func getSecurityCardsMarketplace() -> Single<[SecurityCardProvider]> {
+        guard let client = client else {
+            return Single.error(MuunError(ServiceError.defaultError))
+        }
+        let call = client.getSecurityCardsMarketplace(empty)
+        return performAsyncRequest(call).map { $0.toModel() }
+    }
+
     private func save(key: String, value: Rpc_Value) {
         let request = Rpc_SaveRequest.with {
             $0.key = key
@@ -134,6 +163,32 @@ public class WalletService {
 
     func getBool(key: String, defaultValue: Bool) -> Bool {
         return getBool(key: key) ?? defaultValue
+    }
+
+    func saveInt32(key: String, value: Int32?) {
+        var rpcValue = Rpc_Value()
+        if let intValue = value {
+            rpcValue.kind = .intValue(intValue)
+        } else {
+            rpcValue.kind = .nullValue(Rpc_NullValue.nullValue)
+        }
+        save(key: key, value: rpcValue)
+    }
+
+    func getInt32(key: String) -> Int32? {
+        let value = get(key: key)
+        switch value.kind {
+        case .intValue(let int):
+            return int
+        case .nullValue:
+            return nil
+        default:
+            Logger.fatal("Value for key \(key) is not of type Int32")
+        }
+    }
+
+    func getInt32(key: String, defaultValue: Int32) -> Int32 {
+        getInt32(key: key) ?? defaultValue
     }
 
     private func getByPrefix(prefix: String) -> Rpc_Struct {

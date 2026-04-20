@@ -9,4 +9,5 @@ import Foundation
 public enum DomainError: Error {
     case sessionExpiredOnNotificationProcessor
     case emergencyKitExportError
+    case invalidSwap
 }

@@ -17,70 +17,49 @@ func (ac *GetSecurityCardsMarketplaceAction) Run() (*security_cards_marketplace.
 	marketplaceJson := model.SecurityCardsMarketplaceJson{
 		Providers: []model.SecurityCardsProviderJson{
 			{
-				Name: "Satochip",
+				Name:         "Constellations",
+				ColorHex:     "#B19B6A",
+				Material:     "plastic",
+				Price:        37500,
+				ShippingCost: 30000,
+				CurrencyCode: "ARS",
 				SecurityCards: []model.SecurityCardJson{
-					{
-						Image: "sc_satochip_1",
-					},
-					{
-						Image: "sc_satochip_2",
-					},
-					{
-						Image: "sc_satochip_3",
-					},
+					{Image: "sc_constellations_scorpius", Stock: 10},
+					{Image: "sc_constellations_gemini", Stock: 10},
+					{Image: "sc_constellations_sagitarius", Stock: 10},
+					{Image: "sc_constellations_virgo", Stock: 10},
 				},
-				CurrencyCode: "EUR",
 			},
 			{
-				Name: "Coinkite",
+				Name:         "Numbers",
+				ColorHex:     "#D9DBDD",
+				Material:     "plastic",
+				Price:        30000,
+				ShippingCost: 15000,
+				CurrencyCode: "ARS",
 				SecurityCards: []model.SecurityCardJson{
-					{
-						Image: "sc_coinkite_1",
-					},
-					{
-						Image: "sc_coinkite_2",
-					},
-					{
-						Image: "sc_coinkite_3",
-					},
-					{
-						Image: "sc_coinkite_4",
-					},
-					{
-						Image: "sc_coinkite_5",
-					},
-					{
-						Image: "sc_coinkite_6",
-					},
-					{
-						Image: "sc_coinkite_7",
-					},
+					{Image: "sc_numbers_1", Stock: 10},
+					{Image: "sc_numbers_2", Stock: 10},
+					{Image: "sc_numbers_3", Stock: 10},
+					{Image: "sc_numbers_4", Stock: 10},
+					{Image: "sc_numbers_5", Stock: 10},
+					{Image: "sc_numbers_6", Stock: 10},
+					{Image: "sc_numbers_7", Stock: 10},
+					{Image: "sc_numbers_8", Stock: 10},
+					{Image: "sc_numbers_9", Stock: 10},
 				},
-				CurrencyCode: "USD",
 			},
 			{
-				Name: "Onekey",
+				Name:         "Planets",
+				ColorHex:     "#158E5A",
+				Material:     "plastic",
+				Price:        76485,
+				ShippingCost: 43500,
+				CurrencyCode: "ARS",
 				SecurityCards: []model.SecurityCardJson{
-					{
-						Image: "sc_onekey_1",
-					},
-					{
-						Image: "sc_onekey_2",
-					},
-					{
-						Image: "sc_onekey_3",
-					},
-					{
-						Image: "sc_onekey_4",
-					},
-					{
-						Image: "sc_onekey_5",
-					},
-					{
-						Image: "sc_onekey_6",
-					},
+					{Image: "sc_planets_earth", Stock: 10},
+					{Image: "sc_planets_mars", Stock: 10},
 				},
-				CurrencyCode: "USD",
 			},
 		},
 	}

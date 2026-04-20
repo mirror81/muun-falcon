@@ -26,6 +26,8 @@ func print(_ object: Any) {
 
 public class Logger {
 
+    /// (if build == debug) logs in console
+    /// (if build != debug) attach a log to the next crash
     public static func log(_ level: LogLevel,
                            _ string: String,
                            filename: StaticString = #file,
@@ -38,6 +40,8 @@ public class Logger {
                     funcName: "\(funcName)")
     }
 
+    /// (if build == debug) logs in console
+    /// (if build != debug) attach a log to the next crash
     public static func logExplicit(level: LogLevel,
                                    message: String,
                                    filename: String,
@@ -64,6 +68,8 @@ public class Logger {
         #endif
     }
 
+    /// (if build == debug) logs an error in the console.
+    /// (if build == debug) send a non-fatal to crashlytics.
     @inline(never)
     public static func log(error: Error,
                            filename: StaticString = #file,
@@ -81,6 +87,7 @@ public class Logger {
 
     }
 
+    /// Send a non-fatal to crashlytis and then crash with a fatal.
     @inline(never)
     public static func fatal(error: Error,
                              filename: StaticString = #file,
@@ -94,7 +101,9 @@ public class Logger {
 
         fatalError(file: filename, line: line)
     }
-
+    
+    /// (If build == debug) log in console then crash with a fatal.
+    /// (if build != debug) attach a crash log to the next crash and then crash with a fatal.
     @inline(never)
     public static func fatal(_ string: String,
                              filename: StaticString = #file,

@@ -16,7 +16,7 @@ final class UnpairNfcCardAction: Resolver {
 
     func run(slot: UInt8) -> Completable {
         return Completable.create { completable in
-            self.nfcSession.connect(alertMessage: "Unpair Muun security card")
+            self.nfcSession.connect(textProvider: SecurityCardTextProvider(flow: .pairing))
                 .subscribe(onCompleted: {
                     self.walletService.resetSecurityCard()
                         .subscribe(onCompleted: {

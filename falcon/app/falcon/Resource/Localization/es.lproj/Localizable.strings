@@ -931,4 +931,18 @@ Muchos servicios aún no son compatibles con Taproot y pueden marcar tus direcci
 /* DisableFeatureFlagsViewController */
 "DisableFeatureFlagsViewController.title" = "Tus Feature Flags";
 "DisableFeatureFlagsViewController.nfcLabel" = "Security Card";
+
+/* SecurityCardsOnboarding */
+"SecurityCardsOnboarding.title" = "Security Cards";
+"SecurityCardsOnboarding.slide1Title" = "Un documento";
+"SecurityCardsOnboarding.slide1Description" = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lacinia tincidunt neque vitae volutpat.";
+"SecurityCardsOnboarding.slide2Title" = "Almacenado en línea";
+"SecurityCardsOnboarding.slide2Description" = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lacinia tincidunt neque vitae volutpat.";
+"SecurityCardsOnboarding.slide3Title" = "Seleccionado para ti";
+"SecurityCardsOnboarding.slide3Description" = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lacinia tincidunt neque vitae volutpat.";
+"SecurityCardsOnboarding.finish" = "EMPEZAR A EXPLORAR";
 "DisableFeatureFlagsViewController.informationLabel" = "Algunas de nuestras feature flags pueden activarse o desactivarse según sea necesario. Estas son las que pueden modificarse actualmente. Desactiva la opción para deshabilitar la función seleccionada.";
+
+/* Marketplace */
+"MarketplaceViewController.title" = "Marketplace";
+"SecurityCardPriceFooterView.shippingAndTaxes" = "+ %@ envío e impuestos";

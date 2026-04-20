@@ -162,9 +162,15 @@ public class ApplicationLockManager {
         do {
             try sessionRepository.store(pin: pin)
             try sessionRepository.store(pinAttemptsLeft: ApplicationLockManager.attempts)
+
+            sessionRepository.store(pinLength: pin.count)
         } catch {
             Logger.log(error: error)
         }
+    }
+
+    public func getPinLength() -> Int {
+        return sessionRepository.getPinLength()
     }
 
     public func appWillResignActive() {

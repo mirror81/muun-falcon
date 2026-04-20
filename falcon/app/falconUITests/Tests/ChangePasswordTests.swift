@@ -40,7 +40,7 @@ class ChangePasswordTests: FalconUITests {
         _ = settingsPage.logout()
 
         print("Log in with new password started")
-        signInTests.fullSignIn(email: email, password: newPassword, pin: "1111")
+        signInTests.fullSignIn(email: email, password: newPassword, pin: "111111")
 
         let secondNewPassword = "Here is to the ones with recovery code"
 
@@ -60,7 +60,7 @@ class ChangePasswordTests: FalconUITests {
         _ = settingsPage.logout()
 
         print("Log in with new password started")
-        signInTests.fullSignIn(email: email, password: secondNewPassword, pin: "1111")
+        signInTests.fullSignIn(email: email, password: secondNewPassword, pin: "111111")
         assert(homePage.exists())
     }
 

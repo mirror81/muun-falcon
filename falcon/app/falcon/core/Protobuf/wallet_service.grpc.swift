@@ -111,6 +111,16 @@ internal protocol Rpc_WalletServiceClientProtocol: GRPCClient {
     _ request: Rpc_GetByPrefixRequest,
     callOptions: CallOptions?
   ) -> UnaryCall<Rpc_GetByPrefixRequest, Rpc_GetBatchResponse>
+
+  func getSecurityCardsMarketplace(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions?
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Rpc_GetSecurityCardsMarketplaceResponse>
+
+  func generateEmergencyKitPDF(
+    _ request: Rpc_GenerateEmergencyKitPDFRequest,
+    callOptions: CallOptions?
+  ) -> UnaryCall<Rpc_GenerateEmergencyKitPDFRequest, Rpc_GenerateEmergencyKitPDFResponse>
 }
 
 extension Rpc_WalletServiceClientProtocol {
@@ -462,6 +472,42 @@ extension Rpc_WalletServiceClientProtocol {
       interceptors: self.interceptors?.makeGetByPrefixInterceptors() ?? []
     )
   }
+
+  /// Marketplace
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to GetSecurityCardsMarketplace.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func getSecurityCardsMarketplace(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Rpc_GetSecurityCardsMarketplaceResponse> {
+    return self.makeUnaryCall(
+      path: Rpc_WalletServiceClientMetadata.Methods.getSecurityCardsMarketplace.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeGetSecurityCardsMarketplaceInterceptors() ?? []
+    )
+  }
+
+  /// Emergency Kit PDF Generation
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to GenerateEmergencyKitPDF.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func generateEmergencyKitPDF(
+    _ request: Rpc_GenerateEmergencyKitPDFRequest,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<Rpc_GenerateEmergencyKitPDFRequest, Rpc_GenerateEmergencyKitPDFResponse> {
+    return self.makeUnaryCall(
+      path: Rpc_WalletServiceClientMetadata.Methods.generateEmergencyKitPDF.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeGenerateEmergencyKitPDFInterceptors() ?? []
+    )
+  }
 }
 
 @available(*, deprecated)
@@ -620,6 +666,16 @@ internal protocol Rpc_WalletServiceAsyncClientProtocol: GRPCClient {
     _ request: Rpc_GetByPrefixRequest,
     callOptions: CallOptions?
   ) -> GRPCAsyncUnaryCall<Rpc_GetByPrefixRequest, Rpc_GetBatchResponse>
+
+  func makeGetSecurityCardsMarketplaceCall(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Rpc_GetSecurityCardsMarketplaceResponse>
+
+  func makeGenerateEmergencyKitPdfCall(
+    _ request: Rpc_GenerateEmergencyKitPDFRequest,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<Rpc_GenerateEmergencyKitPDFRequest, Rpc_GenerateEmergencyKitPDFResponse>
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -859,6 +915,30 @@ extension Rpc_WalletServiceAsyncClientProtocol {
       interceptors: self.interceptors?.makeGetByPrefixInterceptors() ?? []
     )
   }
+
+  internal func makeGetSecurityCardsMarketplaceCall(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Rpc_GetSecurityCardsMarketplaceResponse> {
+    return self.makeAsyncUnaryCall(
+      path: Rpc_WalletServiceClientMetadata.Methods.getSecurityCardsMarketplace.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeGetSecurityCardsMarketplaceInterceptors() ?? []
+    )
+  }
+
+  internal func makeGenerateEmergencyKitPdfCall(
+    _ request: Rpc_GenerateEmergencyKitPDFRequest,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncUnaryCall<Rpc_GenerateEmergencyKitPDFRequest, Rpc_GenerateEmergencyKitPDFResponse> {
+    return self.makeAsyncUnaryCall(
+      path: Rpc_WalletServiceClientMetadata.Methods.generateEmergencyKitPDF.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeGenerateEmergencyKitPDFInterceptors() ?? []
+    )
+  }
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -1090,6 +1170,30 @@ extension Rpc_WalletServiceAsyncClientProtocol {
       interceptors: self.interceptors?.makeGetByPrefixInterceptors() ?? []
     )
   }
+
+  internal func getSecurityCardsMarketplace(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) async throws -> Rpc_GetSecurityCardsMarketplaceResponse {
+    return try await self.performAsyncUnaryCall(
+      path: Rpc_WalletServiceClientMetadata.Methods.getSecurityCardsMarketplace.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeGetSecurityCardsMarketplaceInterceptors() ?? []
+    )
+  }
+
+  internal func generateEmergencyKitPDF(
+    _ request: Rpc_GenerateEmergencyKitPDFRequest,
+    callOptions: CallOptions? = nil
+  ) async throws -> Rpc_GenerateEmergencyKitPDFResponse {
+    return try await self.performAsyncUnaryCall(
+      path: Rpc_WalletServiceClientMetadata.Methods.generateEmergencyKitPDF.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeGenerateEmergencyKitPDFInterceptors() ?? []
+    )
+  }
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -1167,6 +1271,12 @@ internal protocol Rpc_WalletServiceClientInterceptorFactoryProtocol: Sendable {
 
   /// - Returns: Interceptors to use when invoking 'getByPrefix'.
   func makeGetByPrefixInterceptors() -> [ClientInterceptor<Rpc_GetByPrefixRequest, Rpc_GetBatchResponse>]
+
+  /// - Returns: Interceptors to use when invoking 'getSecurityCardsMarketplace'.
+  func makeGetSecurityCardsMarketplaceInterceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, Rpc_GetSecurityCardsMarketplaceResponse>]
+
+  /// - Returns: Interceptors to use when invoking 'generateEmergencyKitPDF'.
+  func makeGenerateEmergencyKitPDFInterceptors() -> [ClientInterceptor<Rpc_GenerateEmergencyKitPDFRequest, Rpc_GenerateEmergencyKitPDFResponse>]
 }
 
 internal enum Rpc_WalletServiceClientMetadata {
@@ -1193,6 +1303,8 @@ internal enum Rpc_WalletServiceClientMetadata {
       Rpc_WalletServiceClientMetadata.Methods.saveBatch,
       Rpc_WalletServiceClientMetadata.Methods.getBatch,
       Rpc_WalletServiceClientMetadata.Methods.getByPrefix,
+      Rpc_WalletServiceClientMetadata.Methods.getSecurityCardsMarketplace,
+      Rpc_WalletServiceClientMetadata.Methods.generateEmergencyKitPDF,
     ]
   )
 
@@ -1310,6 +1422,18 @@ internal enum Rpc_WalletServiceClientMetadata {
       path: "/rpc.WalletService/GetByPrefix",
       type: GRPCCallType.unary
     )
+
+    internal static let getSecurityCardsMarketplace = GRPCMethodDescriptor(
+      name: "GetSecurityCardsMarketplace",
+      path: "/rpc.WalletService/GetSecurityCardsMarketplace",
+      type: GRPCCallType.unary
+    )
+
+    internal static let generateEmergencyKitPDF = GRPCMethodDescriptor(
+      name: "GenerateEmergencyKitPDF",
+      path: "/rpc.WalletService/GenerateEmergencyKitPDF",
+      type: GRPCCallType.unary
+    )
   }
 }
 
@@ -1357,6 +1481,12 @@ internal protocol Rpc_WalletServiceProvider: CallHandlerProvider {
   func getBatch(request: Rpc_GetBatchRequest, context: StatusOnlyCallContext) -> EventLoopFuture<Rpc_GetBatchResponse>
 
   func getByPrefix(request: Rpc_GetByPrefixRequest, context: StatusOnlyCallContext) -> EventLoopFuture<Rpc_GetBatchResponse>
+
+  /// Marketplace
+  func getSecurityCardsMarketplace(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<Rpc_GetSecurityCardsMarketplaceResponse>
+
+  /// Emergency Kit PDF Generation
+  func generateEmergencyKitPDF(request: Rpc_GenerateEmergencyKitPDFRequest, context: StatusOnlyCallContext) -> EventLoopFuture<Rpc_GenerateEmergencyKitPDFResponse>
 }
 
 extension Rpc_WalletServiceProvider {
@@ -1542,6 +1672,24 @@ extension Rpc_WalletServiceProvider {
         userFunction: self.getByPrefix(request:context:)
       )
 
+    case "GetSecurityCardsMarketplace":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        responseSerializer: ProtobufSerializer<Rpc_GetSecurityCardsMarketplaceResponse>(),
+        interceptors: self.interceptors?.makeGetSecurityCardsMarketplaceInterceptors() ?? [],
+        userFunction: self.getSecurityCardsMarketplace(request:context:)
+      )
+
+    case "GenerateEmergencyKitPDF":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Rpc_GenerateEmergencyKitPDFRequest>(),
+        responseSerializer: ProtobufSerializer<Rpc_GenerateEmergencyKitPDFResponse>(),
+        interceptors: self.interceptors?.makeGenerateEmergencyKitPDFInterceptors() ?? [],
+        userFunction: self.generateEmergencyKitPDF(request:context:)
+      )
+
     default:
       return nil
     }
@@ -1652,6 +1800,18 @@ internal protocol Rpc_WalletServiceAsyncProvider: CallHandlerProvider, Sendable 
     request: Rpc_GetByPrefixRequest,
     context: GRPCAsyncServerCallContext
   ) async throws -> Rpc_GetBatchResponse
+
+  /// Marketplace
+  func getSecurityCardsMarketplace(
+    request: SwiftProtobuf.Google_Protobuf_Empty,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> Rpc_GetSecurityCardsMarketplaceResponse
+
+  /// Emergency Kit PDF Generation
+  func generateEmergencyKitPDF(
+    request: Rpc_GenerateEmergencyKitPDFRequest,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> Rpc_GenerateEmergencyKitPDFResponse
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -1844,6 +2004,24 @@ extension Rpc_WalletServiceAsyncProvider {
         wrapping: { try await self.getByPrefix(request: $0, context: $1) }
       )
 
+    case "GetSecurityCardsMarketplace":
+      return GRPCAsyncServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        responseSerializer: ProtobufSerializer<Rpc_GetSecurityCardsMarketplaceResponse>(),
+        interceptors: self.interceptors?.makeGetSecurityCardsMarketplaceInterceptors() ?? [],
+        wrapping: { try await self.getSecurityCardsMarketplace(request: $0, context: $1) }
+      )
+
+    case "GenerateEmergencyKitPDF":
+      return GRPCAsyncServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Rpc_GenerateEmergencyKitPDFRequest>(),
+        responseSerializer: ProtobufSerializer<Rpc_GenerateEmergencyKitPDFResponse>(),
+        interceptors: self.interceptors?.makeGenerateEmergencyKitPDFInterceptors() ?? [],
+        wrapping: { try await self.generateEmergencyKitPDF(request: $0, context: $1) }
+      )
+
     default:
       return nil
     }
@@ -1927,6 +2105,14 @@ internal protocol Rpc_WalletServiceServerInterceptorFactoryProtocol: Sendable {
   /// - Returns: Interceptors to use when handling 'getByPrefix'.
   ///   Defaults to calling `self.makeInterceptors()`.
   func makeGetByPrefixInterceptors() -> [ServerInterceptor<Rpc_GetByPrefixRequest, Rpc_GetBatchResponse>]
+
+  /// - Returns: Interceptors to use when handling 'getSecurityCardsMarketplace'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeGetSecurityCardsMarketplaceInterceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, Rpc_GetSecurityCardsMarketplaceResponse>]
+
+  /// - Returns: Interceptors to use when handling 'generateEmergencyKitPDF'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeGenerateEmergencyKitPDFInterceptors() -> [ServerInterceptor<Rpc_GenerateEmergencyKitPDFRequest, Rpc_GenerateEmergencyKitPDFResponse>]
 }
 
 internal enum Rpc_WalletServiceServerMetadata {
@@ -1953,6 +2139,8 @@ internal enum Rpc_WalletServiceServerMetadata {
       Rpc_WalletServiceServerMetadata.Methods.saveBatch,
       Rpc_WalletServiceServerMetadata.Methods.getBatch,
       Rpc_WalletServiceServerMetadata.Methods.getByPrefix,
+      Rpc_WalletServiceServerMetadata.Methods.getSecurityCardsMarketplace,
+      Rpc_WalletServiceServerMetadata.Methods.generateEmergencyKitPDF,
     ]
   )
 
@@ -2068,6 +2256,18 @@ internal enum Rpc_WalletServiceServerMetadata {
     internal static let getByPrefix = GRPCMethodDescriptor(
       name: "GetByPrefix",
       path: "/rpc.WalletService/GetByPrefix",
+      type: GRPCCallType.unary
+    )
+
+    internal static let getSecurityCardsMarketplace = GRPCMethodDescriptor(
+      name: "GetSecurityCardsMarketplace",
+      path: "/rpc.WalletService/GetSecurityCardsMarketplace",
+      type: GRPCCallType.unary
+    )
+
+    internal static let generateEmergencyKitPDF = GRPCMethodDescriptor(
+      name: "GenerateEmergencyKitPDF",
+      path: "/rpc.WalletService/GenerateEmergencyKitPDF",
       type: GRPCCallType.unary
     )
   }

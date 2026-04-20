@@ -62,12 +62,17 @@ func MapSecurityCardsMarketplace(
 
 			securityCards = append(securityCards, security_cards_marketplace.SecurityCard{
 				Image: securityCard.Image,
+				Stock: securityCard.Stock,
 			})
 		}
 
 		providers = append(providers, security_cards_marketplace.SecurityCardsProvider{
 			Name:          provider.Name,
 			CurrencyCode:  provider.CurrencyCode,
+			ColorHex:      provider.ColorHex,
+			Material:      provider.Material,
+			Price:         provider.Price,
+			ShippingCost:  provider.ShippingCost,
 			SecurityCards: securityCards,
 		})
 	}

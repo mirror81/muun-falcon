@@ -17,7 +17,7 @@ final class SignMessageActionV2: Resolver {
     func run() -> Completable {
         return Completable.create { completable in
             let connectionDisposable = self.nfcSession
-                .connect(alertMessage: "Approve transaction with you card")
+                .connect(textProvider: SecurityCardTextProvider(flow: .challenge))
                 .subscribe(onCompleted: {
                     AnalyticsHelper.logEvent(
                         SecurityCardTapEvent(type: .detected)

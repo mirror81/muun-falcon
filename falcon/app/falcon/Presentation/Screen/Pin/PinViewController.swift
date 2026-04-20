@@ -13,6 +13,14 @@ protocol LockDelegate: AnyObject {
     func logOut()
 }
 
+enum PinLength {
+    /// Older installs or migrations may still have 4 digit PINs stored.
+    static let legacy: Int = 4
+
+    /// New PIN length for choose and repeat flows.
+    static let current: Int = 6
+}
+
 class PinViewController: MUViewController {
 
     @IBOutlet private weak var titleLabel: UILabel!
@@ -27,7 +35,7 @@ class PinViewController: MUViewController {
 
     private let notification = UINotificationFeedbackGenerator() // This is used to notify success or error to the user
     private var currentPin = ""
-    private var state: PinPresenterState!
+    private var state: PinPresenterState
     private var isExistingUser = true
     private weak var appLockDelegate: LockDelegate?
     private var biometricsStatusProvider: BiometricsStatusProvider = .init()
@@ -38,17 +46,22 @@ class PinViewController: MUViewController {
         return "pin_\(state.loggingName())"
     }
 
-    convenience init(
+    private var pinLength: Int = PinLength.legacy
+
+    init(
         state: PinPresenterState,
         isExistingUser: Bool = true,
         lockDelegate: LockDelegate? = nil,
     ) {
-
-        self.init()
-
         self.state = state
         self.isExistingUser = isExistingUser
         self.appLockDelegate = lockDelegate
+
+        super.init(nibName: "PinViewController", bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -64,8 +77,18 @@ class PinViewController: MUViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        configurePinLength()
         setUpView()
         makeViewTestable()
+    }
+
+    private func configurePinLength() {
+        switch state {
+        case .choosePin, .repeatPin:
+            self.pinLength = PinLength.current
+        case .locked:
+             self.pinLength = presenter.getPinLength()
+        }
     }
 
     fileprivate func setUpView() {
@@ -99,6 +122,8 @@ class PinViewController: MUViewController {
     }
 
     private func setupBiometricsButton() {
+        guard state == .locked else { return }
+
         let biometricsStatus = biometricsStatusProvider.biometricsStatus()
         keyboardView.setupBiometrics(status: biometricsStatus)
     }
@@ -128,6 +153,8 @@ class PinViewController: MUViewController {
     fileprivate func setUpPinView() {
         pinView.delegate = self
         pinView.alpha = 0
+
+        pinView.setUp(length: pinLength)
     }
 
     fileprivate func setUpLabels() {
@@ -181,12 +208,12 @@ extension PinViewController: KeyboardViewDelegate {
 
     func onNumberPressed(number: String) {
 
-        if pinView.filledPins < 4 {
+        if pinView.filledPins < pinLength {
             pinView.colorNextPin()
             currentPin.append(number)
         }
 
-        if pinView.filledPins == 4 {
+        if pinView.filledPins == pinLength {
             presenter.pinFinished(pin: currentPin)
         }
 

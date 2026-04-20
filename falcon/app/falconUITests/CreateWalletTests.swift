@@ -50,7 +50,7 @@ class CreateWalletTests: FalconUITests {
         // Give the next pin page time to appear
         Thread.sleep(forTimeInterval: 1)
         
-        pinPage.enterPin("9999")
+        pinPage.enterPin("999999")
         XCTAssert(pinPage.hintLabel.label == L10n.PinViewController.s6)
     }
 

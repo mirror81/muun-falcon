@@ -178,6 +178,10 @@ class NewOpLoadingPresenter<Delegate: NewOpLoadingPresenterDelegate>: BasePresen
             return .cyclicalSwap
         } else if e.isKindOf(.amountLessInvoicesNotSupported) {
             return .invoiceMissingAmount
+        } else if e.isKindOf(.exchangeRateWindowTooOld) {
+            return .exchangeRateWindowTooOld
+        } else if e.isKindOf(.invalidSwap) {
+            return .invalidSwap
         }
 
         return nil

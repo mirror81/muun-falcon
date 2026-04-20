@@ -13,10 +13,12 @@ class SessionRepository {
 
     private let preferences: Preferences
     private let secureStorage: SecureStorage
+    private let walletService: WalletService
 
-    init(preferences: Preferences, secureStorage: SecureStorage) {
+    init(preferences: Preferences, secureStorage: SecureStorage, walletService: WalletService) {
         self.preferences = preferences
         self.secureStorage = secureStorage
+        self.walletService = walletService
     }
 
     func setStatus(_ status: SessionStatus) {
@@ -51,6 +53,23 @@ class SessionRepository {
     func getPinAttemptsLeft() throws -> Int {
         let pinAttemptsLeft = try secureStorage.get(.pinAttemptsLeft)
         return Int(pinAttemptsLeft) ?? 0
+    }
+
+    func store(pinLength: Int) {
+        let int32PinLength = Int32(pinLength)
+        walletService.saveInt32(
+            key: Persistence.pinLength.rawValue,
+            value: int32PinLength
+        )
+    }
+
+    func getPinLength() -> Int {
+        let legacyPinLength: Int32 = Int32(PinLength.legacy)
+        let pinLength = walletService.getInt32(
+            key: Persistence.pinLength.rawValue,
+            defaultValue: legacyPinLength
+        )
+        return Int(pinLength)
     }
 
     func storeAuthToken(_ authToken: String) throws {

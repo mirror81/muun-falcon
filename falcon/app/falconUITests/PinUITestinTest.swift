@@ -65,12 +65,12 @@ private extension PinUITest {
 
     func insertWrognPin() {
         let pinPage = PinPage()
-        pinPage.enterPin("9999")
+        pinPage.enterPin("999999")
     }
 
     func insertPin() {
         let pinPage = PinPage()
-        pinPage.enterPin("1111")
+        pinPage.enterPin("111111")
     }
 
     func stayTwelveSecondInBackgroundAndOpenAppAgain() {

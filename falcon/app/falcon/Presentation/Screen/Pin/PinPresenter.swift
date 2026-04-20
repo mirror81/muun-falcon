@@ -163,6 +163,10 @@ class PinPresenter<Delegate: PinPresenterDelegate>: BasePresenter<Delegate> {
         return preferences.string(forKey: .gcmToken)
     }
 
+    func getPinLength() -> Int {
+        return applicationLockManager.getPinLength()
+    }
+
     // When setting up the view if the user has biometrics we need to avoid displaying
     // attempts left under the biometrics alert. Otherwise we show the hint to users
     // that are not being affected by it since they are using biometrics. In that case we

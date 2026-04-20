@@ -927,4 +927,18 @@ Many services are not yet compatible with Taproot and may label your addresses a
 /* DisableFeatureFlagsViewController */
 "DisableFeatureFlagsViewController.title" = "Your Feature Flags";
 "DisableFeatureFlagsViewController.nfcLabel" = "Security Card";
+
+/* SecurityCardsOnboarding */
+"SecurityCardsOnboarding.title" = "Security Cards";
+"SecurityCardsOnboarding.slide1Title" = "One document";
+"SecurityCardsOnboarding.slide1Description" = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lacinia tincidunt neque vitae volutpat.";
+"SecurityCardsOnboarding.slide2Title" = "Stored online";
+"SecurityCardsOnboarding.slide2Description" = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lacinia tincidunt neque vitae volutpat.";
+"SecurityCardsOnboarding.slide3Title" = "Curated for you";
+"SecurityCardsOnboarding.slide3Description" = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lacinia tincidunt neque vitae volutpat.";
+"SecurityCardsOnboarding.finish" = "START EXPLORING";
 "DisableFeatureFlagsViewController.informationLabel" = "Some of our feature flags can be turned off and on again at your request. These are the ones you can currently modify. Turn the toggles off to disable the selected feature.";
+
+/* Marketplace */
+"MarketplaceViewController.title" = "Marketplace";
+"SecurityCardPriceFooterView.shippingAndTaxes" = "+ %@ shipping & taxes";

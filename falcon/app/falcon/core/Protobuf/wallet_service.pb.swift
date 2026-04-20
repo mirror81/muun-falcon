@@ -634,6 +634,115 @@ struct Rpc_GetByPrefixRequest: Sendable {
   init() {}
 }
 
+struct Rpc_SecurityCardsProvider: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var name: String = String()
+
+  var securityCards: [Rpc_SecurityCard] = []
+
+  var currency: String = String()
+
+  var colorHex: String = String()
+
+  var material: String = String()
+
+  var price: Double = 0
+
+  var shippingCost: Double = 0
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+struct Rpc_SecurityCard: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var image: String = String()
+
+  var stock: Int32 = 0
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+struct Rpc_GetSecurityCardsMarketplaceResponse: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var providers: [Rpc_SecurityCardsProvider] = []
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+struct Rpc_EKInputRequest: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var firstEncryptedKey: String = String()
+
+  var firstFingerprint: String = String()
+
+  var secondEncryptedKey: String = String()
+
+  var secondFingerprint: String = String()
+
+  var rcChecksum: String = String()
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+struct Rpc_GenerateEmergencyKitPDFRequest: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var ekInput: Rpc_EKInputRequest {
+    get {return _ekInput ?? Rpc_EKInputRequest()}
+    set {_ekInput = newValue}
+  }
+  /// Returns true if `ekInput` has been explicitly set.
+  var hasEkInput: Bool {return self._ekInput != nil}
+  /// Clears the value of `ekInput`. Subsequent reads from it will return its default value.
+  mutating func clearEkInput() {self._ekInput = nil}
+
+  var outputPath: String = String()
+
+  var language: String = String()
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+
+  fileprivate var _ekInput: Rpc_EKInputRequest? = nil
+}
+
+struct Rpc_GenerateEmergencyKitPDFResponse: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var verificationCode: String = String()
+
+  var version: Int32 = 0
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
 
 fileprivate let _protobuf_package = "rpc"
@@ -1817,6 +1926,286 @@ extension Rpc_GetByPrefixRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageI
 
   static func ==(lhs: Rpc_GetByPrefixRequest, rhs: Rpc_GetByPrefixRequest) -> Bool {
     if lhs.prefix != rhs.prefix {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Rpc_SecurityCardsProvider: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".SecurityCardsProvider"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "name"),
+    2: .standard(proto: "security_cards"),
+    3: .same(proto: "currency"),
+    4: .standard(proto: "color_hex"),
+    5: .same(proto: "material"),
+    6: .same(proto: "price"),
+    7: .standard(proto: "shipping_cost"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.name) }()
+      case 2: try { try decoder.decodeRepeatedMessageField(value: &self.securityCards) }()
+      case 3: try { try decoder.decodeSingularStringField(value: &self.currency) }()
+      case 4: try { try decoder.decodeSingularStringField(value: &self.colorHex) }()
+      case 5: try { try decoder.decodeSingularStringField(value: &self.material) }()
+      case 6: try { try decoder.decodeSingularDoubleField(value: &self.price) }()
+      case 7: try { try decoder.decodeSingularDoubleField(value: &self.shippingCost) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.name.isEmpty {
+      try visitor.visitSingularStringField(value: self.name, fieldNumber: 1)
+    }
+    if !self.securityCards.isEmpty {
+      try visitor.visitRepeatedMessageField(value: self.securityCards, fieldNumber: 2)
+    }
+    if !self.currency.isEmpty {
+      try visitor.visitSingularStringField(value: self.currency, fieldNumber: 3)
+    }
+    if !self.colorHex.isEmpty {
+      try visitor.visitSingularStringField(value: self.colorHex, fieldNumber: 4)
+    }
+    if !self.material.isEmpty {
+      try visitor.visitSingularStringField(value: self.material, fieldNumber: 5)
+    }
+    if self.price.bitPattern != 0 {
+      try visitor.visitSingularDoubleField(value: self.price, fieldNumber: 6)
+    }
+    if self.shippingCost.bitPattern != 0 {
+      try visitor.visitSingularDoubleField(value: self.shippingCost, fieldNumber: 7)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Rpc_SecurityCardsProvider, rhs: Rpc_SecurityCardsProvider) -> Bool {
+    if lhs.name != rhs.name {return false}
+    if lhs.securityCards != rhs.securityCards {return false}
+    if lhs.currency != rhs.currency {return false}
+    if lhs.colorHex != rhs.colorHex {return false}
+    if lhs.material != rhs.material {return false}
+    if lhs.price != rhs.price {return false}
+    if lhs.shippingCost != rhs.shippingCost {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Rpc_SecurityCard: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".SecurityCard"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "image"),
+    2: .same(proto: "stock"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.image) }()
+      case 2: try { try decoder.decodeSingularInt32Field(value: &self.stock) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.image.isEmpty {
+      try visitor.visitSingularStringField(value: self.image, fieldNumber: 1)
+    }
+    if self.stock != 0 {
+      try visitor.visitSingularInt32Field(value: self.stock, fieldNumber: 2)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Rpc_SecurityCard, rhs: Rpc_SecurityCard) -> Bool {
+    if lhs.image != rhs.image {return false}
+    if lhs.stock != rhs.stock {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Rpc_GetSecurityCardsMarketplaceResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".GetSecurityCardsMarketplaceResponse"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "providers"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeRepeatedMessageField(value: &self.providers) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.providers.isEmpty {
+      try visitor.visitRepeatedMessageField(value: self.providers, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Rpc_GetSecurityCardsMarketplaceResponse, rhs: Rpc_GetSecurityCardsMarketplaceResponse) -> Bool {
+    if lhs.providers != rhs.providers {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Rpc_EKInputRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".EKInputRequest"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .standard(proto: "first_encrypted_key"),
+    2: .standard(proto: "first_fingerprint"),
+    3: .standard(proto: "second_encrypted_key"),
+    4: .standard(proto: "second_fingerprint"),
+    5: .standard(proto: "rc_checksum"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.firstEncryptedKey) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.firstFingerprint) }()
+      case 3: try { try decoder.decodeSingularStringField(value: &self.secondEncryptedKey) }()
+      case 4: try { try decoder.decodeSingularStringField(value: &self.secondFingerprint) }()
+      case 5: try { try decoder.decodeSingularStringField(value: &self.rcChecksum) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.firstEncryptedKey.isEmpty {
+      try visitor.visitSingularStringField(value: self.firstEncryptedKey, fieldNumber: 1)
+    }
+    if !self.firstFingerprint.isEmpty {
+      try visitor.visitSingularStringField(value: self.firstFingerprint, fieldNumber: 2)
+    }
+    if !self.secondEncryptedKey.isEmpty {
+      try visitor.visitSingularStringField(value: self.secondEncryptedKey, fieldNumber: 3)
+    }
+    if !self.secondFingerprint.isEmpty {
+      try visitor.visitSingularStringField(value: self.secondFingerprint, fieldNumber: 4)
+    }
+    if !self.rcChecksum.isEmpty {
+      try visitor.visitSingularStringField(value: self.rcChecksum, fieldNumber: 5)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Rpc_EKInputRequest, rhs: Rpc_EKInputRequest) -> Bool {
+    if lhs.firstEncryptedKey != rhs.firstEncryptedKey {return false}
+    if lhs.firstFingerprint != rhs.firstFingerprint {return false}
+    if lhs.secondEncryptedKey != rhs.secondEncryptedKey {return false}
+    if lhs.secondFingerprint != rhs.secondFingerprint {return false}
+    if lhs.rcChecksum != rhs.rcChecksum {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Rpc_GenerateEmergencyKitPDFRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".GenerateEmergencyKitPDFRequest"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .standard(proto: "ek_input"),
+    2: .standard(proto: "output_path"),
+    3: .same(proto: "language"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularMessageField(value: &self._ekInput) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.outputPath) }()
+      case 3: try { try decoder.decodeSingularStringField(value: &self.language) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    try { if let v = self._ekInput {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
+    } }()
+    if !self.outputPath.isEmpty {
+      try visitor.visitSingularStringField(value: self.outputPath, fieldNumber: 2)
+    }
+    if !self.language.isEmpty {
+      try visitor.visitSingularStringField(value: self.language, fieldNumber: 3)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Rpc_GenerateEmergencyKitPDFRequest, rhs: Rpc_GenerateEmergencyKitPDFRequest) -> Bool {
+    if lhs._ekInput != rhs._ekInput {return false}
+    if lhs.outputPath != rhs.outputPath {return false}
+    if lhs.language != rhs.language {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Rpc_GenerateEmergencyKitPDFResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".GenerateEmergencyKitPDFResponse"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .standard(proto: "verification_code"),
+    2: .same(proto: "version"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.verificationCode) }()
+      case 2: try { try decoder.decodeSingularInt32Field(value: &self.version) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.verificationCode.isEmpty {
+      try visitor.visitSingularStringField(value: self.verificationCode, fieldNumber: 1)
+    }
+    if self.version != 0 {
+      try visitor.visitSingularInt32Field(value: self.version, fieldNumber: 2)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Rpc_GenerateEmergencyKitPDFResponse, rhs: Rpc_GenerateEmergencyKitPDFResponse) -> Bool {
+    if lhs.verificationCode != rhs.verificationCode {return false}
+    if lhs.version != rhs.version {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

@@ -736,6 +736,18 @@ internal enum L10n {
     internal static let s8 = L10n.tr("Localizable", "ManuallyEnterQRViewController.s8")
   }
 
+  internal enum MarketplaceViewController {
+    /// Marketplace
+    internal static let title = L10n.tr("Localizable", "MarketplaceViewController.title")
+  }
+
+  internal enum SecurityCardPriceFooterView {
+    /// + %@ shipping & taxes
+    internal static func shippingAndTaxes(_ p1: Any) -> String {
+      return L10n.tr("Localizable", "SecurityCardPriceFooterView.shippingAndTaxes", String(describing: p1))
+    }
+  }
+
   internal enum NewOp {
     /// Full Address
     internal static let s1 = L10n.tr("Localizable", "NewOp.s1")
@@ -1306,6 +1318,25 @@ internal enum L10n {
     internal static let s6 = L10n.tr("Localizable", "ScanQRViewController.s6")
     /// USE LNURL LINK IN CLIPBOARD
     internal static let s7 = L10n.tr("Localizable", "ScanQRViewController.s7")
+  }
+
+  internal enum SecurityCardsOnboarding {
+    /// START EXPLORING
+    internal static let finish = L10n.tr("Localizable", "SecurityCardsOnboarding.finish")
+    /// Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lacinia tincidunt neque vitae volutpat.
+    internal static let slide1Description = L10n.tr("Localizable", "SecurityCardsOnboarding.slide1Description")
+    /// One document
+    internal static let slide1Title = L10n.tr("Localizable", "SecurityCardsOnboarding.slide1Title")
+    /// Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lacinia tincidunt neque vitae volutpat.
+    internal static let slide2Description = L10n.tr("Localizable", "SecurityCardsOnboarding.slide2Description")
+    /// Stored online
+    internal static let slide2Title = L10n.tr("Localizable", "SecurityCardsOnboarding.slide2Title")
+    /// Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lacinia tincidunt neque vitae volutpat.
+    internal static let slide3Description = L10n.tr("Localizable", "SecurityCardsOnboarding.slide3Description")
+    /// Curated for you
+    internal static let slide3Title = L10n.tr("Localizable", "SecurityCardsOnboarding.slide3Title")
+    /// Security Cards
+    internal static let title = L10n.tr("Localizable", "SecurityCardsOnboarding.title")
   }
 
   internal enum SecurityCenter {

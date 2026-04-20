@@ -4,12 +4,13 @@ import (
 	"crypto/ecdh"
 	"crypto/rand"
 	"encoding/hex"
-	"github.com/muun/libwallet/domain/nfc"
-	"github.com/muun/libwallet/service/model"
-	"github.com/muun/libwallet/storage"
 	"path"
 	"strings"
 	"testing"
+
+	"github.com/muun/libwallet/domain/nfc"
+	"github.com/muun/libwallet/service/model"
+	"github.com/muun/libwallet/storage"
 )
 
 func TestMockCardPairCardSuccess(t *testing.T) {
@@ -386,31 +387,31 @@ func testSignChallengeSecretUpdates(
 func buildStorageSchemaForTests() map[string]storage.Classification {
 	return map[string]storage.Classification{
 		storage.KeyLastRandomPrivKeyInHex: {
-			BackupType:       storage.AsyncAutoBackup,
+			BackupType:       storage.NoAutoBackup,
 			BackupSecurity:   storage.NotApplicable,
 			SecurityCritical: false,
 			ValueType:        &storage.StringType{},
 		},
 		storage.KeySecurityCardUsageCount: {
-			BackupType:       storage.AsyncAutoBackup,
+			BackupType:       storage.NoAutoBackup,
 			BackupSecurity:   storage.NotApplicable,
 			SecurityCritical: false,
 			ValueType:        &storage.IntType{},
 		},
 		storage.KeySecretCardBytesInHex: {
-			BackupType:       storage.AsyncAutoBackup,
+			BackupType:       storage.NoAutoBackup,
 			BackupSecurity:   storage.NotApplicable,
 			SecurityCritical: false,
 			ValueType:        &storage.StringType{},
 		},
 		storage.KeySecurityCardPairingSlot: {
-			BackupType:       storage.AsyncAutoBackup,
+			BackupType:       storage.NoAutoBackup,
 			BackupSecurity:   storage.NotApplicable,
 			SecurityCritical: false,
 			ValueType:        &storage.IntType{},
 		},
 		storage.KeyTimeSinceLastChallengeUnixMillis: {
-			BackupType:       storage.AsyncAutoBackup,
+			BackupType:       storage.NoAutoBackup,
 			BackupSecurity:   storage.NotApplicable,
 			SecurityCritical: false,
 			ValueType:        &storage.LongType{},

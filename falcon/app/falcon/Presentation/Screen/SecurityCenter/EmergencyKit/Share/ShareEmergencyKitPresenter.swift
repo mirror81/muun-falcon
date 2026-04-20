@@ -30,19 +30,25 @@ class ShareEmergencyKitPresenter<Delegate: ShareEmergencyKitPresenterDelegate>: 
     fileprivate let emergencyKitVerificationCodesRepository: EmergencyKitRepository
     fileprivate let supportAction: SupportAction
     fileprivate let sessionActions: SessionActions
+    fileprivate let featureFlagsSelector: FeatureFlagsSelector
+    fileprivate let timeTracker: TimeTracker
 
     init(delegate: Delegate,
          emergencyKitExportedAction: ReportEmergencyKitExportedAction,
          emergencyKitDataSelector: EmergencyKitDataSelector,
          emergencyKitVerificationCodesRepository: EmergencyKitRepository,
          feedbackAction: SupportAction,
-         sessionActions: SessionActions
+         sessionActions: SessionActions,
+         featureFlagsSelector: FeatureFlagsSelector,
+         timeTracker: TimeTracker
     ) {
         self.emergencyKitExportedAction = emergencyKitExportedAction
         self.emergencyKitDataSelector = emergencyKitDataSelector
         self.emergencyKitVerificationCodesRepository = emergencyKitVerificationCodesRepository
         self.supportAction = feedbackAction
         self.sessionActions = sessionActions
+        self.featureFlagsSelector = featureFlagsSelector
+        self.timeTracker = timeTracker
 
         super.init(delegate: delegate)
     }
@@ -50,10 +56,27 @@ class ShareEmergencyKitPresenter<Delegate: ShareEmergencyKitPresenterDelegate>: 
     override func setUp() {
         super.setUp()
 
-        let obs = emergencyKitDataSelector.get()
+        let newKitE2eTrace = timeTracker.start(.ekE2eNewKitGeneration)
+        let legacyKitE2eTrace = timeTracker.start(.ekE2eLegacyKitGeneration)
 
-        subscribeTo(obs) { data in
-            let kit = EmergencyKit.generate(data: data)
+        let obs = emergencyKitDataSelector.get().asObservable()
+
+        // take(1): the EK is generated once. Without it, subsequent emissions (e.g. feature flags
+        // update) would call finish() again and crash since the timer was only started once.
+        subscribeTo(Observable.combineLatest(obs,
+                                             featureFlagsSelector.run()).take(1)) { (data, flags) in
+            let isGoRendering = flags.contains(.ekGoRendering)
+            let kit = EmergencyKit.generate(
+                data: data,
+                usingGoImplementation: isGoRendering
+            )
+
+            if isGoRendering {
+                newKitE2eTrace.finish()
+            } else {
+                legacyKitE2eTrace.finish()
+            }
+            
             self.reportGenerated(kit: kit)
             self.emergencyKitVerificationCodesRepository.store(code: kit.verificationCode)
             self.delegate.gotEmergencyKit(kit)

@@ -211,7 +211,7 @@ extension SecurityCenterViewController: LightButtonViewDelegate {
 
     func lightButton(didPress lightButton: LightButtonView) {
         navigationController!.pushViewController(
-            SlidesViewController(configuration: .exportKit),
+            SlidesViewController(configuration: EmergencyKitSlidesConfiguration.exportKit),
             animated: true
         )
     }
