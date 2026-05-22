@@ -741,13 +741,6 @@ internal enum L10n {
     internal static let title = L10n.tr("Localizable", "MarketplaceViewController.title")
   }
 
-  internal enum SecurityCardPriceFooterView {
-    /// + %@ shipping & taxes
-    internal static func shippingAndTaxes(_ p1: Any) -> String {
-      return L10n.tr("Localizable", "SecurityCardPriceFooterView.shippingAndTaxes", String(describing: p1))
-    }
-  }
-
   internal enum NewOp {
     /// Full Address
     internal static let s1 = L10n.tr("Localizable", "NewOp.s1")
@@ -1318,6 +1311,13 @@ internal enum L10n {
     internal static let s6 = L10n.tr("Localizable", "ScanQRViewController.s6")
     /// USE LNURL LINK IN CLIPBOARD
     internal static let s7 = L10n.tr("Localizable", "ScanQRViewController.s7")
+  }
+
+  internal enum SecurityCardPriceFooterView {
+    /// + %@ shipping & taxes
+    internal static func shippingAndTaxes(_ p1: Any) -> String {
+      return L10n.tr("Localizable", "SecurityCardPriceFooterView.shippingAndTaxes", String(describing: p1))
+    }
   }
 
   internal enum SecurityCardsOnboarding {
