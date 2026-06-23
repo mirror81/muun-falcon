@@ -65,3 +65,7 @@ Libwallet.framework
 .golangprod
 
 app/vendor
+
+# Fastlane
+fastlane/report.xml
+app/fastlane/report.xml
