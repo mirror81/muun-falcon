@@ -16,10 +16,12 @@ public class LogoutAction: AsyncAction<Void> {
     private let databaseCoordinator: DatabaseCoordinator
     private let preferences: Preferences
 
-    init(houstonService: HoustonService,
-         secureStorage: SecureStorage,
-         databaseCoordinator: DatabaseCoordinator,
-         preferences: Preferences) {
+    init(
+        houstonService: HoustonService,
+        secureStorage: SecureStorage,
+        databaseCoordinator: DatabaseCoordinator,
+        preferences: Preferences
+    ) {
 
         self.houstonService = houstonService
         self.secureStorage = secureStorage
@@ -50,7 +52,7 @@ public class LogoutAction: AsyncAction<Void> {
         }
 
         do {
-            try LibwalletStorageHelper.wipe()
+            try LibwalletStorageHelper.wipe(preservePin: preservePin)
         } catch {
             Logger.log(error: error)
         }

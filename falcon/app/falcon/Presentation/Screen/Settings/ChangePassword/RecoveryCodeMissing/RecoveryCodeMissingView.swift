@@ -49,7 +49,10 @@ final class RecoveryCodeMissingView: UIView {
         NSLayoutConstraint.activate([
             continueButton.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor),
             continueButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: .sideMargin),
-            continueButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -.sideMargin)
+            continueButton.trailingAnchor.constraint(
+                equalTo: trailingAnchor,
+                constant: -.sideMargin
+            )
         ])
     }
 
@@ -80,8 +83,14 @@ final class RecoveryCodeMissingView: UIView {
         NSLayoutConstraint.activate([
             contentVerticalStack.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             contentVerticalStack.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            contentVerticalStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .sideMargin),
-            contentVerticalStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -.sideMargin)
+            contentVerticalStack.leadingAnchor.constraint(
+                equalTo: contentView.leadingAnchor,
+                constant: .sideMargin
+            ),
+            contentVerticalStack.trailingAnchor.constraint(
+                equalTo: contentView.trailingAnchor,
+                constant: -.sideMargin
+            )
         ])
 
         setUpLabels()

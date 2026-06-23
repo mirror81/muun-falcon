@@ -13,7 +13,10 @@ class BitcoinUnitPickerViewController: MUViewController {
     @IBOutlet fileprivate weak var tableView: UITableView!
 
     fileprivate let cellHeight: CGFloat = 48
-    fileprivate lazy var presenter = instancePresenter(BitcoinUnitPickerPresenter.init, delegate: self)
+    fileprivate lazy var presenter = instancePresenter(
+        BitcoinUnitPickerPresenter.init,
+        delegate: self
+    )
     private weak var delegate: CurrencyPickerDelegate?
 
     override var screenLoggingName: String {

@@ -842,6 +842,7 @@ Por favor revisa tu conexión e inténtalo de nuevo.";
 "SettingsViewController.advanced" = "Configuración avanzada";
 "SettingsViewController.lightningNetwork" = "Lightning Network";
 "SettingsViewController.onchain" = "Bitcoin Network";
+"SettingsViewController.sendDebugData" = "Enviar datos de debug vía email";
 /* Presentation/Screen/Sync/SyncViewController.swift */
 "SyncViewController.s1" = "Cargando tu monedero";
 "SyncViewController.s2" = "Creando tu monedero";
@@ -940,9 +941,77 @@ Muchos servicios aún no son compatibles con Taproot y pueden marcar tus direcci
 "SecurityCardsOnboarding.slide2Description" = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lacinia tincidunt neque vitae volutpat.";
 "SecurityCardsOnboarding.slide3Title" = "Seleccionado para ti";
 "SecurityCardsOnboarding.slide3Description" = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lacinia tincidunt neque vitae volutpat.";
-"SecurityCardsOnboarding.finish" = "EMPEZAR A EXPLORAR";
 "DisableFeatureFlagsViewController.informationLabel" = "Algunas de nuestras feature flags pueden activarse o desactivarse según sea necesario. Estas son las que pueden modificarse actualmente. Desactiva la opción para deshabilitar la función seleccionada.";
 
 /* Marketplace */
 "MarketplaceViewController.title" = "Marketplace";
-"SecurityCardPriceFooterView.shippingAndTaxes" = "+ %@ envío e impuestos";
+
+/* Security Card Price Footer */
+"SecurityCardPriceFooterView.shippingAndTaxes" = "envío e impuestos";
+
+/* Country Onboarding */
+"CountryOnboardingViewController.title" = "Elegí tu ubicación";
+"CountryOnboardingViewController.subtitle" = "Los proveedores dependerán de dónde quieras recibir tu tarjeta.";
+"CountryOnboardingViewController.selectCountry" = "Seleccionar país";
+"CountryOnboardingViewController.startExploring" = "EMPEZAR A EXPLORAR";
+
+/* Country Selector */
+"CountrySelectorViewController.searchPlaceholder" = "Buscar";
+"CountrySelectorViewController.emptyState" = "No se encontraron países";
+"CountrySelectorViewController.alphabeticallyOrdered" = "Ordenado alfabéticamente";
+
+/* BuyDetails */
+"BuyDetailsViewController.material" = "Material";
+"BuyDetailsViewController.shipsFrom" = "Envío desde";
+"BuyDetailsViewController.deliveryTime" = "Tiempo de entrega";
+"BuyDetailsViewController.seeFullSpecs" = "Ver especificaciones";
+"BuyDetailsViewController.additionalCosts" = "+%@ envío e impuestos";
+"BuyDetailsViewController.goTo" = "IR A %@";
+"BuyDetailsViewController.trustedBecause" = "Confiable porque %@.";
+
+"SecurityCardFullSpecsViewController.specifications" = "Especificaciones";
+"SecurityCardFullSpecsViewController.security" = "Seguridad";
+"SecurityCardFullSpecsViewController.delivery" = "Envío";
+"SecurityCardFullSpecsViewController.material" = "Material";
+"SecurityCardFullSpecsViewController.thickness" = "Grosor";
+"SecurityCardFullSpecsViewController.weight" = "Peso";
+"SecurityCardFullSpecsViewController.firmware" = "Firmware";
+"SecurityCardFullSpecsViewController.firmwareOpenSource" = "Código abierto";
+"SecurityCardFullSpecsViewController.packaging" = "Empaque";
+"SecurityCardFullSpecsViewController.packagingTamperResistant" = "Resistente a manipulación";
+"SecurityCardFullSpecsViewController.secureElement" = "Elemento seguro";
+"SecurityCardFullSpecsViewController.dataWiping" = "Borrado de datos";
+"SecurityCardFullSpecsViewController.soldShippedBy" = "Vendido y enviado por";
+"SecurityCardFullSpecsViewController.shipsFrom" = "Envío desde";
+"SecurityCardFullSpecsViewController.deliversIn" = "Entrega en";
+"SecurityCardFullSpecsViewController.mmFormat" = "%@mm";
+"SecurityCardFullSpecsViewController.weightFormat" = "%@g";
+"SecurityCardFullSpecsViewController.heightFormat" = "%@\nmm";
+"SecurityCardFullSpecsViewController.firmwareInfoHTMLFormat" = "<p>El firmware es el software principal que gobierna el comportamiento de tu tarjeta. Construido y mantenido por Muun.</p><p>Es código abierto, disponible públicamente para revisión. Encontralo y más información en <a href=\"%@\">GitHub</a>.</p>";
+
+"SecurityCardConnectingOverlayView.connectingTo" = "Conectando con %@";
+
+"ShippingViewController.title" = "Envío";
+"ShippingViewController.subtitle" = "Información necesaria para entregarte tu tarjeta.";
+"ShippingViewController.cta" = "IR A CHECKOUT";
+
+"SecurityCardProviderInfoModal.connectedTo" = "Conectado con %@";
+"SecurityCardProviderInfoModal.privacyDisclaimer" = "Tu billetera de Muun no comparte información personal.";
+"SecurityCardProviderInfoModal.closeAccessibilityLabel" = "Cerrar";
+
+"SecurityCardProviderPillView.accessibilityHint" = "Muestra información sobre el proveedor.";
+
+"ShippingFormView.fullName" = "Nombre completo";
+"ShippingFormView.email" = "Email";
+"ShippingFormView.shippingAddress" = "Dirección de envío";
+"ShippingFormView.countryRegion" = "País / Región";
+"ShippingFormView.city" = "Ciudad";
+"ShippingFormView.state" = "Provincia";
+"ShippingFormView.zipCode" = "Código postal";
+"ShippingFormView.fullNameRequired" = "El nombre completo es obligatorio";
+"ShippingFormView.emailRequired" = "El email es obligatorio";
+"ShippingFormView.emailInvalid" = "Ingresá un email válido";
+"ShippingFormView.shippingAddressRequired" = "La dirección de envío es obligatoria";
+"ShippingFormView.cityRequired" = "La ciudad es obligatoria";
+"ShippingFormView.stateRequired" = "La provincia es obligatoria";
+"ShippingFormView.zipCodeRequired" = "El código postal es obligatorio";

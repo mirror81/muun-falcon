@@ -20,6 +20,17 @@ enum CardNfcError: Error {
     case unsupportedTagConnected
 }
 
+extension CardNfcError: ClassifiedError {
+    var classification: ErrorClassification {
+        switch self {
+        case .unsupportedTagConnected:
+            return .expected
+        case .decodingMessageError:
+            return .unexpected
+        }
+    }
+}
+
 protocol NfcSession {
     /// Unlike Apollo where a new NfcSession is created per use case, this is a singleton
     /// registered in DataDependencyContainer. Therefore, the textProvider must be passed

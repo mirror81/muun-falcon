@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum SetupRecoveryCodeError: ErrorViewModel {
+enum SetupRecoveryCodeError: ErrorViewModel, Error {
     case failedToStartSetup
     case failedToFinishSetup
 
@@ -37,13 +37,22 @@ enum SetupRecoveryCodeError: ErrorViewModel {
     func analyticsEvent() -> AnalyticsEvent {
         switch self {
         case .failedToStartSetup:
-            return ErrorEvent(type: .rcSetupStartConnectionError)
+            return ErrorEvent(type: .rcSetupStartConnectionError, error: self)
         case .failedToFinishSetup:
-            return ErrorEvent(type: .rcSetupFinishConnectionError)
+            return ErrorEvent(type: .rcSetupFinishConnectionError, error: self)
         }
     }
 
     func secondaryButtonText() -> String {
         return L10n.ErrorView.goToSecurityCenter
+    }
+}
+
+extension SetupRecoveryCodeError: ClassifiedError {
+    var classification: ErrorClassification {
+        switch self {
+        case .failedToStartSetup, .failedToFinishSetup:
+            return .unexpected
+        }
     }
 }

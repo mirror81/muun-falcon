@@ -4,12 +4,13 @@ package musig
 
 import (
 	"bytes"
-	"fmt"
 
 	"github.com/btcsuite/btcd/btcec/v2"
 	"github.com/btcsuite/btcd/btcec/v2/schnorr"
 	musig2v100 "github.com/btcsuite/btcd/btcec/v2/schnorr/musig2"
+	"github.com/go-errors/errors"
 	"github.com/lightningnetwork/lnd/input"
+
 	"github.com/muun/libwallet/musig2v040"
 )
 
@@ -33,7 +34,7 @@ const (
 
 func MuSig2GenerateNonce(
 	musigVersion MusigVersion,
-	sessionId []byte,
+	sessionId []byte, //nolint:staticcheck // TODO: func parameter sessionId should be sessionID
 	publicKeyBytes []byte,
 ) (*musig2v100.Nonces, error) {
 
@@ -47,7 +48,9 @@ func MuSig2GenerateNonce(
 
 	case Musig2v100:
 		if len(publicKeyBytes) == 0 {
-			return nil, fmt.Errorf("a public key must be provided to generate nonces for MuSig2v100")
+			return nil, errors.Errorf(
+				"a public key must be provided to generate nonces for MuSig2v100",
+			)
 		}
 
 		publicKey, err := ParsePubKey(musigVersion, publicKeyBytes)
@@ -60,7 +63,7 @@ func MuSig2GenerateNonce(
 			musig2v100.WithCustomRand(bytes.NewBuffer(sessionId)),
 		)
 	default:
-		return nil, fmt.Errorf("unknown address version: <%d>",
+		return nil, errors.Errorf("unknown address version: <%d>",
 			musigVersion)
 	}
 }
@@ -75,20 +78,19 @@ func ParsePubKey(musigVersion MusigVersion, pubKeyBytes []byte) (*btcec.PublicKe
 		)
 
 		if len(pubKeyBytes) == 33 {
-			// if the not xOnly compressed was provided, then remove the
-			// parity bit
+			// if the not xOnly compressed was provided, then remove the parity bit
 			pubKey, err = schnorr.ParsePubKey(pubKeyBytes[1:])
 			if err != nil {
-				return nil, fmt.Errorf(
-					"error parsing public key for v0.4.0 (compressed format): %v",
+				return nil, errors.Errorf(
+					"error parsing public key for v0.4.0 (compressed format): %w",
 					err,
 				)
 			}
 		} else {
 			pubKey, err = schnorr.ParsePubKey(pubKeyBytes)
 			if err != nil {
-				return nil, fmt.Errorf(
-					"error parsing public key for v0.4.0 (x-only format): %v",
+				return nil, errors.Errorf(
+					"error parsing public key for v0.4.0 (x-only format): %w",
 					err,
 				)
 			}
@@ -98,12 +100,12 @@ func ParsePubKey(musigVersion MusigVersion, pubKeyBytes []byte) (*btcec.PublicKe
 	case Musig2v100:
 		pubKey, err := btcec.ParsePubKey(pubKeyBytes)
 		if err != nil {
-			return nil, fmt.Errorf("error parsing public key for v1.0.0 ("+
-				"compressed format): %v", err)
+			return nil, errors.Errorf("error parsing public key for v1.0.0 ("+
+				"compressed format): %w", err)
 		}
 		return pubKey, nil
 	default:
-		return nil, fmt.Errorf("unknown MuSig2 version: <%d>",
+		return nil, errors.Errorf("unknown MuSig2 version: <%d>",
 			musigVersion)
 	}
 }
@@ -115,14 +117,14 @@ func MuSig2ParsePubKeys(musigVersion MusigVersion,
 
 	allSignerPubKeys := make([]*btcec.PublicKey, len(rawPubKeys))
 	if len(rawPubKeys) < 2 {
-		return nil, fmt.Errorf("need at least two signing public keys")
+		return nil, errors.Errorf("need at least two signing public keys")
 	}
 
 	for idx, pubKeyBytes := range rawPubKeys {
 		pubKey, err := ParsePubKey(musigVersion, pubKeyBytes)
 		if err != nil {
-			return nil, fmt.Errorf("error parsing signer "+
-				"public key %d: %v", idx, err)
+			return nil, errors.Errorf("error parsing signer "+
+				"public key %d: %w", idx, err)
 		}
 		allSignerPubKeys[idx] = pubKey
 	}
@@ -130,8 +132,7 @@ func MuSig2ParsePubKeys(musigVersion MusigVersion,
 	return allSignerPubKeys, nil
 }
 
-// Computes the tweakedKey using a TapScript.merkleRoot or empty bytes as
-// recommended by BIP0086.
+// Computes the tweakedKey using a TapScript.merkleRoot or empty bytes as recommended by BIP0086.
 // The tweakedKey is used to generate the output address: Bech32m(tweakedKey)
 func Musig2CombinePubKeysWithTweak(
 	musigVersion MusigVersion,
@@ -163,18 +164,17 @@ func MuSig2CombineKeys(musigVersion MusigVersion,
 		return combineKeysV100RC2(allSignerPubKeys, sortKeys, tweaks)
 
 	default:
-		return nil, fmt.Errorf("unknown MuSig2 version: <%d>",
+		return nil, errors.Errorf("unknown MuSig2 version: <%d>",
 			musigVersion)
 	}
 }
 
-// combineKeysV100rc1 implements the MuSigCombineKeys logic for the MuSig2 BIP
-// draft version 1.0.0rc2.
+// combineKeysV100rc1 implements the MuSigCombineKeys logic for the MuSig2 BIP draft version
+// 1.0.0rc2.
 func combineKeysV100RC2(allSignerPubKeys []*btcec.PublicKey, sortKeys bool,
 	tweaks *MuSig2Tweaks) (*musig2v100.AggregateKey, error) {
 
-	// Convert the tweak options into the appropriate MuSig2 API functional
-	// options.
+	// Convert the tweak options into the appropriate MuSig2 API functional options.
 	var keyAggOpts []musig2v100.KeyAggOption
 	switch {
 	case tweaks.TaprootBIP0086Tweak:
@@ -227,25 +227,23 @@ func getKeyDerivationTweaksForMusig(
 	return tweakDerivationSteps, nil
 }
 
-// combineKeysV040 implements the MuSigCombineKeys logic for the MuSig2 BIP
-// draft version 0.4.0.
+// combineKeysV040 implements the MuSigCombineKeys logic for the MuSig2 BIP draft version 0.4.0.
 func combineKeysV040(allSignerPubKeys []*btcec.PublicKey, sortKeys bool,
 	tweaks *MuSig2Tweaks) (*musig2v100.AggregateKey, error) {
 
-	// Convert the tweak options into the appropriate MuSig2 API functional
-	// options.
+	// Convert the tweak options into the appropriate MuSig2 API functional options.
 	var keyAggOpts []musig2v040.KeyAggOption
 	switch {
 	case tweaks.TaprootBIP0086Tweak:
 		keyAggOpts = append(keyAggOpts, musig2v040.WithBIP86KeyTweak())
 	case len(tweaks.TaprootTweak) > 0:
-		return nil, fmt.Errorf(
+		return nil, errors.Errorf(
 			"taproot tweak bytes are not allowed for MuSig2v040Muun")
 	case len(tweaks.GenericTweaks) > 0:
-		return nil, fmt.Errorf(
+		return nil, errors.Errorf(
 			"generic tweaks are not available for Musig2v040Muun")
 	case len(tweaks.UnhardenedDerivationPath) > 0:
-		return nil, fmt.Errorf(
+		return nil, errors.Errorf(
 			"unhardened derivation is not available for Musig2v040Muun")
 	}
 
@@ -273,12 +271,12 @@ func MuSig2CreateContext(
 	switch musigVersion {
 	case Musig2v040Muun:
 		if len(tweaks.UnhardenedDerivationPath) > 0 {
-			return nil, nil, fmt.Errorf(
+			return nil, nil, errors.Errorf(
 				"unhardened derivation is not available for Musig2v040Muun")
 		}
 
 		if len(tweaks.TaprootTweak) > 0 {
-			return nil, nil, fmt.Errorf(
+			return nil, nil, errors.Errorf(
 				"taproot tweak bytes are not allowed for MuSig2v040Muun")
 		}
 
@@ -292,7 +290,7 @@ func MuSig2CreateContext(
 		)
 
 	default:
-		return nil, nil, fmt.Errorf("unknown MuSig2 : <%d>",
+		return nil, nil, errors.Errorf("unknown MuSig2 : <%d>",
 			musigVersion)
 	}
 }
@@ -307,7 +305,7 @@ func createContextV100RC2(
 ) (*musig2v100.Context, *musig2v100.Session, error) {
 
 	if localNonces == nil {
-		return nil, nil, fmt.Errorf("error creating MuSig2 signing " +
+		return nil, nil, errors.Errorf("error creating MuSig2 signing " +
 			"context: localNonces must be provided")
 	}
 
@@ -319,23 +317,23 @@ func createContextV100RC2(
 	allOpts := append(options, musig2v100.WithKnownSigners(allSignerPubKeys))
 	muSigContext, err := musig2v100.NewContext(privKey, true, allOpts...)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error creating MuSig2 signing "+
-			"context: %v", err)
+		return nil, nil, errors.Errorf("error creating MuSig2 signing "+
+			"context: %w", err)
 	}
 
 	muSigSession, err := muSigContext.NewSession(
 		musig2v100.WithPreGeneratedNonce(localNonces),
 	)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error creating MuSig2 signing "+
-			"session: %v", err)
+		return nil, nil, errors.Errorf("error creating MuSig2 signing "+
+			"session: %w", err)
 	}
 
 	return muSigContext, muSigSession, nil
 }
 
-// createContextV040 implements the MuSig2CreateContext logic for the MuSig2 BIP
-// draft version 0.4.0.
+// createContextV040 implements the MuSig2CreateContext logic for the MuSig2 BIP draft version
+// 0.4.0.
 func createContextV040(
 	privKey *btcec.PrivateKey,
 	allSignerPubKeys []*btcec.PublicKey,
@@ -344,7 +342,7 @@ func createContextV040(
 ) (*musig2v040.Context, *musig2v040.Session, error) {
 
 	if localNonces == nil {
-		return nil, nil, fmt.Errorf("error creating MuSig2 signing " +
+		return nil, nil, errors.Errorf("error creating MuSig2 signing " +
 			"context: localNonces must be provided")
 	}
 
@@ -357,16 +355,16 @@ func createContextV040(
 	)
 	muSigContext, err := musig2v040.NewContext(privKey, false, allOpts...)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error creating MuSig2 signing "+
-			"context: %v", err)
+		return nil, nil, errors.Errorf("error creating MuSig2 signing "+
+			"context: %w", err)
 	}
 
 	muSigSession, err := muSigContext.NewSession(
 		musig2v040.WithPreGeneratedNonce(localNonces),
 	)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error creating MuSig2 signing "+
-			"session: %v", err)
+		return nil, nil, errors.Errorf("error creating MuSig2 signing "+
+			"session: %w", err)
 	}
 
 	return muSigContext, muSigSession, nil
@@ -383,8 +381,8 @@ func MuSig2Sign(
 	case *musig2v100.Session:
 		partialSig, err := s.Sign(msg, musig2v100.WithSortedKeys())
 		if err != nil {
-			return nil, fmt.Errorf("error signing with local key: "+
-				"%v", err)
+			return nil, errors.Errorf("error signing with local key: "+
+				"%w", err)
 		}
 
 		return partialSig, nil
@@ -392,8 +390,8 @@ func MuSig2Sign(
 	case *musig2v040.Session:
 		partialSig, err := s.Sign(msg)
 		if err != nil {
-			return nil, fmt.Errorf("error signing with local key: "+
-				"%v", err)
+			return nil, errors.Errorf("error signing with local key: "+
+				"%w", err)
 		}
 
 		return &musig2v100.PartialSignature{
@@ -402,7 +400,7 @@ func MuSig2Sign(
 		}, nil
 
 	default:
-		return nil, fmt.Errorf("invalid session type <%T>", s)
+		return nil, errors.Errorf("invalid session type <%T>", s)
 	}
 }
 
@@ -417,8 +415,8 @@ func MuSig2CombineSig(
 	case *musig2v100.Session:
 		haveAllSigs, err := s.CombineSig(otherPartialSig)
 		if err != nil {
-			return false, fmt.Errorf("error combining partial "+
-				"signature: %v", err)
+			return false, errors.Errorf("error combining partial "+
+				"signature: %w", err)
 		}
 
 		return haveAllSigs, nil
@@ -429,19 +427,18 @@ func MuSig2CombineSig(
 			R: otherPartialSig.R,
 		})
 		if err != nil {
-			return false, fmt.Errorf("error combining partial "+
-				"signature: %v", err)
+			return false, errors.Errorf("error combining partial "+
+				"signature: %w", err)
 		}
 
 		return haveAllSigs, nil
 
 	default:
-		return false, fmt.Errorf("invalid session type <%T>", s)
+		return false, errors.Errorf("invalid session type <%T>", s)
 	}
 }
 
-// SerializePartialSignature encodes the partial signature to a fixed size byte
-// array.
+// SerializePartialSignature encodes the partial signature to a fixed size byte array.
 func SerializePartialSignature(
 	sig *musig2v100.PartialSignature,
 ) ([input.MuSig2PartialSigSize]byte, error) {
@@ -451,12 +448,12 @@ func SerializePartialSignature(
 		result [input.MuSig2PartialSigSize]byte
 	)
 	if err := sig.Encode(&buf); err != nil {
-		return result, fmt.Errorf("error encoding partial signature: "+
-			"%v", err)
+		return result, errors.Errorf("error encoding partial signature: "+
+			"%w", err)
 	}
 
 	if buf.Len() != input.MuSig2PartialSigSize {
-		return result, fmt.Errorf("invalid partial signature length, "+
+		return result, errors.Errorf("invalid partial signature length, "+
 			"got %d wanted %d", buf.Len(), input.MuSig2PartialSigSize)
 	}
 
@@ -471,13 +468,13 @@ func DeserializePartialSignature(
 ) (*musig2v100.PartialSignature, error) {
 
 	if len(scalarBytes) != input.MuSig2PartialSigSize {
-		return nil, fmt.Errorf("invalid partial signature length, got "+
+		return nil, errors.Errorf("invalid partial signature length, got "+
 			"%d wanted %d", len(scalarBytes), input.MuSig2PartialSigSize)
 	}
 
 	sig := &musig2v100.PartialSignature{}
 	if err := sig.Decode(bytes.NewReader(scalarBytes)); err != nil {
-		return nil, fmt.Errorf("error decoding partial signature: %w",
+		return nil, errors.Errorf("error decoding partial signature: %w",
 			err)
 	}
 

@@ -25,11 +25,13 @@ public class ApplicationLockManager {
     private let userRepository: UserRepository
     private let preferences: Preferences
 
-    init(secureStorage: SecureStorage,
-         sessionRepository: SessionRepository,
-         logoutAction: LogoutAction,
-         userRepository: UserRepository,
-         preferences: Preferences) {
+    init(
+        secureStorage: SecureStorage,
+        sessionRepository: SessionRepository,
+        logoutAction: LogoutAction,
+        userRepository: UserRepository,
+        preferences: Preferences
+    ) {
 
         self.secureStorage = secureStorage
         self.sessionRepository = sessionRepository
@@ -67,8 +69,10 @@ public class ApplicationLockManager {
             Logger.fatal(error: error)
         }
 
+        let inactivityThreshold = ApplicationLockManager
+            .secondsInBackgroundBeforeShowingLockScreen
         let showPinDueToInactivty = appWasTerminated()
-            || getSecondsInBackground() > ApplicationLockManager.secondsInBackgroundBeforeShowingLockScreen
+            || getSecondsInBackground() > inactivityThreshold
 
         return hasPin
             && showPinDueToInactivty
@@ -117,8 +121,8 @@ public class ApplicationLockManager {
     }
 
     /*
-     Anon users can input their pin infinite times wrong, since we can't log out them because they would lose their
-     funds.
+     Anon users can input their pin infinite times wrong, since
+     we can't log out them because they would lose their funds.
      */
     private func isValidForUnrecoverableUser(pin: String) -> PinCheck {
         do {
@@ -194,7 +198,8 @@ public class ApplicationLockManager {
     }
 
     private func appWasTerminated() -> Bool {
-        // If the app is terminated, then Application Lock Manager will be instantiated once the app is reopen
+        // If the app is terminated, then Application Lock Manager will be instantiated once the app
+        // is reopen
         // causing lastTimeActive variable to be 0
         return lastTimeActive == 0
     }

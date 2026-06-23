@@ -26,17 +26,19 @@ public class SubmarineSwap: NSObject {
     let _payedAt: Date?
     public let _preimageInHex: String?
 
-    init(swapUuid: String,
-         invoice: String,
-         receiver: SubmarineSwapReceiver,
-         fundingOutput: SubmarineSwapFundingOutput,
-         fees: SubmarineSwapFees?,
-         expiresAt: Date,
-         willPreOpenChannel: Bool,
-         bestRouteFees: [BestRouteFees]?,
-         fundingOutputPolicies: FundingOutputPolicies?,
-         payedAt: Date?,
-         preimageInHex: String?) {
+    init(
+        swapUuid: String,
+        invoice: String,
+        receiver: SubmarineSwapReceiver,
+        fundingOutput: SubmarineSwapFundingOutput,
+        fees: SubmarineSwapFees?,
+        expiresAt: Date,
+        willPreOpenChannel: Bool,
+        bestRouteFees: [BestRouteFees]?,
+        fundingOutputPolicies: FundingOutputPolicies?,
+        payedAt: Date?,
+        preimageInHex: String?
+    ) {
         _swapUuid = swapUuid
         _invoice = invoice
         _receiver = receiver
@@ -122,9 +124,11 @@ public class SubmarineSwapReceiver: NSObject {
     public let _networkAddresses: [String]
     public let _publicKey: String?
 
-    init(alias: String?,
-         networkAddresses: [String],
-         publicKey: String?) {
+    init(
+        alias: String?,
+        networkAddresses: [String],
+        publicKey: String?
+    ) {
         self._alias = alias
         self._networkAddresses = networkAddresses
         self._publicKey = publicKey
@@ -151,19 +155,21 @@ public class SubmarineSwapFundingOutput: NSObject {
     public let _debtType: DebtType?
     public let _debtAmount: Satoshis?
 
-    init(scriptVersion: Int,
-         outputAddress: String,
-         outputAmount: Satoshis?,
-         confirmationsNeeded: Int?,
-         userLockTime: Int?,
-         userRefundAddress: MuunAddress?,
-         serverPaymentHashInHex: String,
-         serverPublicKeyInHex: String,
-         expirationTimeInBlocks: Int?,
-         userPublicKey: WalletPublicKey?,
-         muunPublicKey: WalletPublicKey?,
-         debtType: DebtType?,
-         debtAmount: Satoshis?) {
+    init(
+        scriptVersion: Int,
+        outputAddress: String,
+        outputAmount: Satoshis?,
+        confirmationsNeeded: Int?,
+        userLockTime: Int?,
+        userRefundAddress: MuunAddress?,
+        serverPaymentHashInHex: String,
+        serverPublicKeyInHex: String,
+        expirationTimeInBlocks: Int?,
+        userPublicKey: WalletPublicKey?,
+        muunPublicKey: WalletPublicKey?,
+        debtType: DebtType?,
+        debtAmount: Satoshis?
+    ) {
 
         _scriptVersion = scriptVersion
         _outputAddress = outputAddress
@@ -268,7 +274,12 @@ public class SubmarineSwapRequest: NSObject {
     let _origin: String
     let _bkgTimes: [BackgroundTimeLapse]
 
-    init(invoice: String, swapExpirationInBlocks: Int, origin: String, bkgTimes: [BackgroundTimeLapse]) {
+    init(
+        invoice: String,
+        swapExpirationInBlocks: Int,
+        origin: String,
+        bkgTimes: [BackgroundTimeLapse]
+    ) {
         _invoice = invoice
         _swapExpirationInBlocks = swapExpirationInBlocks
         _origin = origin
@@ -283,11 +294,13 @@ public class SwapExecutionParameters: NSObject {
     public let debtAmount: Satoshis
     public let confirmationsNeeded: UInt
 
-    public init(sweepFee: Satoshis,
-                routingFee: Satoshis,
-                debtType: DebtType,
-                debtAmount: Satoshis,
-                confirmationsNeeded: UInt) {
+    public init(
+        sweepFee: Satoshis,
+        routingFee: Satoshis,
+        debtType: DebtType,
+        debtAmount: Satoshis,
+        confirmationsNeeded: UInt
+    ) {
 
         self.sweepFee = sweepFee
         self.routingFee = routingFee

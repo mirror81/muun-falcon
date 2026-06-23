@@ -33,14 +33,19 @@ class PinViewController: MUViewController {
 
     private var uiTestLabel: UILabel! // This label is only used for ui tests purposes
 
-    private let notification = UINotificationFeedbackGenerator() // This is used to notify success or error to the user
+    private let notification =
+        UINotificationFeedbackGenerator() // This is used to notify success or error to the user
     private var currentPin = ""
     private var state: PinPresenterState
     private var isExistingUser = true
     private weak var appLockDelegate: LockDelegate?
     private var biometricsStatusProvider: BiometricsStatusProvider = .init()
 
-    fileprivate lazy var presenter = instancePresenter(PinPresenter.init, delegate: self, state: state)
+    fileprivate lazy var presenter = instancePresenter(
+        PinPresenter.init,
+        delegate: self,
+        state: state
+    )
 
     override var screenLoggingName: String {
         return "pin_\(state.loggingName())"
@@ -262,9 +267,13 @@ extension PinViewController: PinPresenterDelegate {
 
     func unlockSuccessful(authMethod: AuthMethod) {
         if let lockDelegate = self.appLockDelegate {
-            logEvent("pin",
-                     parameters: ["type": PinTypeParam.correct.rawValue,
-                                  "auth_method": authMethod.getName()])
+            logEvent(
+                "pin",
+                parameters: [
+                    "type": PinTypeParam.correct.rawValue,
+                    "auth_method": authMethod.getName()
+                ]
+            )
             pinView.pinValidationFeedback(isValid: true)
             notification.notificationOccurred(.success)
 
@@ -336,7 +345,7 @@ extension PinViewController: PinPresenterDelegate {
         }
     }
 
-    func pinChoosed() {
+    func pinChosen() {
         logScreen("pin_repeat")
         pinView.clearInput()
 

@@ -36,7 +36,10 @@ class ChangePasswordPrimingViewController: MUViewController {
 extension ChangePasswordPrimingViewController: ChangePasswordPrimingViewDelegate {
 
     func continueButtonTap() {
-        navigationController!.pushViewController(ChangePasswordEnterCurrentViewController(), animated: true)
+        navigationController!.pushViewController(
+            ChangePasswordEnterCurrentViewController(),
+            animated: true
+        )
     }
 
 }

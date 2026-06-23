@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 enum ChangePasswordState {
     case inputPassword
     case passwordMatch
@@ -23,28 +22,38 @@ protocol ChangePasswordNewViewPresenterDelegate: BasePresenterDelegate {
 class ChangePasswordNewViewPresenter<Delegate: ChangePasswordNewViewPresenterDelegate>:
     BasePresenter<Delegate> {
 
-    func onInputPasswordStateChanged(firstPassword: String,
-                                     secondPassword: String,
-                                     isAgreeChangePasswordChecked: Bool) {
-        let inputState = checkInputState(firstPassword: firstPassword,
-                                         secondPassword: secondPassword,
-                                         isAgreeChangePasswordChecked: isAgreeChangePasswordChecked)
+    func onInputPasswordStateChanged(
+        firstPassword: String,
+        secondPassword: String,
+        isAgreeChangePasswordChecked: Bool
+    ) {
+        let inputState = checkInputState(
+            firstPassword: firstPassword,
+            secondPassword: secondPassword,
+            isAgreeChangePasswordChecked: isAgreeChangePasswordChecked
+        )
 
         delegate.updateUi(state: inputState)
     }
 
-    func isPasswordChangeAllowed(firstPassword: String,
-                                 secondPassword: String,
-                                 isAgreeChangePasswordChecked: Bool) -> Bool {
-        let inputState = checkInputState(firstPassword: firstPassword,
-                                         secondPassword: secondPassword,
-                                         isAgreeChangePasswordChecked: isAgreeChangePasswordChecked)
+    func isPasswordChangeAllowed(
+        firstPassword: String,
+        secondPassword: String,
+        isAgreeChangePasswordChecked: Bool
+    ) -> Bool {
+        let inputState = checkInputState(
+            firstPassword: firstPassword,
+            secondPassword: secondPassword,
+            isAgreeChangePasswordChecked: isAgreeChangePasswordChecked
+        )
         return inputState == .confirmPassword
     }
 
-    private func checkInputState(firstPassword: String,
-                                 secondPassword: String,
-                                 isAgreeChangePasswordChecked: Bool) -> ChangePasswordState {
+    private func checkInputState(
+        firstPassword: String,
+        secondPassword: String,
+        isAgreeChangePasswordChecked: Bool
+    ) -> ChangePasswordState {
         let minimumPasswordLength = 8
 
         guard firstPassword.count >= minimumPasswordLength,

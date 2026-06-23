@@ -11,7 +11,7 @@ import RxSwift
 struct SecurityCardProvider {
     let name: String
     let colorHex: String
-    let material: String
+    let siteUrl: URL?
     let price: Double
     let shippingCost: Double
     let currencyCode: String

@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class MUDetailRowView: UIStackView {
 
     typealias TapHandler = () -> Void
@@ -23,19 +22,24 @@ class MUDetailRowView: UIStackView {
     let iconTapHandler: TapHandler?
 
     convenience init(title: String, content: String) {
-        self.init(title: NSAttributedString(string: title), content: NSAttributedString(string: content))
+        self.init(
+            title: NSAttributedString(string: title),
+            content: NSAttributedString(string: content)
+        )
     }
 
-    init(title: NSAttributedString,
-         content: NSAttributedString? = nil,
-         tapIcon: UIImage? = nil,
-         onTap: TapHandler? = nil,
-         onLongPress: TapHandler? = nil,
-         onIconTap: TapHandler? = nil,
-         titleColor: UIColor = MUDetailRowView.titleColor,
-         contentColor: UIColor = MUDetailRowView.contentColor,
-         titleFont: UIFont = MUDetailRowView.titleFont,
-         contentFont: UIFont = MUDetailRowView.contentFont) {
+    init(
+        title: NSAttributedString,
+        content: NSAttributedString? = nil,
+        tapIcon: UIImage? = nil,
+        onTap: TapHandler? = nil,
+        onLongPress: TapHandler? = nil,
+        onIconTap: TapHandler? = nil,
+        titleColor: UIColor = MUDetailRowView.titleColor,
+        contentColor: UIColor = MUDetailRowView.contentColor,
+        titleFont: UIFont = MUDetailRowView.titleFont,
+        contentFont: UIFont = MUDetailRowView.contentFont
+    ) {
 
         self.tapHandler = onTap
         self.iconTapHandler = onIconTap
@@ -97,7 +101,9 @@ class MUDetailRowView: UIStackView {
             if onIconTap != nil {
                 iconView.isUserInteractionEnabled = true
                 iconView.gestureRecognizers?.removeAll()
-                iconView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: .iconTap))
+                iconView.addGestureRecognizer(
+                    UITapGestureRecognizer(target: self, action: .iconTap)
+                )
                 let touchExpandedFrame = createTouchExpandedFrameForIcon()
                 addArrangedSubview(touchExpandedFrame)
             }
@@ -127,10 +133,12 @@ class MUDetailRowView: UIStackView {
             iconTapHandler()
         }
     }
-    
+
     private func createTouchExpandedFrameForIcon() -> UIView {
         let extendedTappableFrame = UIView()
-        extendedTappableFrame.addGestureRecognizer(UITapGestureRecognizer(target: self, action: .iconTap))
+        extendedTappableFrame.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: .iconTap)
+        )
         extendedTappableFrame.backgroundColor = .clear
         extendedTappableFrame.translatesAutoresizingMaskIntoConstraints = false
         extendedTappableFrame.isUserInteractionEnabled = true
@@ -145,51 +153,73 @@ class MUDetailRowView: UIStackView {
 extension MUDetailRowView {
 
     static func amount(_ amount: BitcoinAmount, with title: String) -> MUDetailRowView {
-        return MUDetailRowView(title: NSAttributedString(string: title),
-                             content: amount.attributedString(with: MUDetailRowView.contentFont))
+        return MUDetailRowView(
+            title: NSAttributedString(string: title),
+            content: amount.attributedString(with: MUDetailRowView.contentFont)
+        )
     }
 
-    static func link(_ text: String, title: String, onTap: @escaping MUDetailRowView.TapHandler) -> MUDetailRowView {
+    static func link(
+        _ text: String,
+        title: String,
+        onTap: @escaping MUDetailRowView.TapHandler
+    ) -> MUDetailRowView {
 
-        return MUDetailRowView(title: NSAttributedString(string: title),
-                             content: NSAttributedString(string: text),
-                             onTap: onTap,
-                             contentColor: Asset.Colors.muunBlue.color)
+        return MUDetailRowView(
+            title: NSAttributedString(string: title),
+            content: NSAttributedString(string: text),
+            onTap: onTap,
+            contentColor: Asset.Colors.muunBlue.color
+        )
     }
 
     static func text(_ text: String) -> MUDetailRowView {
-        return MUDetailRowView(title: NSAttributedString(string: text),
-                             titleColor: MUDetailRowView.contentColor,
-                             titleFont: MUDetailRowView.contentFont)
+        return MUDetailRowView(
+            title: NSAttributedString(string: text),
+            titleColor: MUDetailRowView.contentColor,
+            titleFont: MUDetailRowView.contentFont
+        )
     }
 
-    static func text(_ text: String, link: String, onTap: @escaping MUDetailRowView.TapHandler) -> MUDetailRowView {
+    static func text(
+        _ text: String,
+        link: String,
+        onTap: @escaping MUDetailRowView.TapHandler
+    ) -> MUDetailRowView {
 
         let content = text
             .set(font: MUDetailRowView.contentFont)
             .set(underline: link, color: Asset.Colors.muunBlue.color)
 
-        return MUDetailRowView(title: content,
-                             onTap: onTap,
-                             titleColor: MUDetailRowView.contentColor)
+        return MUDetailRowView(
+            title: content,
+            onTap: onTap,
+            titleColor: MUDetailRowView.contentColor
+        )
     }
 
-    static func clipboard(_ content: String,
-                          title: String,
-                          valueToBeCopied: String? = nil,
-                          controller: DisplayableToast) -> MUDetailRowView {
-        return clipboard(content.toAttributedString(),
-                         title: title.toAttributedString(),
-                         valueToBeCopied: valueToBeCopied,
-                         controller: controller,
-                         takeTapOnlyOnButton: false)
+    static func clipboard(
+        _ content: String,
+        title: String,
+        valueToBeCopied: String? = nil,
+        controller: DisplayableToast
+    ) -> MUDetailRowView {
+        return clipboard(
+            content.toAttributedString(),
+            title: title.toAttributedString(),
+            valueToBeCopied: valueToBeCopied,
+            controller: controller,
+            takeTapOnlyOnButton: false
+        )
     }
 
-    static func clipboard(_ content: NSAttributedString? = nil,
-                          title: NSAttributedString,
-                          valueToBeCopied: String? = nil,
-                          controller: DisplayableToast,
-                          takeTapOnlyOnButton: Bool) -> MUDetailRowView {
+    static func clipboard(
+        _ content: NSAttributedString? = nil,
+        title: NSAttributedString,
+        valueToBeCopied: String? = nil,
+        controller: DisplayableToast,
+        takeTapOnlyOnButton: Bool
+    ) -> MUDetailRowView {
         let onTap = { [weak controller] in
             if let valueToBeCopied = valueToBeCopied {
                 UIPasteboard.general.string = valueToBeCopied
@@ -205,16 +235,20 @@ extension MUDetailRowView {
         }
 
         let onTapAllView: (() -> Void)? = takeTapOnlyOnButton ? nil : onTap
-        return MUDetailRowView(title: title,
-                               content: content,
-                               tapIcon: Asset.Assets.copy.image,
-                               onTap: onTapAllView,
-                               onIconTap: onTap)
+        return MUDetailRowView(
+            title: title,
+            content: content,
+            tapIcon: Asset.Assets.copy.image,
+            onTap: onTapAllView,
+            onIconTap: onTap
+        )
     }
 
-    static func copyableAmount(_ amount: BitcoinAmount,
-                               title: String,
-                               controller: MUViewController) -> MUDetailRowView {
+    static func copyableAmount(
+        _ amount: BitcoinAmount,
+        title: String,
+        controller: MUViewController
+    ) -> MUDetailRowView {
         let onTap = { [weak controller] in
             UIPasteboard.general.string = amount.inSatoshis.toBTC().toAmountPlusCode()
 
@@ -223,10 +257,12 @@ extension MUDetailRowView {
             }
         }
 
-        return MUDetailRowView(title: NSAttributedString(string: title),
-                             content: amount.attributedString(with: MUDetailRowView.contentFont),
-                             tapIcon: Asset.Assets.copy.image,
-                             onTap: onTap)
+        return MUDetailRowView(
+            title: NSAttributedString(string: title),
+            content: amount.attributedString(with: MUDetailRowView.contentFont),
+            tapIcon: Asset.Assets.copy.image,
+            onTap: onTap
+        )
     }
 }
 

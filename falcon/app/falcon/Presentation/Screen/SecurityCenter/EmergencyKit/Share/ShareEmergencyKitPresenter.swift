@@ -6,7 +6,6 @@
 //  Copyright © 2020 muun. All rights reserved.
 //
 
-
 import RxSwift
 import GoogleSignIn
 import GoogleAPIClientForREST
@@ -15,14 +14,17 @@ import Foundation
 protocol ShareEmergencyKitPresenterDelegate: BasePresenterDelegate {
     func gotEmergencyKit(_ kit: EmergencyKit)
     func errorUploadingToCloud(option: EmergencyKitSavingOption, error: Error)
-    func uploadToCloudSuccessful(kit: EmergencyKit,
-                                 option: EmergencyKitSavingOption,
-                                 link: URL?)
+    func uploadToCloudSuccessful(
+        kit: EmergencyKit,
+        option: EmergencyKitSavingOption,
+        link: URL?
+    )
     func hideUploadingEKView(completion: (() -> Void)?)
     func abortExportBecauseOfError()
 }
 
-class ShareEmergencyKitPresenter<Delegate: ShareEmergencyKitPresenterDelegate>: BasePresenter<Delegate> {
+class ShareEmergencyKitPresenter<Delegate: ShareEmergencyKitPresenterDelegate>:
+    BasePresenter<Delegate> {
 
     fileprivate let emergencyKitDataSelector: EmergencyKitDataSelector
 
@@ -33,14 +35,15 @@ class ShareEmergencyKitPresenter<Delegate: ShareEmergencyKitPresenterDelegate>: 
     fileprivate let featureFlagsSelector: FeatureFlagsSelector
     fileprivate let timeTracker: TimeTracker
 
-    init(delegate: Delegate,
-         emergencyKitExportedAction: ReportEmergencyKitExportedAction,
-         emergencyKitDataSelector: EmergencyKitDataSelector,
-         emergencyKitVerificationCodesRepository: EmergencyKitRepository,
-         feedbackAction: SupportAction,
-         sessionActions: SessionActions,
-         featureFlagsSelector: FeatureFlagsSelector,
-         timeTracker: TimeTracker
+    init(
+        delegate: Delegate,
+        emergencyKitExportedAction: ReportEmergencyKitExportedAction,
+        emergencyKitDataSelector: EmergencyKitDataSelector,
+        emergencyKitVerificationCodesRepository: EmergencyKitRepository,
+        feedbackAction: SupportAction,
+        sessionActions: SessionActions,
+        featureFlagsSelector: FeatureFlagsSelector,
+        timeTracker: TimeTracker
     ) {
         self.emergencyKitExportedAction = emergencyKitExportedAction
         self.emergencyKitDataSelector = emergencyKitDataSelector
@@ -63,8 +66,10 @@ class ShareEmergencyKitPresenter<Delegate: ShareEmergencyKitPresenterDelegate>: 
 
         // take(1): the EK is generated once. Without it, subsequent emissions (e.g. feature flags
         // update) would call finish() again and crash since the timer was only started once.
-        subscribeTo(Observable.combineLatest(obs,
-                                             featureFlagsSelector.run()).take(1)) { (data, flags) in
+        subscribeTo(Observable.combineLatest(
+            obs,
+            featureFlagsSelector.run()
+        ).take(1)) { (data, flags) in
             let isGoRendering = flags.contains(.ekGoRendering)
             let kit = EmergencyKit.generate(
                 data: data,
@@ -76,7 +81,7 @@ class ShareEmergencyKitPresenter<Delegate: ShareEmergencyKitPresenterDelegate>: 
             } else {
                 legacyKitE2eTrace.finish()
             }
-            
+
             self.reportGenerated(kit: kit)
             self.emergencyKitVerificationCodesRepository.store(code: kit.verificationCode)
             self.delegate.gotEmergencyKit(kit)
@@ -109,7 +114,11 @@ class ShareEmergencyKitPresenter<Delegate: ShareEmergencyKitPresenterDelegate>: 
         return options
     }
 
-    private func reportExportedViaCloud(kit: EmergencyKit, option: EmergencyKitSavingOption, link: URL?) {
+    private func reportExportedViaCloud(
+        kit: EmergencyKit,
+        option: EmergencyKitSavingOption,
+        link: URL?
+    ) {
         emergencyKitExportedAction.reset()
         subscribeTo(emergencyKitExportedAction.getState()) { state in
             switch state.type {
@@ -178,14 +187,16 @@ class ShareEmergencyKitPresenter<Delegate: ShareEmergencyKitPresenterDelegate>: 
                 return
             }
 
-            var components = kitUrl.flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false) }
+            var components = kitUrl
+                .flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false) }
             components?.scheme = "shareddocuments"
             self.reportExportedViaCloud(kit: kit, option: .icloud, link: components?.url)
         }
     }
 
     private func isDriveAvailable() -> Bool {
-        // This is a heuristic to only display the drive option to users that we think are using gmail and won't forget
+        // This is a heuristic to only display the drive option to users that we think are using
+        // gmail and won't forget
         // their password.
         let isDriveInstalled = isInstalled(urlScheme: "googledrive://")
         let isGmailInstalled = isInstalled(urlScheme: "googlegmail://")

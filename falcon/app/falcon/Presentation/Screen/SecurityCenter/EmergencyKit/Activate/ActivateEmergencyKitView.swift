@@ -50,17 +50,24 @@ final class ActivateEmergencyKitView: UIView {
         addSubview(titleAndDescriptionView)
         NSLayoutConstraint.activate([
             titleAndDescriptionView.topAnchor.constraint(equalTo: topAnchor),
-            titleAndDescriptionView.leadingAnchor.constraint(equalTo: leadingAnchor,
-                                                             constant: .sideMargin),
-            titleAndDescriptionView.trailingAnchor.constraint(equalTo: trailingAnchor,
-                                                              constant: -.sideMargin)
+            titleAndDescriptionView.leadingAnchor.constraint(
+                equalTo: leadingAnchor,
+                constant: .sideMargin
+            ),
+            titleAndDescriptionView.trailingAnchor.constraint(
+                equalTo: trailingAnchor,
+                constant: -.sideMargin
+            )
         ])
 
         titleAndDescriptionView.titleText = L10n.ActivateEmergencyKitView.s1
-        titleAndDescriptionView.descriptionText = L10n.ActivateEmergencyKitView.activationDescription
+        titleAndDescriptionView.descriptionText = L10n.ActivateEmergencyKitView
+            .activationDescription
             .attributedForDescription()
-            .set(bold: L10n.ActivateEmergencyKitView.boldDescription,
-                 color: Asset.Colors.title.color)
+            .set(
+                bold: L10n.ActivateEmergencyKitView.boldDescription,
+                color: Asset.Colors.title.color
+            )
         titleAndDescriptionView.animate()
     }
 
@@ -71,7 +78,10 @@ final class ActivateEmergencyKitView: UIView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(stackView)
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: titleAndDescriptionView.bottomAnchor, constant: 32),
+            stackView.topAnchor.constraint(
+                equalTo: titleAndDescriptionView.bottomAnchor,
+                constant: 32
+            ),
             stackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             stackView.heightAnchor.constraint(equalToConstant: 44)
         ])
@@ -86,8 +96,10 @@ final class ActivateEmergencyKitView: UIView {
             tf.backgroundColor = Asset.Colors.muunAlmostWhite.color
             tf.textColor = Asset.Colors.title.color
             tf.tintColor = Asset.Colors.title.color
-            tf.font = Constant.Fonts.monospacedDigitSystemFont(size: .welcomeMessage,
-                                                               weight: .semibold)
+            tf.font = Constant.Fonts.monospacedDigitSystemFont(
+                size: .welcomeMessage,
+                weight: .semibold
+            )
             tf.textAlignment = .center
             tf.roundCorners()
 
@@ -118,10 +130,14 @@ final class ActivateEmergencyKitView: UIView {
         addSubview(activationCodeLabel)
         NSLayoutConstraint.activate([
             activationCodeLabel.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 12),
-            activationCodeLabel.leadingAnchor.constraint(equalTo: leadingAnchor,
-                                                         constant: .sideMargin),
-            activationCodeLabel.trailingAnchor.constraint(equalTo: trailingAnchor,
-                                                          constant: -.sideMargin)
+            activationCodeLabel.leadingAnchor.constraint(
+                equalTo: leadingAnchor,
+                constant: .sideMargin
+            ),
+            activationCodeLabel.trailingAnchor.constraint(
+                equalTo: trailingAnchor,
+                constant: -.sideMargin
+            )
         ])
     }
 
@@ -173,13 +189,18 @@ final class ActivateEmergencyKitView: UIView {
     }
 
     func oldCode(_ firstDigitsOfOriginalCode: String) {
-        activationCodeLabel.attributedText = L10n.ActivateEmergencyKitView.oldCodeError(firstDigitsOfOriginalCode)
-            .set(font: Constant.Fonts.system(size: .notice),
-                 lineSpacing: Constant.FontAttributes.lineSpacing,
-                 kerning: Constant.FontAttributes.kerning,
-                 alignment: .center)
-            .set(tint: L10n.ActivateEmergencyKitView.oldCodeErrorRed,
-                 color: Asset.Colors.muunRed.color)
+        activationCodeLabel.attributedText = L10n.ActivateEmergencyKitView
+            .oldCodeError(firstDigitsOfOriginalCode)
+            .set(
+                font: Constant.Fonts.system(size: .notice),
+                lineSpacing: Constant.FontAttributes.lineSpacing,
+                kerning: Constant.FontAttributes.kerning,
+                alignment: .center
+            )
+            .set(
+                tint: L10n.ActivateEmergencyKitView.oldCodeErrorRed,
+                color: Asset.Colors.muunRed.color
+            )
             .set(bold: firstDigitsOfOriginalCode, color: Asset.Colors.muunGrayDark.color)
         activationCodeLabel.shake()
     }
@@ -195,7 +216,8 @@ extension ActivateEmergencyKitView: UITextFieldDelegate {
     func textField(
         _ textField: UITextField,
         shouldChangeCharactersIn range: NSRange,
-        replacementString string: String) -> Bool {
+        replacementString string: String
+    ) -> Bool {
 
         resetActivationCodeLabel()
 

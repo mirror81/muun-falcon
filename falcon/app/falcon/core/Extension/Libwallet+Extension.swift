@@ -18,7 +18,9 @@ extension FeeWindow {
         for (key, value) in targetedFees {
             let feeRate = (value.satsPerVByte as NSDecimalNumber).doubleValue
             window.putTargetedFees(
-                Int64(key), feeRateInSatsPerVByte: feeRate)
+                Int64(key),
+                feeRateInSatsPerVByte: feeRate
+            )
         }
         return window
     }
@@ -45,7 +47,8 @@ extension SizeForAmount {
 
         let sizeForAmount = NewopSizeForAmount()
         sizeForAmount.amountInSat = amount
-        sizeForAmount.sizeInVByte = sizeInBytes / 4 // This is necessary to convert the size in weight units to vbytes as accepted by libwallet
+        // Convert the size in weight units to vbytes as accepted by libwallet
+        sizeForAmount.sizeInVByte = sizeInBytes / 4
         sizeForAmount.outpoint = outpoint ?? ""
         sizeForAmount.utxoStatus = utxoStatus!.rawValue
 
@@ -111,10 +114,12 @@ extension NewopBitcoinAmount {
 
 extension NewopFeeBumpInfo {
     public func adapt() -> FeeBumpInfo {
-        return FeeBumpInfo(uuid: setUUID,
-                           amountInSat: Satoshis(value: amountInSat),
-                           refreshPolicy: refreshPolicy,
-                           secondsSinceLastUpdate: secondsSinceLastUpdate)
+        return FeeBumpInfo(
+            uuid: setUUID,
+            amountInSat: Satoshis(value: amountInSat),
+            refreshPolicy: refreshPolicy,
+            secondsSinceLastUpdate: secondsSinceLastUpdate
+        )
     }
 }
 

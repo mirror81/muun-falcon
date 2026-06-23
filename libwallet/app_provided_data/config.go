@@ -6,8 +6,9 @@ type Config struct {
 	SocketPath                string
 	FeatureStatusProvider     BackendActivatedFeatureStatusProvider
 	AppLogSink                AppLogSink
-	HttpClientSessionProvider HttpClientSessionProvider
+	HttpClientSessionProvider HttpClientSessionProvider //nolint:staticcheck // TODO: struct field HttpClientSessionProvider should be HTTPClientSessionProvider
 	NfcBridge                 NfcBridge
 	KeyProvider               KeyProvider
+	SecureKeyValueStorage     SecureKeyValueStorage
 	Network                   string
 }

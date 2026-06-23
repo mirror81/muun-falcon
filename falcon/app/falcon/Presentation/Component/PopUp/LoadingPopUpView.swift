@@ -58,7 +58,10 @@ class LoadingPopUpView: UIView {
             messageLabel.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 24),
             messageLabel.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -24),
             messageLabel.centerXAnchor.constraint(equalTo: card.centerXAnchor),
-            messageLabel.topAnchor.constraint(equalTo: activityIndicator.bottomAnchor, constant: .sideMargin),
+            messageLabel.topAnchor.constraint(
+                equalTo: activityIndicator.bottomAnchor,
+                constant: .sideMargin
+            ),
             messageLabel.bottomAnchor.constraint(equalTo: card.bottomAnchor, constant: -24)
         ])
     }

@@ -10,7 +10,7 @@ import UIKit
 
 protocol PinPresenterDelegate: BasePresenterDelegate {
     func pinRepeated(isValid: Bool)
-    func pinChoosed()
+    func pinChosen()
     func displayAttemptsLeftHint(attemptsLeft: Int)
     func unlockSuccessful(authMethod: AuthMethod)
     func unlockUnsuccessful(attemptsLeft: Int, isUnrecoverableUser: Bool)
@@ -59,12 +59,14 @@ class PinPresenter<Delegate: PinPresenterDelegate>: BasePresenter<Delegate> {
 
     private var state: PinPresenterState
 
-    init(delegate: Delegate,
-         state: PinPresenterState,
-         applicationLockManager: ApplicationLockManager,
-         syncAction: SyncAction,
-         fcmTokenAction: FCMTokenAction,
-         preferences: Preferences) {
+    init(
+        delegate: Delegate,
+        state: PinPresenterState,
+        applicationLockManager: ApplicationLockManager,
+        syncAction: SyncAction,
+        fcmTokenAction: FCMTokenAction,
+        preferences: Preferences
+    ) {
 
         self.state = state
         self.applicationLockManager = applicationLockManager
@@ -87,9 +89,11 @@ class PinPresenter<Delegate: PinPresenterDelegate>: BasePresenter<Delegate> {
             let primaryCurrency = CurrencyHelper.currencyForLocale().code
             // Do not remove this or consider the syncScreen will depend on the state the action
             // gets here.
-            syncAction.run(signFlow: signFlow,
-                           gcmToken: getGcmToken(),
-                           currencyCode: primaryCurrency)
+            syncAction.run(
+                signFlow: signFlow,
+                gcmToken: getGcmToken(),
+                currencyCode: primaryCurrency
+            )
         }
     }
 
@@ -99,7 +103,7 @@ class PinPresenter<Delegate: PinPresenterDelegate>: BasePresenter<Delegate> {
             firstLoopPin = pin
 
             state = .repeatPin
-            delegate.pinChoosed()
+            delegate.pinChosen()
 
         } else if state == .repeatPin {
             secondLoopPin = pin
@@ -119,8 +123,10 @@ class PinPresenter<Delegate: PinPresenterDelegate>: BasePresenter<Delegate> {
             case .valid:
                 delegate.unlockSuccessful(authMethod: .pin)
             case .invalid(let isUnrecoverableUser):
-                delegate.unlockUnsuccessful(attemptsLeft: getAttemptsLeft(),
-                                            isUnrecoverableUser: isUnrecoverableUser)
+                delegate.unlockUnsuccessful(
+                    attemptsLeft: getAttemptsLeft(),
+                    isUnrecoverableUser: isUnrecoverableUser
+                )
             case .noMoreAttempts:
                 delegate.noMoreAttempts()
             }

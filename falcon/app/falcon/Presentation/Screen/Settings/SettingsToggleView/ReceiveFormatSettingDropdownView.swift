@@ -6,7 +6,6 @@
 //  Copyright © 2020 muun. All rights reserved.
 //
 
-
 import UIKit
 
 final class ReceiveFormatSettingDropdownView: MUView, PresenterInstantior {
@@ -37,8 +36,10 @@ final class ReceiveFormatSettingDropdownView: MUView, PresenterInstantior {
         fatalError("not implemented")
     }
 
-    init(title: String,
-         subtitle: UILabel) {
+    init(
+        title: String,
+        subtitle: UILabel
+    ) {
         self.title = title
         self.subtitle = subtitle
         super.init(frame: CGRect.zero)
@@ -69,13 +70,16 @@ final class ReceiveFormatSettingDropdownView: MUView, PresenterInstantior {
         presenter?.tearDown()
     }
 
-    func presentActionSheet(actionSheetDelegate: MUActionSheetViewDelegate,
-                            selectedOption: any MUActionSheetOption) {
+    func presentActionSheet(
+        actionSheetDelegate: MUActionSheetViewDelegate,
+        selectedOption: any MUActionSheetOption
+    ) {
         let vc = MUActionSheetView(
             delegate: actionSheetDelegate,
             headerTitle: L10n.ReceiveFormatSettingDropdownView.receiveFormatActionSheetTitle,
             screenNameForLogs: "receive_format_select",
-            viewOptions: ReceiveFormatOptionsRetriever.run(selectedOption: selectedOption))
+            viewOptions: ReceiveFormatOptionsRetriever.run(selectedOption: selectedOption)
+        )
 
         present(vc, animated: true, completion: nil)
     }
@@ -115,7 +119,9 @@ private extension ReceiveFormatSettingDropdownView {
             verticalStack.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
             verticalStack.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
             verticalStack.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            verticalStack.bottomAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.bottomAnchor)
+            verticalStack.bottomAnchor.constraint(
+                lessThanOrEqualTo: safeAreaLayoutGuide.bottomAnchor
+            )
         ])
 
         return verticalStack
@@ -129,10 +135,12 @@ private extension ReceiveFormatSettingDropdownView {
         toggleStackView.distribution = .equalSpacing
         toggleStackView.backgroundColor = Asset.Colors.cellBackground.color
         toggleStackView.spacing = Constant.Dimens.viewControllerPadding
-        toggleStackView.layoutMargins = UIEdgeInsets(top: 0,
-                                                     left: Constant.Dimens.viewControllerPadding,
-                                                     bottom: 0,
-                                                     right: Constant.Dimens.viewControllerPadding)
+        toggleStackView.layoutMargins = UIEdgeInsets(
+            top: 0,
+            left: Constant.Dimens.viewControllerPadding,
+            bottom: 0,
+            right: Constant.Dimens.viewControllerPadding
+        )
         toggleStackView.isLayoutMarginsRelativeArrangement = true
 
         mainStackView.addArrangedSubview(toggleStackView)
@@ -163,10 +171,14 @@ private extension ReceiveFormatSettingDropdownView {
     func addSubtitle(to mainStackView: UIStackView) {
         mainStackView.addArrangedSubview(subtitle)
         NSLayoutConstraint.activate([
-            subtitle.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor,
-                                               constant: -Constant.Dimens.viewControllerPadding),
-            subtitle.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor,
-                                                    constant: Constant.Dimens.viewControllerPadding)
+            subtitle.trailingAnchor.constraint(
+                equalTo: mainStackView.trailingAnchor,
+                constant: -Constant.Dimens.viewControllerPadding
+            ),
+            subtitle.leadingAnchor.constraint(
+                equalTo: mainStackView.leadingAnchor,
+                constant: Constant.Dimens.viewControllerPadding
+            )
         ])
     }
 
@@ -204,30 +216,41 @@ enum ReceiveFormatPreferenceViewModel: String, MUActionSheetOption {
     case UNIFIED
 
     var name: String {
-        return getValue(onChain: L10n.ReceiveFormatSettingDropdownView.receiveFormatBTCOption,
-                        lightning: L10n.ReceiveFormatSettingDropdownView.receiveFormatLNOption,
-                        unified: L10n.ReceiveFormatSettingDropdownView.receiveFormatUnifiedOption)
+        return getValue(
+            onChain: L10n.ReceiveFormatSettingDropdownView.receiveFormatBTCOption,
+            lightning: L10n.ReceiveFormatSettingDropdownView.receiveFormatLNOption,
+            unified: L10n.ReceiveFormatSettingDropdownView.receiveFormatUnifiedOption
+        )
     }
 
     var shortName: String {
-        return getValue(onChain: L10n.ReceiveFormatSettingDropdownView.bitcoinCurrentValue,
-                        lightning: L10n.ReceiveFormatSettingDropdownView.lightningCurrentValue,
-                        unified: L10n.ReceiveFormatSettingDropdownView.receiveFormatUnifiedOption)
+        return getValue(
+            onChain: L10n.ReceiveFormatSettingDropdownView.bitcoinCurrentValue,
+            lightning: L10n.ReceiveFormatSettingDropdownView.lightningCurrentValue,
+            unified: L10n.ReceiveFormatSettingDropdownView.receiveFormatUnifiedOption
+        )
     }
 
     var description: NSAttributedString {
-        let btcDesc = L10n.ReceiveFormatSettingDropdownView.receiveFormatBTCDescription.toAttributedString()
-        let lndDesc = L10n.ReceiveFormatSettingDropdownView.receiveFormatLNDescription.toAttributedString()
-        return getValue(onChain: btcDesc,
-                        lightning: lndDesc,
-                        unified: getUnifiedDescription())
+        let btcDesc = L10n.ReceiveFormatSettingDropdownView.receiveFormatBTCDescription
+            .toAttributedString()
+        let lndDesc = L10n.ReceiveFormatSettingDropdownView.receiveFormatLNDescription
+            .toAttributedString()
+        return getValue(
+            onChain: btcDesc,
+            lightning: lndDesc,
+            unified: getUnifiedDescription()
+        )
     }
 
     private func getUnifiedDescription() -> NSAttributedString {
         let text = L10n.ReceiveFormatSettingDropdownView.receiveFormatUnifiedDescription
             .set(font: Constant.Fonts.system(size: .helper))
-            .set(tint: L10n.ReceiveFormatSettingDropdownView.receiveFormatUnifiedDescriptionUnderline,
-                 color: Asset.Colors.black.color)
+            .set(
+                tint: L10n.ReceiveFormatSettingDropdownView
+                    .receiveFormatUnifiedDescriptionUnderline,
+                color: Asset.Colors.black.color
+            )
         return text
     }
 

@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class OperationTableViewCell: UITableViewCell {
 
     @IBOutlet private weak var operationTitleLabel: UILabel!

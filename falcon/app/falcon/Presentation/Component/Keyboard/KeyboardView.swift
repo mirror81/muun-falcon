@@ -113,7 +113,10 @@ class KeyboardView: MUView {
         }
     }
 
-    private func handleButtonTouched(_ sender: UILongPressGestureRecognizer, completion: () -> Void) {
+    private func handleButtonTouched(
+        _ sender: UILongPressGestureRecognizer,
+        completion: () -> Void
+    ) {
         switch sender.state {
         case .began:
             // Trigger haptic immediately on touch down

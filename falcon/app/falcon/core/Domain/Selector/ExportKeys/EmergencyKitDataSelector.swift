@@ -29,21 +29,26 @@ public class EmergencyKitDataSelector: BaseOptionalSelector<EmergencyKitData> {
                 let privateKey = try keysRepository.getBasePrivateKey()
                 let challengeKey = try keysRepository.getChallengeKey(with: .RECOVERY_CODE)
 
-                let encryptedKey = try Self.getOrCreateEncriptedUserPrivateKey(keysRepository: keysRepository,
-                                                                               challengeKey: challengeKey,
-                                                                               privateKey: privateKey,
-                                                                               muunPrivateKey: muunKey)
+                let encryptedKey = try Self.getOrCreateEncriptedUserPrivateKey(
+                    keysRepository: keysRepository,
+                    challengeKey: challengeKey,
+                    privateKey: privateKey,
+                    muunPrivateKey: muunKey
+                )
                 tUserKey.finish()
 
-                let tRcChecksum = dataFetchingTrace.child(EmergencyKitChildTrace.rcChecksum.rawValue)
+                let tRcChecksum = dataFetchingTrace
+                    .child(EmergencyKitChildTrace.rcChecksum.rawValue)
                 let rcChecksum = try challengeKey.getChecksum()
                 tRcChecksum.finish()
 
-                let tUserFp = dataFetchingTrace.child(EmergencyKitChildTrace.userFingerprint.rawValue)
+                let tUserFp = dataFetchingTrace
+                    .child(EmergencyKitChildTrace.userFingerprint.rawValue)
                 let userFingerprint = try keysRepository.getUserKeyFingerprint()
                 tUserFp.finish()
 
-                let tMuunFp = dataFetchingTrace.child(EmergencyKitChildTrace.muunFingerprint.rawValue)
+                let tMuunFp = dataFetchingTrace
+                    .child(EmergencyKitChildTrace.muunFingerprint.rawValue)
                 let muunFingerprint = try keysRepository.getMuunKeyFingerprint()
                 tMuunFp.finish()
 
@@ -61,18 +66,22 @@ public class EmergencyKitDataSelector: BaseOptionalSelector<EmergencyKitData> {
             }
         })
     }
-    
+
     // Avoid user private key rotation on emergency kit. 
-    private static func getOrCreateEncriptedUserPrivateKey(keysRepository: KeysRepository,
-                                                           challengeKey: ChallengeKey,
-                                                           privateKey: WalletPrivateKey,
-                                                           muunPrivateKey: String) throws -> String {
+    private static func getOrCreateEncriptedUserPrivateKey(
+        keysRepository: KeysRepository,
+        challengeKey: ChallengeKey,
+        privateKey: WalletPrivateKey,
+        muunPrivateKey: String
+    ) throws -> String {
         do {
             let storedEncriptedPrivateKey = try keysRepository.getEncriptedUserPrivateKey()
             return storedEncriptedPrivateKey
         } catch where error.isKindOf(KeyStorageError.missingKey) {
-            let newEncriptedPrivateKey = try challengeKey.encryptKey(privateKey,
-                                                                     muunPrivateKey: muunPrivateKey)
+            let newEncriptedPrivateKey = try challengeKey.encryptKey(
+                privateKey,
+                muunPrivateKey: muunPrivateKey
+            )
             try keysRepository.store(encriptedUserPrivateKey: newEncriptedPrivateKey)
 
             return newEncriptedPrivateKey

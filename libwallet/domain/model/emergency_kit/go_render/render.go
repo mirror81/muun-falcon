@@ -2,6 +2,9 @@ package go_render
 
 import (
 	"fmt"
+
+	"github.com/go-errors/errors"
+
 	"github.com/muun/libwallet/data/emergency_kit"
 	"github.com/muun/libwallet/data/emergency_kit/resources"
 	"github.com/muun/libwallet/domain/model/emergency_kit/go_render/assets"
@@ -11,12 +14,20 @@ import (
 	"github.com/muun/libwallet/emergencykit"
 )
 
-// GeneratedEKPDF is a model including the path in which Libwallet left the generated pdf, the verificationCode and
-// the version
+// GeneratedEKPDF is a model including the path in which Libwallet left the generated pdf, the
+// verificationCode and the version
 type GeneratedEKPDF struct {
 	Path             string
 	VerificationCode string
 	Version          int
+}
+
+func NewGeneratedEKPDF(path, verificationCode string, version int) *GeneratedEKPDF {
+	return &GeneratedEKPDF{
+		Path:             path,
+		VerificationCode: verificationCode,
+		Version:          version,
+	}
 }
 
 func Render(
@@ -28,7 +39,7 @@ func Render(
 
 	translations, err := loadTranslations(lang)
 	if err != nil {
-		return nil, fmt.Errorf("failed to load translations: %w", err)
+		return nil, errors.Errorf("failed to load translations: %w", err)
 	}
 
 	fmt.Println("Creating PDF with custom page size...")
@@ -85,15 +96,10 @@ func Render(
 	// Save PDF to file
 	err = pdfExt.OutputFileAndClose(expectedFilePath)
 	if err != nil {
-		return nil, fmt.Errorf("failed to save PDF: %w", err)
+		return nil, errors.Errorf("failed to save PDF: %w", err)
 	}
 
-	generatedEKit := &GeneratedEKPDF{
-		Path:             expectedFilePath,
-		VerificationCode: verificationCode,
-		Version:          ekInput.Version,
-	}
-	return generatedEKit, nil
+	return NewGeneratedEKPDF(expectedFilePath, verificationCode, ekInput.Version), nil
 }
 
 func loadTranslations(lang string) (*assets.Translations, error) {

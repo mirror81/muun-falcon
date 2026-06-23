@@ -16,25 +16,33 @@ extension UITapGestureRecognizer {
         let targetRange = (labelText as NSString).range(of: text)
 
         let layoutManager = NSLayoutManager()
-        let textContainer = createTextContainer(layoutManager: layoutManager,
-                                                label: label)
+        let textContainer = createTextContainer(
+            layoutManager: layoutManager,
+            label: label
+        )
         // layoutManager needs to be added into a textStorage
         let textStorage = NSTextStorage(attributedString: label.attributedText!)
         textStorage.addLayoutManager(layoutManager)
 
-        let locationOfTouchInTextContainer = getTouchedPoint(label: label,
-                                                             layoutManager: layoutManager,
-                                                             textContainer: textContainer)
+        let locationOfTouchInTextContainer = getTouchedPoint(
+            label: label,
+            layoutManager: layoutManager,
+            textContainer: textContainer
+        )
 
-        let indexOfCharacter = layoutManager.characterIndex(for: locationOfTouchInTextContainer,
-                                                            in: textContainer,
-                                                            fractionOfDistanceBetweenInsertionPoints: nil)
+        let indexOfCharacter = layoutManager.characterIndex(
+            for: locationOfTouchInTextContainer,
+            in: textContainer,
+            fractionOfDistanceBetweenInsertionPoints: nil
+        )
 
         return NSLocationInRange(indexOfCharacter, targetRange)
     }
 
-    private func createTextContainer(layoutManager: NSLayoutManager,
-                                     label: UILabel) -> NSTextContainer {
+    private func createTextContainer(
+        layoutManager: NSLayoutManager,
+        label: UILabel
+    ) -> NSTextContainer {
         let textContainer = NSTextContainer(size: CGSize.zero)
         layoutManager.addTextContainer(textContainer)
         textContainer.lineFragmentPadding = 0.0
@@ -44,17 +52,21 @@ extension UITapGestureRecognizer {
         return textContainer
     }
 
-    private func getTouchedPoint(label: UILabel,
-                                 layoutManager: NSLayoutManager,
-                                 textContainer: NSTextContainer) -> CGPoint {
+    private func getTouchedPoint(
+        label: UILabel,
+        layoutManager: NSLayoutManager,
+        textContainer: NSTextContainer
+    ) -> CGPoint {
         let locationOfTouchInLabel = self.location(in: label)
         // this is the frame of the written text without the font's frame.
         let textBoundingBox = layoutManager.usedRect(for: textContainer)
-        let textContainerOffset = CGPoint(x: (label.bounds.size.width - textBoundingBox.size.width)
-                                          * 0.5 - textBoundingBox.origin.x,
-                                          y: (label.bounds.size.height - textBoundingBox.size.height)
-                                          * 0.5 - textBoundingBox.origin.y)
-        return CGPoint(x: locationOfTouchInLabel.x - textContainerOffset.x,
-                       y: locationOfTouchInLabel.y - textContainerOffset.y)
+        let offsetX = (label.bounds.size.width - textBoundingBox.size.width) * 0.5
+            - textBoundingBox.origin.x
+        let offsetY = (label.bounds.size.height - textBoundingBox.size.height) * 0.5
+            - textBoundingBox.origin.y
+        return CGPoint(
+            x: locationOfTouchInLabel.x - offsetX,
+            y: locationOfTouchInLabel.y - offsetY
+        )
     }
 }

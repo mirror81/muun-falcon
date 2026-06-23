@@ -14,8 +14,10 @@ class BackgroundTimesRepository {
     }
 
     func recordBackgroundTimestamp() {
-        preferences.set(value: Date().timeIntervalSince1970,
-                        forKey: .lastBackgroundBeginTime)
+        preferences.set(
+            value: Date().timeIntervalSince1970,
+            forKey: .lastBackgroundBeginTime
+        )
     }
 
     func wipeBackgroundTimestamp() {
@@ -41,8 +43,10 @@ class BackgroundTimesRepository {
     func pruneKeepingLast(numberOfLapsesToKept: Int) {
         let trimmedBackgroundTimeLapses = getBackgroundTimeLapses().suffix(numberOfLapsesToKept)
 
-        preferences.set(object: Array(trimmedBackgroundTimeLapses),
-                        forKey: .backgroundTimes)
+        preferences.set(
+            object: Array(trimmedBackgroundTimeLapses),
+            forKey: .backgroundTimes
+        )
     }
 }
 

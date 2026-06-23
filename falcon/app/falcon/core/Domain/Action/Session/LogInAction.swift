@@ -17,10 +17,12 @@ public class LogInAction: AsyncAction<KeySet> {
     private let preferences: Preferences
     private let clientSelector: ClientSelector
 
-    init(houstonService: HoustonService,
-         storeKeySetAction: StoreKeySetAction,
-         preferences: Preferences,
-         clientSelector: ClientSelector) {
+    init(
+        houstonService: HoustonService,
+        storeKeySetAction: StoreKeySetAction,
+        preferences: Preferences,
+        clientSelector: ClientSelector
+    ) {
         self.houstonService = houstonService
         self.storeKeySetAction = storeKeySetAction
         self.preferences = preferences
@@ -35,10 +37,12 @@ public class LogInAction: AsyncAction<KeySet> {
 
             let single = Single.deferred({
                 let signature = try key.signSha(Data(hex: challenge.challenge))
-                return Single.just(self.getLoginJson(challenge: challenge,
-                                                     pubKeyHex: key.pubKeyHex(),
-                                                     signatureHex: signature.toHexString()))
-                })
+                return Single.just(self.getLoginJson(
+                    challenge: challenge,
+                    pubKeyHex: key.pubKeyHex(),
+                    signatureHex: signature.toHexString()
+                ))
+            })
                 .flatMap({ payload in self.houstonService.logIn(loginJson: payload) })
                 .do(onSuccess: { keySet in
                     self.storeKeySetAction.run(keySet: keySet, userInput: userInput)
@@ -54,23 +58,33 @@ public class LogInAction: AsyncAction<KeySet> {
         }
     }
 
-    private func getLoginJson(challenge: Challenge, pubKeyHex: String, signatureHex: String) -> LoginJson {
+    private func getLoginJson(
+        challenge: Challenge,
+        pubKeyHex: String,
+        signatureHex: String
+    ) -> LoginJson {
         let challengeKeyVersion = challenge.type == .RECOVERY_CODE ? 2 : 1
         let challengeTypeJson = challenge.type.toJson()
-        let challengePublicKey = ChallengeKeyJson(type: challengeTypeJson,
-                                                  publicKey: pubKeyHex,
-                                                  salt: challenge.salt,
-                                                  challengeVersion: challengeKeyVersion)
-        let loginJson = LoginJson(type: challengeTypeJson,
-                                  hex: signatureHex,
-                                  challengePublicKey: challengePublicKey,
-                                  deviceCheckToken: clientSelector.run().deviceCheckToken)
+        let challengePublicKey = ChallengeKeyJson(
+            type: challengeTypeJson,
+            publicKey: pubKeyHex,
+            salt: challenge.salt,
+            challengeVersion: challengeKeyVersion
+        )
+        let loginJson = LoginJson(
+            type: challengeTypeJson,
+            hex: signatureHex,
+            challengePublicKey: challengePublicKey,
+            deviceCheckToken: clientSelector.run().deviceCheckToken
+        )
 
         return loginJson
     }
 
-    private func getChallengePrivateKey(challenge: Challenge, userInput: String) throws
-    -> LibwalletChallengePrivateKey {
+    private func getChallengePrivateKey(
+        challenge: Challenge,
+        userInput: String
+    ) throws -> LibwalletChallengePrivateKey {
         switch challenge.type {
         case .PASSWORD:
             return LibwalletChallengePrivateKey(

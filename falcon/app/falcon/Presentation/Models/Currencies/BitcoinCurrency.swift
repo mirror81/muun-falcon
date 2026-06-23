@@ -40,16 +40,25 @@ struct BitcoinCurrency: Currency {
         getNumberFormatter(style: .currency).maximumFractionDigits
     }
 
-    func toAmountWithoutCode(amount: Decimal, btcCurrencyFormat: BitcoinCurrencyFormat = .long) -> String {
+    func toAmountWithoutCode(
+        amount: Decimal,
+        btcCurrencyFormat: BitcoinCurrencyFormat = .long
+    ) -> String {
         let amt = amount.multiplyByPowerOf10(power: displayExponent)
 
         let formatter = createStringFormatter(btcCurrencyFormat: btcCurrencyFormat)
 
         guard let value = formatter.string(for: amt) else {
             let localeDescription = LocaleAmountFormatter.locale.description
-            Logger.fatal(error: MuunError(LocaleAmountFormatter.Errors.format(value: amount,
-                                                                              currency: code,
-                                                                              locale: localeDescription)))
+            Logger.fatal(
+                error: MuunError(
+                    LocaleAmountFormatter.Errors.format(
+                        value: amount,
+                        currency: code,
+                        locale: localeDescription
+                    )
+                )
+            )
         }
 
         // The currency formatter returns a leading space in numbers so kill it
@@ -68,13 +77,17 @@ struct BitcoinCurrency: Currency {
 
 private extension BitcoinCurrency {
     func getNumberFormatter(style: NumberFormatter.Style = .decimal) -> NumberFormatter {
-        getValueByCurrentUnit(forBTC: getBTCNumberFormmatter(style: style),
-                              forSAT: createSATFormatterForStringAndNumber(style: style))
+        getValueByCurrentUnit(
+            forBTC: getBTCNumberFormmatter(style: style),
+            forSAT: createSATFormatterForStringAndNumber(style: style)
+        )
     }
 
     func createStringFormatter(btcCurrencyFormat: BitcoinCurrencyFormat) -> NumberFormatter {
-        getValueByCurrentUnit(forBTC: createBTCFormatterForString(btcCurrencyFormat: btcCurrencyFormat),
-                              forSAT: createSATFormatterForStringAndNumber())
+        getValueByCurrentUnit(
+            forBTC: createBTCFormatterForString(btcCurrencyFormat: btcCurrencyFormat),
+            forSAT: createSATFormatterForStringAndNumber()
+        )
     }
 
     func createBTCFormatterForString(btcCurrencyFormat: BitcoinCurrencyFormat) -> NumberFormatter {
@@ -90,7 +103,9 @@ private extension BitcoinCurrency {
         return formatter
     }
 
-    func createBasicBTCFormatterForBothNumberAndString(style: NumberFormatter.Style = .decimal) -> NumberFormatter {
+    func createBasicBTCFormatterForBothNumberAndString(
+        style: NumberFormatter.Style = .decimal
+    ) -> NumberFormatter {
         let formatter = NumberFormatter()
         formatter.locale = LocaleAmountFormatter.locale
         formatter.numberStyle = style
@@ -101,7 +116,9 @@ private extension BitcoinCurrency {
         return formatter
     }
 
-    func createSATFormatterForStringAndNumber(style: NumberFormatter.Style = .decimal) -> NumberFormatter {
+    func createSATFormatterForStringAndNumber(
+        style: NumberFormatter.Style = .decimal
+    ) -> NumberFormatter {
         let formatter = NumberFormatter()
         formatter.locale = LocaleAmountFormatter.locale
         formatter.numberStyle = style

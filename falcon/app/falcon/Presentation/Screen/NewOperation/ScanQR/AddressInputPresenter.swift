@@ -8,7 +8,6 @@
 
 import RxSwift
 
-
 protocol AddressInputPresenterDelegate: BasePresenterDelegate {
     func checkForClipboardChange()
 }

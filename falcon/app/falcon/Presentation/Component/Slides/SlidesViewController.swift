@@ -53,7 +53,8 @@ class SlidesViewController: MUViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        // This call need to be here because in the view did load method the scroll view doesnt calculate correctly
+        // This call need to be here because in the view did load method the scroll view doesnt
+        // calculate correctly
         // the width of the view.
         if needsAnimation {
             needsAnimation = false
@@ -113,7 +114,10 @@ class SlidesViewController: MUViewController {
             slidesStack.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
 
             slidesStack.heightAnchor.constraint(equalTo: scrollView.heightAnchor),
-            slidesStack.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: CGFloat(slides.count))
+            slidesStack.widthAnchor.constraint(
+                equalTo: scrollView.widthAnchor,
+                multiplier: CGFloat(slides.count)
+            )
         ])
 
         for slide in slides {

@@ -40,28 +40,30 @@ public struct Operation {
 
     public var metadata: OperationMetadataJson?
 
-    public init(id: Int?,
-                requestId: String,
-                isExternal: Bool,
-                direction: OperationDirection,
-                senderProfile: PublicProfile?,
-                senderIsExternal: Bool,
-                receiverProfile: PublicProfile?,
-                receiverIsExternal: Bool,
-                receiverAddress: String?,
-                receiverAddressDerivationPath: String?,
-                amount: BitcoinAmount,
-                fee: BitcoinAmount,
-                confirmations: Int?,
-                exchangeRatesWindowId: Int,
-                description: String?,
-                status: OperationStatus,
-                transaction: Transaction?,
-                creationDate: Date,
-                submarineSwap: SubmarineSwap?,
-                outpoints: [String]?,
-                incomingSwap: IncomingSwap?,
-                metadata: OperationMetadataJson?) {
+    public init(
+        id: Int?,
+        requestId: String,
+        isExternal: Bool,
+        direction: OperationDirection,
+        senderProfile: PublicProfile?,
+        senderIsExternal: Bool,
+        receiverProfile: PublicProfile?,
+        receiverIsExternal: Bool,
+        receiverAddress: String?,
+        receiverAddressDerivationPath: String?,
+        amount: BitcoinAmount,
+        fee: BitcoinAmount,
+        confirmations: Int?,
+        exchangeRatesWindowId: Int,
+        description: String?,
+        status: OperationStatus,
+        transaction: Transaction?,
+        creationDate: Date,
+        submarineSwap: SubmarineSwap?,
+        outpoints: [String]?,
+        incomingSwap: IncomingSwap?,
+        metadata: OperationMetadataJson?
+    ) {
         self.id = id
         self.requestId = requestId
         self.isExternal = isExternal
@@ -86,7 +88,8 @@ public struct Operation {
         self.metadata = metadata
     }
 
-    // We will define `cancelable` operations with (`isReplaceableByFee` == true && 0 confirmations).
+    // We will define `cancelable` operations with (`isReplaceableByFee` == true && 0
+    // confirmations).
     public func isCancelable() -> Bool {
         return transaction?.isReplaceableByFee ?? false
             && isPending()
@@ -104,9 +107,11 @@ public struct Operation {
     private func offChainFeeInSatoshis() -> Satoshis {
         if let swap = submarineSwap {
             if let debtType = swap._fundingOutput._debtType, debtType == .LEND {
-                return swap._fees?._lightning ?? Satoshis(value: 0) // Lightning off-chain fee or zero for lend swaps
+                // Lightning off-chain fee or zero for lend swaps
+                return swap._fees?._lightning ?? Satoshis(value: 0)
             } else {
-                return swap._fees?.total() ?? Satoshis(value: 0) // Sum of all lightning fees or zero
+                // Sum of all lightning fees or zero
+                return swap._fees?.total() ?? Satoshis(value: 0)
             }
         }
 

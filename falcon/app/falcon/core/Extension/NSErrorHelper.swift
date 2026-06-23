@@ -45,6 +45,17 @@ public struct LibwalletError: Error {
     }
 }
 
+extension LibwalletError: ClassifiedError {
+    public var classification: ErrorClassification {
+        switch kind {
+        case .invalidUri:
+            return .expected
+        case .network, .unknown:
+            return .unexpected
+        }
+    }
+}
+
 public func doWithError<T>(_ f: (NSErrorPointer) throws -> T?) throws -> T {
     var err: NSError?
     let result = try f(&err)
@@ -61,4 +72,13 @@ public func doWithError<T>(_ f: (NSErrorPointer) throws -> T?) throws -> T {
 
 enum DoWithErrors: Error {
     case nilResult
+}
+
+extension DoWithErrors: ClassifiedError {
+    var classification: ErrorClassification {
+        switch self {
+        case .nilResult:
+            return .unexpected
+        }
+    }
 }

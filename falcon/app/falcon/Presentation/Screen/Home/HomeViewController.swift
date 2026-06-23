@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class HomeViewController: MUViewController {
 
     fileprivate lazy var presenter = instancePresenter(HomePresenter.init, delegate: self)
@@ -107,21 +106,37 @@ class HomeViewController: MUViewController {
             navController.viewControllers = [SupportViewController(type: .help)]
             present(navController, animated: true)
         } else {
-            let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            let actionSheet = UIAlertController(
+                title: nil,
+                message: nil,
+                preferredStyle: .actionSheet
+            )
 
-            actionSheet.addAction(UIAlertAction(title: L10n.HomeViewController.s1, style: .default, handler: { _ in
+            actionSheet.addAction(UIAlertAction(
+                title: L10n.HomeViewController.s1,
+                style: .default,
+                handler: { _ in
 
                 navController.viewControllers = [SupportViewController(type: .help)]
                 self.present(navController, animated: true)
-            }))
-            actionSheet.addAction(UIAlertAction(title: L10n.HomeViewController.s2, style: .default, handler: { _ in
+            }
+            ))
+            actionSheet.addAction(UIAlertAction(
+                title: L10n.HomeViewController.s2,
+                style: .default,
+                handler: { _ in
                 navController.viewControllers = [SupportViewController(type: .feedback)]
                 self.present(navController, animated: true)
-            }))
+            }
+            ))
 
-            actionSheet.addAction(UIAlertAction(title: L10n.HomeViewController.s3, style: .cancel, handler: { _ in
+            actionSheet.addAction(UIAlertAction(
+                title: L10n.HomeViewController.s3,
+                style: .cancel,
+                handler: { _ in
                 actionSheet.dismiss(animated: true)
-            }))
+            }
+            ))
 
             present(actionSheet, animated: true)
         }
@@ -192,7 +207,10 @@ extension HomeViewController: HomeViewDelegate {
     }
 
     func receiveButtonTap() {
-        navigationController!.pushViewController(ReceiveViewController(origin: .receiveButton), animated: true)
+        navigationController!.pushViewController(
+            ReceiveViewController(origin: .receiveButton),
+            animated: true
+        )
     }
 
     func chevronTap() {
@@ -210,7 +228,8 @@ extension HomeViewController: HomeViewDelegate {
 
         case .activateTaproot:
             pushTo(SlidesViewController(
-                configuration: EmergencyKitSlidesConfiguration.taprootActivation(successFeedback: FeedbackInfo.taprootActive)
+                configuration: EmergencyKitSlidesConfiguration
+                    .taprootActivation(successFeedback: FeedbackInfo.taprootActive)
             ))
 
         case .highFeesHomeBanner, .iOSUnder15:
@@ -219,12 +238,14 @@ extension HomeViewController: HomeViewDelegate {
         case .preactiveTaproot(let blocksLeft):
             let feedbackInfo = FeedbackInfo.taprootPreactived(blocksLeft: blocksLeft)
             pushTo(SlidesViewController(
-                configuration: EmergencyKitSlidesConfiguration.taprootActivation(successFeedback: feedbackInfo)
+                configuration: EmergencyKitSlidesConfiguration
+                    .taprootActivation(successFeedback: feedbackInfo)
             ))
 
         case .blockClock(let blocksLeft):
             navigationController!.pushViewController(
-                FeedbackViewController(feedback: FeedbackInfo.taprootPreactivationCountdown(blocksLeft: blocksLeft)),
+                FeedbackViewController(feedback: FeedbackInfo
+                    .taprootPreactivationCountdown(blocksLeft: blocksLeft)),
                 animated: true
             )
 
@@ -244,7 +265,7 @@ extension HomeViewController: HomeViewDelegate {
 
     func securityCardsMarketplaceTap() {
         navigationController?.pushViewController(
-            SlidesViewController(configuration: SecurityCardsSlidesConfiguration.onboarding),
+            SecurityCardsOnboardingViewController(),
             animated: true
         )
     }

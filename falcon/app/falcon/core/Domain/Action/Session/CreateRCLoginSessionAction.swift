@@ -14,10 +14,12 @@ public class CreateRCLoginSessionAction: AsyncAction<Challenge> {
     private let preferences: Preferences
     private let clientSelector: ClientSelector
 
-    init(houstonService: HoustonService,
-         logoutAction: LogoutAction,
-         preferences: Preferences,
-         clientSelector: ClientSelector) {
+    init(
+        houstonService: HoustonService,
+        logoutAction: LogoutAction,
+        preferences: Preferences,
+        clientSelector: ClientSelector
+    ) {
         self.preferences = preferences
         self.houstonService = houstonService
         self.logoutAction = logoutAction
@@ -41,7 +43,8 @@ public class CreateRCLoginSessionAction: AsyncAction<Challenge> {
                 gcmToken: gcmToken,
                 challengeKey: try rc.toKey()
             )
-            runSingle(houstonService.createRecoveryCodeLoginSession(createRcSession).flatMap { [weak self] challenge in
+            runSingle(houstonService.createRecoveryCodeLoginSession(createRcSession)
+                .flatMap { [weak self] challenge in
                 self?.preferences.set(value: true, forKey: .hasResolvedARcChallenge)
                 self?.preferences.set(value: true, forKey: .welcomeMessageSeen)
                 return Single.just(challenge)
@@ -56,5 +59,13 @@ public class CreateRCLoginSessionAction: AsyncAction<Challenge> {
     enum Errors: Error {
         case invalidRCVersion
     }
+}
 
+extension CreateRCLoginSessionAction.Errors: ClassifiedError {
+    var classification: ErrorClassification {
+        switch self {
+        case .invalidRCVersion:
+            return .expected
+        }
+    }
 }

@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class FinishRecoveryCodeSetupViewController: MUViewController {
 
     @IBOutlet fileprivate weak var titleAndDescriptionView: TitleAndDescriptionView!
@@ -18,9 +17,11 @@ class FinishRecoveryCodeSetupViewController: MUViewController {
     fileprivate weak var errorViewRetryButton: ButtonView?
     fileprivate var errorView: ErrorView?
 
-    fileprivate lazy var presenter = instancePresenter(FinishRecoveryCodeSetupPresenter.init,
-                                                       delegate: self,
-                                                       state: recoveryCode)
+    fileprivate lazy var presenter = instancePresenter(
+        FinishRecoveryCodeSetupPresenter.init,
+        delegate: self,
+        state: recoveryCode
+    )
 
     fileprivate var recoveryCode: RecoveryCode!
     private var wording: SetUpRecoveryCodeWording
@@ -112,13 +113,17 @@ extension FinishRecoveryCodeSetupViewController: FinishRecoveryCodeSetupPresente
         let isChangePasswordFlow = navigationController!.viewControllers.contains(
             where: { return $0 is ChangePasswordEnterCurrentViewController }
         )
-        // When finished, pop to change password flow or security center (depending on the initial flow)
+        // When finished, pop to change password flow or security center (depending on the initial
+        // flow)
         let popToVc = isChangePasswordFlow
         ? ChangePasswordEnterCurrentViewController.self
         : SecurityCenterViewController.self
 
         navigationController!.pushViewController(
-            FeedbackViewController(feedback: FeedbackInfo.recoveryCodeSetupSuccess(popTo: popToVc, wording: wording)),
+            FeedbackViewController(feedback: FeedbackInfo.recoveryCodeSetupSuccess(
+                popTo: popToVc,
+                wording: wording
+            )),
             animated: true
         )
     }

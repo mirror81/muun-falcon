@@ -11,7 +11,10 @@ import UIKit
 
 class LightningNetworkSettingsViewController: MUViewController {
 
-    private lazy var presenter = instancePresenter(LightningNetworkSettingsPresenter.init, delegate: self)
+    private lazy var presenter = instancePresenter(
+        LightningNetworkSettingsPresenter.init,
+        delegate: self
+    )
 
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -57,7 +60,10 @@ class LightningNetworkSettingsViewController: MUViewController {
     }
 
     private func addReceiveFormatPreferenceSetting(to stackView: UIStackView) {
-        let view = ReceiveFormatPreferenceDropdownPresenter<ReceiveFormatSettingDropdownView>.createView()
+        typealias Presenter = ReceiveFormatPreferenceDropdownPresenter<
+            ReceiveFormatSettingDropdownView
+        >
+        let view = Presenter.createView()
         stackView.addArrangedSubviewWrappingLeadingAndTrailing(view)
     }
 

@@ -26,10 +26,11 @@ class MultiOptionPickerCard: UIStackView {
     private weak var delegate: MultiOptionPickerCardDelegate?
     let status: Status
 
-    init(pickerOption: any MultiPickerOptions,
-         status: Status,
-         delegate: MultiOptionPickerCardDelegate?,
-         highlight: String?
+    init(
+        pickerOption: any MultiPickerOptions,
+        status: Status,
+        delegate: MultiOptionPickerCardDelegate?,
+        highlight: String?
     ) {
         self.pickerOption = pickerOption
         self.delegate = delegate

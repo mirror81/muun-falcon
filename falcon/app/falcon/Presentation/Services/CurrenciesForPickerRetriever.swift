@@ -6,7 +6,6 @@
 //  Copyright © 2022 muun. All rights reserved.
 //
 
-
 import Libwallet
 
 protocol CurrenciesForPickerRetriever {
@@ -39,10 +38,16 @@ class InMemoryCurrenciesForPickerRetriever: CurrenciesForPickerRetriever {
         return candidatesForAllCurrencies
     }
 
-    static func createForSettings(userSelector: UserSelector,
-                                  exchangeRateWindow: NewopExchangeRateWindow) -> InMemoryCurrenciesForPickerRetriever {
-        let userPrimaryCurrency = [getUserPrimaryCurrency(userSelector: userSelector,
-                                                          exchangeRateWindow: exchangeRateWindow)]
+    static func createForSettings(
+        userSelector: UserSelector,
+        exchangeRateWindow: NewopExchangeRateWindow
+    ) -> InMemoryCurrenciesForPickerRetriever {
+        let userPrimaryCurrency = [
+            getUserPrimaryCurrency(
+                userSelector: userSelector,
+                exchangeRateWindow: exchangeRateWindow
+            )
+        ]
         let candidates = CurrencyHelper.currencyList(currencyCodes: userPrimaryCurrency) + [
             CurrencyHelper.currencyForLocale(),
             CurrencyHelper.bitcoinCurrency,
@@ -51,16 +56,26 @@ class InMemoryCurrenciesForPickerRetriever: CurrenciesForPickerRetriever {
         ]
 
         let currencesOnExchangeRateWindow = exchangeRateWindow.currencies()!.adapt()
-        let candidatesForAllCurrencies = CurrencyHelper.currencyList(currencyCodes: currencesOnExchangeRateWindow)
+        let candidatesForAllCurrencies = CurrencyHelper.currencyList(
+            currencyCodes: currencesOnExchangeRateWindow
+        )
 
-        return InMemoryCurrenciesForPickerRetriever(candidatesForMostUsedCurrency: candidates,
-                                             candidatesForAllCurrencies: candidatesForAllCurrencies)
+        return InMemoryCurrenciesForPickerRetriever(
+            candidatesForMostUsedCurrency: candidates,
+            candidatesForAllCurrencies: candidatesForAllCurrencies
+        )
     }
 
-    static func createForContextualCurrencySelection(userSelector: UserSelector,
-                                                     exchangeRateWindow: NewopExchangeRateWindow) -> InMemoryCurrenciesForPickerRetriever {
-        let userPrimaryCurrency = [getUserPrimaryCurrency(userSelector: userSelector,
-                                                          exchangeRateWindow: exchangeRateWindow)]
+    static func createForContextualCurrencySelection(
+        userSelector: UserSelector,
+        exchangeRateWindow: NewopExchangeRateWindow
+    ) -> InMemoryCurrenciesForPickerRetriever {
+        let userPrimaryCurrency = [
+            getUserPrimaryCurrency(
+                userSelector: userSelector,
+                exchangeRateWindow: exchangeRateWindow
+            )
+        ]
         let primaryCurrency = CurrencyHelper.currencyList(currencyCodes: userPrimaryCurrency).first
         var candidates = [
             CurrencyHelper.currencyForLocale(),
@@ -75,14 +90,20 @@ class InMemoryCurrenciesForPickerRetriever: CurrenciesForPickerRetriever {
         }
 
         let currenciesOnExchangeRateWindow = exchangeRateWindow.currencies()!.adapt()
-        let candidatesForAllCurrencies = CurrencyHelper.currencyList(currencyCodes: currenciesOnExchangeRateWindow)
+        let candidatesForAllCurrencies = CurrencyHelper.currencyList(
+            currencyCodes: currenciesOnExchangeRateWindow
+        )
 
-        return InMemoryCurrenciesForPickerRetriever(candidatesForMostUsedCurrency: candidates,
-                                             candidatesForAllCurrencies: candidatesForAllCurrencies)
+        return InMemoryCurrenciesForPickerRetriever(
+            candidatesForMostUsedCurrency: candidates,
+            candidatesForAllCurrencies: candidatesForAllCurrencies
+        )
     }
 
-    private static func getUserPrimaryCurrency(userSelector: UserSelector,
-                                               exchangeRateWindow: NewopExchangeRateWindow) -> String {
+    private static func getUserPrimaryCurrency(
+        userSelector: UserSelector,
+        exchangeRateWindow: NewopExchangeRateWindow
+    ) -> String {
         let user: User
         do {
             user = try userSelector.get().toBlocking().single()

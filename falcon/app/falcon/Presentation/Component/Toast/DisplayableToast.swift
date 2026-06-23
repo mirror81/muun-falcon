@@ -36,7 +36,11 @@ extension DisplayableToast {
             slideDown.direction = .down
             toast.addGestureRecognizer(slideDown)
 
-            toast.presentIn(view, text: message, duration: duration ?? AnimationDelay.toast.rawValue)
+            toast.presentIn(
+                view,
+                text: message,
+                duration: duration ?? AnimationDelay.toast.rawValue
+            )
         }
     }
 

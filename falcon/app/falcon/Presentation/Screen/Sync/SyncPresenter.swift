@@ -9,7 +9,6 @@
 import Foundation
 import RxSwift
 
-
 protocol SyncDelegate: BasePresenterDelegate {
     func onSyncFinished()
     func syncFailed()
@@ -31,9 +30,9 @@ class SyncPresenter<Delegate: SyncDelegate>: BasePresenter<Delegate> {
         self.signFlow = (state) ? .recover : .create
         self.syncAction = syncAction
         self.preferences = preferences
-        
+
         super.init(delegate: delegate)
-        
+
         self.fatalIfEnteredSyncScreenByMistake()
     }
 
@@ -100,13 +99,17 @@ class SyncPresenter<Delegate: SyncDelegate>: BasePresenter<Delegate> {
         && !preferences.bool(forKey: .hasRecoveryCode)
         && !hasUserAcknowledgedIsUsingAnUnverifiedRecoveryCode
     }
-    
+
     func fatalIfEnteredSyncScreenByMistake() {
         // SyncStatus should never be success if the user hasn't sync yet. an existing user should
         // never be here if already made a sync.
         if preferences.string(forKey: .syncStatus) == "success"
             && signFlow == .recover {
-            Logger.fatal("Attempt to expired a session of an existing user that was sync at the beginning")
+            Logger
+                .fatal(
+                    "Attempt to expired a session of an existing"
+                    + " user that was sync at the beginning"
+                )
         }
     }
 }

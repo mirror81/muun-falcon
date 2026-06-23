@@ -18,11 +18,13 @@ class HttpClientSessionProvider: NSObject, App_provided_dataHttpClientSessionPro
     private let backgroundExecutionMetricsProvider: BackgroundExecutionMetricsProvider
     private let deviceCheckTokenProvider: DeviceCheckTokenProvider
 
-    init(sessionRepository: SessionRepository,
-         preferences: Preferences,
-         houstonService: HoustonService,
-         backgroundExecutionMetricsProvider: BackgroundExecutionMetricsProvider,
-         deviceCheckTokenProvider: DeviceCheckTokenProvider) {
+    init(
+        sessionRepository: SessionRepository,
+        preferences: Preferences,
+        houstonService: HoustonService,
+        backgroundExecutionMetricsProvider: BackgroundExecutionMetricsProvider,
+        deviceCheckTokenProvider: DeviceCheckTokenProvider
+    ) {
         self.sessionRepository = sessionRepository
         self.preferences = preferences
         self.houstonService = houstonService
@@ -71,9 +73,11 @@ class HttpClientSessionProvider: NSObject, App_provided_dataHttpClientSessionPro
                 do {
                     // In Falcon, the token is stored with the "Bearer " prefix, while in Apollo
                     // the token is stored without it.
-                    // Although storing the token with the prefix is suboptimal, we must preserve this
+                    // Although storing the token with the prefix is suboptimal, we must preserve
+                    // this
                     // behavior because other parts of the Falcon app rely on the prefixed token.
-                    try self.sessionRepository.storeAuthToken("\(authTokenSchemePrefix) \(authToken)")
+                    try self.sessionRepository
+                        .storeAuthToken("\(authTokenSchemePrefix) \(authToken)")
                 } catch {
                     Logger.log(error: error)
                 }

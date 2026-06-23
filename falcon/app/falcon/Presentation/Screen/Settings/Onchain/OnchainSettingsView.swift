@@ -49,6 +49,7 @@ final class OnchainSettingsView: UIView {
         backgroundColor = Asset.Colors.muunHomeBackgroundColor.color
     }
 
+    // swiftlint:disable:next function_body_length
     func setUp() {
 
         let verticalStack = UIStackView()
@@ -66,7 +67,8 @@ final class OnchainSettingsView: UIView {
             verticalStack.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
             verticalStack.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
             verticalStack.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            verticalStack.bottomAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.bottomAnchor)
+            verticalStack.bottomAnchor
+            .constraint(lessThanOrEqualTo: safeAreaLayoutGuide.bottomAnchor)
         ])
 
         let firstHairline = addHairline(to: verticalStack)
@@ -79,10 +81,12 @@ final class OnchainSettingsView: UIView {
         toggleStackView.distribution = .equalSpacing
         toggleStackView.backgroundColor = Asset.Colors.cellBackground.color
         toggleStackView.spacing = Constant.Dimens.viewControllerPadding
-        toggleStackView.layoutMargins = UIEdgeInsets(top: 0,
-                                                     left: .spacing,
-                                                     bottom: 0,
-                                                     right: .spacing)
+        toggleStackView.layoutMargins = UIEdgeInsets(
+            top: 0,
+            left: .spacing,
+            bottom: 0,
+            right: .spacing
+        )
         toggleStackView.isLayoutMarginsRelativeArrangement = true
 
         verticalStack.addArrangedSubview(toggleStackView)
@@ -122,8 +126,10 @@ final class OnchainSettingsView: UIView {
         activationView.spacing = 6
         verticalStack.addArrangedSubview(activationView)
         NSLayoutConstraint.activate([
-            activationView.leadingAnchor.constraint(equalTo: verticalStack.leadingAnchor,
-                                                     constant: .spacing),
+            activationView.leadingAnchor.constraint(
+                equalTo: verticalStack.leadingAnchor,
+                constant: .spacing
+            )
         ])
 
         let activationClock = UIImageView(image: Asset.Assets.clock.image)
@@ -153,10 +159,14 @@ final class OnchainSettingsView: UIView {
 
         verticalStack.addArrangedSubview(learnMoreLabel)
         NSLayoutConstraint.activate([
-            verticalStack.trailingAnchor.constraint(equalTo: learnMoreLabel.trailingAnchor,
-                                                    constant: .spacing),
-            learnMoreLabel.leadingAnchor.constraint(equalTo: verticalStack.leadingAnchor,
-                                                    constant: .spacing)
+            verticalStack.trailingAnchor.constraint(
+                equalTo: learnMoreLabel.trailingAnchor,
+                constant: .spacing
+            ),
+            learnMoreLabel.leadingAnchor.constraint(
+                equalTo: verticalStack.leadingAnchor,
+                constant: .spacing
+            )
         ])
 
         let spacer = UIView()

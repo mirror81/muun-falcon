@@ -24,7 +24,8 @@ public struct ChallengeKey: Equatable {
     let publicKey: Data
     let salt: Data? // Nil for USER_KEY and RC version >= 2 type
 
-    // This is optional because it was introduced after the object was already saved on the secure storage
+    // This is optional because it was introduced after the object was already saved on the secure
+    // storage
     // and otherwise it will crash when trying to decode it
     let challengeVersion: Int?
 
@@ -49,12 +50,12 @@ public struct ChallengeKey: Equatable {
             )
         })
     }
-    
+
     func getChecksum() throws -> String {
         let challengePublicKey = try doWithError({ error in
             LibwalletNewChallengePublicKeyFromSerialized(publicKey, error)
         })
-        
+
         return challengePublicKey.getChecksum()
     }
 

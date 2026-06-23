@@ -13,8 +13,10 @@ public class BalanceActions {
     private let balanceCache: BehaviorSubject<MonetaryAmount>
     private let disposeBag: DisposeBag
 
-    init(currencyActions: CurrencyActions,
-         nextTransactionSizeRepository: NextTransactionSizeRepository) {
+    init(
+        currencyActions: CurrencyActions,
+        nextTransactionSizeRepository: NextTransactionSizeRepository
+    ) {
 
         self.currencyActions = currencyActions
         self.nextTransactionSizeRepository = nextTransactionSizeRepository

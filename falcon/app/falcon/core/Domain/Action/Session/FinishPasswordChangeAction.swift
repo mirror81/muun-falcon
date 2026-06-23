@@ -13,9 +13,11 @@ public class FinishPasswordChangeAction: AsyncAction<()> {
     private let houstonService: HoustonService
     private let buildChallengeSetupAction: BuildChallengeSetupAction
 
-    init(houstonService: HoustonService,
-         keysRepository: KeysRepository,
-         buildChallengeSetupAction: BuildChallengeSetupAction) {
+    init(
+        houstonService: HoustonService,
+        keysRepository: KeysRepository,
+        buildChallengeSetupAction: BuildChallengeSetupAction
+    ) {
         self.houstonService = houstonService
         self.keysRepository = keysRepository
         self.buildChallengeSetupAction = buildChallengeSetupAction

@@ -11,3 +11,12 @@ public enum DomainError: Error {
     case emergencyKitExportError
     case invalidSwap
 }
+
+extension DomainError: ClassifiedError {
+    public var classification: ErrorClassification {
+        switch self {
+        case .sessionExpiredOnNotificationProcessor, .emergencyKitExportError, .invalidSwap:
+            return .unexpected
+        }
+    }
+}

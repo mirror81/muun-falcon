@@ -21,9 +21,9 @@ public class CurrencyActions {
 
     func watchPrimaryExchangeRate() -> Observable<(String, Decimal)?> {
         return Observable.combineLatest(
-                userRepository.watchUser(),
-                exchangeRateRepository.watchExchangeRateWindow()
-            ).map({ (user, exchangeRate) in
+            userRepository.watchUser(),
+            exchangeRateRepository.watchExchangeRateWindow()
+        ).map({ (user, exchangeRate) in
 
                 guard let user = user, let window = exchangeRate else {
                     return nil

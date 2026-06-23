@@ -8,11 +8,11 @@
 
 import Foundation
 
-
 protocol GenerateRecoveryCodePresenterDelegate: BasePresenterDelegate {
 }
 
-class GenerateRecoveryCodePresenter<Delegate: GenerateRecoveryCodePresenterDelegate>: BasePresenter<Delegate> {
+class GenerateRecoveryCodePresenter<Delegate: GenerateRecoveryCodePresenterDelegate>:
+    BasePresenter<Delegate> {
 
     private let preferences: Preferences
 

@@ -136,6 +136,15 @@ class BaseDatabaseRepository<T, M> where T: DatabaseModel, T.Model == M {
 
 }
 
+extension BaseDatabaseRepository.Errors: ClassifiedError {
+    var classification: ErrorClassification {
+        switch self {
+        case .readFailed:
+            return .unexpected
+        }
+    }
+}
+
 protocol DatabaseModelConvertible {
 
     associatedtype Model

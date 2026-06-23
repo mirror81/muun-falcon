@@ -15,22 +15,65 @@ import SwiftProtobuf
 import Libwallet
 
 public class WalletService {
+    private static let gracefulCloseDeadline: TimeAmount = .seconds(3)
+
     private let group: EventLoopGroup = PlatformSupport.makeEventLoopGroup(loopCount: 1)
-    private let client: Rpc_WalletServiceNIOClient?
+    private var client: Rpc_WalletServiceNIOClient?
+    private var channel: GRPCChannel?
     private let empty = Google_Protobuf_Empty()
 
     init() {
+        connect()
+    }
+
+    /// Connect to the libwallet gRPC server.
+    func connect() {
+        // Close any existing channel before creating a new one.
+        disconnect()
+
         do {
             let socketPath = Environment.current.libwalletSocketFile.path
             let target = ConnectionTarget.unixDomainSocket(socketPath)
-            let channel = try GRPCChannelPool.with(target: target,
-                                                   transportSecurity: .plaintext,
-                                                   eventLoopGroup: group)
-            self.client = Rpc_WalletServiceNIOClient(channel: channel)
+            let newChannel = try GRPCChannelPool.with(
+                target: target,
+                transportSecurity: .plaintext,
+                eventLoopGroup: group
+            )
+            self.channel = newChannel
+            self.client = Rpc_WalletServiceNIOClient(channel: newChannel)
         } catch {
             Logger.log(error: error)
+            self.channel = nil
             self.client = nil
         }
+    }
+
+    /// Disconnect from the libwallet gRPC server.
+    func disconnect() {
+        guard let channel = channel else {
+            return
+        }
+        defer {
+            self.channel = nil
+            self.client = nil
+        }
+        let promise = group.next().makePromise(of: Void.self)
+        promise.futureResult.whenFailure { error in
+            Logger.log(.warn, "Failed to close gRPC channel gracefully: \(error)")
+        }
+        channel.closeGracefully(
+            deadline: .now() + WalletService.gracefulCloseDeadline,
+            promise: promise
+        )
+    }
+
+    func resetData() throws {
+        guard let client = client else {
+            throw MuunError(ServiceError.defaultError)
+        }
+
+        let call = client.resetData(empty)
+        _ = try performSyncRequest(call)
     }
 
     func pairSecurityCard() -> Completable {
@@ -43,30 +86,6 @@ public class WalletService {
         return performAsyncRequest(call).asCompletable()
     }
 
-    func resetSecurityCard() -> Completable {
-        guard let client = client else {
-            return Completable.error(MuunError(ServiceError.defaultError))
-        }
-
-        let call = client.resetSecurityCard(empty)
-        return performAsyncRequest(call).asCompletable()
-    }
-
-    func signMessageWithSecurityCard(
-        messageHex: String
-    ) -> Single<[UInt8]> {
-        guard let client = client else {
-            return Single.error(MuunError(ServiceError.defaultError))
-        }
-        let request = Rpc_SignMessageSecurityCardRequest.with { req in
-            req.messageHex = messageHex
-        }
-        let call = client.signMessageSecurityCard(request)
-
-        return performAsyncRequest(call)
-            .map { $0.signedMessageHex.stringBytes }
-    }
-
     func signMessageWithSecurityCardV2() -> Completable {
         guard let client = client else {
             return Completable.error(MuunError(ServiceError.defaultError))
@@ -77,7 +96,11 @@ public class WalletService {
         return performAsyncRequest(call).asCompletable()
     }
 
-    func generateEmergencyKitPDF(data: EmergencyKitData, outputPath: String, language: String) throws -> Rpc_GenerateEmergencyKitPDFResponse {
+    func generateEmergencyKitPDF(
+        data: EmergencyKitData,
+        outputPath: String,
+        language: String
+    ) throws -> Rpc_GenerateEmergencyKitPDFResponse {
         guard let client = client else {
             throw MuunError(ServiceError.defaultError)
         }
@@ -96,6 +119,23 @@ public class WalletService {
 
         let call = client.generateEmergencyKitPDF(request)
         return try performSyncRequest(call)
+    }
+
+    func zipDataDir(outputPath: String) {
+        guard let client = client else {
+            Logger.fatal("grpc client shouldn't be nil")
+        }
+
+        let request = Rpc_ZipDataDirRequest.with { req in
+            req.outputPath = outputPath
+        }
+
+        let call = client.zipDataDir(request)
+        do {
+            _ = try performSyncRequest(call)
+        } catch {
+            Logger.log(.err, "Unexpected error: \(error.localizedDescription)")
+        }
     }
 
     func getSecurityCardsMarketplace() -> Single<[SecurityCardProvider]> {

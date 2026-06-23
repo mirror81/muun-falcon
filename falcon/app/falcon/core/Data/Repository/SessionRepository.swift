@@ -40,8 +40,8 @@ class SessionRepository {
     func getPin() throws -> String {
         return try self.secureStorage.get(.pin)
     }
-    
-    func hasPin() throws -> Bool  {
+
+    func hasPin() throws -> Bool {
         return try self.secureStorage.has(.pin)
     }
 

@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class SignUpEmailViewController: MUViewController {
 
     @IBOutlet private weak var textInputView: TextInputView!
@@ -182,7 +181,10 @@ extension SignUpEmailViewController: SignUpEmailPresenterDelegate {
     }
 
     func responseOkReceived() {
-        navigationController!.pushViewController(SignUpVerifyEmailViewController(wording: wording), animated: true)
+        navigationController!.pushViewController(
+            SignUpVerifyEmailViewController(wording: wording),
+            animated: true
+        )
     }
 
     func invalidEmail() {

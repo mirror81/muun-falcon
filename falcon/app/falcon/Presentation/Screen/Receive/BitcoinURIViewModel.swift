@@ -6,8 +6,6 @@
 //  Copyright © 2022 muun. All rights reserved.
 //
 
-
-
 struct BitcoinURIViewModel {
     let uri: String
     let invoice: IncomingInvoiceInfo
@@ -24,9 +22,11 @@ struct BitcoinURIViewModel {
     static func from(raw: RawBitcoinURI) -> BitcoinURIViewModel {
         let info = IncomingInvoiceInfo.from(raw: raw.rawInvoice)
 
-        return BitcoinURIViewModel(uri: raw.uri,
-                                   invoice: info,
-                                   address: raw.address,
-                                   amount: raw.amount)
+        return BitcoinURIViewModel(
+            uri: raw.uri,
+            invoice: info,
+            address: raw.address,
+            amount: raw.amount
+        )
     }
 }

@@ -49,9 +49,11 @@ class BasePresenter<Delegate> where Delegate: BasePresenterDelegate {
     /// For instance, this prevents users from seeing a zero balance for several seconds,
     /// improving the overall experience.
     @discardableResult
-    public func subscribeTo<T>(_ observable: Observable<T>,
-                               onNext: @escaping (_ t: T) -> Void,
-                               subscribeOn: SchedulerType = Scheduler.backgroundScheduler)
+    public func subscribeTo<T>(
+        _ observable: Observable<T>,
+        onNext: @escaping (_ t: T) -> Void,
+        subscribeOn: SchedulerType = Scheduler.backgroundScheduler
+    )
         -> CompositeDisposable.DisposeKey? {
         let disp = observable
             .subscribeOn(subscribeOn)

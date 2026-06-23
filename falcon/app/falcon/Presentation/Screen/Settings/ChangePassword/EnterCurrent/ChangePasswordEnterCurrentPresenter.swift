@@ -8,7 +8,6 @@
 
 import RxSwift
 
-
 protocol ChangePasswordEnterCurrentPresenterDelegate: BasePresenterDelegate {
     func setLoading(_ isLoading: Bool)
     func pendingUpdateReceived(challengeType: String, updateUuid: String)
@@ -22,10 +21,12 @@ BasePresenter<Delegate> {
     private let requestChallengeAction: RequestChallengeAction
     private let sessionActions: SessionActions
 
-    init(delegate: Delegate,
-         beginPasswordChangeAction: BeginPasswordChangeAction,
-         requestChallengeAction: RequestChallengeAction,
-         sessionActions: SessionActions) {
+    init(
+        delegate: Delegate,
+        beginPasswordChangeAction: BeginPasswordChangeAction,
+        requestChallengeAction: RequestChallengeAction,
+        sessionActions: SessionActions
+    ) {
         self.beginPasswordChangeAction = beginPasswordChangeAction
         self.requestChallengeAction = requestChallengeAction
         self.sessionActions = sessionActions
@@ -101,7 +102,10 @@ BasePresenter<Delegate> {
 
         case .VALUE:
             if let uuid = result.value {
-                delegate.pendingUpdateReceived(challengeType: ChallengeType.PASSWORD.rawValue, updateUuid: uuid)
+                delegate.pendingUpdateReceived(
+                    challengeType: ChallengeType.PASSWORD.rawValue,
+                    updateUuid: uuid
+                )
             }
         }
     }

@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 import Dip
 
 enum DIManager {
@@ -50,29 +49,35 @@ enum DIManager {
 
             let databaseURL: URL
             do {
-                databaseURL = try FileManager.default
-                    .url(for: .applicationSupportDirectory,
-                         in: .userDomainMask,
-                         appropriateFor: nil,
-                         create: true)
-                    .appendingPathComponent("db.sqlite")
+                databaseURL = try FileManager.default.url(
+                    for: .applicationSupportDirectory,
+                    in: .userDomainMask,
+                    appropriateFor: nil,
+                    create: true
+                ).appendingPathComponent("db.sqlite")
             } catch {
                 fatalError("Couldn't create path for DB")
             }
 
-            container.register(.singleton,
-                               type: URL.self,
-                               tag: DependencyContainer.DataTags.databaseUrl) {
+            container.register(
+                .singleton,
+                type: URL.self,
+                tag: DependencyContainer.DataTags.databaseUrl
+            ) {
                 databaseURL
             }
-            container.register(.singleton,
-                               type: String.self,
-                               tag: DependencyContainer.DataTags.secureStoragePrefix) {
+            container.register(
+                .singleton,
+                type: String.self,
+                tag: DependencyContainer.DataTags.secureStoragePrefix
+            ) {
                 Identifiers.bundleId
             }
-            container.register(.singleton,
-                               type: String.self,
-                               tag: DependencyContainer.DataTags.secureStorageGroup) {
+            container.register(
+                .singleton,
+                type: String.self,
+                tag: DependencyContainer.DataTags.secureStorageGroup
+            ) {
                 Identifiers.group
             }
 
@@ -108,8 +113,10 @@ extension MUViewController: PresenterInstantior {}
 
 extension PresenterInstantior {
 
-    func instancePresenter<T, U>(_ factory: ((U)) -> T,
-                                 delegate: U) -> T where T: BasePresenter<U> {
+    func instancePresenter<T, U>(
+        _ factory: ((U)) -> T,
+        delegate: U
+    ) -> T where T: BasePresenter<U> {
         return factory((delegate))
     }
 
@@ -147,9 +154,11 @@ extension PresenterInstantior {
         ))
     }
 
-    func instancePresenter<T, U, A, B, S>(_ factory: ((U, S, A, B)) -> T,
-                                          delegate: U,
-                                          state: S) -> T
+    func instancePresenter<T, U, A, B, S>(
+        _ factory: ((U, S, A, B)) -> T,
+        delegate: U,
+        state: S
+    ) -> T
         where T: BasePresenter<U> {
 
         return factory((
@@ -171,9 +180,11 @@ extension PresenterInstantior {
         ))
     }
 
-    func instancePresenter<T, U, A, B, C, S>(_ factory: ((U, S, A, B, C)) -> T,
-                                             delegate: U,
-                                             state: S) -> T
+    func instancePresenter<T, U, A, B, C, S>(
+        _ factory: ((U, S, A, B, C)) -> T,
+        delegate: U,
+        state: S
+    ) -> T
         where T: BasePresenter<U> {
 
         return factory((
@@ -197,9 +208,11 @@ extension PresenterInstantior {
         ))
     }
 
-    func instancePresenter<T, U, A, B, C, D, S>(_ factory: ((U, S, A, B, C, D)) -> T,
-                                                delegate: U,
-                                                state: S) -> T
+    func instancePresenter<T, U, A, B, C, D, S>(
+        _ factory: ((U, S, A, B, C, D)) -> T,
+        delegate: U,
+        state: S
+    ) -> T
         where T: BasePresenter<U> {
 
         return factory((
@@ -212,8 +225,10 @@ extension PresenterInstantior {
         ))
     }
 
-    func instancePresenter<T, U, A, B, C, D, E>(_ factory: ((U, A, B, C, D, E)) -> T,
-                                                delegate: U) -> T
+    func instancePresenter<T, U, A, B, C, D, E>(
+        _ factory: ((U, A, B, C, D, E)) -> T,
+        delegate: U
+    ) -> T
         where T: BasePresenter<U> {
 
             return factory((
@@ -226,9 +241,11 @@ extension PresenterInstantior {
             ))
     }
 
-    func instancePresenter<T, U, A, B, C, D, E, S>(_ factory: ((U, S, A, B, C, D, E)) -> T,
-                                                   delegate: U,
-                                                   state: S) -> T
+    func instancePresenter<T, U, A, B, C, D, E, S>(
+        _ factory: ((U, S, A, B, C, D, E)) -> T,
+        delegate: U,
+        state: S
+    ) -> T
         where T: BasePresenter<U> {
 
             return factory((
@@ -242,8 +259,10 @@ extension PresenterInstantior {
             ))
     }
 
-    func instancePresenter<T, U, A, B, C, D, E, F>(_ factory: ((U, A, B, C, D, E, F)) -> T,
-                                                   delegate: U) -> T
+    func instancePresenter<T, U, A, B, C, D, E, F>(
+        _ factory: ((U, A, B, C, D, E, F)) -> T,
+        delegate: U
+    ) -> T
         where T: BasePresenter<U> {
 
             return factory((
@@ -257,9 +276,11 @@ extension PresenterInstantior {
             ))
     }
 
-    func instancePresenter<T, U, A, B, C, D, E, F, S>(_ factory: ((U, S, A, B, C, D, E, F)) -> T,
-                                                      delegate: U,
-                                                      state: S) -> T
+    func instancePresenter<T, U, A, B, C, D, E, F, S>(
+        _ factory: ((U, S, A, B, C, D, E, F)) -> T,
+        delegate: U,
+        state: S
+    ) -> T
         where T: BasePresenter<U> {
 
             return factory((
@@ -274,8 +295,10 @@ extension PresenterInstantior {
             ))
     }
 
-    func instancePresenter<T, U, A, B, C, D, E, F, G>(_ factory: ((U, A, B, C, D, E, F, G)) -> T,
-                                                      delegate: U) -> T
+    func instancePresenter<T, U, A, B, C, D, E, F, G>(
+        _ factory: ((U, A, B, C, D, E, F, G)) -> T,
+        delegate: U
+    ) -> T
         where T: BasePresenter<U> {
 
             return factory((
@@ -291,7 +314,8 @@ extension PresenterInstantior {
     }
 
     func instancePresenter<T, U, A, B, C, D, E, F, G, S>(
-        _ factory: ((U, S, A, B, C, D, E, F, G)) -> T, delegate: U, state: S) -> T
+        _ factory: ((U, S, A, B, C, D, E, F, G)) -> T, delegate: U, state: S
+    ) -> T
         where T: BasePresenter<U> {
 
             return factory((
@@ -327,7 +351,8 @@ extension PresenterInstantior {
     }
 
     func instancePresenter<T, U, A, B, C, D, E, F, G, H, S>(
-        _ factory: ((U, S, A, B, C, D, E, F, G, H)) -> T, delegate: U, state: S) -> T
+        _ factory: ((U, S, A, B, C, D, E, F, G, H)) -> T, delegate: U, state: S
+    ) -> T
         where T: BasePresenter<U> {
 
             return factory((
@@ -365,7 +390,8 @@ extension PresenterInstantior {
     }
 
     func instancePresenter<T, U, A, B, C, D, E, F, G, H, I, S>(
-        _ factory: ((U, S, A, B, C, D, E, F, G, H, I)) -> T, delegate: U, state: S) -> T
+        _ factory: ((U, S, A, B, C, D, E, F, G, H, I)) -> T, delegate: U, state: S
+    ) -> T
         where T: BasePresenter<U> {
 
             return factory((
@@ -384,7 +410,8 @@ extension PresenterInstantior {
     }
 
     func instancePresenter<T, U, A, B, C, D, E, F, G, H, I, J>(
-        _ factory: ((U, A, B, C, D, E, F, G, H, I, J)) -> T, delegate: U) -> T
+        _ factory: ((U, A, B, C, D, E, F, G, H, I, J)) -> T, delegate: U
+    ) -> T
         where T: BasePresenter<U> {
 
             return factory((
@@ -403,7 +430,8 @@ extension PresenterInstantior {
     }
 
     func instancePresenter<T, U, A, B, C, D, E, F, G, H, I, J, K>(
-        _ factory: ((U, A, B, C, D, E, F, G, H, I, J, K)) -> T, delegate: U) -> T
+        _ factory: ((U, A, B, C, D, E, F, G, H, I, J, K)) -> T, delegate: U
+    ) -> T
         where T: BasePresenter<U> {
 
             return factory((

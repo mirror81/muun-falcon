@@ -9,7 +9,6 @@
 import Foundation
 import Libwallet
 
-
 struct ConfirmStateViewModel {
     private let resolved: NewopResolved
     private let amountInfo: NewopAmountInfo
@@ -109,28 +108,35 @@ struct ConfirmStateViewModel {
 
         if lastSelectedCurrency == nil {
             let inPrimaryCurrency = totalBalance.inPrimaryCurrency.currency
-            selectedCurrency = GetCurrencyForCode().runAssumingCrashPosibility(code: inPrimaryCurrency)
+            selectedCurrency = GetCurrencyForCode()
+                .runAssumingCrashPosibility(code: inPrimaryCurrency)
         }
 
-        let btcAmount = BitcoinAmountWithSelectedCurrency(bitcoinAmount: amount,
-                                                          selectedCurrency: selectedCurrency!)
+        let btcAmount = BitcoinAmountWithSelectedCurrency(
+            bitcoinAmount: amount,
+            selectedCurrency: selectedCurrency!
+        )
         return btcAmount
     }
 
     static func fromConfirm(state: NewopConfirmState) -> ConfirmStateViewModel {
-        return ConfirmStateViewModel(resolved: state.resolved!,
-                                     amountInfo: state.amountInfo!,
-                                     validated: state.validated!,
-                                     update: state.getUpdate(),
-                                     note: state.note)
+        return ConfirmStateViewModel(
+            resolved: state.resolved!,
+            amountInfo: state.amountInfo!,
+            validated: state.validated!,
+            update: state.getUpdate(),
+            note: state.note
+        )
     }
 
     static func fromConfirmLightning(state: NewopConfirmLightningState) -> ConfirmStateViewModel {
-        return ConfirmStateViewModel(resolved: state.resolved!,
-                                     amountInfo: state.amountInfo!,
-                                     validated: state.validated!,
-                                     update: state.getUpdate(),
-                                     note: state.note)
+        return ConfirmStateViewModel(
+            resolved: state.resolved!,
+            amountInfo: state.amountInfo!,
+            validated: state.validated!,
+            update: state.getUpdate(),
+            note: state.note
+        )
     }
 
     private func swapFees() -> NewopSwapFees? {

@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 protocol ReceiveDelegate: AnyObject {
     func didTapOnShare(_ shareText: String)
     func didTapOnCopy(_ copyText: String)
@@ -72,7 +71,9 @@ struct IncomingInvoiceInfo {
             case .submarineSwap(let invoice):
                 return Double(invoice.expiry)
             default:
-                Logger.fatal("Trying to parse something that is not a lightning invoice: \(rawInvoice)")
+                Logger.fatal(
+                    "Trying to parse something that is not a lightning invoice: \(rawInvoice)"
+                )
             }
         } catch {
             Logger.fatal("Trying to parse something that is not a lightning invoice: \(rawInvoice)")
@@ -98,7 +99,8 @@ final class ReceiveInLightningView: UIView {
         stackView.topAnchor.constraint(equalTo: topAnchor, constant: 16)
     ]
 
-    // We display a expiration warning message when the invoice has only 3 minutes remaining of expiration time
+    // We display a expiration warning message when the invoice has only 3 minutes remaining of
+    // expiration time
     private let expirationMessageThresholdInSecs = 180
 
     var isHighFeesFlow = false {
@@ -167,9 +169,18 @@ final class ReceiveInLightningView: UIView {
         stackView.setCustomSpacing(24, after: qrCodeView)
 
         NSLayoutConstraint.activate([
-            qrCodeView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: .sideMargin),
-            qrCodeView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -.sideMargin),
-            qrCodeView.topAnchor.constraint(equalTo: expirationNoticeView.bottomAnchor, constant: .sideMargin)
+            qrCodeView.leadingAnchor.constraint(
+                equalTo: stackView.leadingAnchor,
+                constant: .sideMargin
+            ),
+            qrCodeView.trailingAnchor.constraint(
+                equalTo: stackView.trailingAnchor,
+                constant: -.sideMargin
+            ),
+            qrCodeView.topAnchor.constraint(
+                equalTo: expirationNoticeView.bottomAnchor,
+                constant: .sideMargin
+            )
         ])
     }
 
@@ -183,8 +194,14 @@ final class ReceiveInLightningView: UIView {
         stackView.addArrangedSubview(expirationNoticeView)
 
         NSLayoutConstraint.activate([
-            expirationNoticeView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: .sideMargin),
-            expirationNoticeView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -.sideMargin)
+            expirationNoticeView.leadingAnchor.constraint(
+                equalTo: stackView.leadingAnchor,
+                constant: .sideMargin
+            ),
+            expirationNoticeView.trailingAnchor.constraint(
+                equalTo: stackView.trailingAnchor,
+                constant: -.sideMargin
+            )
         ])
     }
 
@@ -223,8 +240,10 @@ final class ReceiveInLightningView: UIView {
     private func displayInvoiceExpiredViewAndStopTimer() {
         let text = L10n.ReceiveInLightningView.s5
             .attributedForDescription(alignment: .center)
-        createInvoiceView.display(text: text,
-                                  buttonText: L10n.ReceiveInLightningView.s6)
+        createInvoiceView.display(
+            text: text,
+            buttonText: L10n.ReceiveInLightningView.s6
+        )
         timer.invalidate()
     }
 

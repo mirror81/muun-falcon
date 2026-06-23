@@ -185,9 +185,18 @@ private extension ErrorView {
         scrollView.addSubview(labelsStackView)
 
         NSLayoutConstraint.activate([
-            labelsStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: .sideMargin),
-            labelsStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -.sideMargin),
-            labelsStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -2 * .sideMargin),
+            labelsStackView.leadingAnchor.constraint(
+                equalTo: scrollView.leadingAnchor,
+                constant: .sideMargin
+            ),
+            labelsStackView.trailingAnchor.constraint(
+                equalTo: scrollView.trailingAnchor,
+                constant: -.sideMargin
+            ),
+            labelsStackView.widthAnchor.constraint(
+                equalTo: scrollView.widthAnchor,
+                constant: -2 * .sideMargin
+            ),
             labelsStackView.topAnchor.constraint(greaterThanOrEqualTo: scrollView.topAnchor),
             labelsStackView.bottomAnchor.constraint(lessThanOrEqualTo: scrollView.bottomAnchor)
         ])
@@ -276,7 +285,9 @@ private extension ErrorView {
         setSecondBox()
         setButtons()
 
-        descriptionLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: .descriptionTouched))
+        descriptionLabel.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: .descriptionTouched)
+        )
     }
 
     func setButtons() {

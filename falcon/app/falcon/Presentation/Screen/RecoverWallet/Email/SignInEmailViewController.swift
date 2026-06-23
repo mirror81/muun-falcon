@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class SignInEmailViewController: MUViewController {
 
     @IBOutlet private weak var textInputView: TextInputView!
@@ -168,7 +167,10 @@ extension SignInEmailViewController: SignInEmailPresenterDelegate {
 
     func sessionResponseReceived(sessionOk: CreateSessionOk) {
         let vc = SignInPasswordViewController(sessionOk)
-        navigationController!.pushViewController(SignInAuthorizeEmailViewController(nextVc: vc), animated: true)
+        navigationController!.pushViewController(
+            SignInAuthorizeEmailViewController(nextVc: vc),
+            animated: true
+        )
     }
 
     func userNotRegistered() {

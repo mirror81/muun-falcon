@@ -12,7 +12,8 @@ protocol NewOpDescriptionPresenterDelegate: BasePresenterDelegate {
     func userDidChangeDescription(_ isValid: Bool)
 }
 
-class NewOpDescriptionPresenter<Delegate: NewOpDescriptionPresenterDelegate>: BasePresenter<Delegate> {
+class NewOpDescriptionPresenter<Delegate: NewOpDescriptionPresenterDelegate>:
+    BasePresenter<Delegate> {
 
     private let data: NewOperationStateAmount
 

@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 protocol NewOpDestinationViewDelegate: AnyObject {
     func showMoreInfo(info: MoreInfo)
 }
@@ -27,10 +26,12 @@ class NewOpDestinationFilledDataView: MUView {
     private let confirm: Bool
     private let moreInfo: MoreInfo
 
-    init(type: PaymentRequestType,
-         delegate: NewOpDestinationViewDelegate?,
-         confirm: Bool,
-         moreInfo: MoreInfo) {
+    init(
+        type: PaymentRequestType,
+        delegate: NewOpDestinationViewDelegate?,
+        confirm: Bool,
+        moreInfo: MoreInfo
+    ) {
         self.type = type
         self.delegate = delegate
         self.confirm = confirm
@@ -66,8 +67,14 @@ class NewOpDestinationFilledDataView: MUView {
     }
 
     fileprivate func setUpButton() {
-        moreInfoButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: .buttonTapped))
-        detailLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: .buttonTapped))
+        moreInfoButton.addGestureRecognizer(UITapGestureRecognizer(
+            target: self,
+            action: .buttonTapped
+        ))
+        detailLabel.addGestureRecognizer(UITapGestureRecognizer(
+            target: self,
+            action: .buttonTapped
+        ))
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: .buttonTapped))
     }
 

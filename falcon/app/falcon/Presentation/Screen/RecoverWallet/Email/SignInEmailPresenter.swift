@@ -8,7 +8,6 @@
 
 import RxSwift
 
-
 protocol SignInEmailPresenterDelegate: BasePresenterDelegate {
     func sessionResponseReceived(sessionOk: CreateSessionOk)
     func setLoading(_ isLoading: Bool)
@@ -22,10 +21,12 @@ class SignInEmailPresenter<Delegate: SignInEmailPresenterDelegate>: BasePresente
     private let preferences: Preferences
     private let fcmTokenAction: FCMTokenAction
 
-    init(delegate: Delegate,
-         createSessionAction: CreateSessionAction,
-         preferences: Preferences,
-         fcmTokenAction: FCMTokenAction) {
+    init(
+        delegate: Delegate,
+        createSessionAction: CreateSessionAction,
+        preferences: Preferences,
+        fcmTokenAction: FCMTokenAction
+    ) {
         self.createSessionAction = createSessionAction
         self.preferences = preferences
         self.fcmTokenAction = fcmTokenAction
@@ -54,10 +55,7 @@ class SignInEmailPresenter<Delegate: SignInEmailPresenterDelegate>: BasePresente
     }
 
     func isValidEmail(testStr: String) -> Bool {
-        let emailRegEx = "[^@ ]+@[^@ ]+[.][^@ ]*[A-Za-z0-9]$"
-        let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
-
-        return emailTest.evaluate(with: testStr)
+        return EmailValidator.isValid(testStr)
     }
 
     private func onCreateSessionChange(_ result: ActionState<CreateSessionOk>) {

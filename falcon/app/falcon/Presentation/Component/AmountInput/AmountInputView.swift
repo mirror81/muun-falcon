@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 
-
 protocol AmountInputViewDelegate: AnyObject {
     func didInput(amount: String, currency: Currency)
     func didTapCurrency()
@@ -122,8 +121,10 @@ class AmountInputView: UIView {
         if newAmount.amount == 0 {
             value = ""
         } else {
-            value = newCurrency.toAmountWithoutCode(amount: newAmount.amount,
-                                                    btcCurrencyFormat: .long)
+            value = newCurrency.toAmountWithoutCode(
+                amount: newAmount.amount,
+                btcCurrencyFormat: .long
+            )
         }
     }
 
@@ -161,10 +162,11 @@ class AmountInputView: UIView {
 extension AmountInputView: UITextFieldDelegate {
 
     // swiftlint:disable function_body_length
-    func textField(_ textField: UITextField,
-                   shouldChangeCharactersIn range: NSRange,
-                   replacementString string: String)
-        -> Bool {
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
 
         if let text = textField.text,
             let textRange = Range(range, in: text) {
@@ -182,8 +184,10 @@ extension AmountInputView: UITextFieldDelegate {
             }
 
             let newAmount = currency.formattedNumber(from: updatedText)
-            typedAmount = MonetaryAmountWithCompleteDataOfCurrency(monetaryAmount: newAmount,
-                                                                   currency: currency)
+            typedAmount = MonetaryAmountWithCompleteDataOfCurrency(
+                monetaryAmount: newAmount,
+                currency: currency
+            )
 
             delegate?.didInput(amount: updatedText, currency: currency)
 
@@ -197,9 +201,11 @@ extension AmountInputView: UITextFieldDelegate {
             var indexInOriginal = text.startIndex
             var indexInNew = updatedText.startIndex
 
-            guard let rangeStart = text.index(text.startIndex,
-                                              offsetBy: range.lowerBound,
-                                              limitedBy: text.endIndex)
+            guard let rangeStart = text.index(
+                text.startIndex,
+                offsetBy: range.lowerBound,
+                limitedBy: text.endIndex
+            )
                 else { return false }
 
             func advance(index: String.Index, in text: String, by offset: Int) -> String.Index {
@@ -252,9 +258,11 @@ extension AmountInputView: UITextFieldDelegate {
 
             let distance = updatedText.distance(from: updatedText.startIndex, to: indexInNew)
 
-            guard let newPosition = textField.position(from: textField.beginningOfDocument,
-                                                       offset: distance) else {
-                                                        return false
+            guard let newPosition = textField.position(
+                from: textField.beginningOfDocument,
+                offset: distance
+            ) else {
+                return false
             }
 
             textField.selectedTextRange = textField.textRange(from: newPosition, to: newPosition)
@@ -295,8 +303,14 @@ fileprivate extension AmountInputView {
         // as much space as it wants. But textField is has limits due to the size available to it's
         // parent. Adding those magic constants keeps iOS from deciding it needs to reduce the font
         // size magically.
-        let heightConstraint = textField.heightAnchor.constraint(equalTo: mirrorTextField.heightAnchor, constant: 2)
-        let widthConstraint = textField.widthAnchor.constraint(equalTo: mirrorTextField.widthAnchor, constant: 12)
+        let heightConstraint = textField.heightAnchor.constraint(
+            equalTo: mirrorTextField.heightAnchor,
+            constant: 2
+        )
+        let widthConstraint = textField.widthAnchor.constraint(
+            equalTo: mirrorTextField.widthAnchor,
+            constant: 12
+        )
 
         // We want to be that size, but not bad enough that we don't fit where we're supposed to
         widthConstraint.priority = .required - 1
@@ -305,8 +319,10 @@ fileprivate extension AmountInputView {
             // Position inputContainer horizontally to be centered but not exceed its parent
             centerXAnchor.constraint(equalTo: inputContainer.centerXAnchor),
             leadingAnchor.constraint(lessThanOrEqualTo: inputContainer.leadingAnchor, constant: 8),
-            trailingAnchor.constraint(greaterThanOrEqualTo: inputContainer.trailingAnchor,
-                                      constant: 8),
+            trailingAnchor.constraint(
+                greaterThanOrEqualTo: inputContainer.trailingAnchor,
+                constant: 8
+            ),
 
             // inputContainer sits below the top border
             topAnchor.constraint(equalTo: inputContainer.topAnchor, constant: 8),
@@ -416,8 +432,10 @@ fileprivate extension AmountInputView {
         currencyLabel.textColor = Asset.Colors.muunGrayDark.color
         currencyLabel.isUserInteractionEnabled = true
 
-        currencyLabel.addGestureRecognizer(UITapGestureRecognizer(target: self,
-                                                                  action: .didTapCurrency))
+        currencyLabel.addGestureRecognizer(UITapGestureRecognizer(
+            target: self,
+            action: .didTapCurrency
+        ))
 
         return currencyLabel
     }

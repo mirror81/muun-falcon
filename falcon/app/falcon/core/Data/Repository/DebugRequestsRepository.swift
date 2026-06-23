@@ -10,15 +10,19 @@ import Foundation
 public class DebugRequestsRepository {
     var storedRequests = [DebugRequest]()
 
-    func save(request: BaseRequest,
-              response: URLResponse?,
-              data: Data?,
-              error: Error?) {
+    func save(
+        request: BaseRequest,
+        response: URLResponse?,
+        data: Data?,
+        error: Error?
+    ) {
         #if DEBUG
-        let debugRequest = DebugRequest(request: request,
-                                        response: response,
-                                        data: data,
-                                        error: error)
+        let debugRequest = DebugRequest(
+            request: request,
+            response: response,
+            data: data,
+            error: error
+        )
         storedRequests.append(debugRequest)
         #endif
     }

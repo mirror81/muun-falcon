@@ -17,12 +17,14 @@ public class SetUpPasswordAction: AsyncAction<()> {
     private let signChallengeWithUserKeyAction: SignChallengeWithUserKeyAction
     private let buildChallengeSetupAction: BuildChallengeSetupAction
 
-    init(houstonService: HoustonService,
-         keysRepository: KeysRepository,
-         preferences: Preferences,
-         signChallengeWithUserKeyAction: SignChallengeWithUserKeyAction,
-         buildChallengeSetupAction: BuildChallengeSetupAction,
-         updateUserPreferences: UpdateUserPreferencesAction) {
+    init(
+        houstonService: HoustonService,
+        keysRepository: KeysRepository,
+        preferences: Preferences,
+        signChallengeWithUserKeyAction: SignChallengeWithUserKeyAction,
+        buildChallengeSetupAction: BuildChallengeSetupAction,
+        updateUserPreferences: UpdateUserPreferencesAction
+    ) {
         self.houstonService = houstonService
         self.keysRepository = keysRepository
         self.preferences = preferences

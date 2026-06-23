@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 protocol ReceiveAmountInputViewControllerDelegate: AnyObject {
     func didConfirm(bitcoinAmount: BitcoinAmountWithSelectedCurrency?)
 }
@@ -20,7 +19,8 @@ class ReceiveAmountInputViewController: MUViewController {
     private var bottomAnchorOnSafeArea: NSLayoutYAxisAnchor {
         view.safeAreaLayoutGuide.bottomAnchor
     }
-    private lazy var bottomConstraint = confirmButton.bottomAnchor.constraint(equalTo: bottomAnchorOnSafeArea)
+    private lazy var bottomConstraint = confirmButton.bottomAnchor
+        .constraint(equalTo: bottomAnchorOnSafeArea)
 
     private weak var delegate: ReceiveAmountInputViewControllerDelegate?
 
@@ -30,9 +30,11 @@ class ReceiveAmountInputViewController: MUViewController {
 
     private let receiveType: ReceiveType
 
-    init(delegate: ReceiveAmountInputViewControllerDelegate,
-         amount: MonetaryAmountWithCompleteDataOfCurrency?,
-         receiveType: ReceiveType) {
+    init(
+        delegate: ReceiveAmountInputViewControllerDelegate,
+        amount: MonetaryAmountWithCompleteDataOfCurrency?,
+        receiveType: ReceiveType
+    ) {
 
         self.delegate = delegate
         self.initialAmount = amount
@@ -112,8 +114,14 @@ class ReceiveAmountInputViewController: MUViewController {
             amountContainerView.topAnchor.constraint(equalTo: view.topAnchor),
             amountContainerView.bottomAnchor.constraint(equalTo: confirmButton.topAnchor),
 
-            amountInput.leadingAnchor.constraint(equalTo: amountContainerView.leadingAnchor, constant: .sideMargin),
-            amountInput.trailingAnchor.constraint(equalTo: amountContainerView.trailingAnchor, constant: -.sideMargin),
+            amountInput.leadingAnchor.constraint(
+                equalTo: amountContainerView.leadingAnchor,
+                constant: .sideMargin
+            ),
+            amountInput.trailingAnchor.constraint(
+                equalTo: amountContainerView.trailingAnchor,
+                constant: -.sideMargin
+            ),
             amountInput.centerXAnchor.constraint(equalTo: amountContainerView.centerXAnchor),
             amountInput.centerYAnchor.constraint(equalTo: amountContainerView.centerYAnchor),
 

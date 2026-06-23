@@ -9,14 +9,15 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"github.com/muun/libwallet/cryptography"
-	"github.com/muun/libwallet/domain/nfc"
-	"github.com/muun/libwallet/service/model"
-	"github.com/muun/libwallet/storage"
 	"log/slog"
 	"math/big"
 	"reflect"
 	"time"
+
+	"github.com/muun/libwallet/cryptography"
+	"github.com/muun/libwallet/domain/nfc"
+	"github.com/muun/libwallet/service/model"
+	"github.com/muun/libwallet/storage"
 )
 
 type RandomPrivateKeyMetadata struct {
@@ -57,7 +58,9 @@ func (m *MockHoustonService) HealthCheck() error {
 	panic("implement me")
 }
 
-func (m *MockHoustonService) ChallengeKeySetupStart(req model.ChallengeSetupJson) (model.SetupChallengeResponseJson, error) {
+func (m *MockHoustonService) ChallengeKeySetupStart(
+	req model.ChallengeSetupJson,
+) (model.SetupChallengeResponseJson, error) {
 	//TODO implement me
 	panic("implement me")
 }
@@ -67,7 +70,9 @@ func (m *MockHoustonService) ChallengeKeySetupFinish(req model.ChallengeSetupVer
 	panic("implement me")
 }
 
-func (m *MockHoustonService) ChallengeSetupFinishWithVerifiableMuunKey(req model.ChallengeSetupVerifyJson) (model.VerifiableMuunKeyJson, error) {
+func (m *MockHoustonService) ChallengeSetupFinishWithVerifiableMuunKey(
+	req model.ChallengeSetupVerifyJson,
+) (model.VerifiableMuunKeyJson, error) {
 	//TODO implement me
 	panic("implement me")
 }
@@ -77,7 +82,9 @@ func (m *MockHoustonService) VerifiableMuunKey() (model.VerifiableMuunKeyJson, e
 	panic("implement me")
 }
 
-func (m *MockHoustonService) CreateFirstSession(createSessionJson model.CreateFirstSessionJson) (model.CreateFirstSessionOkJson, error) {
+func (m *MockHoustonService) CreateFirstSession(
+	createSessionJson model.CreateFirstSessionJson,
+) (model.CreateFirstSessionOkJson, error) {
 	//TODO implement me
 	panic("implement me")
 }
@@ -206,7 +213,11 @@ func (m *MockHoustonService) RegisterSecurityCard(
 	}
 
 	// Verify signed MAC with global public key
-	isValidated, err := m.verifySignature(globalPublicKeyBytes, receivedMacBytes, globalSignCardBytes)
+	isValidated, err := m.verifySignature(
+		globalPublicKeyBytes,
+		receivedMacBytes,
+		globalSignCardBytes,
+	)
 	if err != nil {
 		houstonError := mapToInternalServerHoustonError("error with mac sig verification", err)
 		return model.RegisterSecurityCardOkJson{}, houstonError
@@ -296,7 +307,9 @@ func (m *MockHoustonService) ChallengeSecurityCardSign(
 	}, nil
 }
 
-func (m *MockHoustonService) SolveSecurityCardChallenge(req model.SolveSecurityCardChallengeJson) error {
+func (m *MockHoustonService) SolveSecurityCardChallenge(
+	req model.SolveSecurityCardChallengeJson,
+) error {
 	timeSinceLastChallenge := time.Since(m.lastRandomPrivateKeyMetadata.timeStamp).Seconds()
 	if timeSinceLastChallenge > challengeTimeoutInSeconds {
 		return &HoustonResponseError{
@@ -353,6 +366,313 @@ func (m *MockHoustonService) SolveSecurityCardChallenge(req model.SolveSecurityC
 	}
 
 	return nil
+}
+
+func (m *MockHoustonService) FetchSecurityCardsMarketplace() (model.SecurityCardsMarketplaceJson, error) {
+	argentina := model.CountryInfoJson{Code: "AR", Name: "Argentina", Flag: "🇦🇷"}
+	uruguay := model.CountryInfoJson{Code: "UY", Name: "Uruguay", Flag: "🇺🇾"}
+	brazil := model.CountryInfoJson{Code: "BR", Name: "Brazil", Flag: "🇧🇷"}
+
+	return model.SecurityCardsMarketplaceJson{
+		Providers: []model.SecurityCardsProviderJson{
+			{
+				Id:          "constellations",
+				Name:        "Constellations",
+				Description: "Constellations are officially recognized patterns of stars in the night sky that form recognizable shapes, figures, or outlines.",
+				SiteUrl:     "https://en.wikipedia.org/wiki/Constellation",
+				LightTheme: model.ProviderThemeJson{
+					PrimaryColor: "#B19B6A",
+					SurfaceColor: "#0DB19B6A",
+				},
+				DarkTheme: model.ProviderThemeJson{
+					PrimaryColor: "#B19B6A",
+					SurfaceColor: "#0DB19B6A",
+				},
+				SecurityCards: []model.SecurityCardJson{
+					{
+						Id:       "constellations_scorpius",
+						AssetUrl: "https://placehold.co/2594x1632/FFF8E7/AFC9FF/png?text=SCORPIUS",
+						SpecId:   "constellations_spec",
+						CardCost: model.PriceInfoJson{CurrencyCode: "EUR", Amount: "10000"},
+					},
+					{
+						Id:       "constellations_gemini",
+						AssetUrl: "https://placehold.co/2594x1632/FFF8E7/AFC9FF/png?text=GEMINI",
+						SpecId:   "constellations_spec",
+						CardCost: model.PriceInfoJson{CurrencyCode: "EUR", Amount: "20000"},
+					},
+					{
+						Id:       "constellations_sagitarius",
+						AssetUrl: "https://placehold.co/2594x1632/FFF8E7/AFC9FF/png?text=SAGITARIUS",
+						SpecId:   "constellations_spec",
+						CardCost: model.PriceInfoJson{CurrencyCode: "EUR", Amount: "30000"},
+					},
+					{
+						Id:       "constellations_virgo",
+						AssetUrl: "https://placehold.co/2594x1632/FFF8E7/AFC9FF/png?text=VIRGO",
+						SpecId:   "constellations_spec",
+						CardCost: model.PriceInfoJson{CurrencyCode: "EUR", Amount: "30000"},
+					},
+				},
+				EstimatedShippingPrices: []model.ShippingPriceInfoJson{
+					{
+						Price:     model.PriceInfoJson{CurrencyCode: "EUR", Amount: "1500"},
+						Countries: []model.CountryInfoJson{argentina, uruguay},
+					},
+					{
+						Price:     model.PriceInfoJson{CurrencyCode: "EUR", Amount: "3000"},
+						Countries: []model.CountryInfoJson{brazil},
+					},
+				},
+			},
+			{
+				Id:          "numbers",
+				Name:        "Numbers",
+				Description: "Numbers are mathematical objects used for counting, measuring, and labeling, with primary types including natural numbers (1, 2, 3...), whole numbers, and integers",
+				SiteUrl:     "https://en.wikipedia.org/wiki/Number",
+				LightTheme: model.ProviderThemeJson{
+					PrimaryColor: "#D9DBDD",
+					SurfaceColor: "#0DD9DBDD",
+				},
+				DarkTheme: model.ProviderThemeJson{
+					PrimaryColor: "#D9DBDD",
+					SurfaceColor: "#0DD9DBDD",
+				},
+				SecurityCards: []model.SecurityCardJson{
+					{
+						Id:       "numbers_1",
+						AssetUrl: "https://placehold.co/2594x1632/8B1A1A/4A0D0D/png?text=1",
+						SpecId:   "numbers_spec",
+						CardCost: model.PriceInfoJson{CurrencyCode: "USD", Amount: "10000"},
+					},
+					{
+						Id:       "numbers_2",
+						AssetUrl: "https://placehold.co/2594x1632/C9A227/7A5C10/png?text=2",
+						SpecId:   "numbers_spec",
+						CardCost: model.PriceInfoJson{CurrencyCode: "ARS", Amount: "20000"},
+					},
+					{
+						Id:       "numbers_3",
+						AssetUrl: "https://placehold.co/2594x1632/1A4E8C/0C2E5E/png?text=3",
+						SpecId:   "numbers_spec",
+						CardCost: model.PriceInfoJson{CurrencyCode: "ARS", Amount: "30000"},
+					},
+					{
+						Id:       "numbers_4",
+						AssetUrl: "https://placehold.co/2594x1632/C45A1A/6E2E08/png?text=4",
+						SpecId:   "numbers_spec",
+						CardCost: model.PriceInfoJson{CurrencyCode: "ARS", Amount: "40000"},
+					},
+					{
+						Id:       "numbers_5",
+						AssetUrl: "https://placehold.co/2594x1632/1A6E3A/0B3D1F/png?text=5",
+						SpecId:   "numbers_spec",
+						CardCost: model.PriceInfoJson{CurrencyCode: "ARS", Amount: "50000"},
+					},
+					{
+						Id:       "numbers_6",
+						AssetUrl: "https://placehold.co/2594x1632/5E2A7A/2E1240/png?text=6",
+						SpecId:   "numbers_spec",
+						CardCost: model.PriceInfoJson{CurrencyCode: "ARS", Amount: "60000"},
+					},
+					{
+						Id:       "numbers_7",
+						AssetUrl: "https://placehold.co/2594x1632/0E5E6E/04323E/png?text=7",
+						SpecId:   "numbers_spec",
+						CardCost: model.PriceInfoJson{CurrencyCode: "ARS", Amount: "70000"},
+					},
+					{
+						Id:       "numbers_8",
+						AssetUrl: "https://placehold.co/2594x1632/19A0B0/0A5E6A/png?text=8",
+						SpecId:   "numbers_spec",
+						CardCost: model.PriceInfoJson{CurrencyCode: "ARS", Amount: "80000"},
+					},
+					{
+						Id:       "numbers_9",
+						AssetUrl: "https://placehold.co/2594x1632/B02A8E/5C1149/png?text=9",
+						Tag:      "OUT_OF_STOCK",
+						SpecId:   "numbers_spec",
+						CardCost: model.PriceInfoJson{CurrencyCode: "ARS", Amount: "90000"},
+					},
+				},
+				EstimatedShippingPrices: []model.ShippingPriceInfoJson{
+					{
+						Price:     model.PriceInfoJson{CurrencyCode: "USD", Amount: "1000"},
+						Countries: []model.CountryInfoJson{argentina, uruguay},
+					},
+					{
+						Price:     model.PriceInfoJson{CurrencyCode: "USD", Amount: "2000"},
+						Countries: []model.CountryInfoJson{brazil},
+					},
+				},
+			},
+			{
+				Id:          "planets",
+				Name:        "Planets",
+				Description: "There are eight officially recognized planets in our solar system, orbiting the Sun in this order: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, and Neptune.",
+				SiteUrl:     "https://en.wikipedia.org/wiki/Planet",
+				LightTheme: model.ProviderThemeJson{
+					PrimaryColor: "#158E5A",
+					SurfaceColor: "#0D158E5A",
+				},
+				DarkTheme: model.ProviderThemeJson{
+					PrimaryColor: "#158E5A",
+					SurfaceColor: "#0D158E5A",
+				},
+				SecurityCards: []model.SecurityCardJson{
+					{
+						Id:       "planets_earth",
+						AssetUrl: "https://placehold.co/2594x1632/081448/3B5D38/png?text=EARTH",
+						Tag:      "METAL",
+						SpecId:   "planets_spec",
+						CardCost: model.PriceInfoJson{CurrencyCode: "USD", Amount: "10000"},
+					},
+					{
+						Id:       "planets_mars",
+						AssetUrl: "https://placehold.co/2594x1632/081448/C1440E/png?text=MARS",
+						Tag:      "METAL",
+						SpecId:   "planets_spec",
+						CardCost: model.PriceInfoJson{CurrencyCode: "USD", Amount: "20000"},
+					},
+				},
+				EstimatedShippingPrices: []model.ShippingPriceInfoJson{
+					{
+						Price:     model.PriceInfoJson{CurrencyCode: "USD", Amount: "1000"},
+						Countries: []model.CountryInfoJson{argentina, uruguay},
+					},
+					{
+						Price:     model.PriceInfoJson{CurrencyCode: "USD", Amount: "2000"},
+						Countries: []model.CountryInfoJson{brazil},
+					},
+				},
+			},
+		},
+		Specs: []model.SecurityCardSpecJson{
+			{
+				SpecId: "constellations_spec",
+				Items: map[string][]model.SecurityCardSpecItemJson{
+					"primary": {
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "Material", Value: "Plastic"},
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "From", Value: "Sky"},
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "Arrives in", Value: "Already there"},
+					},
+					"specifications": {
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "Material", Value: "Plastic"},
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "Thickness", Value: "0.8mm"},
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "Weight", Value: "5g"},
+					},
+					"security": {
+						{
+							IconUrl:        "https://placehold.co/16x16/FF0000/000000/png?text=ic",
+							Label:          "Secure Element",
+							Value:          "EAL 5+",
+							AdditionalData: "Lorem Ipsum Lorem Ipsum Lorem Ipsum",
+						},
+						{
+							IconUrl:        "https://placehold.co/16x16/FF0000/000000/png?text=ic",
+							Label:          "Firmware",
+							Value:          "Designed by Muun",
+							AdditionalData: "Lorem Ipsum Lorem Ipsum Lorem Ipsum",
+						},
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "Packaging", Value: "Tamper resistant"},
+					},
+					"delivery": {
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "Shipped by", Value: "Sky"},
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "From", Value: "Sky"},
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "Arrives in", Value: "Already there"},
+						{
+							IconUrl:        "https://placehold.co/16x16/FF0000/000000/png?text=ic",
+							Label:          "Shipping data",
+							Value:          "Under GDPR",
+							AdditionalData: "Lorem Ipsum Lorem Ipsum Lorem Ipsum",
+						},
+					},
+				},
+			},
+			{
+				SpecId: "numbers_spec",
+				Items: map[string][]model.SecurityCardSpecItemJson{
+					"primary": {
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "Material", Value: "Plastic"},
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "From", Value: "Math"},
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "Arrives in", Value: "Already here"},
+					},
+					"specifications": {
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "Material", Value: "Plastic"},
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "Thickness", Value: "0.8mm"},
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "Weight", Value: "5g"},
+					},
+					"security": {
+						{
+							IconUrl:        "https://placehold.co/16x16/FF0000/000000/png?text=ic",
+							Label:          "Secure Element",
+							Value:          "EAL 5+",
+							AdditionalData: "Lorem Ipsum Lorem Ipsum Lorem Ipsum",
+						},
+						{
+							IconUrl:        "https://placehold.co/16x16/FF0000/000000/png?text=ic",
+							Label:          "Firmware",
+							Value:          "Designed by Muun",
+							AdditionalData: "Lorem Ipsum Lorem Ipsum Lorem Ipsum",
+						},
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "Packaging", Value: "Tamper resistant"},
+					},
+					"delivery": {
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "Shipped by", Value: "Math"},
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "From", Value: "Math"},
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "Arrives in", Value: "Already here"},
+						{
+							IconUrl:        "https://placehold.co/16x16/FF0000/000000/png?text=ic",
+							Label:          "Shipping data",
+							Value:          "Under GDPR",
+							AdditionalData: "Lorem Ipsum Lorem Ipsum Lorem Ipsum",
+						},
+					},
+				},
+			},
+			{
+				SpecId: "planets_spec",
+				Items: map[string][]model.SecurityCardSpecItemJson{
+					"primary": {
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "Material", Value: "Metal"},
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "From", Value: "Space"},
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "Arrives in", Value: "Now"},
+					},
+					"specifications": {
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "Material", Value: "Metal"},
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "Thickness", Value: "1.2mm"},
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "Weight", Value: "10g"},
+					},
+					"security": {
+						{
+							IconUrl:        "https://placehold.co/16x16/FF0000/000000/png?text=ic",
+							Label:          "Secure Element",
+							Value:          "EAL 6+",
+							AdditionalData: "Lorem Ipsum Lorem Ipsum Lorem Ipsum",
+						},
+						{
+							IconUrl:        "https://placehold.co/16x16/FF0000/000000/png?text=ic",
+							Label:          "Firmware",
+							Value:          "Designed by Muun",
+							AdditionalData: "Lorem Ipsum Lorem Ipsum Lorem Ipsum",
+						},
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "Packaging", Value: "Tamper resistant"},
+					},
+					"delivery": {
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "Shipped by", Value: "BigBang"},
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "From", Value: "Space"},
+						{IconUrl: "https://placehold.co/16x16/FF0000/000000/png?text=ic", Label: "Arrives in", Value: "Now"},
+						{
+							IconUrl:        "https://placehold.co/16x16/FF0000/000000/png?text=ic",
+							Label:          "Shipping data",
+							Value:          "Under GDPR",
+							AdditionalData: "Lorem Ipsum Lorem Ipsum Lorem Ipsum",
+						},
+					},
+				},
+			},
+		},
+	}, nil
 }
 
 func (m *MockHoustonService) verifySolveChallengeMac(
@@ -447,7 +767,9 @@ func SecurityCardMetadataToBytes(m model.SecurityCardMetadataJson) ([]byte, erro
 }
 
 // verifySignature verifies a signature from a muuncard.
-func (m *MockHoustonService) verifySignature(publicKeyBytes, messageBytes, signedMessageBytes []byte) (bool, error) {
+func (m *MockHoustonService) verifySignature(
+	publicKeyBytes, messageBytes, signedMessageBytes []byte,
+) (bool, error) {
 
 	// verify expected public key
 	if len(publicKeyBytes) != 65 || publicKeyBytes[0] != 0x04 {

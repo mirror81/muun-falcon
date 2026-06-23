@@ -6,19 +6,22 @@
 //  Copyright © 2020 muun. All rights reserved.
 //
 
-
-
 protocol TransactionListPresenterDelegate: BasePresenterDelegate {
     func onOperationsChange(_ ops: LazyLoadedList<Operation>)
 }
 
-class TransactionListPresenter<Delegate: TransactionListPresenterDelegate>: BasePresenter<Delegate> {
+class TransactionListPresenter<Delegate: TransactionListPresenterDelegate>:
+    BasePresenter<Delegate> {
 
     private var operations: LazyLoadedList<Operation> = LazyLoadedList()
     private let operationActions: OperationActions
     internal let fetchNotificationsAction: FetchNotificationsAction
 
-    init(delegate: Delegate, operationActions: OperationActions, fetchNotificationsAction: FetchNotificationsAction) {
+    init(
+        delegate: Delegate,
+        operationActions: OperationActions,
+        fetchNotificationsAction: FetchNotificationsAction
+    ) {
         self.operationActions = operationActions
         self.fetchNotificationsAction = fetchNotificationsAction
 

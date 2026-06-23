@@ -18,14 +18,16 @@ struct ActionCardModel {
     let accessibilityLabel: String?
     let accessibilityTrait: UIAccessibilityTraits
 
-    init(title: NSAttributedString,
-         description: NSAttributedString,
-         nextViewController: UIViewController?,
-         stemNumber: String?,
-         stepImage: UIImage?,
-         state: ActionCardState,
-         accessibilityLabel: String? = nil,
-         accessibilityTrait: UIAccessibilityTraits = .button) {
+    init(
+        title: NSAttributedString,
+        description: NSAttributedString,
+        nextViewController: UIViewController?,
+        stemNumber: String?,
+        stepImage: UIImage?,
+        state: ActionCardState,
+        accessibilityLabel: String? = nil,
+        accessibilityTrait: UIAccessibilityTraits = .button
+    ) {
         self.title = title
         self.description = description
         self.nextViewController = nextViewController

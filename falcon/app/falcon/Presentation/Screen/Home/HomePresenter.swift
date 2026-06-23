@@ -53,18 +53,20 @@ class HomePresenter<Delegate: HomePresenterDelegate>: BasePresenter<Delegate> {
 
     private var numberOfOperations: Int?
 
-    init(delegate: Delegate,
-         operationActions: OperationActions,
-         balanceActions: BalanceActions,
-         realTimeDataAction: RealTimeDataAction,
-         sessionActions: SessionActions,
-         preferences: Preferences,
-         walletService: WalletService,
-         userPreferencesSelector: UserPreferencesSelector,
-         updateUserPreferencesAction: UpdateUserPreferencesAction,
-         fetchNotificationsAction: FetchNotificationsAction,
-         userActivatedFeatureSelector: UserActivatedFeaturesSelector,
-         featureFlagsSelector: FeatureFlagsSelector) {
+    init(
+        delegate: Delegate,
+        operationActions: OperationActions,
+        balanceActions: BalanceActions,
+        realTimeDataAction: RealTimeDataAction,
+        sessionActions: SessionActions,
+        preferences: Preferences,
+        walletService: WalletService,
+        userPreferencesSelector: UserPreferencesSelector,
+        updateUserPreferencesAction: UpdateUserPreferencesAction,
+        fetchNotificationsAction: FetchNotificationsAction,
+        userActivatedFeatureSelector: UserActivatedFeaturesSelector,
+        featureFlagsSelector: FeatureFlagsSelector
+    ) {
 
         self.operationActions = operationActions
         self.balanceActions = balanceActions
@@ -88,16 +90,20 @@ class HomePresenter<Delegate: HomePresenterDelegate>: BasePresenter<Delegate> {
         subscribeTo(realTimeDataAction.getState(), onNext: self.handleRealTimeDataAction)
         subscribeTo(operationActions.getOperationsChange(), onNext: self.onOperationsChange)
         // Using `userInitiated` queue to avoid refresh delays.
-        subscribeTo(balanceActions.watchBalance(),
-                    onNext: self.onBalanceChange,
-                    subscribeOn: Scheduler.userInitiatedScheduler)
+        subscribeTo(
+            balanceActions.watchBalance(),
+            onNext: self.onBalanceChange,
+            subscribeOn: Scheduler.userInitiatedScheduler
+        )
         subscribeTo(fetchNotificationsAction.getState(), onNext: { _ in })
 
         let taproot = Libwallet.userActivatedFeatureTaproot()!
         subscribeTo(
-                Observable.combineLatest(sessionActions.watchUser(),
-                                         userActivatedFeatureSelector.watch(for: taproot),
-                                         featureFlagsSelector.run())
+                Observable.combineLatest(
+                    sessionActions.watchUser(),
+                    userActivatedFeatureSelector.watch(for: taproot),
+                    featureFlagsSelector.run()
+                )
         ) { [self] (_, taprootStatus, featureFlags) in
             let isHighFeesBannerTurnedOn = featureFlags.contains(.highFeesHomeBanner)
             let isOsVersionDeprecatedOn = featureFlags.contains(.osVersionDeprecatedFlow)
@@ -132,7 +138,8 @@ class HomePresenter<Delegate: HomePresenterDelegate>: BasePresenter<Delegate> {
     }
 
     private func decidePollNotificationsPolicy() {
-        // Since users can enable and disable push notifications as they want, we need a way to ensure
+        // Since users can enable and disable push notifications as they want, we need a way to
+        // ensure
         // that the notifications from the backend gets processed.
         // This method schedules a call to the fetchNotifications endpoint every N seconds.
         // With N variable over some conditions (described below, see `buildPeriodicAction` method)
@@ -162,7 +169,8 @@ class HomePresenter<Delegate: HomePresenterDelegate>: BasePresenter<Delegate> {
 
         return operationActions.getOperationsChange().flatMap({ _ -> Observable<Int> in
             if self.operationActions.hasPendingSwaps() {
-                // If we have push notification permissions enabled, we'll only poll to get updates on unconfirmed
+                // If we have push notification permissions enabled, we'll only poll to get updates
+                // on unconfirmed
                 // 0-conf swaps.
                 return Observable.just(10)
 
@@ -216,7 +224,8 @@ class HomePresenter<Delegate: HomePresenterDelegate>: BasePresenter<Delegate> {
             return
         }
 
-        // Whenever the operations change, we check if there has been any new operation (incoming or outgoing)
+        // Whenever the operations change, we check if there has been any new operation (incoming or
+        // outgoing)
         // to display a component in the homescreen indicating the money diff in BTC
         if let ops = numberOfOperations,
            change.numberOfOperations > ops,
@@ -369,8 +378,10 @@ class HomePresenter<Delegate: HomePresenterDelegate>: BasePresenter<Delegate> {
     }
 
     func logType() -> String {
-        // Well, this is _awkward_. The event and variable say anon because that's how it was coded back when.
-        // But the actual criteria was whether the user is unrecoverable. This is also the behaviour on apollo, so we'll
+        // Well, this is _awkward_. The event and variable say anon because that's how it was coded
+        // back when.
+        // But the actual criteria was whether the user is unrecoverable. This is also the behaviour
+        // on apollo, so we'll
         // stick to it.
         let isAnon = isUnrecoverableUser()
         let hasOperations = operationActions.hasOperations()

@@ -118,6 +118,29 @@ internal enum L10n {
     internal static let s1 = L10n.tr("Localizable", "BitcoinUnitPickerViewController.s1")
   }
 
+  internal enum BuyDetailsViewController {
+    /// +%@ shipping & taxes
+    internal static func additionalCosts(_ p1: Any) -> String {
+      return L10n.tr("Localizable", "BuyDetailsViewController.additionalCosts", String(describing: p1))
+    }
+    /// Delivery time
+    internal static let deliveryTime = L10n.tr("Localizable", "BuyDetailsViewController.deliveryTime")
+    /// GO TO %@
+    internal static func goTo(_ p1: Any) -> String {
+      return L10n.tr("Localizable", "BuyDetailsViewController.goTo", String(describing: p1))
+    }
+    /// Material
+    internal static let material = L10n.tr("Localizable", "BuyDetailsViewController.material")
+    /// See full specs
+    internal static let seeFullSpecs = L10n.tr("Localizable", "BuyDetailsViewController.seeFullSpecs")
+    /// Ships from
+    internal static let shipsFrom = L10n.tr("Localizable", "BuyDetailsViewController.shipsFrom")
+    /// Trusted because %@.
+    internal static func trustedBecause(_ p1: Any) -> String {
+      return L10n.tr("Localizable", "BuyDetailsViewController.trustedBecause", String(describing: p1))
+    }
+  }
+
   internal enum CameraPermissionView {
     /// ENABLE CAMERA
     internal static let s1 = L10n.tr("Localizable", "CameraPermissionView.s1")
@@ -214,6 +237,26 @@ internal enum L10n {
     internal static let s3 = L10n.tr("Localizable", "ChangePasswordVerifyViewController.s3")
     /// Choose Email
     internal static let s4 = L10n.tr("Localizable", "ChangePasswordVerifyViewController.s4")
+  }
+
+  internal enum CountryOnboardingViewController {
+    /// Select a country
+    internal static let selectCountry = L10n.tr("Localizable", "CountryOnboardingViewController.selectCountry")
+    /// START EXPLORING
+    internal static let startExploring = L10n.tr("Localizable", "CountryOnboardingViewController.startExploring")
+    /// Providers will depend on where you want to receive your card.
+    internal static let subtitle = L10n.tr("Localizable", "CountryOnboardingViewController.subtitle")
+    /// Choose your location
+    internal static let title = L10n.tr("Localizable", "CountryOnboardingViewController.title")
+  }
+
+  internal enum CountrySelectorViewController {
+    /// Alphabetically ordered
+    internal static let alphabeticallyOrdered = L10n.tr("Localizable", "CountrySelectorViewController.alphabeticallyOrdered")
+    /// No countries found
+    internal static let emptyState = L10n.tr("Localizable", "CountrySelectorViewController.emptyState")
+    /// Search
+    internal static let searchPlaceholder = L10n.tr("Localizable", "CountrySelectorViewController.searchPlaceholder")
   }
 
   internal enum CurrencyPickerViewController {
@@ -1313,16 +1356,84 @@ internal enum L10n {
     internal static let s7 = L10n.tr("Localizable", "ScanQRViewController.s7")
   }
 
-  internal enum SecurityCardPriceFooterView {
-    /// + %@ shipping & taxes
-    internal static func shippingAndTaxes(_ p1: Any) -> String {
-      return L10n.tr("Localizable", "SecurityCardPriceFooterView.shippingAndTaxes", String(describing: p1))
+  internal enum SecurityCardConnectingOverlayView {
+    /// Connecting to %@
+    internal static func connectingTo(_ p1: Any) -> String {
+      return L10n.tr("Localizable", "SecurityCardConnectingOverlayView.connectingTo", String(describing: p1))
     }
   }
 
+  internal enum SecurityCardFullSpecsViewController {
+    /// Data wiping
+    internal static let dataWiping = L10n.tr("Localizable", "SecurityCardFullSpecsViewController.dataWiping")
+    /// Delivers in
+    internal static let deliversIn = L10n.tr("Localizable", "SecurityCardFullSpecsViewController.deliversIn")
+    /// Delivery
+    internal static let delivery = L10n.tr("Localizable", "SecurityCardFullSpecsViewController.delivery")
+    /// Firmware
+    internal static let firmware = L10n.tr("Localizable", "SecurityCardFullSpecsViewController.firmware")
+    /// <p>The firmware is the core software that governs your card's behavior. Built and maintained by Muun.</p><p>It's open source, publicly available for review. Find it and more information on <a href="%@">GitHub</a>.</p>
+    internal static func firmwareInfoHTMLFormat(_ p1: Any) -> String {
+      return L10n.tr("Localizable", "SecurityCardFullSpecsViewController.firmwareInfoHTMLFormat", String(describing: p1))
+    }
+    /// Open source
+    internal static let firmwareOpenSource = L10n.tr("Localizable", "SecurityCardFullSpecsViewController.firmwareOpenSource")
+    /// %@\nmm
+    internal static func heightFormat(_ p1: Any) -> String {
+      return L10n.tr("Localizable", "SecurityCardFullSpecsViewController.heightFormat", String(describing: p1))
+    }
+    /// Material
+    internal static let material = L10n.tr("Localizable", "SecurityCardFullSpecsViewController.material")
+    /// %@mm
+    internal static func mmFormat(_ p1: Any) -> String {
+      return L10n.tr("Localizable", "SecurityCardFullSpecsViewController.mmFormat", String(describing: p1))
+    }
+    /// Packaging
+    internal static let packaging = L10n.tr("Localizable", "SecurityCardFullSpecsViewController.packaging")
+    /// Tamper resistant
+    internal static let packagingTamperResistant = L10n.tr("Localizable", "SecurityCardFullSpecsViewController.packagingTamperResistant")
+    /// Secure element
+    internal static let secureElement = L10n.tr("Localizable", "SecurityCardFullSpecsViewController.secureElement")
+    /// Security
+    internal static let security = L10n.tr("Localizable", "SecurityCardFullSpecsViewController.security")
+    /// Ships from
+    internal static let shipsFrom = L10n.tr("Localizable", "SecurityCardFullSpecsViewController.shipsFrom")
+    /// Sold & shipped by
+    internal static let soldShippedBy = L10n.tr("Localizable", "SecurityCardFullSpecsViewController.soldShippedBy")
+    /// Specifications
+    internal static let specifications = L10n.tr("Localizable", "SecurityCardFullSpecsViewController.specifications")
+    /// Thickness
+    internal static let thickness = L10n.tr("Localizable", "SecurityCardFullSpecsViewController.thickness")
+    /// Weight
+    internal static let weight = L10n.tr("Localizable", "SecurityCardFullSpecsViewController.weight")
+    /// %@g
+    internal static func weightFormat(_ p1: Any) -> String {
+      return L10n.tr("Localizable", "SecurityCardFullSpecsViewController.weightFormat", String(describing: p1))
+    }
+  }
+
+  internal enum SecurityCardPriceFooterView {
+    /// shipping & taxes
+    internal static let shippingAndTaxes = L10n.tr("Localizable", "SecurityCardPriceFooterView.shippingAndTaxes")
+  }
+
+  internal enum SecurityCardProviderInfoModal {
+    /// Close
+    internal static let closeAccessibilityLabel = L10n.tr("Localizable", "SecurityCardProviderInfoModal.closeAccessibilityLabel")
+    /// Connected to %@
+    internal static func connectedTo(_ p1: Any) -> String {
+      return L10n.tr("Localizable", "SecurityCardProviderInfoModal.connectedTo", String(describing: p1))
+    }
+    /// No personal information is ever associated with your Muun wallet.
+    internal static let privacyDisclaimer = L10n.tr("Localizable", "SecurityCardProviderInfoModal.privacyDisclaimer")
+  }
+
+  internal enum SecurityCardProviderPillView {
+    /// Shows information about the provider.
+    internal static let accessibilityHint = L10n.tr("Localizable", "SecurityCardProviderPillView.accessibilityHint")
+  }
+
   internal enum SecurityCardsOnboarding {
-    /// START EXPLORING
-    internal static let finish = L10n.tr("Localizable", "SecurityCardsOnboarding.finish")
     /// Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lacinia tincidunt neque vitae volutpat.
     internal static let slide1Description = L10n.tr("Localizable", "SecurityCardsOnboarding.slide1Description")
     /// One document
@@ -1553,6 +1664,8 @@ internal enum L10n {
     internal static let s8 = L10n.tr("Localizable", "SettingsViewController.s8")
     /// Change password
     internal static let s9 = L10n.tr("Localizable", "SettingsViewController.s9")
+    /// Send debug data via email
+    internal static let sendDebugData = L10n.tr("Localizable", "SettingsViewController.sendDebugData")
   }
 
   internal enum SetupEmailWording {
@@ -1624,6 +1737,46 @@ internal enum L10n {
     internal static let updating = L10n.tr("Localizable", "ShareEmergencyKitViewController.updating")
     /// Uploading your Emergency Kit
     internal static let uploading = L10n.tr("Localizable", "ShareEmergencyKitViewController.uploading")
+  }
+
+  internal enum ShippingFormView {
+    /// City
+    internal static let city = L10n.tr("Localizable", "ShippingFormView.city")
+    /// City is required
+    internal static let cityRequired = L10n.tr("Localizable", "ShippingFormView.cityRequired")
+    /// Country / Region
+    internal static let countryRegion = L10n.tr("Localizable", "ShippingFormView.countryRegion")
+    /// Email
+    internal static let email = L10n.tr("Localizable", "ShippingFormView.email")
+    /// Enter a valid email
+    internal static let emailInvalid = L10n.tr("Localizable", "ShippingFormView.emailInvalid")
+    /// Email is required
+    internal static let emailRequired = L10n.tr("Localizable", "ShippingFormView.emailRequired")
+    /// Full name
+    internal static let fullName = L10n.tr("Localizable", "ShippingFormView.fullName")
+    /// Full name is required
+    internal static let fullNameRequired = L10n.tr("Localizable", "ShippingFormView.fullNameRequired")
+    /// Shipping address
+    internal static let shippingAddress = L10n.tr("Localizable", "ShippingFormView.shippingAddress")
+    /// Shipping address is required
+    internal static let shippingAddressRequired = L10n.tr("Localizable", "ShippingFormView.shippingAddressRequired")
+    /// State
+    internal static let state = L10n.tr("Localizable", "ShippingFormView.state")
+    /// State is required
+    internal static let stateRequired = L10n.tr("Localizable", "ShippingFormView.stateRequired")
+    /// ZIP code
+    internal static let zipCode = L10n.tr("Localizable", "ShippingFormView.zipCode")
+    /// ZIP code is required
+    internal static let zipCodeRequired = L10n.tr("Localizable", "ShippingFormView.zipCodeRequired")
+  }
+
+  internal enum ShippingViewController {
+    /// GO TO CHECKOUT
+    internal static let cta = L10n.tr("Localizable", "ShippingViewController.cta")
+    /// Information needed to deliver your card.
+    internal static let subtitle = L10n.tr("Localizable", "ShippingViewController.subtitle")
+    /// Shipping
+    internal static let title = L10n.tr("Localizable", "ShippingViewController.title")
   }
 
   internal enum SignInAuthorizeEmailViewController {

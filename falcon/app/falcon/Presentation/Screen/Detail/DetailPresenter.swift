@@ -6,7 +6,6 @@
 //  Copyright © 2019 muun. All rights reserved.
 //
 
-
 import Foundation
 import Libwallet
 
@@ -23,7 +22,8 @@ class DetailPresenter<Delegate: DetailPresenterDelegate>: BasePresenter<Delegate
     }
 
     func blocksUntilRefund(ss: SubmarineSwap) -> UInt? {
-        // If userLockTime - currentBlockchainHeight is greater than 0 it means the refund hasnt been completed yet
+        // If userLockTime - currentBlockchainHeight is greater than 0 it means the refund hasnt
+        // been completed yet
         let currentBlockchainHeight = getCurrentBlockchainHeight()
         let userLockTime = Int(ss._fundingOutput.userLockTime())
 

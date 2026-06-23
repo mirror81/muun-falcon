@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class SignInEmailAndRCViewController: MUViewController {
 
     @IBOutlet private weak var buttonView: ButtonView!
@@ -18,7 +17,10 @@ class SignInEmailAndRCViewController: MUViewController {
 
     @IBOutlet private weak var buttonBottomConstraint: NSLayoutConstraint!
 
-    fileprivate lazy var presenter = instancePresenter(SignInEmailAndRCPresenter.init, delegate: self)
+    fileprivate lazy var presenter = instancePresenter(
+        SignInEmailAndRCPresenter.init,
+        delegate: self
+    )
     private var recoveryCode: RecoveryCode?
     private let sessionOk: CreateSessionOk
 
@@ -84,12 +86,18 @@ class SignInEmailAndRCViewController: MUViewController {
             let desc = hintText
                 .attributedForDescription()
                 .set(bold: dateText, color: Asset.Colors.title.color)
-                .set(underline: L10n.SignInEmailAndRCViewController.s4, color: Asset.Colors.muunBlue.color)
+                .set(
+                    underline: L10n.SignInEmailAndRCViewController.s4,
+                    color: Asset.Colors.muunBlue.color
+                )
             titleAndDescriptionView.descriptionText = desc
         } else {
             let hintText = L10n.SignInEmailAndRCViewController.s5
                 .attributedForDescription()
-                .set(underline: L10n.SignInEmailAndRCViewController.s4, color: Asset.Colors.muunBlue.color)
+                .set(
+                    underline: L10n.SignInEmailAndRCViewController.s4,
+                    color: Asset.Colors.muunBlue.color
+                )
 
             titleAndDescriptionView.descriptionText = hintText
 
@@ -182,31 +190,39 @@ extension SignInEmailAndRCViewController: SignInEmailAndRCPresenterDelegate {
     }
 
     func showStaleRcError() {
-        AnalyticsHelper.logEvent(ErrorEvent(type: .rcStaleError))
         let desc = L10n.SignInEmailAndRCViewController.s10
-        let alert = UIAlertController(title: L10n.SignInEmailAndRCViewController.s9,
-                                      message: desc,
-                                      preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: L10n.SignInEmailAndRCViewController.s13,
-                                      style: .destructive,
-                                      handler: { _ in
-            alert.dismiss(animated: true)
-        }))
+        let alert = UIAlertController(
+            title: L10n.SignInEmailAndRCViewController.s9,
+            message: desc,
+            preferredStyle: .alert
+        )
+        let dismissAction = UIAlertAction(
+            title: L10n.SignInEmailAndRCViewController.s13,
+            style: .destructive,
+            handler: { _ in
+                alert.dismiss(animated: true)
+            }
+        )
+        alert.addAction(dismissAction)
 
         self.navigationController!.present(alert, animated: true)
     }
 
     func showCredentialsDontMatchError(userEmail: String) {
-        AnalyticsHelper.logEvent(ErrorEvent(type: .rcCredentialsDontMatchError))
         let desc = L10n.SignInEmailAndRCViewController.s12(userEmail)
-        let alert = UIAlertController(title: L10n.SignInEmailAndRCViewController.s11,
-                                      message: desc,
-                                      preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: L10n.SignInEmailAndRCViewController.s13,
-                                      style: .destructive,
-                                      handler: { _ in
-            alert.dismiss(animated: true)
-        }))
+        let alert = UIAlertController(
+            title: L10n.SignInEmailAndRCViewController.s11,
+            message: desc,
+            preferredStyle: .alert
+        )
+        let dismissAction = UIAlertAction(
+            title: L10n.SignInEmailAndRCViewController.s13,
+            style: .destructive,
+            handler: { _ in
+                alert.dismiss(animated: true)
+            }
+        )
+        alert.addAction(dismissAction)
 
         alert.view.tintColor = Asset.Colors.muunGrayDark.color
 

@@ -67,10 +67,14 @@ class BottomDrawerOverlayViewController: UIViewController {
         titleLabel.textColor = Asset.Colors.title.color
 
         if let titleText = titleText {
-            titleLabel.attributedText = titleText.set(font: Constant.Fonts.system(size: .desc,
-                                                                                           weight: .semibold),
-                                                               lineSpacing: Constant.FontAttributes.lineSpacing,
-                                                               kerning: Constant.FontAttributes.kerning)
+            titleLabel.attributedText = titleText.set(
+                font: Constant.Fonts.system(
+                    size: .desc,
+                    weight: .semibold
+                ),
+                lineSpacing: Constant.FontAttributes.lineSpacing,
+                kerning: Constant.FontAttributes.kerning
+            )
         } else {
             titleLabel.removeFromSuperview()
         }
@@ -111,22 +115,30 @@ extension BottomDrawerOverlayViewController: LinkButtonViewDelegate {
 
 extension BottomDrawerOverlayViewController: UIViewControllerTransitioningDelegate {
 
-    func animationController(forPresented presented: UIViewController,
-                             presenting: UIViewController,
-                             source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(
+        forPresented presented: UIViewController,
+        presenting: UIViewController,
+        source: UIViewController
+    ) -> UIViewControllerAnimatedTransitioning? {
 
         return ModalAnimationController(presenting: true)
     }
 
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forDismissed dismissed: UIViewController)
+        -> UIViewControllerAnimatedTransitioning? {
         return ModalAnimationController(presenting: false)
     }
 
-    func presentationController(forPresented presented: UIViewController,
-                                presenting: UIViewController?,
-                                source: UIViewController) -> UIPresentationController? {
+    func presentationController(
+        forPresented presented: UIViewController,
+        presenting: UIViewController?,
+        source: UIViewController
+    ) -> UIPresentationController? {
 
-        return ModalPresentationController(presentedViewController: presented, presenting: presenting)
+        return ModalPresentationController(
+            presentedViewController: presented,
+            presenting: presenting
+        )
     }
 
 }
@@ -138,7 +150,12 @@ fileprivate extension Selector {
 
 }
 // swiftlint:disable large_tuple
-typealias MoreInfo = (title: String?, description: NSAttributedString, type: MoreInfoType, action: MoreInfoAction?)
+typealias MoreInfo = (
+    title: String?,
+    description: NSAttributedString,
+    type: MoreInfoType,
+    action: MoreInfoAction?
+)
 typealias MoreInfoAction = (text: String, action: () -> Void)
 enum BottomDrawerInfo {}
 

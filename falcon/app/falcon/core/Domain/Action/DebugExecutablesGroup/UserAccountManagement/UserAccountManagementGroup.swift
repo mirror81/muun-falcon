@@ -10,7 +10,9 @@ import Foundation
 
 class UserAccountManagementGroup: BaseDebugExecutablesGroup {
     init(createVerifiedRcV1Executable: CreateVerifiedRcV1Executable) {
-         super.init(category: "User account management", executables:
+         super.init(
+             category: "User account management",
+             executables:
                      [
                          createVerifiedRcV1Executable
                      ]

@@ -1,22 +1,26 @@
 package libwallet
 
 import (
-	"fmt"
-
-	"github.com/muun/libwallet/addresses"
-	"github.com/muun/libwallet/btcsuitew/txscriptw"
-	"github.com/muun/libwallet/musig"
-
 	"github.com/btcsuite/btcd/btcec/v2"
 	"github.com/btcsuite/btcd/btcutil"
 	"github.com/btcsuite/btcd/chaincfg"
 	"github.com/btcsuite/btcd/txscript"
 	"github.com/btcsuite/btcd/wire"
+	"github.com/go-errors/errors"
+
+	"github.com/muun/libwallet/addresses"
+	"github.com/muun/libwallet/btcsuitew/txscriptw"
+	"github.com/muun/libwallet/musig"
 )
 
 // CreateAddressV5 returns a P2TR MuunAddress using Musig with the signing and cosigning keys.
 func CreateAddressV5(userKey, muunKey *HDPublicKey) (MuunAddress, error) {
-	return addresses.CreateAddressV5(&userKey.key, &muunKey.key, userKey.Path, userKey.Network.network)
+	return addresses.CreateAddressV5(
+		&userKey.key,
+		&muunKey.key,
+		userKey.Path,
+		userKey.Network.network,
+	)
 }
 
 type coinV5 struct {
@@ -24,36 +28,41 @@ type coinV5 struct {
 	OutPoint       wire.OutPoint
 	KeyPath        string
 	Amount         btcutil.Amount
-	UserSessionId  [32]byte
+	UserSessionId  [32]byte //nolint:staticcheck // TODO: struct field UserSessionId should be UserSessionID
 	MuunPubNonce   [66]byte
 	MuunPartialSig [32]byte
 	SigHashes      *txscriptw.TaprootSigHashes
 }
 
-func (c *coinV5) SignInput(index int, tx *wire.MsgTx, userKey *HDPrivateKey, muunKey *HDPublicKey) error {
+func (c *coinV5) SignInput(
+	index int,
+	tx *wire.MsgTx,
+	userKey *HDPrivateKey,
+	muunKey *HDPublicKey,
+) error {
 	derivedUserKey, err := userKey.DeriveTo(c.KeyPath)
 	if err != nil {
-		return fmt.Errorf("failed to derive user private key: %w", err)
+		return errors.Errorf("failed to derive user private key: %w", err)
 	}
 
 	derivedMuunKey, err := muunKey.DeriveTo(c.KeyPath)
 	if err != nil {
-		return fmt.Errorf("failed to derive muun public key: %w", err)
+		return errors.Errorf("failed to derive muun public key: %w", err)
 	}
 
 	userEcPriv, err := derivedUserKey.key.ECPrivKey()
 	if err != nil {
-		return fmt.Errorf("failed to obtain ECPrivKey from derivedUserKey: %w", err)
+		return errors.Errorf("failed to obtain ECPrivKey from derivedUserKey: %w", err)
 	}
 
 	muunEcPub, err := derivedMuunKey.key.ECPubKey()
 	if err != nil {
-		return fmt.Errorf("failed to obtain ECPubKey from derivedMuunKey: %w", err)
+		return errors.Errorf("failed to obtain ECPubKey from derivedMuunKey: %w", err)
 	}
 
 	sigHash, err := txscriptw.CalcTaprootSigHash(tx, c.SigHashes, index, txscript.SigHashAll)
 	if err != nil {
-		return fmt.Errorf("failed to create sigHash: %w", err)
+		return errors.Errorf("failed to create sigHash: %w", err)
 	}
 	var toSign [32]byte
 	copy(toSign[:], sigHash)
@@ -64,27 +73,27 @@ func (c *coinV5) SignInput(index int, tx *wire.MsgTx, userKey *HDPrivateKey, muu
 func (c *coinV5) FullySignInput(index int, tx *wire.MsgTx, userKey, muunKey *HDPrivateKey) error {
 	derivedUserKey, err := userKey.DeriveTo(c.KeyPath)
 	if err != nil {
-		return fmt.Errorf("failed to derive user private key: %w", err)
+		return errors.Errorf("failed to derive user private key: %w", err)
 	}
 
 	derivedMuunKey, err := muunKey.DeriveTo(c.KeyPath)
 	if err != nil {
-		return fmt.Errorf("failed to derive muun private key: %w", err)
+		return errors.Errorf("failed to derive muun private key: %w", err)
 	}
 
 	userEcPriv, err := derivedUserKey.key.ECPrivKey()
 	if err != nil {
-		return fmt.Errorf("failed to obtain ECPrivKey from derivedUserKey: %w", err)
+		return errors.Errorf("failed to obtain ECPrivKey from derivedUserKey: %w", err)
 	}
 
 	muunEcPriv, err := derivedMuunKey.key.ECPrivKey()
 	if err != nil {
-		return fmt.Errorf("failed to obtain ECPrivKey from derivedMuunKey: %w", err)
+		return errors.Errorf("failed to obtain ECPrivKey from derivedMuunKey: %w", err)
 	}
 
 	sigHash, err := txscriptw.CalcTaprootSigHash(tx, c.SigHashes, index, txscript.SigHashAll)
 	if err != nil {
-		return fmt.Errorf("failed to create sigHash: %w", err)
+		return errors.Errorf("failed to create sigHash: %w", err)
 	}
 	var toSign [32]byte
 	copy(toSign[:], sigHash)
@@ -107,8 +116,8 @@ func (c *coinV5) FullySignInput(index int, tx *wire.MsgTx, userKey, muunKey *HDP
 }
 
 func (c *coinV5) signFirstWith(
-	index int,
-	tx *wire.MsgTx,
+	index int, //nolint:revive // TODO: use or remove index
+	tx *wire.MsgTx, //nolint:revive // TODO: use or remove tx
 	userPub *btcec.PublicKey,
 	muunPriv *btcec.PrivateKey,
 	userPubNonce [66]byte,
@@ -119,14 +128,14 @@ func (c *coinV5) signFirstWith(
 	// This will only be called in a recovery context, where both private keys are provided by the
 	// user. We call the variables below "muunSessionId" and "muunPubNonce" to follow convention,
 	// but Muun servers play no role in this code path and both are locally generated.
-	muunSessionId := musig.RandomSessionId()
+	muunSessionId := musig.RandomSessionId() //nolint:staticcheck // TODO: var muunSessionId should be muunSessionID
 	muunPubNonce, err := musig.MuSig2GenerateNonce(
 		musig.Musig2v040Muun,
 		muunSessionId[:],
 		muunPriv.PubKey().SerializeCompressed(),
 	)
 	if err != nil {
-		return fmt.Errorf("failed to generate nonce: %w", err)
+		return errors.Errorf("failed to generate nonce: %w", err)
 	}
 
 	muunPartialSig, err := musig.ComputeMuunPartialSignature(
@@ -139,7 +148,7 @@ func (c *coinV5) signFirstWith(
 		musig.KeySpendOnlyTweak(),
 	)
 	if err != nil {
-		return fmt.Errorf("failed to add first signature: %w", err)
+		return errors.Errorf("failed to add first signature: %w", err)
 	}
 
 	copy(c.MuunPubNonce[:], muunPubNonce.PubNonce[0:66])
@@ -153,7 +162,7 @@ func (c *coinV5) signSecondWith(
 	tx *wire.MsgTx,
 	userPriv *btcec.PrivateKey,
 	muunPub *btcec.PublicKey,
-	userSessionId [32]byte,
+	userSessionId [32]byte, //nolint:staticcheck // TODO: method parameter userSessionId should be userSessionID
 	toSign [32]byte,
 ) error {
 
@@ -168,7 +177,7 @@ func (c *coinV5) signSecondWith(
 		musig.KeySpendOnlyTweak(),
 	)
 	if err != nil {
-		return fmt.Errorf("failed to add second signature and combine: %w", err)
+		return errors.Errorf("failed to add second signature and combine: %w", err)
 	}
 
 	sig := append(rawCombinedSig[:], byte(txscript.SigHashAll))

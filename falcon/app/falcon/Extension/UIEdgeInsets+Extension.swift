@@ -11,8 +11,10 @@ import UIKit
 
 extension UIEdgeInsets {
 
-    static let standardMargins = UIEdgeInsets(top: .sideMargin,
-                                             left: .sideMargin,
-                                             bottom: .sideMargin,
-                                             right: .sideMargin)
+    static let standardMargins = UIEdgeInsets(
+        top: .sideMargin,
+        left: .sideMargin,
+        bottom: .sideMargin,
+        right: .sideMargin
+    )
 }

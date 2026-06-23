@@ -9,7 +9,6 @@
 import Foundation
 import RxSwift
 
-
 protocol ApiMigrationsDelegate: BasePresenterDelegate {
     func onMigrationFinished()
     func migrationFailed()

@@ -10,7 +10,10 @@ import UIKit
 
 class SignUpVerifyEmailViewController: MUViewController {
 
-    fileprivate lazy var presenter = instancePresenter(SignUpVerifyEmailPresenter.init, delegate: self)
+    fileprivate lazy var presenter = instancePresenter(
+        SignUpVerifyEmailPresenter.init,
+        delegate: self
+    )
     private var verifyView: WaitForEmailView!
 
     internal var emailActionSheet: UIAlertController = UIAlertController()
@@ -95,8 +98,16 @@ class SignUpVerifyEmailViewController: MUViewController {
     }
 
     fileprivate func removeObservers() {
-        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
     }
 
     fileprivate func setUpNavigation() {
@@ -165,7 +176,10 @@ extension SignUpVerifyEmailViewController: SignUpVerifyEmailPresenterDelegate {
     func onEmailVerified() {
         emailActionSheet.dismiss(animated: true, completion: nil)
         verifyView.stopLoading()
-        navigationController!.pushViewController(SignUpPasswordViewController(wording: wording), animated: false)
+        navigationController!.pushViewController(
+            SignUpPasswordViewController(wording: wording),
+            animated: false
+        )
     }
 
     func emailExpired() {

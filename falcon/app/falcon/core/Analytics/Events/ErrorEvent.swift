@@ -6,7 +6,7 @@
 //  Copyright © 2026 muun. All rights reserved.
 //
 
-struct ErrorEvent: AnalyticsEvent {
+struct ErrorEvent: ClassifiedErrorEvent {
     enum ErrorEventType: String {
         case lnurlInvalidCode = "lnurl_invalid_code"
         case lnurlInvalidTag = "lnurl_invalid_tag"
@@ -33,4 +33,5 @@ struct ErrorEvent: AnalyticsEvent {
     }
 
     var type: ErrorEventType
+    var error: Error
 }

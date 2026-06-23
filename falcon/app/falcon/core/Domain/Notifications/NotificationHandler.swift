@@ -28,9 +28,11 @@ struct CallbackNotificationHandler: NotificationHandler {
     let origin: NotificationOrigin?
     let processor: () -> Completable
 
-    init(_ permission: SessionStatus? = nil,
-         _ origin: NotificationOrigin? = nil,
-         processor: @escaping () -> Completable) {
+    init(
+        _ permission: SessionStatus? = nil,
+        _ origin: NotificationOrigin? = nil,
+        processor: @escaping () -> Completable
+    ) {
 
         self.permission = permission
         self.origin = origin

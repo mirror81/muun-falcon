@@ -28,17 +28,19 @@ public class SyncAction: AsyncAction<()> {
     private let apiMigrationsManager: ApiMigrationsManager
     private let userPreferencesRepository: UserPreferencesRepository
 
-    init(houstonService: HoustonService,
-         addressActions: AddressActions,
-         operationActions: OperationActions,
-         userRepository: UserRepository,
-         realTimeDataAction: RealTimeDataAction,
-         nextTransactionSizeRepository: NextTransactionSizeRepository,
-         fetchNotificationsAction: FetchNotificationsAction,
-         createFirstSessionAction: CreateFirstSessionAction,
-         refreshInvoices: RefreshInvoicesAction,
-         apiMigrationsManager: ApiMigrationsManager,
-         userPreferencesRepository: UserPreferencesRepository) {
+    init(
+        houstonService: HoustonService,
+        addressActions: AddressActions,
+        operationActions: OperationActions,
+        userRepository: UserRepository,
+        realTimeDataAction: RealTimeDataAction,
+        nextTransactionSizeRepository: NextTransactionSizeRepository,
+        fetchNotificationsAction: FetchNotificationsAction,
+        createFirstSessionAction: CreateFirstSessionAction,
+        refreshInvoices: RefreshInvoicesAction,
+        apiMigrationsManager: ApiMigrationsManager,
+        userPreferencesRepository: UserPreferencesRepository
+    ) {
 
         self.houstonService = houstonService
         self.addressActions = addressActions
@@ -72,7 +74,8 @@ public class SyncAction: AsyncAction<()> {
      as the account will be synced instead of created.
     
      Usage scenarios:
-     - Sync after account creation attempt in pinPresenter (syncPresneter#runSyncAction) - isExistingUser = false
+     - Sync after account creation attempt in pinPresenter (syncPresneter#runSyncAction)
+       - isExistingUser = false
         -> preservePinOnAccountCreation = true
      - Account creation pre pin set (PinPresenter#setup) - isExistingUser = false
         -> preservePinOnAccountCreation = false
@@ -88,7 +91,10 @@ public class SyncAction: AsyncAction<()> {
 
         do {
             if signFlow == .create { // is anon user
-                // This direct call is unsafe as this action could run multiple times and concurrently since it isn't protected by the runSingle logic. It doesn't have a bug currently because of how it's being called. Do not take this direct call aproach as a reference as it is wrong.
+                // This direct call is unsafe as this action could run multiple times and
+                // concurrently since it isn't protected by the runSingle logic. It doesn't have a
+                // bug currently because of how it's being called. Do not take this direct call
+                // aproach as a reference as it is wrong.
                 _ = try createFirstSessionAction.run(
                     gcmToken: gcmToken,
                     currencyCode: currencyCode,
@@ -101,7 +107,7 @@ public class SyncAction: AsyncAction<()> {
                             self.runActions()
                             return self.buildAndRunSyncCompletable()
                         })
-                ))
+                    ))
             } else {
                 runActions()
                 runCompletable(buildAndRunSyncCompletable())

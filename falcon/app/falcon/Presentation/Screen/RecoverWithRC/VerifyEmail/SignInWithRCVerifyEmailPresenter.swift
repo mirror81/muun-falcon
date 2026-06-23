@@ -8,13 +8,14 @@
 
 import RxSwift
 
-
 protocol SignInWithRCVerifyEmailPresenterDelegate: BasePresenterDelegate {
     func signInCompleted()
     func emailExpired()
 }
 
-class SignInWithRCVerifyEmailPresenter<Delegate: SignInWithRCVerifyEmailPresenterDelegate>: BasePresenter<Delegate> {
+class SignInWithRCVerifyEmailPresenter<
+    Delegate: SignInWithRCVerifyEmailPresenterDelegate
+>: BasePresenter<Delegate> {
 
     internal let fetchNotificationsAction: FetchNotificationsAction
     private let sessionActions: SessionActions
@@ -23,12 +24,14 @@ class SignInWithRCVerifyEmailPresenter<Delegate: SignInWithRCVerifyEmailPresente
 
     private var recoveryCode: String = ""
 
-    init(delegate: Delegate,
-         state: String,
-         fetchNotificationsAction: FetchNotificationsAction,
-         sessionActions: SessionActions,
-         authorizeRCLoginAction: AuthorizeRCLoginAction,
-         getKeySetAction: GetKeySetAction) {
+    init(
+        delegate: Delegate,
+        state: String,
+        fetchNotificationsAction: FetchNotificationsAction,
+        sessionActions: SessionActions,
+        authorizeRCLoginAction: AuthorizeRCLoginAction,
+        getKeySetAction: GetKeySetAction
+    ) {
 
         self.recoveryCode = state
         self.fetchNotificationsAction = fetchNotificationsAction
@@ -46,7 +49,10 @@ class SignInWithRCVerifyEmailPresenter<Delegate: SignInWithRCVerifyEmailPresente
         let periodicFetch = buildFetchNotificationsPeriodicAction(intervalInSeconds: 1)
 
         subscribeTo(periodicFetch, onNext: { _ in })
-        subscribeTo(sessionActions.watchRcSignInAuthorization(), onNext: self.onRcSignInAuthorization)
+        subscribeTo(
+            sessionActions.watchRcSignInAuthorization(),
+            onNext: self.onRcSignInAuthorization
+        )
         subscribeTo(authorizeRCLoginAction.getState(), onNext: self.onAuthorizeValue)
         subscribeTo(getKeySetAction.getState(), onNext: self.onKeySetStored)
     }

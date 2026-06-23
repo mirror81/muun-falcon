@@ -54,8 +54,14 @@ final class WaitForEmailView: UIView {
 
         NSLayoutConstraint.activate([
             titleAndDescriptionView.topAnchor.constraint(equalTo: topAnchor),
-            titleAndDescriptionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: .sideMargin),
-            titleAndDescriptionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -.sideMargin)
+            titleAndDescriptionView.leadingAnchor.constraint(
+                equalTo: leadingAnchor,
+                constant: .sideMargin
+            ),
+            titleAndDescriptionView.trailingAnchor.constraint(
+                equalTo: trailingAnchor,
+                constant: -.sideMargin
+            )
         ])
     }
 
@@ -89,7 +95,10 @@ final class WaitForEmailView: UIView {
         addSubview(loadingLabel)
 
         NSLayoutConstraint.activate([
-            activityIndicator.topAnchor.constraint(equalTo: emailImageView.bottomAnchor, constant: 20),
+            activityIndicator.topAnchor.constraint(
+                equalTo: emailImageView.bottomAnchor,
+                constant: 20
+            ),
             activityIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
             loadingLabel.topAnchor.constraint(equalTo: activityIndicator.bottomAnchor, constant: 8),
             loadingLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
@@ -110,10 +119,16 @@ final class WaitForEmailView: UIView {
         addSubview(emailErrorLabel)
 
         NSLayoutConstraint.activate([
-            emailErrorLabel.topAnchor.constraint(equalTo: emailImageView.bottomAnchor, constant: 16),
+            emailErrorLabel.topAnchor.constraint(
+                equalTo: emailImageView.bottomAnchor,
+                constant: 16
+            ),
             emailErrorLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             emailErrorLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: .sideMargin),
-            emailErrorLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -.sideMargin)
+            emailErrorLabel.trailingAnchor.constraint(
+                equalTo: trailingAnchor,
+                constant: -.sideMargin
+            )
         ])
     }
 
@@ -126,8 +141,14 @@ final class WaitForEmailView: UIView {
         addSubview(openEmailClientButton)
         NSLayoutConstraint.activate([
             openEmailClientButton.bottomAnchor.constraint(equalTo: bottomAnchor),
-            openEmailClientButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: .sideMargin),
-            openEmailClientButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -.sideMargin)
+            openEmailClientButton.leadingAnchor.constraint(
+                equalTo: leadingAnchor,
+                constant: .sideMargin
+            ),
+            openEmailClientButton.trailingAnchor.constraint(
+                equalTo: trailingAnchor,
+                constant: -.sideMargin
+            )
         ])
     }
 

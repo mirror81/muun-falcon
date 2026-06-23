@@ -14,19 +14,23 @@ public class CreateInvoiceAction {
     private let forwardingPolicyRepository: ForwardingPolicyRepository
     private let realTimeDataAction: RealTimeDataAction
 
-    init(keysRepository: KeysRepository,
-         refreshInvoices: RefreshInvoicesAction,
-         forwardingPolicyRepository: ForwardingPolicyRepository,
-         realTimeDataAction: RealTimeDataAction) {
+    init(
+        keysRepository: KeysRepository,
+        refreshInvoices: RefreshInvoicesAction,
+        forwardingPolicyRepository: ForwardingPolicyRepository,
+        realTimeDataAction: RealTimeDataAction
+    ) {
         self.keysRepository = keysRepository
         self.refreshInvoices = refreshInvoices
         self.forwardingPolicyRepository = forwardingPolicyRepository
         self.realTimeDataAction = realTimeDataAction
     }
 
-    fileprivate func create(amount: Satoshis?,
-                            policies: [ForwardingPolicy],
-                            userPrivateKey: WalletPrivateKey) throws -> String {
+    fileprivate func create(
+        amount: Satoshis?,
+        policies: [ForwardingPolicy],
+        userPrivateKey: WalletPrivateKey
+    ) throws -> String {
 
         if policies.isEmpty {
             throw MuunError(Errors.noPolicies)
@@ -116,4 +120,13 @@ public class CreateInvoiceAction {
         case noInvoicesLeft
     }
 
+}
+
+extension CreateInvoiceAction.Errors: ClassifiedError {
+    var classification: ErrorClassification {
+        switch self {
+        case .noPolicies, .noInvoicesLeft:
+            return .unexpected
+        }
+    }
 }

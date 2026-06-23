@@ -6,20 +6,23 @@
 //  Copyright © 2020 muun. All rights reserved.
 //
 
-
 import RxSwift
 
 protocol NotificationsFetcher: AnyObject {
     var fetchNotificationsAction: FetchNotificationsAction { get }
 
-    func buildFetchNotificationsPeriodicAction(intervalInSeconds: Int) -> Observable<ActionState<()>>
+    func buildFetchNotificationsPeriodicAction(
+        intervalInSeconds: Int
+    ) -> Observable<ActionState<()>>
 }
 
 extension NotificationsFetcher {
 
     // Call this method to create a periodic action to fetch notifications from the backend every
     // `n` seconds
-    func buildFetchNotificationsPeriodicAction(intervalInSeconds: Int) -> Observable<ActionState<()>> {
+    func buildFetchNotificationsPeriodicAction(
+        intervalInSeconds: Int
+    ) -> Observable<ActionState<()>> {
         let periodicFetch: Observable<ActionState<()>> = Observable.interval(
             .seconds(intervalInSeconds),
             scheduler: Scheduler.backgroundScheduler

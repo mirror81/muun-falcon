@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 protocol ChangePasswordEnterNewViewDelegate: AnyObject {
     func didEnterNewPassword(_ password: String)
 }
@@ -70,9 +69,18 @@ final class ChangePasswordEnterNewView: MUView, PresenterInstantior {
         scrollView.addSubview(contentVerticalStack)
         NSLayoutConstraint.activate([
             contentVerticalStack.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentVerticalStack.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 8),
-            contentVerticalStack.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: .sideMargin),
-            contentVerticalStack.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -.sideMargin),
+            contentVerticalStack.bottomAnchor.constraint(
+                equalTo: scrollView.bottomAnchor,
+                constant: 8
+            ),
+            contentVerticalStack.leadingAnchor.constraint(
+                equalTo: scrollView.leadingAnchor,
+                constant: .sideMargin
+            ),
+            contentVerticalStack.trailingAnchor.constraint(
+                equalTo: scrollView.trailingAnchor,
+                constant: -.sideMargin
+            ),
             contentVerticalStack.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor)
         ])
 
@@ -163,10 +171,11 @@ extension ChangePasswordEnterNewView: ButtonViewDelegate {
 
     func button(didPress button: ButtonView) {
         endEditing(true)
-        guard presenter.isPasswordChangeAllowed(firstPassword: firstPasswordInput.text,
-                                                secondPassword: secondPasswordInput.text,
-                                                isAgreeChangePasswordChecked:
-                                                    agreeChangePasswordCheck.isChecked)
+        guard presenter.isPasswordChangeAllowed(
+            firstPassword: firstPasswordInput.text,
+            secondPassword: secondPasswordInput.text,
+            isAgreeChangePasswordChecked: agreeChangePasswordCheck.isChecked
+        )
         else {
             Logger.log(.err, "Change password button should be deactivated")
             return
@@ -180,9 +189,11 @@ extension ChangePasswordEnterNewView: TextInputViewDelegate {
     func onTextChange(textInputView: TextInputView, text: String) {
         let firstPassword = textInputView == firstPasswordInput ? text : firstPasswordInput.text
         let secondPassword = textInputView == secondPasswordInput ? text : secondPasswordInput.text
-        presenter.onInputPasswordStateChanged(firstPassword: firstPassword,
+        presenter.onInputPasswordStateChanged(
+            firstPassword: firstPassword,
             secondPassword: secondPassword,
-            isAgreeChangePasswordChecked: agreeChangePasswordCheck.isChecked)
+            isAgreeChangePasswordChecked: agreeChangePasswordCheck.isChecked
+        )
     }
 }
 
@@ -201,9 +212,11 @@ extension ChangePasswordEnterNewView: UITestablePage {
 
 extension ChangePasswordEnterNewView: CheckViewDelegate {
     func onCheckChanged(checked: Bool) {
-        presenter.onInputPasswordStateChanged(firstPassword: firstPasswordInput.text,
+        presenter.onInputPasswordStateChanged(
+            firstPassword: firstPasswordInput.text,
             secondPassword: secondPasswordInput.text,
-            isAgreeChangePasswordChecked: checked)
+            isAgreeChangePasswordChecked: checked
+        )
     }
 }
 

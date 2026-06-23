@@ -20,8 +20,10 @@ public struct DebugRequestResponse {
             })
             // swiftlint:disable force_error_handling
             if let data = data,
-                let responseBody = try? JSONSerialization.jsonObject(with: data,
-                                                                     options: .allowFragments) {
+                let responseBody = try? JSONSerialization.jsonObject(
+                    with: data,
+                    options: .allowFragments
+                ) {
                 self.responseBody = "\(responseBody)"
             }
         }

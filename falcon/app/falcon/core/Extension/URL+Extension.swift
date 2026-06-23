@@ -7,7 +7,7 @@ import Foundation
 extension URL {
 
     /// Get extended attribute.
-    func extendedAttribute(forName name: String) throws -> Data  {
+    func extendedAttribute(forName name: String) throws -> Data {
 
         let data = try self.withUnsafeFileSystemRepresentation { fileSystemPath -> Data in
 
@@ -77,7 +77,10 @@ extension URL {
 
     /// Helper function to create an NSError from a Unix errno.
     private static func posixError(_ err: Int32) -> NSError {
-        return NSError(domain: NSPOSIXErrorDomain, code: Int(err),
-            userInfo: [NSLocalizedDescriptionKey: String(cString: strerror(err))])
+        return NSError(
+            domain: NSPOSIXErrorDomain,
+            code: Int(err),
+            userInfo: [NSLocalizedDescriptionKey: String(cString: strerror(err))]
+        )
     }
 }

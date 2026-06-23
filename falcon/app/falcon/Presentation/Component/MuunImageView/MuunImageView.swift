@@ -30,11 +30,12 @@ class MuunImageView: UIImageView {
 
         dataTask = URLSession.shared.dataTask(with: url) { data, response, error in
             guard
-                let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
+                let httpURLResponse = response as? HTTPURLResponse,
+                httpURLResponse.statusCode == 200,
                 let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
                 let data = data, error == nil,
                 let image = UIImage(data: data)
-                else {
+            else {
                     DispatchQueue.main.async {
                         self.activityIndicator?.stopAnimating()
                     }
@@ -44,11 +45,17 @@ class MuunImageView: UIImageView {
                 if self.url != url {
                     return
                 }
-                UIView.animate(withDuration: 1, delay: 0, options: .transitionCrossDissolve, animations: {
+                UIView.animate(
+                    withDuration: 1,
+                    delay: 0,
+                    options: .transitionCrossDissolve,
+                    animations: {
                     self.activityIndicator?.stopAnimating()
                     self.backgroundColor = .clear
                     self.image = image
-                }, completion: nil)
+                },
+                    completion: nil
+                )
             }
         }
 

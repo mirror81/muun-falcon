@@ -49,13 +49,15 @@ public class BaseService {
     lazy public var baseURL = getBaseURL()
     private static let maxRetries = 3
 
-    init(preferences: Preferences,
-         urlSession: URLSession,
-         sessionRepository: SessionRepository,
-         debugRequestsRepository: DebugRequestsRepository,
-         deviceCheckTokenProvider: DeviceCheckTokenProvider,
-         backgroundExecutionMetricsProvider: BackgroundExecutionMetricsProvider,
-         sendAuth: Bool) {
+    init(
+        preferences: Preferences,
+        urlSession: URLSession,
+        sessionRepository: SessionRepository,
+        debugRequestsRepository: DebugRequestsRepository,
+        deviceCheckTokenProvider: DeviceCheckTokenProvider,
+        backgroundExecutionMetricsProvider: BackgroundExecutionMetricsProvider,
+        sendAuth: Bool
+    ) {
         self.preferences = preferences
         self.urlSession = urlSession
         self.sessionRepository = sessionRepository
@@ -69,50 +71,89 @@ public class BaseService {
         fatalError("MUST OVERRIDE")
     }
 
-    func get<T: Decodable>(_ path: String,
-                           queryParams: [String: Any]? = [:],
-                           andReturn model: T.Type,
-                           maxRetries: Int = BaseService.maxRetries) -> Single<T> {
-        return doRequest(.get, path, queryParams: queryParams, andReturn: model, maxRetries: maxRetries)
+    func get<T: Decodable>(
+        _ path: String,
+        queryParams: [String: Any]? = [:],
+        andReturn model: T.Type,
+        maxRetries: Int = BaseService.maxRetries
+    ) -> Single<T> {
+        return doRequest(
+            .get,
+            path,
+            queryParams: queryParams,
+            andReturn: model,
+            maxRetries: maxRetries
+        )
     }
 
-    func post<T: Decodable>(_ path: String,
-                            body: Data? = nil,
-                            queryParams: [String: Any]? = [:],
-                            andReturn model: T.Type,
-                            maxRetries: Int = BaseService.maxRetries,
-                            shouldForceDeviceCheckToken: Bool = false) -> Single<T> {
-        return doRequest(.post,
-                         path,
-                         body: body,
-                         queryParams: queryParams,
-                         andReturn: model,
-                         maxRetries: maxRetries,
-                         shouldForceDeviceCheckToken: shouldForceDeviceCheckToken)
+    func post<T: Decodable>(
+        _ path: String,
+        body: Data? = nil,
+        queryParams: [String: Any]? = [:],
+        andReturn model: T.Type,
+        maxRetries: Int = BaseService.maxRetries,
+        shouldForceDeviceCheckToken: Bool = false
+    ) -> Single<T> {
+        return doRequest(
+            .post,
+            path,
+            body: body,
+            queryParams: queryParams,
+            andReturn: model,
+            maxRetries: maxRetries,
+            shouldForceDeviceCheckToken: shouldForceDeviceCheckToken
+        )
     }
 
-    func patch<T: Decodable>(_ path: String,
-                             body: Data? = nil,
-                             queryParams: [String: Any]? = [:],
-                             andReturn model: T.Type,
-                             maxRetries: Int = BaseService.maxRetries) -> Single<T> {
-        return doRequest(.patch, path, body: body, queryParams: queryParams, andReturn: model, maxRetries: maxRetries)
+    func patch<T: Decodable>(
+        _ path: String,
+        body: Data? = nil,
+        queryParams: [String: Any]? = [:],
+        andReturn model: T.Type,
+        maxRetries: Int = BaseService.maxRetries
+    ) -> Single<T> {
+        return doRequest(
+            .patch,
+            path,
+            body: body,
+            queryParams: queryParams,
+            andReturn: model,
+            maxRetries: maxRetries
+        )
     }
 
-    func put<T: Decodable>(_ path: String,
-                           body: Data? = nil,
-                           queryParams: [String: Any]? = [:],
-                           andReturn model: T.Type,
-                           maxRetries: Int = BaseService.maxRetries) -> Single<T> {
-        return doRequest(.put, path, body: body, queryParams: queryParams, andReturn: model, maxRetries: maxRetries)
+    func put<T: Decodable>(
+        _ path: String,
+        body: Data? = nil,
+        queryParams: [String: Any]? = [:],
+        andReturn model: T.Type,
+        maxRetries: Int = BaseService.maxRetries
+    ) -> Single<T> {
+        return doRequest(
+            .put,
+            path,
+            body: body,
+            queryParams: queryParams,
+            andReturn: model,
+            maxRetries: maxRetries
+        )
     }
 
-    func delete<T: Decodable>(_ path: String,
-                              body: Data? = nil,
-                              queryParams: [String: Any]? = [:],
-                              andReturn model: T.Type,
-                              maxRetries: Int = BaseService.maxRetries) -> Single<T> {
-        return doRequest(.delete, path, body: body, queryParams: queryParams, andReturn: model, maxRetries: maxRetries)
+    func delete<T: Decodable>(
+        _ path: String,
+        body: Data? = nil,
+        queryParams: [String: Any]? = [:],
+        andReturn model: T.Type,
+        maxRetries: Int = BaseService.maxRetries
+    ) -> Single<T> {
+        return doRequest(
+            .delete,
+            path,
+            body: body,
+            queryParams: queryParams,
+            andReturn: model,
+            maxRetries: maxRetries
+        )
     }
 }
 
@@ -143,7 +184,8 @@ private extension BaseService {
         if let b = request.request.httpBody {
             Logger.log(.info, "")
             // swiftlint:disable force_error_handling
-            guard let body = try? JSONSerialization.jsonObject(with: b, options: .allowFragments) else {
+            guard let body = try? JSONSerialization.jsonObject(with: b, options: .allowFragments)
+                else {
                 return
             }
 
@@ -175,7 +217,8 @@ private extension BaseService {
 
             Logger.log(.info, "")
 
-            guard let body = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) else {
+            guard let body = try? JSONSerialization
+                .jsonObject(with: data, options: .allowFragments) else {
                 return
             }
 
@@ -197,13 +240,15 @@ private extension BaseService {
 
     }
 
-    func doRequest<T: Decodable>(_ method: HTTPMethod,
-                                 _ path: String,
-                                 body: Data? = nil,
-                                 queryParams: [String: Any]? = [:],
-                                 andReturn model: T.Type,
-                                 maxRetries: Int = BaseService.maxRetries,
-                                 shouldForceDeviceCheckToken: Bool = false) -> Single<T> {
+    func doRequest<T: Decodable>(
+        _ method: HTTPMethod,
+        _ path: String,
+        body: Data? = nil,
+        queryParams: [String: Any]? = [:],
+        andReturn model: T.Type,
+        maxRetries: Int = BaseService.maxRetries,
+        shouldForceDeviceCheckToken: Bool = false
+    ) -> Single<T> {
 
         guard let url = URL(string: "\(self.baseURL)/\(path)") else {
             fatalError("URL NOT VALID")
@@ -220,8 +265,10 @@ private extension BaseService {
             .addHeader(key: "X-Retry-Count", value: "0")
 
         if let backgroundExecutionMetrics = backgroundExecutionMetricsProvider.run() {
-            request = request.addHeader(key: "X-Background-Execution-Metrics",
-                                        value: backgroundExecutionMetrics)
+            request = request.addHeader(
+                key: "X-Background-Execution-Metrics",
+                value: backgroundExecutionMetrics
+            )
         }
 
         if sendAuth {
@@ -230,8 +277,10 @@ private extension BaseService {
                 // Check if the data is there before getting it so we 
                 // can avoid the data not found exception.
                 if try sessionRepository.hasAuthToken() {
-                    request = request.addHeader(key: authorizationHeader,
-                                                value: try sessionRepository.getAuthToken())
+                    request = request.addHeader(
+                        key: authorizationHeader,
+                        value: try sessionRepository.getAuthToken()
+                    )
                 }
             } catch {
                 Logger.log(error: error)
@@ -243,31 +292,38 @@ private extension BaseService {
 
         return Single.create { single in
 
-            self.performHTTPRequest(request: request,
-                                    model: model,
-                                    maxRetries: maxRetries,
-                                    success: { [weak self] (response) in
+            self.performHTTPRequest(
+                request: request,
+                model: model,
+                maxRetries: maxRetries,
+                success: { [weak self] (response) in
                 self?.deviceCheckTokenProvider.reactToRequestSucceded()
                 single(.success(response))
-            }, failure: { (error) in
+            },
+                failure: { (error) in
                 single(.error(error))
-            })
+            }
+            )
 
             return Disposables.create()
         }
     }
 
-    func performHTTPRequest<T: Decodable>(request: BaseRequest,
-                                                  model: T.Type,
-                                                  maxRetries: Int,
-                                                  success: @escaping (T) -> Void,
-                                                  failure: @escaping (Error) -> Void) {
+    func performHTTPRequest<T: Decodable>(
+        request: BaseRequest,
+        model: T.Type,
+        maxRetries: Int,
+        success: @escaping (T) -> Void,
+        failure: @escaping (Error) -> Void
+    ) {
         let dataTask = self.urlSession.dataTask(with: request.request) { (data, response, error) in
             #if DEBUG
-            self.debugRequestsRepository.save(request: request,
-                                              response: response,
-                                              data: data,
-                                              error: error)
+            self.debugRequestsRepository.save(
+                request: request,
+                response: response,
+                data: data,
+                error: error
+            )
             #endif
             self.log(request, response, data)
 
@@ -276,11 +332,13 @@ private extension BaseService {
                     Logger.log(.info, "Retrying...")
                     let newRequest = self.updateRetryCountHeader(request)
 
-                    self.performHTTPRequest(request: newRequest,
-                                            model: model,
-                                            maxRetries: maxRetries - 1,
-                                            success: success,
-                                            failure: failure)
+                    self.performHTTPRequest(
+                        request: newRequest,
+                        model: model,
+                        maxRetries: maxRetries - 1,
+                        success: success,
+                        failure: failure
+                    )
 
                 } else {
                     failure(someError)
@@ -302,7 +360,10 @@ private extension BaseService {
                     }
                 }
 
-                if let sessionStatusString = value(httpResp.allHeaderFields, for: "X-Session-Status"),
+                if let sessionStatusString = value(
+                    httpResp.allHeaderFields,
+                    for: "X-Session-Status"
+                ),
                     let sessionStatus = SessionStatus(rawValue: sessionStatusString) {
 
                     self.sessionRepository.setStatus(sessionStatus)

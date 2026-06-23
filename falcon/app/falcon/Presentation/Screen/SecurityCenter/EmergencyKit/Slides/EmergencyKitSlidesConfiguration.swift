@@ -40,14 +40,26 @@ struct EmergencyKitSlidesConfiguration {
                     preferredStyle: .alert
                 )
 
-                alert.addAction(UIAlertAction(title: L10n.EmergencyKitSlides.s10, style: .default, handler: { _ in
-                    alert.dismiss(animated: true)
-                }))
+                alert.addAction(
+                    UIAlertAction(
+                        title: L10n.EmergencyKitSlides.s10,
+                        style: .default,
+                        handler: { _ in
+                            alert.dismiss(animated: true)
+                        }
+                    )
+                )
 
-                alert.addAction(UIAlertAction(title: L10n.EmergencyKitSlides.s11, style: .destructive, handler: { _ in
-                    vc.logEvent("emergency_kit_aborted")
-                    vc.navigationController!.popTo(type: SecurityCenterViewController.self)
-                }))
+                alert.addAction(
+                    UIAlertAction(
+                        title: L10n.EmergencyKitSlides.s11,
+                        style: .destructive,
+                        handler: { _ in
+                            vc.logEvent("emergency_kit_aborted")
+                            vc.navigationController!.popTo(type: SecurityCenterViewController.self)
+                        }
+                    )
+                )
 
                 alert.view.tintColor = Asset.Colors.muunGrayDark.color
 
@@ -91,19 +103,25 @@ struct EmergencyKitSlidesConfiguration {
                     preferredStyle: .alert
                 )
 
-                let stayAction = UIAlertAction(title: L10n.TaprootActivationSlides.stay,
-                                               style: .default,
-                                               handler: { _ in
-                    alert.dismiss(animated: true)
-                })
+                let stayAction = UIAlertAction(
+                    title: L10n.TaprootActivationSlides.stay,
+                    style: .default,
+                    handler: { _ in
+                        alert.dismiss(animated: true)
+                    }
+                )
                 alert.addAction(stayAction)
                 alert.preferredAction = stayAction
 
-                alert.addAction(UIAlertAction(title: L10n.TaprootActivationSlides.leave,
-                                              style: .destructive,
-                                              handler: { _ in
-                    vc.navigationController?.popToRootViewController(animated: true)
-                }))
+                alert.addAction(
+                    UIAlertAction(
+                        title: L10n.TaprootActivationSlides.leave,
+                        style: .destructive,
+                        handler: { _ in
+                            vc.navigationController?.popToRootViewController(animated: true)
+                        }
+                    )
+                )
 
                 vc.navigationController!.present(alert, animated: true)
             },

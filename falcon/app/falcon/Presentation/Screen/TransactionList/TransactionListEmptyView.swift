@@ -86,7 +86,10 @@ final class TransactionListEmptyView: UIView {
         descLabel.textAlignment = .center
         descLabel.attributedText = L10n.TransactionListEmptyView.description
             .attributedForDescription(alignment: .center)
-            .set(underline: L10n.TransactionListEmptyView.descriptionCta, color: Asset.Colors.muunBlue.color)
+            .set(
+                underline: L10n.TransactionListEmptyView.descriptionCta,
+                color: Asset.Colors.muunBlue.color
+            )
         descLabel.isUserInteractionEnabled = true
         descLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: .loadWalletTap))
 

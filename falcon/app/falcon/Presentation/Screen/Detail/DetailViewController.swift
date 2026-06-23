@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class DetailViewController: MUViewController {
 
     @IBOutlet fileprivate weak var summaryLabel: UILabel!
@@ -110,8 +109,11 @@ class DetailViewController: MUViewController {
 
         add(paymentHash: incomingSwap.paymentHash.toHexString())
 
-        if let preimage = incomingSwap.preimage {
-            add(preimage: preimage.toHexString())
+        if operation.status == .SETTLED || operation.status == .CONFIRMED
+            || operation.status == .SWAP_PAYED {
+            if let preimage = incomingSwap.preimage {
+                add(preimage: preimage.toHexString())
+            }
         }
     }
 
@@ -155,11 +157,16 @@ class DetailViewController: MUViewController {
             let noticeView = NoticeView(frame: .zero)
             noticeView.style = .warning
             noticeView.text = L10n.DetailViewController.rbfNotice
-                .set(font: Constant.Fonts.system(size: .opHelper),
-                     lineSpacing: Constant.FontAttributes.lineSpacing,
-                     kerning: Constant.FontAttributes.kerning,
-                     alignment: .left)
-                .set(underline: L10n.DetailViewController.rbfCta, color: Asset.Colors.muunBlue.color)
+                .set(
+                    font: Constant.Fonts.system(size: .opHelper),
+                    lineSpacing: Constant.FontAttributes.lineSpacing,
+                    kerning: Constant.FontAttributes.kerning,
+                    alignment: .left
+                )
+                .set(
+                    underline: L10n.DetailViewController.rbfCta,
+                    color: Asset.Colors.muunBlue.color
+                )
             noticeView.delegate = self
             stackView.addArrangedSubview(noticeView)
         }
@@ -167,26 +174,38 @@ class DetailViewController: MUViewController {
 
     fileprivate func addDescription() {
         if let description = formatter.description {
-            stackView.addArrangedSubview(MUDetailRowView(title: L10n.DetailViewController.s4, content: description))
+            stackView.addArrangedSubview(MUDetailRowView(
+                title: L10n.DetailViewController.s4,
+                content: description
+            ))
         }
     }
 
     fileprivate func addWhen() {
         stackView.addArrangedSubview(
-            MUDetailRowView(title: L10n.DetailViewController.s5, content: formatter.extendedCreationDate)
+            MUDetailRowView(
+                title: L10n.DetailViewController.s5,
+                content: formatter.extendedCreationDate
+            )
         )
     }
 
     fileprivate func addAmount() {
         stackView.addArrangedSubview(
-            MUDetailRowView.copyableAmount(operation.amount, title: L10n.DetailViewController.s6, controller: self)
+            MUDetailRowView.copyableAmount(
+                operation.amount,
+                title: L10n.DetailViewController.s6,
+                controller: self
+            )
         )
     }
 
     fileprivate func addConfirmations() {
         if formatter.simpleStatus != .FAILED {
-            stackView.addArrangedSubview(MUDetailRowView(title: L10n.DetailViewController.s7,
-                                                       content: formatter.confirmations))
+            stackView.addArrangedSubview(MUDetailRowView(
+                title: L10n.DetailViewController.s7,
+                content: formatter.confirmations
+            ))
         }
     }
 
@@ -207,9 +226,11 @@ class DetailViewController: MUViewController {
             let openExplorer = {
                 let params = ["name": "block_explorer", "url": url]
                 self.logEvent("open_web", parameters: params)
-                UIApplication.shared.open(URL(string: url)!,
-                                          options: [:],
-                                          completionHandler: nil)
+                UIApplication.shared.open(
+                    URL(string: url)!,
+                    options: [:],
+                    completionHandler: nil
+                )
             }
 
             let onIconTap = {
@@ -241,8 +262,10 @@ class DetailViewController: MUViewController {
             let url = "\(Environment.current.txExplorer)\(hash)?mode=details"
 
             let shareUrl = {
-                let activityViewController = UIActivityViewController(activityItems: [url as NSString],
-                                                                      applicationActivities: nil)
+                let activityViewController = UIActivityViewController(
+                    activityItems: [url as NSString],
+                    applicationActivities: nil
+                )
 
                 self.present(activityViewController, animated: true, completion: {})
             }
@@ -250,9 +273,11 @@ class DetailViewController: MUViewController {
             let openExplorer = {
                 let params = ["name": "block_explorer", "url": url]
                 self.logEvent("open_web", parameters: params)
-                UIApplication.shared.open(URL(string: url)!,
-                                          options: [:],
-                                          completionHandler: nil)
+                UIApplication.shared.open(
+                    URL(string: url)!,
+                    options: [:],
+                    completionHandler: nil
+                )
             }
 
             let longPress = {
@@ -268,7 +293,8 @@ class DetailViewController: MUViewController {
                 onTap: openExplorer,
                 onLongPress: longPress,
                 onIconTap: shareUrl,
-                contentColor: Asset.Colors.muunBlue.color)
+                contentColor: Asset.Colors.muunBlue.color
+            )
             )
 
         }
@@ -280,9 +306,11 @@ class DetailViewController: MUViewController {
         if let fee = swap.getLightningFeeInSats(onChainFee: operation.fee)?
             .toBitcoinAmount(reference: operation.amount) {
             stackView.addArrangedSubview(
-                MUDetailRowView.copyableAmount(fee,
-                                               title: L10n.DetailViewController.s8,
-                                               controller: self)
+                MUDetailRowView.copyableAmount(
+                    fee,
+                    title: L10n.DetailViewController.s8,
+                    controller: self
+                )
             )
         }
 
@@ -290,9 +318,11 @@ class DetailViewController: MUViewController {
 
     fileprivate func add(invoice: String) {
         stackView.addArrangedSubview(
-            MUDetailRowView.clipboard(invoice,
-                                      title: L10n.DetailViewController.s13,
-                                      controller: self)
+            MUDetailRowView.clipboard(
+                invoice,
+                title: L10n.DetailViewController.s13,
+                controller: self
+            )
         )
     }
 
@@ -308,24 +338,30 @@ class DetailViewController: MUViewController {
             name = pubKey
         }
 
-        let rowView = MUDetailRowView.clipboard(name,
-                                              title: L10n.DetailViewController.s14,
-                                              valueToBeCopied: pubKey,
-                                              controller: self)
+        let rowView = MUDetailRowView.clipboard(
+            name,
+            title: L10n.DetailViewController.s14,
+            valueToBeCopied: pubKey,
+            controller: self
+        )
 
         stackView.addArrangedSubview(rowView)
     }
 
     fileprivate func add(paymentHash: String) {
-        stackView.addArrangedSubview(MUDetailRowView.clipboard(paymentHash,
-                                                             title: L10n.DetailViewController.paymentHash,
-                                                             controller: self))
+        stackView.addArrangedSubview(MUDetailRowView.clipboard(
+            paymentHash,
+            title: L10n.DetailViewController.paymentHash,
+            controller: self
+        ))
     }
 
     fileprivate func add(preimage: String) {
-        stackView.addArrangedSubview(MUDetailRowView.clipboard(preimage,
-                                                             title: L10n.DetailViewController.preimage,
-                                                             controller: self))
+        stackView.addArrangedSubview(MUDetailRowView.clipboard(
+            preimage,
+            title: L10n.DetailViewController.preimage,
+            controller: self
+        ))
     }
 
     fileprivate func addSwapStatus(swap: SubmarineSwap) {
@@ -344,14 +380,17 @@ class DetailViewController: MUViewController {
         case .SWAP_PENDING, .CREATED, .BROADCASTED, .SIGNED:
             if swap._fundingOutput.confirmationsNeeded() > 0 {
                 let onTap = {
-                    let overlayVc = BottomDrawerOverlayViewController(info: BottomDrawerInfo.confsNeeded)
+                    let overlayVc = BottomDrawerOverlayViewController(info: BottomDrawerInfo
+                        .confsNeeded)
                     self.present(overlayVc, animated: true)
                 }
 
                 let text = L10n.DetailViewController.s19
-                stackView.addArrangedSubview(MUDetailRowView.text(text,
-                                                                link: L10n.DetailViewController.s20,
-                                                                onTap: onTap))
+                stackView.addArrangedSubview(MUDetailRowView.text(
+                    text,
+                    link: L10n.DetailViewController.s20,
+                    onTap: onTap
+                ))
                 return
             }
             content = L10n.DetailViewController.s16

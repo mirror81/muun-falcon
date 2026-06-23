@@ -41,7 +41,8 @@ protocol NewOperationPresenterDelegate: BasePresenterDelegate {
 
 // swiftlint:disable type_body_length
 /// This class acts as new operations coordinator.
-/// It asks libWallet to validate each state of the operation and presents screens in order to complete an operation.
+/// It asks libWallet to validate each state of the operation and presents screens in order to
+/// complete an operation.
 class NewOperationPresenter<Delegate: NewOperationPresenterDelegate>: BasePresenter<Delegate> {
 
     let operationActions: OperationActions
@@ -55,13 +56,12 @@ class NewOperationPresenter<Delegate: NewOperationPresenterDelegate>: BasePresen
 
     var hasNfc2fa: Bool {
         let featureFlags = featureFlagsSelector.fetch()
-        return featureFlags.contains(.nfcCardV2) || featureFlags.contains(.nfcCard)
+        return featureFlags.contains(.nfcCardV2)
     }
 
     private let userRepository: UserRepository = resolve()
     private let featureFlagsSelector: FeatureFlagsSelector = resolve()
     private let featureFlagsOverridesRepository: FeatureFlagsOverridesRepository = resolve()
-    private let signMessageAction: SignMessageAction = SignMessageAction()
     private let signMessageActionV2: SignMessageActionV2 = SignMessageActionV2()
     private var signMessageDisposable: Disposable?
 
@@ -179,7 +179,8 @@ class NewOperationPresenter<Delegate: NewOperationPresenterDelegate>: BasePresen
                 selectedCurrency: lastSelectedCurrency!,
                 totalBalance: totalBalance,
                 exchangeRateWindow: state.resolved!.paymentContext!.exchangeRateWindow!
-            ))
+            )
+        )
 
         if state.getUpdate() == NewopUpdateInPlace {
 
@@ -198,15 +199,18 @@ class NewOperationPresenter<Delegate: NewOperationPresenterDelegate>: BasePresen
         loadLastSelectedCurrencyIfNeeded(totalBalance)
         let newOpState = NewOpState.description(
             NewOpData.Description(
-                amount: BitcoinAmountWithSelectedCurrency(bitcoinAmount: amount,
-                                                          selectedCurrency: lastSelectedCurrency!),
+                amount: BitcoinAmountWithSelectedCurrency(
+                    bitcoinAmount: amount,
+                    selectedCurrency: lastSelectedCurrency!
+                ),
                 description: state.note,
                 type: type,
                 primaryCurrency: primaryCurrency,
                 totalBalance: totalBalance,
                 isOneConf: state.validated?.swapInfo?.isOneConf ?? false,
                 exchangeRateWindow: state.resolved!.paymentContext!.exchangeRateWindow!
-            ))
+            )
+        )
 
         delegate.requestNextStep(newOpState)
     }
@@ -296,9 +300,11 @@ class NewOperationPresenter<Delegate: NewOperationPresenterDelegate>: BasePresen
         if state.validated!.feeNeedsChange {
             feeState = .feeNeedsChange(displayFee: state.validated!.fee!.adapt(), rate: feeRate)
         } else {
-            feeState = .finalFee(state.validated!.fee!.adapt(),
-                                 rate: feeRate,
-                                 feeBumpInfo: state.validated?.feeBumpInfo?.adapt())
+            feeState = .finalFee(
+                state.validated!.fee!.adapt(),
+                rate: feeRate,
+                feeBumpInfo: state.validated?.feeBumpInfo?.adapt()
+            )
         }
 
         let primaryCurrency = state.resolved!.paymentContext!.primaryCurrency
@@ -308,8 +314,10 @@ class NewOperationPresenter<Delegate: NewOperationPresenterDelegate>: BasePresen
         let newOpState = NewOpState.feeEditor(
             NewOpData.FeeEditor(
                 type: type,
-                amount: BitcoinAmountWithSelectedCurrency(bitcoinAmount: state.amountInfo!.amount!.adapt(),
-                                                          selectedCurrency: selectedCurrency),
+                amount: BitcoinAmountWithSelectedCurrency(
+                    bitcoinAmount: state.amountInfo!.amount!.adapt(),
+                    selectedCurrency: selectedCurrency
+                ),
                 total: state.validated!.total!.adapt(),
                 feeState: feeState,
                 takeFeeFromAmount: state.amountInfo!.takeFeeFromAmount,
@@ -328,7 +336,8 @@ class NewOperationPresenter<Delegate: NewOperationPresenterDelegate>: BasePresen
     /// Fee screens should not use bitcoin selected unit on contex.
     private func getLastSelectedCurrencyWithBitcoinDefaultInCaseOfBitcoin() -> Currency {
         if self.lastSelectedCurrency is BitcoinCurrency {
-            return BitcoinCurrency() // Bitcoin unit by default on a BitcoinCurrency comes from userDefaults
+            return BitcoinCurrency() // Bitcoin unit by default on a BitcoinCurrency comes from
+            // userDefaults
         }
         return lastSelectedCurrency!
     }
@@ -434,9 +443,11 @@ class NewOperationPresenter<Delegate: NewOperationPresenterDelegate>: BasePresen
         delegate.requestFinish(operation)
 
         subscribeTo(
-            operationActions.newOperation(operation,
-                                          with: params,
-                                          maxAlternativeTransactionCount: maxAlternativeTransactionCount),
+            operationActions.newOperation(
+                operation,
+                with: params,
+                maxAlternativeTransactionCount: maxAlternativeTransactionCount
+            ),
             onSuccess: self.operationCreated
         )
     }
@@ -486,7 +497,8 @@ extension NewOperationPresenter: NewOperationTransitions {
             switch state {
             case _ as NewopResolveState,
                  _ as NewopStartState:
-                // BIP70 and invoices need a request before transitioning out of start and resolve, respectively.
+                // BIP70 and invoices need a request before transitioning out of start and resolve,
+                // respectively.
                 // Allow the user abort the flow during the resulting spinner
                 delegate.cancel(confirm: false)
             case let state as NewopConfirmState:
@@ -506,23 +518,9 @@ extension NewOperationPresenter: NewOperationTransitions {
     private func loadLastSelectedCurrencyIfNeeded(_ totalBalance: BitcoinAmount) {
         if lastSelectedCurrency == nil {
             let primaryCurrency = totalBalance.inPrimaryCurrency.currency
-            lastSelectedCurrency = GetCurrencyForCode().runAssumingCrashPosibility(code: primaryCurrency)
+            lastSelectedCurrency = GetCurrencyForCode()
+                .runAssumingCrashPosibility(code: primaryCurrency)
         }
-    }
-
-    private func signWithSecurityCardAndCreateOperation() {
-        let message = "testing NFC in iOS"
-        signMessageDisposable = signMessageAction.run(message: message)
-            .observeOn(Scheduler.foregroundScheduler)
-            .subscribe(onSuccess: { signedMessageBytes in
-                Logger.log(.debug, "Card signed message response: \(signedMessageBytes)")
-
-                // if signed was successful, continue with the operation.
-                // we will check the signed message in Libwallet in the final implementation
-                self.createOperation()
-            }, onError: { error in
-                self.handleGrpcError(error)
-            })
     }
 
     private func signWithSecurityCardV2AndCreateOperation() {
@@ -594,7 +592,8 @@ extension NewOperationPresenter: OpLoadingTransitions {
         context.feeWindow = feeInfo.feeWindow.toLibwallet()
         context.nextTransactionSize = feeInfo.nextTransactionSize.toLibwallet()
         context.exchangeRateWindow = feeInfo.exchangeRateWindow.toLibwallet()
-        context.primaryCurrency = user.primaryCurrencyWithValidExchangeRate(window: feeInfo.exchangeRateWindow)
+        context.primaryCurrency = user
+            .primaryCurrencyWithValidExchangeRate(window: feeInfo.exchangeRateWindow)
         context.minFeeRateInSatsPerVByte = feeInfo.minFeeRateInSatsPerVByte
 
         if let flowSwap = paymentRequestType as? FlowSubmarineSwap {
@@ -635,8 +634,6 @@ extension NewOperationPresenter: OpConfirmTransitions {
         let featureFlags = featureFlagsSelector.fetch()
         if featureFlags.contains(.nfcCardV2) {
             signWithSecurityCardV2AndCreateOperation()
-        } else if featureFlags.contains(.nfcCard) {
-            signWithSecurityCardAndCreateOperation()
         } else {
             createOperation()
         }
@@ -741,9 +738,11 @@ extension NewopFeeState {
         switch state {
         case NewopFeeStateFinalFee:
 
-            return .finalFee(amount!.adapt(),
-                             rate: FeeRate(satsPerVByte: Decimal(rateInSatsPerVByte)),
-                             feeBumpInfo: feeBumpInfo?.adapt())
+            return .finalFee(
+                amount!.adapt(),
+                rate: FeeRate(satsPerVByte: Decimal(rateInSatsPerVByte)),
+                feeBumpInfo: feeBumpInfo?.adapt()
+            )
         case NewopFeeStateNeedsChange:
             return .feeNeedsChange(
                 displayFee: amount!.adapt(),

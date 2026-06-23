@@ -14,9 +14,11 @@ class HasUnverifiedRecoveryCodeAction {
     private let preferences: Preferences
     private let userRepository: UserRepository
 
-    init(secureStorage: SecureStorage,
-         preferences: Preferences,
-         userRepository: UserRepository) {
+    init(
+        secureStorage: SecureStorage,
+        preferences: Preferences,
+        userRepository: UserRepository
+    ) {
         self.secureStorage = secureStorage
         self.preferences = preferences
         self.userRepository = userRepository

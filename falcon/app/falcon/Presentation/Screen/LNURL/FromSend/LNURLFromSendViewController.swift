@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class LNURLFromSendViewController: MUViewController {
 
     private let imageView = UIImageView()

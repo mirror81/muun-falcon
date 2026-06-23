@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 protocol NewOperationStateDelegate { }
 
 protocol NewOperationStateLoaded: NewOperationStateDelegate {
@@ -52,7 +51,11 @@ extension NewOperationStateAmount {
     func toBitcoinAmount(satoshis: Satoshis) -> BitcoinAmount {
         let inInput = amountInInput(satoshis: satoshis)
         let inPrimary = amountInPrimary(satoshis: satoshis)
-        return BitcoinAmount(inSatoshis: satoshis, inInputCurrency: inInput, inPrimaryCurrency: inPrimary)
+        return BitcoinAmount(
+            inSatoshis: satoshis,
+            inInputCurrency: inInput,
+            inPrimaryCurrency: inPrimary
+        )
     }
 
 }

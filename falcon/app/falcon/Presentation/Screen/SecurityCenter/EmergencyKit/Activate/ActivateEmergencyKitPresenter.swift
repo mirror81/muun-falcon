@@ -6,20 +6,21 @@
 //  Copyright © 2020 muun. All rights reserved.
 //
 
-
-
 protocol ActivateEmergencyKitPresenterDelegate: BasePresenterDelegate {
     func reported()
 }
 
-class ActivateEmergencyKitPresenter<Delegate: ActivateEmergencyKitPresenterDelegate>: BasePresenter<Delegate> {
+class ActivateEmergencyKitPresenter<Delegate: ActivateEmergencyKitPresenterDelegate>:
+    BasePresenter<Delegate> {
 
     private let emergencyKitExportedAction: ReportEmergencyKitExportedAction
     fileprivate let emergencyKitVerificationCodesRepository: EmergencyKitRepository
 
-    init(delegate: Delegate,
-         emergencyKitExportedAction: ReportEmergencyKitExportedAction,
-         emergencyKitVerificationCodesRepository: EmergencyKitRepository) {
+    init(
+        delegate: Delegate,
+        emergencyKitExportedAction: ReportEmergencyKitExportedAction,
+        emergencyKitVerificationCodesRepository: EmergencyKitRepository
+    ) {
         self.emergencyKitExportedAction = emergencyKitExportedAction
         self.emergencyKitVerificationCodesRepository = emergencyKitVerificationCodesRepository
 

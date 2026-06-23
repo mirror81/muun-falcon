@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 protocol ChangePasswordEnterRecoveryCodeViewDelegate: AnyObject {
     func didConfirmRecoveryCode(_ code: String)
 }
@@ -66,7 +65,10 @@ final class ChangePasswordEnterRecoveryCodeView: UIView {
         NSLayoutConstraint.activate([
             bottomMarginConstraint,
             continueButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: .sideMargin),
-            continueButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -.sideMargin)
+            continueButton.trailingAnchor.constraint(
+                equalTo: trailingAnchor,
+                constant: -.sideMargin
+            )
         ])
     }
 
@@ -79,8 +81,14 @@ final class ChangePasswordEnterRecoveryCodeView: UIView {
         addSubview(contentVerticalStack)
         NSLayoutConstraint.activate([
             contentVerticalStack.topAnchor.constraint(equalTo: topAnchor),
-            contentVerticalStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: .sideMargin),
-            contentVerticalStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -.sideMargin)
+            contentVerticalStack.leadingAnchor.constraint(
+                equalTo: leadingAnchor,
+                constant: .sideMargin
+            ),
+            contentVerticalStack.trailingAnchor.constraint(
+                equalTo: trailingAnchor,
+                constant: -.sideMargin
+            )
         ])
 
         setUpTitleAndDescriptionView()

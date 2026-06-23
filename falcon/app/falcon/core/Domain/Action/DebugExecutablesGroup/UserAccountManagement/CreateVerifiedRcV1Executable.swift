@@ -17,9 +17,11 @@ class CreateVerifiedRcV1Executable: DebugExecutable {
     private let keysRepository: KeysRepository
     private let userRepository: UserRepository
 
-    init(houstonService: HoustonService,
-         keysRepository: KeysRepository,
-         userRepository: UserRepository) {
+    init(
+        houstonService: HoustonService,
+        keysRepository: KeysRepository,
+        userRepository: UserRepository
+    ) {
         self.houstonService = houstonService
         self.keysRepository = keysRepository
         self.userRepository = userRepository
@@ -112,10 +114,11 @@ class CreateVerifiedRcV1Executable: DebugExecutable {
         recoveryCode: RecoveryCode,
         salt: Data
     ) -> (ChallengeKey, ChallengeSetup) {
-        var (key, setup) = try! buildChallengeSetup(type: .RECOVERY_CODE,
-                                                    userInput: recoveryCode.description,
-                                                    privKey: privKey,
-                                                    salt: salt
+        var (key, setup) = try! buildChallengeSetup(
+            type: .RECOVERY_CODE,
+            userInput: recoveryCode.description,
+            privKey: privKey,
+            salt: salt
         )
 
         // Add salt for RcV1.
@@ -143,8 +146,8 @@ class CreateVerifiedRcV1Executable: DebugExecutable {
             )
             let challengeKey = buildChallengeKey(type: type, pubKey: pubKey, salt: salt)
 
-            // In order to save ourselves from a huge backend refactor, we will continue to send a salt
-            // on all challenge setups, but it wont be used for challenge types = RECOVERY_CODE
+            // In order to save ourselves from a huge backend refactor, we will continue to send a
+            // salt on all challenge setups, but it wont be used for challenge types = RECOVERY_CODE
             let challengeSetup = ChallengeSetup(
                 type: type,
                 passwordSecretPublicKey: pubKey,
@@ -208,7 +211,7 @@ class CreateVerifiedRcV1Executable: DebugExecutable {
                 self?.keysRepository.markChallengeKeyAsVerifiedForRecoveryCode()
             })
         }).toBlocking().first()
-        
+
         func getChallengePublicKey(
             recoveryCode: RecoveryCode,
             legacyRecoveryCodeSalt: Data

@@ -33,23 +33,29 @@ extension FeeBumpRefreshPolicy: APIConvertible {
 // tests) in our current state of libwallet usage while we transition to a grpc-client-server
 // architecture.
 public protocol FeeBumpFunctionsProvider {
-    func persistFeeBumpFunctions(feeBumpFunctions: FeeBumpFunctions,
-                                 refreshPolicy: FeeBumpRefreshPolicy)
+    func persistFeeBumpFunctions(
+        feeBumpFunctions: FeeBumpFunctions,
+        refreshPolicy: FeeBumpRefreshPolicy
+    )
     func areFeeBumpFunctionsInvalidated() -> Bool
 }
 
 public class LibwalletFeeBumpFunctionsProvider: FeeBumpFunctionsProvider {
-    public func persistFeeBumpFunctions(feeBumpFunctions: FeeBumpFunctions,
-                                        refreshPolicy: FeeBumpRefreshPolicy) {
+    public func persistFeeBumpFunctions(
+        feeBumpFunctions: FeeBumpFunctions,
+        refreshPolicy: FeeBumpRefreshPolicy
+    ) {
         let feeBumpFunctionsStringList = LibwalletNewStringList()
         feeBumpFunctions.functions.forEach { feeBumpFunctionsStringList?.add($0) }
 
         do {
             return try doWithError({ error in
-                NewopPersistFeeBumpFunctions(feeBumpFunctionsStringList,
-                                             feeBumpFunctions.uuid,
-                                             refreshPolicy.rawValue,
-                                             error)
+                NewopPersistFeeBumpFunctions(
+                    feeBumpFunctionsStringList,
+                    feeBumpFunctions.uuid,
+                    refreshPolicy.rawValue,
+                    error
+                )
             })
         } catch {
             Logger.log(error: error)

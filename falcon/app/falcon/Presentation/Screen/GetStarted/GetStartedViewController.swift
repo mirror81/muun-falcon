@@ -73,9 +73,21 @@ class GetStartedViewController: MUViewController {
                 let translate = CGAffineTransform(translationX: 0, y: -80)
                 self.muunLogo.transform = scale.concatenating(translate)
 
-                self.descriptionLabel.animate(direction: .bottomToTop, duration: .short, delay: .short)
-                self.createWalletButton.animate(direction: .bottomToTop, duration: .short, delay: .short2)
-                self.recoverWalletButton.animate(direction: .bottomToTop, duration: .short, delay: .short2)
+                self.descriptionLabel.animate(
+                    direction: .bottomToTop,
+                    duration: .short,
+                    delay: .short
+                )
+                self.createWalletButton.animate(
+                    direction: .bottomToTop,
+                    duration: .short,
+                    delay: .short2
+                )
+                self.recoverWalletButton.animate(
+                    direction: .bottomToTop,
+                    duration: .short,
+                    delay: .short2
+                )
                 self.muunLogo.pause()
             })
         }

@@ -12,7 +12,11 @@ public class LogInWithRCAction: AsyncAction<(hasEmailSetup: Bool, obfuscatedEmai
     private let houstonService: HoustonService
     private let storeKeySetAction: StoreKeySetAction
     private let preferences: Preferences
-    init(houstonService: HoustonService, storeKeySetAction: StoreKeySetAction, preferences: Preferences) {
+    init(
+        houstonService: HoustonService,
+        storeKeySetAction: StoreKeySetAction,
+        preferences: Preferences
+    ) {
         self.houstonService = houstonService
         self.storeKeySetAction = storeKeySetAction
         self.preferences = preferences
@@ -30,8 +34,13 @@ public class LogInWithRCAction: AsyncAction<(hasEmailSetup: Bool, obfuscatedEmai
 
             let single = Single.deferred({
                 let signature = try key.signSha(Data(hex: challenge.challenge))
-                    return Single.just(ChallengeSignature(type: challenge.type, hex: signature.toHexString()))
-                })
+                return Single.just(
+                    ChallengeSignature(
+                        type: challenge.type,
+                        hex: signature.toHexString()
+                    )
+                )
+            })
                 .flatMap({ payload in self.houstonService.loginWithRecoveryCode(payload) })
                 .do(onSuccess: { rcSessionOk in
                     if let keySet = rcSessionOk.keySet {
@@ -43,7 +52,10 @@ public class LogInWithRCAction: AsyncAction<(hasEmailSetup: Bool, obfuscatedEmai
                     }
                 })
                 .map({ sessionOk in
-                    return (hasEmailSetup: sessionOk.hasEmailSetup, obfuscatedEmail: sessionOk.obfuscatedEmail)
+                    return (
+                        hasEmailSetup: sessionOk.hasEmailSetup,
+                        obfuscatedEmail: sessionOk.obfuscatedEmail
+                    )
                 })
 
             runSingle(single)

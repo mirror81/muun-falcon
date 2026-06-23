@@ -8,28 +8,33 @@
 
 import UIKit
 
-
 extension BottomDrawerInfo {
 
     static func newOpDestination(address: String) -> MoreInfo {
-        return MoreInfo(title: L10n.NewOp.s1,
-                        description: address.attributedForDescription(),
-                        type: .newOpDestination,
-                        action: nil)
+        return MoreInfo(
+            title: L10n.NewOp.s1,
+            description: address.attributedForDescription(),
+            type: .newOpDestination,
+            action: nil
+        )
     }
 
     static func swapDestination(pubKey: String, destinationInfo: NSAttributedString) -> MoreInfo {
         let title = L10n.NewOp.s2
         let onTap = {
-            UIApplication.shared.open(URL(string: "\(Environment.current.nodeExplorer)\(pubKey)")!,
-                                      options: [:],
-                                      completionHandler: nil)
+            UIApplication.shared.open(
+                URL(string: "\(Environment.current.nodeExplorer)\(pubKey)")!,
+                options: [:],
+                completionHandler: nil
+            )
         }
         let action = MoreInfoAction(text: L10n.NewOp.s3, action: onTap)
-        return MoreInfo(title: title,
-                        description: destinationInfo,
-                        type: .newOpDestination,
-                        action: action)
+        return MoreInfo(
+            title: title,
+            description: destinationInfo,
+            type: .newOpDestination,
+            action: action
+        )
     }
 
     static let oneConfNotice = MoreInfo(

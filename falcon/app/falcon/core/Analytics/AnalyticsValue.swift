@@ -44,3 +44,9 @@ extension Double: AnalyticsValue {
         String(self)
     }
 }
+
+extension ErrorClassification: AnalyticsValue {
+    var trackingValue: String {
+        rawValue
+    }
+}

@@ -11,7 +11,10 @@ import UIKit
 class ChangePasswordEnterRecoveryCodeViewController: MUViewController {
 
     private var enterRCView: ChangePasswordEnterRecoveryCodeView!
-    private lazy var presenter = instancePresenter(ChangePasswordEnterRecoveryCodePresenter.init, delegate: self)
+    private lazy var presenter = instancePresenter(
+        ChangePasswordEnterRecoveryCodePresenter.init,
+        delegate: self
+    )
 
     override var screenLoggingName: String {
         return "password_change_enter_current"
@@ -73,7 +76,8 @@ extension ChangePasswordEnterRecoveryCodeViewController {
 
 }
 
-extension ChangePasswordEnterRecoveryCodeViewController: ChangePasswordEnterRecoveryCodeViewDelegate {
+extension ChangePasswordEnterRecoveryCodeViewController:
+    ChangePasswordEnterRecoveryCodeViewDelegate {
 
     func didConfirmRecoveryCode(_ code: String) {
         presenter.requestChallengeAndSignIt(userInput: code)
@@ -81,7 +85,8 @@ extension ChangePasswordEnterRecoveryCodeViewController: ChangePasswordEnterReco
 
 }
 
-extension ChangePasswordEnterRecoveryCodeViewController: ChangePasswordEnterRecoveryCodePresenterDelegate {
+extension ChangePasswordEnterRecoveryCodeViewController:
+    ChangePasswordEnterRecoveryCodePresenterDelegate {
 
     func invalidRecoveryCode() {
         enterRCView.wrongCode()
@@ -93,7 +98,10 @@ extension ChangePasswordEnterRecoveryCodeViewController: ChangePasswordEnterReco
 
     func pendingUpdateReceived(challengeType: String, updateUuid: String) {
         navigationController!.pushViewController(
-            ChangePasswordVerifyViewController(challengeType: challengeType, pendingUpdateUuid: updateUuid),
+            ChangePasswordVerifyViewController(
+                challengeType: challengeType,
+                pendingUpdateUuid: updateUuid
+            ),
             animated: true
         )
     }

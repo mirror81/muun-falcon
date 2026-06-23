@@ -17,9 +17,11 @@ class SecurityCenterPresenter<Delegate: SecurityCenterPresenterDelegate>: BasePr
     private let sessionActions: SessionActions
     private let userPreferencesRepository: UserPreferencesRepository
 
-    init(delegate: Delegate,
-         sessionActions: SessionActions,
-         userPreferencesRepository: UserPreferencesRepository) {
+    init(
+        delegate: Delegate,
+        sessionActions: SessionActions,
+        userPreferencesRepository: UserPreferencesRepository
+    ) {
         self.sessionActions = sessionActions
         self.userPreferencesRepository = userPreferencesRepository
 
@@ -56,7 +58,9 @@ class SecurityCenterPresenter<Delegate: SecurityCenterPresenterDelegate>: BasePr
     func getRecoveryCodeCard() -> ActionCardModel {
         // If the user has recovery code set up -> Card = complete
         if sessionActions.hasRecoveryCode() {
-            let wording: SetUpRecoveryCodeWording = hasEmailAndPassword() ? .emailSetup : .emailNotSetup
+            let wording: SetUpRecoveryCodeWording = hasEmailAndPassword()
+                ? .emailSetup
+                : .emailNotSetup
             if let email = sessionActions.getUserEmail() {
                 return ActionCard.recoveryCodeComplete(wording: wording, email: email)
             }
@@ -68,16 +72,28 @@ class SecurityCenterPresenter<Delegate: SecurityCenterPresenterDelegate>: BasePr
 
         if hasEmailAndPassword() {
             // 1. active with email set up
-            return ActionCard.recoveryCodeIncomplete(wording: .emailSetup, state: .active, emailSkipped: false)
+            return ActionCard.recoveryCodeIncomplete(
+                wording: .emailSetup,
+                state: .active,
+                emailSkipped: false
+            )
         }
 
         if sessionActions.isEmailSkipped() {
             // 2. active with email skipped
-            return ActionCard.recoveryCodeIncomplete(wording: .emailNotSetup, state: .active, emailSkipped: true)
+            return ActionCard.recoveryCodeIncomplete(
+                wording: .emailNotSetup,
+                state: .active,
+                emailSkipped: true
+            )
         }
 
         // 3. inactive
-        return ActionCard.recoveryCodeIncomplete(wording: .emailNotSetup, state: .inactive, emailSkipped: false)
+        return ActionCard.recoveryCodeIncomplete(
+            wording: .emailNotSetup,
+            state: .inactive,
+            emailSkipped: false
+        )
     }
 
     func getEmergencyKitCard() -> ActionCardModel {

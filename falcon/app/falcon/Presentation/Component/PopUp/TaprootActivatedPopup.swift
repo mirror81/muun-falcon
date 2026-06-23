@@ -79,7 +79,8 @@ class TaprootActivatedPopup: UIView {
 
         let description = UILabel()
         description.translatesAutoresizingMaskIntoConstraints = false
-        description.attributedText = L10n.TaprootActivatedPopup.description.attributedForDescription()
+        let descriptionText = L10n.TaprootActivatedPopup.description.attributedForDescription()
+        description.attributedText = descriptionText
         description.textColor = Asset.Colors.muunGrayDark.color
         description.font = Constant.Fonts.description
         description.textAlignment = .center
@@ -88,8 +89,14 @@ class TaprootActivatedPopup: UIView {
 
         NSLayoutConstraint.activate([
             description.topAnchor.constraint(equalTo: title.bottomAnchor, constant: .closeSpacing),
-            description.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: .sideMargin),
-            card.trailingAnchor.constraint(equalTo: description.trailingAnchor, constant: .sideMargin)
+            description.leadingAnchor.constraint(
+                equalTo: card.leadingAnchor,
+                constant: .sideMargin
+            ),
+            card.trailingAnchor.constraint(
+                equalTo: description.trailingAnchor,
+                constant: .sideMargin
+            )
         ])
 
         let button = SmallButtonView()
@@ -100,7 +107,10 @@ class TaprootActivatedPopup: UIView {
 
         card.addSubview(button)
         NSLayoutConstraint.activate([
-            button.topAnchor.constraint(equalTo: description.bottomAnchor, constant: .headerSpacing),
+            button.topAnchor.constraint(
+                equalTo: description.bottomAnchor,
+                constant: .headerSpacing
+            ),
             button.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: .sideMargin),
             card.trailingAnchor.constraint(equalTo: button.trailingAnchor, constant: .sideMargin),
             card.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: .bigSpacing),

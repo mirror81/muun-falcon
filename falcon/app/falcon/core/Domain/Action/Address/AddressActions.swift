@@ -23,9 +23,11 @@ public class AddressActions {
     private let syncExternalAddresses: SyncExternalAddresses
     private let externalAddressWatchWindowSize: Int = 15
 
-    init(houstonService: HoustonService,
-         keysRepository: KeysRepository,
-         syncExternalAddresses: SyncExternalAddresses) {
+    init(
+        houstonService: HoustonService,
+        keysRepository: KeysRepository,
+        syncExternalAddresses: SyncExternalAddresses
+    ) {
 
         self.houstonService = houstonService
         self.keysRepository = keysRepository
@@ -70,8 +72,8 @@ public class AddressActions {
         } else if maxUsedIndex < maxWatchingIndex {
             nextIndex = maxUsedIndex + 1
         } else {
-            // This means the user is deriving addresses offline, so we take a random one from the last address
-            // window because the server is watching them all 👀.
+            // This means the user is deriving addresses offline, so we take a random one from the
+            // last address window because the server is watching them all 👀.
             let minWatchIndex = max(maxWatchingIndex - externalAddressWatchWindowSize, 0)
             nextIndex = Int.random(in: minWatchIndex ..< maxWatchingIndex)
         }

@@ -1,8 +1,9 @@
 package storage
 
 import (
-	"fmt"
 	"strconv"
+
+	"github.com/go-errors/errors"
 )
 
 type BackupType int
@@ -28,8 +29,9 @@ const (
 	KeySecurityCardXpubSerialized string = "securityCardXpubSerialized"
 	KeyBiometricsOptIn            string = "biometricsOptIn"
 	KeyPinLength                  string = "pinLength"
-	// TODO: These three are marked as prototypes to avoid accidentally setting the non-prototype fields
-	//  in a consumer device before finalizing the design. Before production, the "Prototype" suffix must be removed
+	// TODO: These three are marked as prototypes to avoid accidentally setting the non-prototype
+	// fields in a consumer device before finalizing the design. Before production, the "Prototype"
+	// suffix must be removed
 	UnverifiedEncryptedMuunKey string = "unverifiedEncryptedMuungKeyPrototype"
 	VerifiedEncryptedMuunKey   string = "verifiedEncryptedMuunKeyPrototype"
 	EncryptedUserKey           string = "encryptedUserKeyPrototype"
@@ -39,6 +41,10 @@ const (
 	FeatureFlagOverridesekGoRendering = "featureFlagOverrides:ekGoRendering"
 
 	// ==== End of feature flag overrides ====
+	// ==== Pending pair challenge (bridges PairRequestChallenge and PairSignAndSubmitChallenge RPCs) ====
+	KeyPendingPairChallengeServerPubKeyInHex    string = "pendingPairChallenge:serverPubKeyInHex"
+	KeyPendingPairChallengeReceivedAtUnixMillis string = "pendingPairChallenge:receivedAtUnixMillis"
+	// ==== End of pending pair challenge ====
 	// ==== Temporary keys for mock houston. Will remove soon ====
 	KeyLastRandomPrivKeyInHex           string = "lastRandomPrivKeyInHex"
 	KeySecurityCardUsageCount           string = "securityCardUsageCount"
@@ -46,6 +52,9 @@ const (
 	KeySecurityCardPairingSlot          string = "securityCardPairingSlot"
 	KeyTimeSinceLastChallengeUnixMillis string = "timeSinceLastChallengeUnixMillis"
 	// ==== End of temporary keys for mock houston ====
+
+	// ==== Lightning keys ====
+	KeyLightningIncomingHTLCBatches string = "lightning:incomingHTLCBatches"
 )
 
 type ValueType interface {
@@ -72,7 +81,7 @@ func (IntType) ToString(value any) (string, error) {
 	if ok {
 		return strconv.Itoa(int(n)), nil
 	}
-	return "", fmt.Errorf("IntType: invalid type, expected int32")
+	return "", errors.Errorf("IntType: invalid type, expected int32")
 }
 
 func (LongType) FromString(value string) (any, error) {
@@ -88,7 +97,7 @@ func (LongType) ToString(value any) (string, error) {
 	if ok {
 		return strconv.FormatInt(n, 10), nil
 	}
-	return "", fmt.Errorf("LongType: invalid type, expected int64")
+	return "", errors.Errorf("LongType: invalid type, expected int64")
 }
 
 func (DoubleType) FromString(value string) (any, error) {
@@ -104,7 +113,7 @@ func (DoubleType) ToString(value any) (string, error) {
 	if ok {
 		return strconv.FormatFloat(f, 'f', -1, 64), nil
 	}
-	return "", fmt.Errorf("DoubleType: invalid type, expected float64")
+	return "", errors.Errorf("DoubleType: invalid type, expected float64")
 }
 
 func (StringType) FromString(value string) (any, error) {
@@ -116,7 +125,7 @@ func (StringType) ToString(value any) (string, error) {
 	if ok {
 		return str, nil
 	}
-	return "", fmt.Errorf("StringType: invalid type, expected string")
+	return "", errors.Errorf("StringType: invalid type, expected string")
 }
 
 func (BoolType) FromString(value string) (any, error) {
@@ -132,7 +141,7 @@ func (BoolType) ToString(value any) (string, error) {
 	if ok {
 		return strconv.FormatBool(bo), nil
 	}
-	return "", fmt.Errorf("BoolType: invalid type, expected bool")
+	return "", errors.Errorf("BoolType: invalid type, expected bool")
 }
 
 // Classification that should contain each stored value
@@ -142,4 +151,3 @@ type Classification struct {
 	SecurityCritical bool
 	ValueType        ValueType
 }
-

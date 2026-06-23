@@ -8,7 +8,6 @@
 
 import RxSwift
 
-
 protocol SignInEmailAndRCPresenterDelegate: BasePresenterDelegate {
     func keySetResponseReceived(keySet: KeySet)
     func setLoading(_ isLoading: Bool)
@@ -17,7 +16,8 @@ protocol SignInEmailAndRCPresenterDelegate: BasePresenterDelegate {
     func showCredentialsDontMatchError(userEmail: String)
 }
 
-class SignInEmailAndRCPresenter<Delegate: SignInEmailAndRCPresenterDelegate>: BasePresenter<Delegate> {
+class SignInEmailAndRCPresenter<Delegate: SignInEmailAndRCPresenterDelegate>:
+    BasePresenter<Delegate> {
 
     private let requestChallengeAction: RequestChallengeAction
     private let logInAction: LogInAction
@@ -25,10 +25,12 @@ class SignInEmailAndRCPresenter<Delegate: SignInEmailAndRCPresenterDelegate>: Ba
     private var recoveryCode: RecoveryCode?
     private let preferences: Preferences
 
-    init(delegate: Delegate,
-         requestChallengeAction: RequestChallengeAction,
-         logInAction: LogInAction,
-         preferences: Preferences) {
+    init(
+        delegate: Delegate,
+        requestChallengeAction: RequestChallengeAction,
+        logInAction: LogInAction,
+        preferences: Preferences
+    ) {
         self.requestChallengeAction = requestChallengeAction
         self.logInAction = logInAction
         self.preferences = preferences
@@ -86,10 +88,16 @@ class SignInEmailAndRCPresenter<Delegate: SignInEmailAndRCPresenterDelegate>: Ba
             if let e = result.error {
                 if e.isKindOf(.invalidChallengeSignature) {
                     delegate.invalidCode()
-                } else if e.isKindOf(.staleChallengeKey) {
+                } else if e.isKindOf(.staleChallengeKey), let muunError = e as? MuunError {
+                    AnalyticsHelper.logEvent(ErrorEvent(type: .rcStaleError, error: muunError))
                     delegate.showStaleRcError()
-                } else if e.isKindOf(.credentialsDontMatch) {
-                    delegate.showCredentialsDontMatchError(userEmail: preferences.string(forKey: .email) ?? "")
+                } else if e.isKindOf(.credentialsDontMatch), let muunError = e as? MuunError {
+                    AnalyticsHelper.logEvent(
+                        ErrorEvent(type: .rcCredentialsDontMatchError, error: muunError)
+                    )
+                    delegate.showCredentialsDontMatchError(
+                        userEmail: preferences.string(forKey: .email) ?? ""
+                    )
                 } else {
                     handleError(e)
                 }

@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 private enum RequestType {
     case feedback
     case help
@@ -25,7 +24,11 @@ class SupportViewController: MUViewController {
     @IBOutlet fileprivate weak var emailBoxView: UIView!
     @IBOutlet fileprivate weak var linkButtonView: LinkButtonView!
 
-    fileprivate lazy var presenter = instancePresenter(SupportPresenter.init, delegate: self, state: actionType)
+    fileprivate lazy var presenter = instancePresenter(
+        SupportPresenter.init,
+        delegate: self,
+        state: actionType
+    )
     private var type: RequestType!
     private let actionType: SupportAction.RequestType
     private var emailActionSheet: UIAlertController = UIAlertController()
@@ -188,10 +191,16 @@ class SupportViewController: MUViewController {
     }
 
     fileprivate func setUpEmailActionSheet() {
-        emailActionSheet = UIAlertController(title: L10n.SupportViewController.s2,
-                                             message: nil,
-                                             preferredStyle: .actionSheet)
-        emailActionSheet.addAction(UIAlertAction(title: L10n.SupportViewController.s3, style: .cancel, handler: nil))
+        emailActionSheet = UIAlertController(
+            title: L10n.SupportViewController.s2,
+            message: nil,
+            preferredStyle: .actionSheet
+        )
+        emailActionSheet.addAction(UIAlertAction(
+            title: L10n.SupportViewController.s3,
+            style: .cancel,
+            handler: nil
+        ))
 
         addEmailActions()
     }
@@ -215,11 +224,17 @@ class SupportViewController: MUViewController {
             emailActionSheet.addAction(action)
         }
 
-        if let action = openAction(withURL: "googlegmail://co?to=\(muunEmail)", andTitleActionTitle: "Gmail") {
+        if let action = openAction(
+            withURL: "googlegmail://co?to=\(muunEmail)",
+            andTitleActionTitle: "Gmail"
+        ) {
             emailActionSheet.addAction(action)
         }
 
-        if let action = openAction(withURL: "ms-outlook://compose?to=\(muunEmail)", andTitleActionTitle: "Outlook") {
+        if let action = openAction(
+            withURL: "ms-outlook://compose?to=\(muunEmail)",
+            andTitleActionTitle: "Outlook"
+        ) {
             emailActionSheet.addAction(action)
         }
 

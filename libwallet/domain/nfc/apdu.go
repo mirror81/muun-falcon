@@ -20,7 +20,9 @@ func newAPDU(cls byte, ins byte, p1 byte, p2 byte, data []byte) *apdu {
 
 // newSelectAPDU builds the ISO select apdu to pick the applet. [00 a4 04 00 (appletId)].
 // This is required to get started.
-func newSelectAPDU(appletId string) (*apdu, error) {
+func newSelectAPDU(
+	appletId string, //nolint:staticcheck // TODO: func parameter appletId should be appletID
+) (*apdu, error) {
 	initByteCode, err := hex.DecodeString(appletId)
 	if err != nil {
 		return nil, err

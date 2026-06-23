@@ -8,13 +8,13 @@
 
 import Foundation
 
-
 // swiftlint:disable cyclomatic_complexity
-enum NewOpError: ErrorViewModel {
+enum NewOpError: ErrorViewModel, Error {
     case invalidAddress(_ input: String)
     case expiredInvoice, exchangeRateWindowTooOld
     // Swaps
-    case invalidInvoice, invoiceExpiresTooSoon, invoiceAlreadyUsed, noPaymentRoute, invoiceMissingAmount, swapFailed
+    case invalidInvoice, invoiceExpiresTooSoon, invoiceAlreadyUsed, noPaymentRoute,
+         invoiceMissingAmount, swapFailed
     case invoiceUnreachableNode, cyclicalSwap, invalidSwap
     // Fees
     case insufficientFunds(amountPlusFee: String, maxBalance: String)
@@ -112,9 +112,10 @@ enum NewOpError: ErrorViewModel {
             let attText = amountPlusFee.attributedForDescription(alignment: .center)
                 .set(bold: amountPlusFee, color: Asset.Colors.title.color)
             return (L10n.NewOpError.s23, attText)
-        case .expiredInvoice, .invalidInvoice, .invoiceExpiresTooSoon, .invoiceAlreadyUsed, .noPaymentRoute,
-                .swapFailed, .amountBelowDust, .exchangeRateWindowTooOld, .invoiceMissingAmount, .unexpected,
-                .invoiceUnreachableNode, .cyclicalSwap, .invalidSwap, .nfcError:
+        case .expiredInvoice, .invalidInvoice, .invoiceExpiresTooSoon, .invoiceAlreadyUsed,
+             .noPaymentRoute, .swapFailed, .amountBelowDust, .exchangeRateWindowTooOld,
+             .invoiceMissingAmount, .unexpected, .invoiceUnreachableNode, .cyclicalSwap,
+             .invalidSwap, .nfcError:
             return nil
         }
     }
@@ -125,10 +126,10 @@ enum NewOpError: ErrorViewModel {
             let attText = balance.attributedForDescription(alignment: .center)
                 .set(bold: balance, color: Asset.Colors.muunRed.color)
             return (L10n.NewOpError.s24, attText)
-        case .invalidAddress, .expiredInvoice, .invalidInvoice, .invoiceExpiresTooSoon, .invoiceAlreadyUsed,
-                .noPaymentRoute, .swapFailed, .amountBelowDust, .exchangeRateWindowTooOld, .invoiceMissingAmount,
-                .unexpected, .invoiceUnreachableNode, .cyclicalSwap, .invalidSwap,
-                .nfcError:
+        case .invalidAddress, .expiredInvoice, .invalidInvoice, .invoiceExpiresTooSoon,
+             .invoiceAlreadyUsed, .noPaymentRoute, .swapFailed, .amountBelowDust,
+             .exchangeRateWindowTooOld, .invoiceMissingAmount, .unexpected,
+             .invoiceUnreachableNode, .cyclicalSwap, .invalidSwap, .nfcError:
             return nil
         }
     }
@@ -136,38 +137,37 @@ enum NewOpError: ErrorViewModel {
     func analyticsEvent() -> AnalyticsEvent {
         switch self {
         case .invalidAddress:
-            return ScreenNewOpErrorEvent(type: .invalidAddress)
+            return ScreenNewOpErrorEvent(type: .invalidAddress, error: self)
         case .expiredInvoice:
-            return ScreenNewOpErrorEvent(type: .expiredInvoice)
+            return ScreenNewOpErrorEvent(type: .expiredInvoice, error: self)
         case .invalidInvoice:
-            return ScreenNewOpErrorEvent(type: .invalidInvoice)
+            return ScreenNewOpErrorEvent(type: .invalidInvoice, error: self)
         case .invoiceExpiresTooSoon:
-            return ScreenNewOpErrorEvent(type: .invoiceExpiresTooSoon)
+            return ScreenNewOpErrorEvent(type: .invoiceExpiresTooSoon, error: self)
         case .invoiceAlreadyUsed:
-            return ScreenNewOpErrorEvent(type: .invoiceAlreadyUsed)
+            return ScreenNewOpErrorEvent(type: .invoiceAlreadyUsed, error: self)
         case .noPaymentRoute:
-            return ScreenNewOpErrorEvent(type: .noPaymentRoute)
+            return ScreenNewOpErrorEvent(type: .noPaymentRoute, error: self)
         case .swapFailed:
-            return ScreenNewOpErrorEvent(type: .swapFailed)
+            return ScreenNewOpErrorEvent(type: .swapFailed, error: self)
         case .invalidSwap:
-            return ScreenNewOpErrorEvent(type: .invalidSwap)
+            return ScreenNewOpErrorEvent(type: .invalidSwap, error: self)
         case .insufficientFunds:
-            return ScreenNewOpErrorEvent(type: .insufficientFunds)
+            return ScreenNewOpErrorEvent(type: .insufficientFunds, error: self)
         case .amountBelowDust:
-            return ScreenNewOpErrorEvent(type: .amountBelowDust)
+            return ScreenNewOpErrorEvent(type: .amountBelowDust, error: self)
         case .exchangeRateWindowTooOld:
-            return ScreenNewOpErrorEvent(type: .exchangeRateWindowTooOld)
+            return ScreenNewOpErrorEvent(type: .exchangeRateWindowTooOld, error: self)
         case .invoiceMissingAmount:
-            return ScreenNewOpErrorEvent(type: .invoiceMissingAmount)
+            return ScreenNewOpErrorEvent(type: .invoiceMissingAmount, error: self)
         case .unexpected(let error):
-            return ScreenNewOpErrorEvent(type: .other, cause: error)
+            return ScreenNewOpErrorEvent(type: .other, error: error ?? self)
         case .invoiceUnreachableNode:
-            return ScreenNewOpErrorEvent(type: .invoiceUnreachableNode)
+            return ScreenNewOpErrorEvent(type: .invoiceUnreachableNode, error: self)
         case .cyclicalSwap:
-            return ScreenNewOpErrorEvent(type: .cyclicalSwap)
+            return ScreenNewOpErrorEvent(type: .cyclicalSwap, error: self)
         case .nfcError:
-            return ScreenNewOpErrorEvent(type: .nfcError)
-
+            return ScreenNewOpErrorEvent(type: .nfcError, error: self)
         }
     }
 
@@ -176,3 +176,17 @@ enum NewOpError: ErrorViewModel {
     }
 }
 // swiftlint:enable cyclomatic_complexity
+
+extension NewOpError: ClassifiedError {
+    var classification: ErrorClassification {
+        switch self {
+        case .invalidAddress, .expiredInvoice, .invalidInvoice, .invoiceExpiresTooSoon,
+             .invoiceAlreadyUsed, .invoiceMissingAmount, .cyclicalSwap,
+             .insufficientFunds, .amountBelowDust, .nfcError:
+            return .expected
+        case .unexpected, .invalidSwap, .noPaymentRoute, .swapFailed,
+             .invoiceUnreachableNode, .exchangeRateWindowTooOld:
+            return .unexpected
+        }
+    }
+}

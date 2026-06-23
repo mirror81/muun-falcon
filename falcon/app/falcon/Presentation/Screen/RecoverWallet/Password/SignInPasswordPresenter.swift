@@ -8,7 +8,6 @@
 
 import RxSwift
 
-
 protocol SignInPasswordPresenterDelegate: BasePresenterDelegate {
     func setLoading(_ isLoading: Bool)
     func keySetResponseReceived(keySet: KeySet)
@@ -21,10 +20,12 @@ class SignInPasswordPresenter<Delegate: SignInPasswordPresenterDelegate>: BasePr
     private let compatLogInAction: CompatLogInAction
     private let requestChallengeAction: RequestChallengeAction
 
-    init(delegate: Delegate,
-         logInAction: LogInAction,
-         compatLogInAction: CompatLogInAction,
-         requestChallengeAction: RequestChallengeAction) {
+    init(
+        delegate: Delegate,
+        logInAction: LogInAction,
+        compatLogInAction: CompatLogInAction,
+        requestChallengeAction: RequestChallengeAction
+    ) {
         self.logInAction = logInAction
         self.compatLogInAction = compatLogInAction
         self.requestChallengeAction = requestChallengeAction

@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 enum AddressTypeViewModel: String, MUActionSheetOption {
     case segwit
     case legacy
@@ -74,9 +73,11 @@ final class ReceiveOnChainView: UIView {
 
     private var customAmountInBTC: Decimal?
 
-    init(addressSet: AddressSet,
-         delegate: ReceiveOnChainViewDelegate?,
-         defaultAddressType: AddressTypeViewModel) {
+    init(
+        addressSet: AddressSet,
+        delegate: ReceiveOnChainViewDelegate?,
+        defaultAddressType: AddressTypeViewModel
+    ) {
         let qrAccessibilityLabel = L10n.QRCodeWithActionsView.onChainQRAccessibilityLabel
         self.qrCodeView = QRCodeWithActionsView(tapQRAccessibilityLabel: qrAccessibilityLabel)
         self.defaultAddressType = defaultAddressType
@@ -124,8 +125,14 @@ final class ReceiveOnChainView: UIView {
         stackView.setCustomSpacing(24, after: qrCodeView)
 
         NSLayoutConstraint.activate([
-            qrCodeView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: .sideMargin),
-            qrCodeView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -.sideMargin)
+            qrCodeView.leadingAnchor.constraint(
+                equalTo: stackView.leadingAnchor,
+                constant: .sideMargin
+            ),
+            qrCodeView.trailingAnchor.constraint(
+                equalTo: stackView.trailingAnchor,
+                constant: -.sideMargin
+            )
         ])
     }
 

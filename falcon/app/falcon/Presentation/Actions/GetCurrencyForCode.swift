@@ -8,7 +8,8 @@
 
 import Foundation
 
-/// Gets currency for a given code. In case code is BTC, bitcoin unit is choosen from GetBTCDefaultSelectedUnit
+/// Gets currency for a given code. In case code is BTC, bitcoin unit is choosen from
+/// GetBTCDefaultSelectedUnit
 class GetCurrencyForCode {
     /// Execute action. If code is BTC the returned unit will be user defaults unit.
     /// > Warning: If code is not found this function calls FATAL ERROR

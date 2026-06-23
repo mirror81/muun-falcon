@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 // Analytics
 extension UIViewController {
 
@@ -44,7 +43,8 @@ extension UIViewController {
 extension UIViewController {
 
     func getKeyboardSize(_ notification: NSNotification) -> CGRect? {
-        return (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+        let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
+        return value?.cgRectValue
     }
 
 }

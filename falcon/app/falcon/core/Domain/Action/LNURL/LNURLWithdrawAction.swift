@@ -36,10 +36,12 @@ public class LNURLWithdrawAction {
     private let forwardingPolicyRepository: ForwardingPolicyRepository
     private let refreshInvoicesAction: RefreshInvoicesAction
 
-    init(keysRepository: KeysRepository,
-         operationRepository: OperationRepository,
-         forwardingPolicyRepository: ForwardingPolicyRepository,
-         refreshInvoicesAction: RefreshInvoicesAction) {
+    init(
+        keysRepository: KeysRepository,
+        operationRepository: OperationRepository,
+        forwardingPolicyRepository: ForwardingPolicyRepository,
+        refreshInvoicesAction: RefreshInvoicesAction
+    ) {
         self.keysRepository = keysRepository
         self.operationRepository = operationRepository
         self.forwardingPolicyRepository = forwardingPolicyRepository
@@ -83,7 +85,9 @@ public class LNURLWithdrawAction {
                 policies = self.forwardingPolicyRepository.fetch()
             } catch {
                 Logger.log(error: error)
-                let wrappedError = MuunError(WithdrawError.unknown(message: error.localizedDescription))
+                let wrappedError = MuunError(
+                    WithdrawError.unknown(message: error.localizedDescription)
+                )
                 return Observable.just(.failed(error: wrappedError))
             }
 
@@ -155,11 +159,17 @@ public class LNURLWithdrawAction {
                 case LibwalletLNURLErrRequestExpired:
                     error = .requestExpired(message: event.message)
                 case LibwalletLNURLErrNoAvailableBalance:
-                    error = .noAvailableBalance(message: event.message, domain: event.metadata!.host)
+                    error = .noAvailableBalance(
+                        message: event.message,
+                        domain: event.metadata!.host
+                    )
                 case LibwalletLNURLErrNoRoute:
                     error = .noRoute(message: event.message, domain: event.metadata!.host)
                 case LibwalletLNURLErrCountryNotSupported:
-                    error = .countryNotSupported(message: event.message, domain: event.metadata!.host)
+                    error = .countryNotSupported(
+                        message: event.message,
+                        domain: event.metadata!.host
+                    )
                 case LibwalletLNURLErrForbidden:
                     error = .unknown(message: event.message)
                 case LibwalletLNURLErrAlreadyUsed:
@@ -181,10 +191,12 @@ public class LNURLWithdrawAction {
                     subject.onNext(.receiving(domain: event.metadata!.host))
                 case LibwalletLNURLStatusInvoiceCreated:
                     let details = parseInvoice(event.metadata!.invoice)
-                    subject.onNext(.invoice(event.metadata!.invoice,
-                                            paymentHash: details.paymentHash!,
-                                            expires: Date(timeIntervalSince1970: Double(details.expiry)),
-                                            domain: event.metadata!.host))
+                    subject.onNext(.invoice(
+                        event.metadata!.invoice,
+                        paymentHash: details.paymentHash!,
+                        expires: Date(timeIntervalSince1970: Double(details.expiry)),
+                        domain: event.metadata!.host
+                    ))
                 default:
                     break // ignore
                 }
@@ -195,7 +207,19 @@ public class LNURLWithdrawAction {
             return subject.asObservable()
         }
     }
+}
 
+extension LNURLWithdrawAction.WithdrawError: ClassifiedError {
+    public var classification: ErrorClassification {
+        switch self {
+        case .invalidCode, .wrongTag, .requestExpired,
+             .noAvailableBalance, .expiredInvoice,
+             .countryNotSupported, .alreadyUsed:
+            return .expected
+        case .unknown, .unresponsive, .noRoute:
+            return .unexpected
+        }
+    }
 }
 
 fileprivate func parseInvoice(_ invoice: String) -> LibwalletInvoice {

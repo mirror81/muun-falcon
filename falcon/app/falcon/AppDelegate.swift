@@ -50,6 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var fcmTokenHandlingAlreadyReported = false
 
     internal let featureFlagsSelector: FeatureFlagsSelector = resolve()
+    private let walletService: WalletService = resolve()
     private let preloadFeeDataAction: PreloadFeeDataAction = resolve()
     private let feeDataSyncer: FeeDataSyncer = resolve()
     internal let httpClientSessionProvider: HttpClientSessionProvider = resolve()
@@ -67,8 +68,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 Libwallet_initStartServer(error)
             }
         } catch {
-            Logger.log(.err,
-                       "Error initializing libwallet server: \(error.localizedDescription)")
+            Logger.log(
+                .err,
+                "Error initializing libwallet server: \(error.localizedDescription)"
+            )
         }
         // Run this as early as possible to load schema and migrations and crash early
         databaseCoordinator.migrate()
@@ -158,16 +161,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         self.reachabilityService.collectReachabilityStatusIfNeeded()
                         return
                     }
-                    try self.keychainRepository.store(deviceToken.base64EncodedString(),
-                                                      at: deviceTokenKey)
+                    try self.keychainRepository.store(
+                        deviceToken.base64EncodedString(),
+                        at: deviceTokenKey
+                    )
                 } catch {
                     Logger.log(error: error)
                 }
             }
         } else {
             do {
-                try keychainRepository.store(DeviceTokenErrorValues.unsupported.rawValue,
-                                             at: deviceTokenKey)
+                try keychainRepository.store(
+                    DeviceTokenErrorValues.unsupported.rawValue,
+                    at: deviceTokenKey
+                )
             } catch {
                 Logger.log(error: error)
             }
@@ -207,6 +214,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
+        walletService.connect()
+
         if lockManager.shouldShowLockScreen() {
             presentLockWindow()
             // If we're entering from background and we'll not show lock scren then we show
@@ -261,9 +270,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     // Deep/Universal links
-    func application(_ application: UIApplication,
-                     open url: URL,
-                     options: [UIApplication.OpenURLOptionsKey: Any] = [:] ) -> Bool {
+    func application(
+        _ application: UIApplication,
+        open url: URL,
+        options: [UIApplication.OpenURLOptionsKey: Any] = [:]
+    ) -> Bool {
 
         // TODO: Check if we need to handle google sign in deeplinks as well
 
@@ -302,9 +313,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    func application(_ application: UIApplication,
-                     continue userActivity: NSUserActivity,
-                     restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+    func application(
+        _ application: UIApplication,
+        continue userActivity: NSUserActivity,
+        restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void
+    ) -> Bool {
 
         guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
             let url = userActivity.webpageURL,
@@ -356,8 +369,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     // Notifications
-    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken
-                     deviceToken: Data) {
+    func application(
+        _ application: UIApplication,
+        didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
+    ) {
 
         setApnsToken(deviceToken)
 
@@ -375,13 +390,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didReceiveRemoteNotification userInfo: [AnyHashable: Any],
         fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
     ) {
+        if application.applicationState == .background {
+            // We always reconnect because even though a prior background notification may have left
+            // an open channel, there are no guarantees it is not stale (the OS may have reclaimed
+            // resources). It is safer to open a new one. Since connect() tears down any existing
+            // channel before opening a new one, it is always safe to call.
+            walletService.connect()
+        }
         handle(notification: userInfo, completionHandler: completionHandler)
     }
 
     // Force Touch
-    func application(_ application: UIApplication,
-                     performActionFor shortcutItem: UIApplicationShortcutItem,
-                     completionHandler: (Bool) -> Void) {
+    func application(
+        _ application: UIApplication,
+        performActionFor shortcutItem: UIApplicationShortcutItem,
+        completionHandler: (Bool) -> Void
+    ) {
         completionHandler(handleShortcut(application, item: shortcutItem))
     }
 

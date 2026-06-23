@@ -18,9 +18,11 @@ public class TestLapp {
         }
     }()
 
-    private static func request<T>(_ urlString: String,
-                                   timeout: TimeInterval = 60,
-                                   _ processResponse: @escaping (Data) -> T) -> T {
+    private static func request<T>(
+        _ urlString: String,
+        timeout: TimeInterval = 60,
+        _ processResponse: @escaping (Data) -> T
+    ) -> T {
         let url = URL(string: lappUrl + urlString)!
         var request = URLRequest(url: url)
         request.addValue("text/plain", forHTTPHeaderField: "Content-Type")
@@ -33,7 +35,8 @@ public class TestLapp {
 
         let task = URLSession.shared.dataTask(with: request) { (body, response, error) in
 
-            if error != nil, let response = response as? HTTPURLResponse, response.statusCode != 200 {
+            if error != nil, let response = response as? HTTPURLResponse,
+               response.statusCode != 200 {
                 preconditionFailure("request failed")
             } else if let body = body {
                 result = processResponse(body)
@@ -94,17 +97,23 @@ public class TestLapp {
         })
     }
 
-    public static func payWithLapp(invoice: String,
-                            amountInSats: Int64,
-                            turboChannelsEnabled: Bool? = nil,
-                            onComplete: @escaping () -> ()) {
+    public static func payWithLapp(
+        invoice: String,
+        amountInSats: Int64,
+        turboChannelsEnabled: Bool? = nil,
+        onComplete: @escaping () -> ()
+    ) {
         var async = ""
         if let turboChannelsEnabled = turboChannelsEnabled {
             async = "&async=\(turboChannelsEnabled ? 1 : 0)"
         }
 
         DispatchQueue.global(qos: .background).async {
-            request("payInvoice?invoice=\(invoice)&satoshis=\(amountInSats)\(async)", timeout: 3 * 60, { _ in () })
+            request(
+                "payInvoice?invoice=\(invoice)&satoshis=\(amountInSats)\(async)",
+                timeout: 3 * 60,
+                { _ in () } // swiftlint:disable:this opening_brace
+            )
             onComplete()
         }
     }

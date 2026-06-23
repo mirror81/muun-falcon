@@ -9,7 +9,6 @@
 import UIKit
 import Libwallet
 
-
 protocol CurrencyPickerDelegate: AnyObject {
     func didSelectCurrency(_ currency: Currency)
 }
@@ -19,9 +18,11 @@ class CurrencyPickerViewController: MUViewController, Resolver {
     @IBOutlet private weak var tableView: UITableView!
 
     fileprivate let cellHeight: CGFloat = 48
-    fileprivate lazy var presenter = instancePresenter(CurrencyPickerPresenter.init,
-                                                       delegate: self,
-                                                       state: currenciesForPickerRetrieverService)
+    fileprivate lazy var presenter = instancePresenter(
+        CurrencyPickerPresenter.init,
+        delegate: self,
+        state: currenciesForPickerRetrieverService
+    )
 
     private let currenciesForPickerRetrieverService: CurrenciesForPickerRetriever
     private var selectedCurrency: Currency?
@@ -31,9 +32,11 @@ class CurrencyPickerViewController: MUViewController, Resolver {
         return "currency_picker"
     }
 
-    init(delegate: CurrencyPickerDelegate?,
-         selectedCurrency: Currency?,
-         currenciesForPickerRetrieverService: CurrenciesForPickerRetriever) {
+    init(
+        delegate: CurrencyPickerDelegate?,
+        selectedCurrency: Currency?,
+        currenciesForPickerRetrieverService: CurrenciesForPickerRetriever
+    ) {
         self.delegate = delegate
         self.selectedCurrency = selectedCurrency
         self.currenciesForPickerRetrieverService = currenciesForPickerRetrieverService
@@ -106,9 +109,9 @@ class CurrencyPickerViewController: MUViewController, Resolver {
         let userSelector: UserSelector = resolve()
         let currenciesRepository = InMemoryCurrenciesForPickerRetriever
             .createForContextualCurrencySelection(
-            userSelector: userSelector,
-            exchangeRateWindow: exchangeRateWindow
-        )
+                userSelector: userSelector,
+                exchangeRateWindow: exchangeRateWindow
+            )
         return CurrencyPickerViewController(
             delegate: delegate,
             selectedCurrency: selectedCurrency,
@@ -126,9 +129,11 @@ class CurrencyPickerViewController: MUViewController, Resolver {
             userSelector: userSelector,
             exchangeRateWindow: exchangeRateWindow
         )
-        return CurrencyPickerViewController(delegate: delegate,
-                                            selectedCurrency: selectedCurrency,
-                                            currenciesForPickerRetrieverService: repository)
+        return CurrencyPickerViewController(
+            delegate: delegate,
+            selectedCurrency: selectedCurrency,
+            currenciesForPickerRetrieverService: repository
+        )
     }
 }
 

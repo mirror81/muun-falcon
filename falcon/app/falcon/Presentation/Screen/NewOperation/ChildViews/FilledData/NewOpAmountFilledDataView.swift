@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 struct Notice {
     let notice: String
     let bold: String?
@@ -29,10 +28,12 @@ struct NewOpFilledAmount {
     let notice: Notice?
     let moreInfo: MoreInfo?
 
-    init(type: AmountType,
-         amountWithCurrency: BitcoinAmountWithSelectedCurrency,
-         notice: Notice? = nil,
-         moreInfo: MoreInfo? = nil) {
+    init(
+        type: AmountType,
+        amountWithCurrency: BitcoinAmountWithSelectedCurrency,
+        notice: Notice? = nil,
+        moreInfo: MoreInfo? = nil
+    ) {
         self.type = type
         self.amountWithCurrency = amountWithCurrency
         self.notice = notice
@@ -64,9 +65,11 @@ class NewOpAmountFilledDataView: MUView {
 
     let filledData: NewOpFilledAmount
 
-    init(filledData: NewOpFilledAmount,
-         delegate: NewOpFilledAmountDelegate?,
-         transitionsDelegate: NewOpFilledAmountTransitions? = nil) {
+    init(
+        filledData: NewOpFilledAmount,
+        delegate: NewOpFilledAmountDelegate?,
+        transitionsDelegate: NewOpFilledAmountTransitions? = nil
+    ) {
         self.filledData = filledData
         self.delegate = delegate
         self.transitionsDelegate = transitionsDelegate
@@ -103,8 +106,10 @@ class NewOpAmountFilledDataView: MUView {
         amountLabel.shouldCycle = true
         amountLabel.delegate = self
 
-        amountLabel.setAmount(from: filledData.amountWithCurrency,
-                              in: .inInput)
+        amountLabel.setAmount(
+            from: filledData.amountWithCurrency,
+            in: .inInput
+        )
 
         noticeLabel.textColor = Asset.Colors.muunGrayDark.color
         noticeLabel.font = Constant.Fonts.system(size: .notice)

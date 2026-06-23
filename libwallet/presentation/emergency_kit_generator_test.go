@@ -10,8 +10,8 @@ import (
 
 func TestGenerateEmergencyKitPDFGrpc(t *testing.T) {
 	ekInput := api.EKInputRequest_builder{
-		FirstEncryptedKey:  "5zZPjShrCywaeaqK3bPxL9bG18eLcXwQ5DyAkVy8asPujTWK58PJFyjwixASB967rfQcG2PhnZJ6ksKVWasup29WmPtAyjN6heNYC7pQARUxMsVrUVD5pGc4aJH5W3QdXDFhyiRrszFsedz2T4s",
-		SecondEncryptedKey: "4UrzWNdJzNg5XYkypVCAqxLreHnK6uYyaUNTmuEkdet6T1dDhHKkCicTT7MKa2BCKA4TA39o4gAzjBCageg9bvRVZs2deazEykpTgPaY6yF25AK1ckdT1dVKE9NbmVfuf5N6qFVLRBe1myYS6eD",
+		FirstEncryptedKey:  "5zZPjShrCywaeaqK3bPxL9bG18eLcXwQ5DyAkVy8asPujTWK58PJFyjwixASB967rfQcG2PhnZJ6ksKVWasup29WmPtAyjN6heNYC7pQARUxMsVrUVD5pGc4aJH5W3QdXDFhyiRrszFsedz2T4s", //nolint:lll
+		SecondEncryptedKey: "4UrzWNdJzNg5XYkypVCAqxLreHnK6uYyaUNTmuEkdet6T1dDhHKkCicTT7MKa2BCKA4TA39o4gAzjBCageg9bvRVZs2deazEykpTgPaY6yF25AK1ckdT1dVKE9NbmVfuf5N6qFVLRBe1myYS6eD", //nolint:lll
 		FirstFingerprint:   "af932357",
 		SecondFingerprint:  "61f4d2a0",
 		RcChecksum:         "checksum123",

@@ -11,7 +11,10 @@ import UIKit
 class ChangePasswordVerifyViewController: MUViewController {
 
     private var changePwVerifyEmailView: WaitForEmailView!
-    private lazy var presenter = instancePresenter(ChangePasswordVerifyPresenter.init, delegate: self)
+    private lazy var presenter = instancePresenter(
+        ChangePasswordVerifyPresenter.init,
+        delegate: self
+    )
     internal var emailActionSheet: UIAlertController = UIAlertController()
     private let challengeType: String
     // This uuid is used to validate the challenge update with the backend
@@ -86,21 +89,33 @@ class ChangePasswordVerifyViewController: MUViewController {
     }
 
     fileprivate func addObservers() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: .didBecomeActive,
-                                               name: UIApplication.didBecomeActiveNotification,
-                                               object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: .didBecomeActive,
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
 
-        NotificationCenter.default.addObserver(self,
-                                               selector: .willResignActive,
-                                               name: UIApplication.willResignActiveNotification,
-                                               object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: .willResignActive,
+            name: UIApplication.willResignActiveNotification,
+            object: nil
+        )
 
     }
 
     fileprivate func removeObservers() {
-        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
     }
 
     fileprivate func setUpEmailActionSheet() {

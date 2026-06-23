@@ -10,11 +10,15 @@ import Foundation
 
 extension ActionCard {
 
-    static func emailIncomplete(wording: SetUpEmailWording, state: ActionCardState) -> ActionCardModel {
+    static func emailIncomplete(
+        wording: SetUpEmailWording,
+        state: ActionCardState
+    ) -> ActionCardModel {
         let emailSkipped = state == .skipped ? true : false
         return ActionCardModel(
             title: wording.securityCenterCardTitle(),
-            description: wording.securityCenterCardDescription(emailSkipped: emailSkipped).attributedForDescription(),
+            description: wording.securityCenterCardDescription(emailSkipped: emailSkipped)
+            .attributedForDescription(),
             nextViewController: EmailPrimingViewController(wording: wording),
             stemNumber: "1",
             stepImage: nil,
@@ -33,11 +37,16 @@ extension ActionCard {
         )
     }
 
-    static func recoveryCodeIncomplete(wording: SetUpRecoveryCodeWording, state: ActionCardState, emailSkipped: Bool)
+    static func recoveryCodeIncomplete(
+        wording: SetUpRecoveryCodeWording,
+        state: ActionCardState,
+        emailSkipped: Bool
+    )
     -> ActionCardModel {
         return ActionCardModel(
             title: wording.securityCenterCardTitle(),
-            description: wording.securityCenterCardDescription(emailSkipped: emailSkipped).attributedForDescription(),
+            description: wording.securityCenterCardDescription(emailSkipped: emailSkipped)
+            .attributedForDescription(),
             nextViewController: RecoveryCodePrimingViewController(wording: wording),
             stemNumber: "2",
             stepImage: nil,
@@ -45,7 +54,10 @@ extension ActionCard {
         )
     }
 
-    static func recoveryCodeComplete(wording: SetUpRecoveryCodeWording, email: String? = nil) -> ActionCardModel {
+    static func recoveryCodeComplete(
+        wording: SetUpRecoveryCodeWording,
+        email: String? = nil
+    ) -> ActionCardModel {
         return ActionCardModel(
             title: wording.securityCenterCardCompletedTitle(),
             description: wording.securityCenterCardCompletedDescription(email: email),
@@ -74,7 +86,9 @@ extension ActionCard {
             title: NSAttributedString(string: L10n.SecurityCenter.s3),
             description: L10n.SecurityCenter.s4
                 .attributedForDescription(),
-            nextViewController: SlidesViewController(configuration: EmergencyKitSlidesConfiguration.exportKit),
+            nextViewController: SlidesViewController(
+                configuration: EmergencyKitSlidesConfiguration.exportKit
+            ),
             stemNumber: "3",
             stepImage: nil,
             state: state

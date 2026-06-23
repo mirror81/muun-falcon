@@ -45,7 +45,6 @@ class KeyProvider: NSObject, App_provided_dataKeyProviderProtocol {
             return ""
         }
     }
-    
 
     func fetchMaxDerivedIndex() -> Int {
         return keysRepository.getMaxWatchingIndex()

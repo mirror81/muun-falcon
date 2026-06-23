@@ -22,14 +22,16 @@ public class OperationActions {
     private let operationMetadataDecrypter: OperationMetadataDecrypter
     private let feeBumpFunctionsProvider: FeeBumpFunctionsProvider
 
-    init(operationRepository: OperationRepository,
-         houstonService: HoustonService,
-         nextTransactionSizeRepository: NextTransactionSizeRepository,
-         feeWindowRepository: FeeWindowRepository,
-         keysRepository: KeysRepository,
-         verifyFulfillable: VerifyFulfillableAction,
-         notificationScheduler: NotificationScheduler,
-         feeBumpFunctionsProvider: FeeBumpFunctionsProvider) {
+    init(
+        operationRepository: OperationRepository,
+        houstonService: HoustonService,
+        nextTransactionSizeRepository: NextTransactionSizeRepository,
+        feeWindowRepository: FeeWindowRepository,
+        keysRepository: KeysRepository,
+        verifyFulfillable: VerifyFulfillableAction,
+        notificationScheduler: NotificationScheduler,
+        feeBumpFunctionsProvider: FeeBumpFunctionsProvider
+    ) {
 
         self.operationRepository = operationRepository
         self.houstonService = houstonService
@@ -218,7 +220,8 @@ public class OperationActions {
         for i in 0..<nonceCount {
             noncesHex.append(nonces.getPubnonceHex(i))
         }
-        // I mean, this looks really ugly. Maybe we should send an array of arrays of nonces for alternative txs
+        // I mean, this looks really ugly. Maybe we should send an array of arrays of nonces for
+        // alternative txs
         for nonces in noncesForAlternativeTransactions {
             for i in 0..<nonceCount {
                 noncesHex.append(nonces.getPubnonceHex(i))
@@ -231,14 +234,17 @@ public class OperationActions {
             .flatMap({ created in
 
                 // TODO: only allow alternative TXs for 0-conf swaps
-                precondition(maxAlternativeTransactionCount >= created.alternativeTransactions.count)
+                precondition(
+                    maxAlternativeTransactionCount >= created.alternativeTransactions.count
+                )
 
                 let rawTransaction: RawTransaction?
                 let alternativeTransactions: [RawTransaction]
                 var operationUpdated = created.operation
 
                 if case .LEND = swapParameters?.debtType {
-                    // If we are on a lend swap we don't need to sign anything because there wont be a transaction
+                    // If we are on a lend swap we don't need to sign anything because there wont be
+                    // a transaction
                     rawTransaction = nil
                     alternativeTransactions = []
                 } else {
@@ -261,8 +267,10 @@ public class OperationActions {
                         nonces: nonces
                     )
 
-                    var signedAlternativeTransactions: [PartiallySignedTransaction.SignedTransaction] = []
-                    for (i, alternativeTransaction) in created.alternativeTransactions.enumerated() {
+                    var signedAlternativeTransactions:
+                        [PartiallySignedTransaction.SignedTransaction] = []
+                    for (i, alternativeTransaction)
+                        in created.alternativeTransactions.enumerated() {
                         signedAlternativeTransactions.append(try alternativeTransaction.sign(
                             key: privateKey,
                             muunKey: muunKey,
@@ -307,9 +315,8 @@ public class OperationActions {
                            serviceError.isTimeout() {
 
                             operationUpdated.status = .FAILED
-                            return self.operationRepository.storeOperations([operationUpdated]).andThen(
-                                Single.error(error)
-                            )
+                            return self.operationRepository.storeOperations([operationUpdated])
+                                .andThen(Single.error(error))
                         }
 
                         return Single.error(error)
@@ -343,5 +350,14 @@ public class OperationActions {
 
     enum Errors: Error {
         case invalidOperation
+    }
+}
+
+extension OperationActions.Errors: ClassifiedError {
+    var classification: ErrorClassification {
+        switch self {
+        case .invalidOperation:
+            return .unexpected
+        }
     }
 }

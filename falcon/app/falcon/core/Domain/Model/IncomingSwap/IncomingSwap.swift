@@ -15,8 +15,15 @@ public class IncomingSwap {
     let paymentAmountInSats: Satoshis
     public private(set) var preimage: Data?
 
-    public init(uuid: String, paymentHash: Data, htlc: IncomingSwapHtlc?, sphinxPacket: Data?,
-                collect: Satoshis, paymentAmountInSats: Satoshis, preimage: Data?) {
+    public init(
+        uuid: String,
+        paymentHash: Data,
+        htlc: IncomingSwapHtlc?,
+        sphinxPacket: Data?,
+        collect: Satoshis,
+        paymentAmountInSats: Satoshis,
+        preimage: Data?
+    ) {
         self.uuid = uuid
         self.paymentHash = paymentHash
         self.htlc = htlc
@@ -40,9 +47,11 @@ public class IncomingSwap {
         return try toLibwallet().verifyFulfillable(userKey.key, net: Environment.current.network)
     }
 
-    func fulfill(_ data: IncomingSwapFulfillmentData,
-                 userKey: WalletPrivateKey,
-                 muunKey: WalletPublicKey) throws -> IncomingSwapFulfillmentResult {
+    func fulfill(
+        _ data: IncomingSwapFulfillmentData,
+        userKey: WalletPrivateKey,
+        muunKey: WalletPublicKey
+    ) throws -> IncomingSwapFulfillmentResult {
 
         let result = try toLibwallet().fulfill(
             data.toLibwallet(),

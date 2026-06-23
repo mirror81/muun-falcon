@@ -34,7 +34,11 @@ public struct RecoveryCode {
 
     public func toKey() throws -> ChallengeKey {
         let key = try doWithError({ error in
-            LibwalletRecoveryCodeToKey(self.segments.joined(separator: RecoveryCode.separator), nil, error)
+            LibwalletRecoveryCodeToKey(
+                self.segments.joined(separator: RecoveryCode.separator),
+                nil,
+                error
+            )
         })
 
         let type = ChallengeType.RECOVERY_CODE
@@ -49,7 +53,8 @@ public struct RecoveryCode {
 
     private static func validateAndReturnVersion(_ code: String) throws -> Int {
         var version: Int = 0
-        // For some reason, the binding for this method is mapping to a bool instead of an int, so we need to hack
+        // For some reason, the binding for this method is mapping to a bool instead of an int, so
+        // we need to hack
         // it using the version as a pointer
         _ = try doWithError({ error in
             LibwalletGetRecoveryCodeVersion(code, &version, error)

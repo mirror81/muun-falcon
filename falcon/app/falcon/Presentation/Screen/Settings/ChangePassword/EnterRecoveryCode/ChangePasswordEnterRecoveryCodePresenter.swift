@@ -8,23 +8,25 @@
 
 import RxSwift
 
-
 protocol ChangePasswordEnterRecoveryCodePresenterDelegate: BasePresenterDelegate {
     func setLoading(_ isLoading: Bool)
     func pendingUpdateReceived(challengeType: String, updateUuid: String)
     func invalidRecoveryCode()
 }
 
-class ChangePasswordEnterRecoveryCodePresenter<Delegate: ChangePasswordEnterRecoveryCodePresenterDelegate>:
-BasePresenter<Delegate> {
+class ChangePasswordEnterRecoveryCodePresenter<
+    Delegate: ChangePasswordEnterRecoveryCodePresenterDelegate
+>: BasePresenter<Delegate> {
 
     private let beginPasswordChangeAction: BeginPasswordChangeAction
     private let requestChallengeAction: RequestChallengeAction
 
-    init(delegate: Delegate,
-         beginPasswordChangeAction: BeginPasswordChangeAction,
-         requestChallengeAction: RequestChallengeAction,
-         sessionActions: SessionActions) {
+    init(
+        delegate: Delegate,
+        beginPasswordChangeAction: BeginPasswordChangeAction,
+        requestChallengeAction: RequestChallengeAction,
+        sessionActions: SessionActions
+    ) {
         self.beginPasswordChangeAction = beginPasswordChangeAction
         self.requestChallengeAction = requestChallengeAction
 
@@ -98,7 +100,10 @@ BasePresenter<Delegate> {
 
         case .VALUE:
             if let uuid = result.value {
-                delegate.pendingUpdateReceived(challengeType: ChallengeType.RECOVERY_CODE.rawValue, updateUuid: uuid)
+                delegate.pendingUpdateReceived(
+                    challengeType: ChallengeType.RECOVERY_CODE.rawValue,
+                    updateUuid: uuid
+                )
             }
         }
     }

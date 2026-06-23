@@ -8,10 +8,14 @@
 
 class NodeHandlingGroup: BaseDebugExecutablesGroup {
     init() {
-        super.init(category: "Node handling",
-                   executables: [GenerateBlockDebugExecutable(),
-                                 DropLastTxDebugExecutable(),
-                                 DropTxByIdDebugExecutable(),
-                                 UndropTxByIdDebugExecutable()])
+        super.init(
+            category: "Node handling",
+            executables: [
+                GenerateBlockDebugExecutable(),
+                DropLastTxDebugExecutable(),
+                DropTxByIdDebugExecutable(),
+                UndropTxByIdDebugExecutable()
+            ]
+        )
     }
 }

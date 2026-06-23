@@ -35,7 +35,9 @@ public class UpdateUserPreferencesAction: AsyncAction<Void> {
         )
     }
 
-    public func runPersistingLocallyEvenOnSyncFailure(_ mutator: @escaping (UserPreferences) -> UserPreferences) {
+    public func runPersistingLocallyEvenOnSyncFailure(
+        _ mutator: @escaping (UserPreferences) -> UserPreferences
+    ) {
         runCompletable(
             userPreferencesRepository
                 .watch()

@@ -23,15 +23,19 @@ public class RealTimeDataAction: AsyncAction<RealTimeData> {
     private let userRepository: UserRepository
 
     private let secondsForFreshData: Double = 5 * 60
+    // .distantPast ensures the first check after a cold launch always refreshes.
+    private var lastSyncTime: Date = .distantPast
 
-    init(houstonService: HoustonService,
-         feeWindowRepository: FeeWindowRepository,
-         exchangeRateWindowRepository: ExchangeRateWindowRepository,
-         blockchainHeightRepository: BlockchainHeightRepository,
-         forwardingPoliciesRepository: ForwardingPolicyRepository,
-         minFeeRateRepository: MinFeeRateRepository,
-         featureFlagsRepository: FeatureFlagsRepository,
-         userRepository: UserRepository) {
+    init(
+        houstonService: HoustonService,
+        feeWindowRepository: FeeWindowRepository,
+        exchangeRateWindowRepository: ExchangeRateWindowRepository,
+        blockchainHeightRepository: BlockchainHeightRepository,
+        forwardingPoliciesRepository: ForwardingPolicyRepository,
+        minFeeRateRepository: MinFeeRateRepository,
+        featureFlagsRepository: FeatureFlagsRepository,
+        userRepository: UserRepository
+    ) {
 
         self.houstonService = houstonService
 
@@ -55,7 +59,9 @@ public class RealTimeDataAction: AsyncAction<RealTimeData> {
             return houstonService.fetchRealTimeData()
                 .do(onSuccess: { (data) in
                     self.exchangeRateWindowRepository.setExchangeRateWindow(data.exchangeRateWindow)
-                    self.blockchainHeightRepository.setBlockchainHeight(data.currentBlockchainHeight)
+                    self.blockchainHeightRepository.setBlockchainHeight(
+                        data.currentBlockchainHeight
+                    )
                     self.forwardingPoliciesRepository.store(policies: data.forwardingPolicies)
                     self.featureFlagsRepository.store(flags: data.features)
 
@@ -65,6 +71,8 @@ public class RealTimeDataAction: AsyncAction<RealTimeData> {
                         self.minFeeRateRepository
                             .store(satsPerWeightUnit: data.minFeeRateInWeightUnits)
                     }
+
+                    self.lastSyncTime = Date()
                 })
         } else {
             let realData = RealTimeData(
@@ -72,7 +80,9 @@ public class RealTimeDataAction: AsyncAction<RealTimeData> {
                 exchangeRateWindow: exchangeRateWindowRepository.getExchangeRateWindow()!,
                 currentBlockchainHeight: blockchainHeightRepository.getCurrentBlockchainHeight(),
                 forwardingPolicies: forwardingPoliciesRepository.fetch(),
-                minFeeRateInWeightUnits: NSDecimalNumber(decimal: minFeeRateRepository.fetch().satsPerWeightUnit).doubleValue,
+                minFeeRateInWeightUnits: NSDecimalNumber(
+                    decimal: minFeeRateRepository.fetch().satsPerWeightUnit
+                ).doubleValue,
                 features: featureFlagsRepository.fetch()
             )
             return Single.just(realData)
@@ -86,11 +96,20 @@ public class RealTimeDataAction: AsyncAction<RealTimeData> {
         }
         #endif
 
-        if let exchangeRateWindow = exchangeRateWindowRepository.getExchangeRateWindow(),
-            let feeWindow = feeWindowRepository.getFeeWindow() {
-            return Date().timeIntervalSince(exchangeRateWindow.fetchDate) >= secondsForFreshData
-                || Date().timeIntervalSince(feeWindow.fetchDate) >= secondsForFreshData
+        // Refresh if we don't have any cache to fall back to.
+        guard exchangeRateWindowRepository.getExchangeRateWindow() != nil,
+              feeWindowRepository.getFeeWindow() != nil else {
+            return true
         }
-        return true
+
+        // Compare against the device-local timestamp of the last successful
+        // sync. Avoids the previous bug where we compared the device clock
+        // against the server-side fetchDate: a device with a skewed clock
+        // would produce a negative elapsed time and never refresh.
+        let elapsedTime = Date().timeIntervalSince(lastSyncTime)
+
+        // Clock moved backward since lastSyncTime (manual change, NTP
+        // correction): treat as stale to recover from a stuck state.
+        return elapsedTime < 0 || elapsedTime >= secondsForFreshData
     }
 }

@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 import RxSwift
 
 class SyncRealtimeDataDebugExecutable: DebugExecutable {

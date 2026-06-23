@@ -45,7 +45,11 @@ class LNURLWithdrawViewController: MUViewController {
     private let qr: String
     private let errorView = ErrorView()
 
-    private lazy var presenter = instancePresenter(LNURLWithdrawPresenter.init, delegate: self, state: qr)
+    private lazy var presenter = instancePresenter(
+        LNURLWithdrawPresenter.init,
+        delegate: self,
+        state: qr
+    )
 
     init(qr: String) {
         self.qr = qr
@@ -137,16 +141,24 @@ extension LNURLWithdrawViewController: ErrorViewDelegate {
 
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        if let action = openAction(withURL: "mailto:\(muunEmail)?\(query)", andTitleActionTitle: "Mail") {
+        if let action = openAction(
+            withURL: "mailto:\(muunEmail)?\(query)",
+            andTitleActionTitle: "Mail"
+        ) {
             actionSheet.addAction(action)
         }
 
-        if let action = openAction(withURL: "googlegmail://co?to=\(muunEmail)&\(query)", andTitleActionTitle: "Gmail") {
+        if let action = openAction(
+            withURL: "googlegmail://co?to=\(muunEmail)&\(query)",
+            andTitleActionTitle: "Gmail"
+        ) {
             actionSheet.addAction(action)
         }
 
-        if let action = openAction(withURL: "ms-outlook://compose?to=\(muunEmail)&\(query)",
-                                   andTitleActionTitle: "Outlook") {
+        if let action = openAction(
+            withURL: "ms-outlook://compose?to=\(muunEmail)&\(query)",
+            andTitleActionTitle: "Outlook"
+        ) {
             actionSheet.addAction(action)
         }
 
@@ -157,7 +169,8 @@ extension LNURLWithdrawViewController: ErrorViewDelegate {
                 handler: { _ in
                     let report = self.presenter.getReportForClipboard()
                     UIPasteboard.general.string = report
-                })
+                }
+            )
         )
 
         navigationController!.present(actionSheet, animated: true)
@@ -197,7 +210,8 @@ extension LNURLWithdrawViewController: LNURLWithdrawPresenterDelegate {
             loading.attributedTitleText = L10n.LNURLWithdrawViewController.tooLong(domain)
                 .set(font: Constant.Fonts.system(size: .desc), alignment: .center)
                 .set(bold: domain, color: Asset.Colors.title.color)
-            loading.attributedDescriptionText = L10n.LNURLWithdrawViewController.tooLongDescription(domain)
+            loading.attributedDescriptionText = L10n.LNURLWithdrawViewController
+                .tooLongDescription(domain)
                 .attributedForDescription(alignment: .center)
                 .set(bold: domain, color: Asset.Colors.title.color)
             loading.isTakingTooLong = true

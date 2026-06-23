@@ -8,12 +8,13 @@
 
 import Foundation
 
-
 extension Environment {
     var firebaseOptionsPath: String {
         let env = rawValue
-        return Bundle.main.path(forResource: "GoogleService-Info-\(env)",
-            ofType: "plist")!
+        return Bundle.main.path(
+            forResource: "GoogleService-Info-\(env)",
+            ofType: "plist"
+        )!
     }
 
     public var txExplorer: String {

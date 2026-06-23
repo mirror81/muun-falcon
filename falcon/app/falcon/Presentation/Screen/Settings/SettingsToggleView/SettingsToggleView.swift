@@ -36,9 +36,11 @@ final class SettingsToggleView: MUView {
         fatalError("not implemented")
     }
 
-    init(title: String,
-         subtitle: UILabel,
-         toggleIdentifierForTesting: UIElementType) {
+    init(
+        title: String,
+        subtitle: UILabel,
+        toggleIdentifierForTesting: UIElementType
+    ) {
         self.title = title
         self.subtitle = subtitle
         self.toggleIdentifierForTesting = toggleIdentifierForTesting
@@ -87,11 +89,15 @@ extension SettingsToggleView: SettingsTogglePresenterDelegate {
             data.cancelButtonBlock()
         }))
 
-        alert.addAction(UIAlertAction(title: data.destructiveButtonTitle,
-                                      style: .destructive,
-                                      handler: { _ in
-            data.destructiveButtonBlock()
-        }))
+        alert.addAction(
+            UIAlertAction(
+                title: data.destructiveButtonTitle,
+                style: .destructive,
+                handler: { _ in
+                    data.destructiveButtonBlock()
+                }
+            )
+        )
 
         present(alert, animated: true, completion: nil)
     }
@@ -123,7 +129,9 @@ private extension SettingsToggleView {
             verticalStack.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
             verticalStack.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
             verticalStack.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            verticalStack.bottomAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.bottomAnchor)
+            verticalStack.bottomAnchor.constraint(
+                lessThanOrEqualTo: safeAreaLayoutGuide.bottomAnchor
+            )
         ])
 
         return verticalStack
@@ -137,10 +145,12 @@ private extension SettingsToggleView {
         toggleStackView.distribution = .equalSpacing
         toggleStackView.backgroundColor = Asset.Colors.cellBackground.color
         toggleStackView.spacing = Constant.Dimens.viewControllerPadding
-        toggleStackView.layoutMargins = UIEdgeInsets(top: 0,
-                                                     left: Constant.Dimens.viewControllerPadding,
-                                                     bottom: 0,
-                                                     right: Constant.Dimens.viewControllerPadding)
+        toggleStackView.layoutMargins = UIEdgeInsets(
+            top: 0,
+            left: Constant.Dimens.viewControllerPadding,
+            bottom: 0,
+            right: Constant.Dimens.viewControllerPadding
+        )
         toggleStackView.isLayoutMarginsRelativeArrangement = true
 
         mainStackView.addArrangedSubview(toggleStackView)
@@ -181,10 +191,14 @@ private extension SettingsToggleView {
     func addSubtitle(to mainStackView: UIStackView) {
         mainStackView.addArrangedSubview(subtitle)
         NSLayoutConstraint.activate([
-            subtitle.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor,
-                                               constant: -Constant.Dimens.viewControllerPadding),
-            subtitle.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor,
-                                                    constant: Constant.Dimens.viewControllerPadding)
+            subtitle.trailingAnchor.constraint(
+                equalTo: mainStackView.trailingAnchor,
+                constant: -Constant.Dimens.viewControllerPadding
+            ),
+            subtitle.leadingAnchor.constraint(
+                equalTo: mainStackView.leadingAnchor,
+                constant: Constant.Dimens.viewControllerPadding
+            )
         ])
     }
 

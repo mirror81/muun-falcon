@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class OpToAddressViewBuilder: OpViewBuilder {
 
     typealias Transitions =
@@ -30,11 +29,13 @@ class OpToAddressViewBuilder: OpViewBuilder {
     weak var amountDelegate: AmountDelegate?
     private var origin: Constant.NewOpAnalytics.Origin
 
-    init(transitionDelegate: Transitions,
-         newOpViewDelegate: NewOpViewDelegate,
-         filledDataDelegate: NewOperationView.FilledDataDelegate,
-         amountDelegate: AmountDelegate,
-         origin: Constant.NewOpAnalytics.Origin) {
+    init(
+        transitionDelegate: Transitions,
+        newOpViewDelegate: NewOpViewDelegate,
+        filledDataDelegate: NewOperationView.FilledDataDelegate,
+        amountDelegate: AmountDelegate,
+        origin: Constant.NewOpAnalytics.Origin
+    ) {
         self.transitionDelegate = transitionDelegate
         self.newOpViewDelegate = newOpViewDelegate
         self.filledDataDelegate = filledDataDelegate
@@ -46,42 +47,60 @@ class OpToAddressViewBuilder: OpViewBuilder {
         switch state {
 
         case .loading(let data):
-            return .view(NewOpLoadingView(paymentIntent: data.type,
-                                          delegate: transitionDelegate,
-                                          origin: origin),
-                         filledData: [])
+            return .view(
+                NewOpLoadingView(
+                    paymentIntent: data.type,
+                    delegate: transitionDelegate,
+                    origin: origin
+                ),
+                filledData: []
+            )
 
         case .amount(let data):
-            return .view(NewOpAmountView(data: data,
-                                         delegate: newOpViewDelegate,
-                                         transitionsDelegate: transitionDelegate),
-                         filledData: [buildDestinationView(type: data.type)])
+            return .view(
+                NewOpAmountView(
+                    data: data,
+                    delegate: newOpViewDelegate,
+                    transitionsDelegate: transitionDelegate
+                ),
+                filledData: [buildDestinationView(type: data.type)]
+            )
 
         case .description(let data):
-            let descriptionView = NewOpDescriptionView(data: data,
-                                                       delegate: newOpViewDelegate,
-                                                       transitionsDelegate: transitionDelegate)
+            let descriptionView = NewOpDescriptionView(
+                data: data,
+                delegate: newOpViewDelegate,
+                transitionsDelegate: transitionDelegate
+            )
             return .view(descriptionView, filledData: [
                 buildDestinationView(type: data.type),
                 buildAmountView(data.amount, takeFeeFromAmount: false)
             ])
 
         case .confirmation(let data):
-            let view = NewOpConfirmView(feeState: data.feeState,
-                                        delegate: newOpViewDelegate,
-                                        transitionDelegate: transitionDelegate)
+            let view = NewOpConfirmView(
+                feeState: data.feeState,
+                delegate: newOpViewDelegate,
+                transitionDelegate: transitionDelegate
+            )
             view.validityCheck()
             return .view(view, filledData: [
                 buildDestinationView(type: data.type, confirm: true),
-                buildAmountView(data.amount, takeFeeFromAmount: data.takeFeeFromAmount, confirm: true),
+                buildAmountView(
+                    data.amount,
+                    takeFeeFromAmount: data.takeFeeFromAmount,
+                    confirm: true
+                ),
                 buildOnChainFeeView(data, currency: data.amount.selectedCurrency),
                 buildTotalView(data),
                 NewOpDescriptionFilledDataView(descriptionText: data.description)
             ])
 
         case .feeEditor(let data):
-            return .modal(SelectFeeViewController(delegate: transitionDelegate,
-                                                  state: data))
+            return .modal(SelectFeeViewController(
+                delegate: transitionDelegate,
+                state: data
+            ))
 
         case .currencyPicker(let data, let selectedCurrency):
             let currencyPicker = CurrencyPickerViewController.createForCurrencySelection(
@@ -115,12 +134,15 @@ class OpToAddressViewBuilder: OpViewBuilder {
     }
 
     private func buildDestinationView(type: PaymentRequestType, confirm: Bool = false) -> MUView {
-        let moreInfo = BottomDrawerInfo.newOpDestination(address: getToAddressFlow(type: type).address())
+        let moreInfo = BottomDrawerInfo
+            .newOpDestination(address: getToAddressFlow(type: type).address())
 
-        return NewOpDestinationFilledDataView(type: type,
-                                              delegate: filledDataDelegate,
-                                              confirm: confirm,
-                                              moreInfo: moreInfo)
+        return NewOpDestinationFilledDataView(
+            type: type,
+            delegate: filledDataDelegate,
+            confirm: confirm,
+            moreInfo: moreInfo
+        )
     }
 
     func getOnChainFee(data: NewOpData.Confirm) -> (value: BitcoinAmount, isValid: Bool) {
@@ -135,21 +157,33 @@ class OpToAddressViewBuilder: OpViewBuilder {
         }
     }
 
-    private func buildAmountView(_ amount: BitcoinAmountWithSelectedCurrency,
-                                 takeFeeFromAmount: Bool,
-                                 confirm: Bool = false) -> MUView {
+    private func buildAmountView(
+        _ amount: BitcoinAmountWithSelectedCurrency,
+        takeFeeFromAmount: Bool,
+        confirm: Bool = false
+    ) -> MUView {
         var notice: Notice?
         if takeFeeFromAmount {
 
             let boldText = L10n.OpToAddressViewBuilder.s1
             let allText = L10n.OpToAddressViewBuilder.s4
-            notice = Notice(notice: allText, bold: boldText, boldColor: Asset.Colors.muunWarning.color)
+            notice = Notice(
+                notice: allText,
+                bold: boldText,
+                boldColor: Asset.Colors.muunWarning.color
+            )
         }
 
-        let filledAmount = NewOpFilledAmount(type: .amount, amountWithCurrency: amount, notice: notice)
-        let view = NewOpAmountFilledDataView(filledData: filledAmount,
-                                             delegate: amountDelegate,
-                                             transitionsDelegate: transitionDelegate)
+        let filledAmount = NewOpFilledAmount(
+            type: .amount,
+            amountWithCurrency: amount,
+            notice: notice
+        )
+        let view = NewOpAmountFilledDataView(
+            filledData: filledAmount,
+            delegate: amountDelegate,
+            transitionsDelegate: transitionDelegate
+        )
 
         if !confirm {
             view.showSeparator()
@@ -157,17 +191,28 @@ class OpToAddressViewBuilder: OpViewBuilder {
         return view
     }
 
-    private func buildOnChainFeeView(_ confirmState: NewOpData.Confirm, currency: Currency) -> MUView {
+    private func buildOnChainFeeView(
+        _ confirmState: NewOpData.Confirm,
+        currency: Currency
+    ) -> MUView {
         let fee = getOnChainFee(data: confirmState)
         let text = L10n.OpToAddressViewBuilder.s2
         let notice: Notice? = fee.isValid
             ? nil
-            : Notice(notice: text, bold: L10n.OpToAddressViewBuilder.s1, boldColor: Asset.Colors.muunWarning.color)
-        let btcAmountWithSelectedCurrency = BitcoinAmountWithSelectedCurrency(bitcoinAmount: fee.value,
-                                                                              selectedCurrency: currency)
-        let feeFilled = NewOpFilledAmount(type: .onchainFee,
-                                          amountWithCurrency: btcAmountWithSelectedCurrency,
-                                          notice: notice)
+            : Notice(
+                notice: text,
+                bold: L10n.OpToAddressViewBuilder.s1,
+                boldColor: Asset.Colors.muunWarning.color
+            )
+        let btcAmountWithSelectedCurrency = BitcoinAmountWithSelectedCurrency(
+            bitcoinAmount: fee.value,
+            selectedCurrency: currency
+        )
+        let feeFilled = NewOpFilledAmount(
+            type: .onchainFee,
+            amountWithCurrency: btcAmountWithSelectedCurrency,
+            notice: notice
+        )
 
         let view = NewOpAmountFilledDataView(
             filledData: feeFilled,
@@ -184,14 +229,20 @@ class OpToAddressViewBuilder: OpViewBuilder {
 
     private func buildTotalView(_ confirmState: NewOpData.Confirm) -> MUView {
         let fee = getOnChainFee(data: confirmState)
-        let bitcoinAmount = BitcoinAmountWithSelectedCurrency(bitcoinAmount: confirmState.total,
-                                                              selectedCurrency: confirmState.amount.selectedCurrency)
-        let totalFilled = NewOpFilledAmount(type: .total,
-                                            amountWithCurrency: bitcoinAmount)
+        let bitcoinAmount = BitcoinAmountWithSelectedCurrency(
+            bitcoinAmount: confirmState.total,
+            selectedCurrency: confirmState.amount.selectedCurrency
+        )
+        let totalFilled = NewOpFilledAmount(
+            type: .total,
+            amountWithCurrency: bitcoinAmount
+        )
 
-        let totalView = NewOpAmountFilledDataView(filledData: totalFilled,
-                                                  delegate: amountDelegate,
-                                                  transitionsDelegate: transitionDelegate)
+        let totalView = NewOpAmountFilledDataView(
+            filledData: totalFilled,
+            delegate: amountDelegate,
+            transitionsDelegate: transitionDelegate
+        )
         totalView.showSeparator()
 
         if !fee.isValid {

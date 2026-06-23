@@ -16,7 +16,10 @@ struct VisualCurrency: Currency {
     let flag: String?
     let maximumFractionDigits: Int = 0
 
-    func toAmountWithoutCode(amount: Decimal, btcCurrencyFormat: BitcoinCurrencyFormat = .long) -> String {
+    func toAmountWithoutCode(
+        amount: Decimal,
+        btcCurrencyFormat: BitcoinCurrencyFormat = .long
+    ) -> String {
         fatalError("Visual Currencies can not be converted")
     }
 

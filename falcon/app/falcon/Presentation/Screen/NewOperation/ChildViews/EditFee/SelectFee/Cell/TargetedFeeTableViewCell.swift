@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class TargetedFeeTableViewCell: UITableViewCell {
 
     @IBOutlet fileprivate weak var cardView: UIView!
@@ -74,13 +73,21 @@ class TargetedFeeTableViewCell: UITableViewCell {
 
         targetLabel.text = "\(feeRate.stringValue()) sat/vbyte"
 
-        bitcoinValueLabel.setAmount(from: BitcoinAmountWithSelectedCurrency(bitcoinAmount: feeAmount,
-                                                                            selectedCurrency: currencyToShow),
-                                    in: .inBTC)
+        bitcoinValueLabel.setAmount(
+            from: BitcoinAmountWithSelectedCurrency(
+                bitcoinAmount: feeAmount,
+                selectedCurrency: currencyToShow
+            ),
+            in: .inBTC
+        )
         if feeAmount.inInputCurrency.currency != "BTC" {
-            inputValueLabel.setHelperText(for: BitcoinAmountWithSelectedCurrency(bitcoinAmount: feeAmount,
-                                                                                 selectedCurrency: currencyToShow),
-                                          in: .inInput)
+            inputValueLabel.setHelperText(
+                for: BitcoinAmountWithSelectedCurrency(
+                    bitcoinAmount: feeAmount,
+                    selectedCurrency: currencyToShow
+                ),
+                in: .inInput
+            )
         } else {
             inputValueLabel.isHidden = true
         }

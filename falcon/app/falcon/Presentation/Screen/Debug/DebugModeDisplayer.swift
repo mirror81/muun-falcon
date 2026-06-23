@@ -13,20 +13,25 @@ import UserNotifications
 class DebugModeDisplayer {
     private weak var lastKeyWindow: UIWindow?
     private let debugWindow = UIWindow(frame: UIScreen.main.bounds)
-    static let deviceShakedNotification = Foundation.Notification.Name(rawValue: "device_shaked_notification")
+    static let deviceShakedNotification = Foundation.Notification
+        .Name(rawValue: "device_shaked_notification")
 
     func startDebugDisplayerIfDebugBuild() {
         #if !DEBUG
         return
         #endif
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(startListeningKeyWindowChanged),
-                                               name: UIWindow.didBecomeKeyNotification,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(launchDebugMenu),
-                                               name: DebugModeDisplayer.deviceShakedNotification,
-                                               object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(startListeningKeyWindowChanged),
+            name: UIWindow.didBecomeKeyNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(launchDebugMenu),
+            name: DebugModeDisplayer.deviceShakedNotification,
+            object: nil
+        )
 
         if let window = UIApplication.shared.keyWindow {
             setEdgePanGestureOn(window: window)
@@ -67,8 +72,10 @@ private extension DebugModeDisplayer {
     }
 
     func setEdgePanGestureOn(window: UIWindow) {
-        let debugGesture = UIScreenEdgePanGestureRecognizer(target: self,
-                                                            action: #selector(onEdgePanDetected))
+        let debugGesture = UIScreenEdgePanGestureRecognizer(
+            target: self,
+            action: #selector(onEdgePanDetected)
+        )
         debugGesture.edges = .right
 
         window.addGestureRecognizer(debugGesture)
@@ -79,8 +86,10 @@ extension UIWindow {
     open override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         #if DEBUG
         if motion == .motionShake {
-            NotificationCenter.default.post(name: DebugModeDisplayer.deviceShakedNotification,
-                                            object: nil)
+            NotificationCenter.default.post(
+                name: DebugModeDisplayer.deviceShakedNotification,
+                object: nil
+            )
         }
         #endif
      }

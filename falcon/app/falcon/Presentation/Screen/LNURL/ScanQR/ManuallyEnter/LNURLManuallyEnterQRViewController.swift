@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 // TODO: implement a strategy pattern for this and for manuallyEnterQRViewController
 class LNURLManuallyEnterQRViewController: MUViewController {
 
@@ -86,7 +85,8 @@ class LNURLManuallyEnterQRViewController: MUViewController {
     }
 
     fileprivate func checkClipboard() {
-        if #unavailable(iOS 16.0), let theString = UIPasteboard.general.string, presenter.validate(qr: theString) {
+        if #unavailable(iOS 16.0), let theString = UIPasteboard.general.string,
+           presenter.validate(qr: theString) {
             linkButton.isEnabled = true
         }
     }
@@ -197,20 +197,27 @@ extension LNURLManuallyEnterQRViewController {
             }
 
             if clipboardValue.canLoadObject(ofClass: String.self) {
-                _ = clipboardValue.loadObject(ofClass: String.self) { [weak self] textFromClipboard, error in
+                _ = clipboardValue
+                    .loadObject(ofClass: String.self) { [weak self] textFromClipboard, error in
                     guard error == nil else {
                         error.map { Logger.log(error: $0) }
-                        self?.showError(error: L10n.LNURLManuallyEnterQRViewController.unexpectedError)
+                        self?
+                            .showError(error: L10n.LNURLManuallyEnterQRViewController
+                            .unexpectedError)
                         DispatchQueue.main.async {
                             self?.largeTextInputView.text = ""
                         }
                         return
                     }
-                    textFromClipboard.map { self?.onTextRetrievedFromUIPasteControl(valueFromClipboard: $0) }
+                    textFromClipboard
+                        .map { self?.onTextRetrievedFromUIPasteControl(valueFromClipboard: $0) }
                 }
             } else {
                 // Paste button should never be enabled with something that is not an String.
-                Logger.log(error: NSError(domain: "paste_button_enabled_with_not_supported_content", code: 19993))
+                Logger.log(error: NSError(
+                    domain: "paste_button_enabled_with_not_supported_content",
+                    code: 19993
+                ))
             }
         }
     }
@@ -218,9 +225,12 @@ extension LNURLManuallyEnterQRViewController {
 
 private extension LNURLManuallyEnterQRViewController {
     func onTextRetrievedFromUIPasteControl(valueFromClipboard: String) {
-        let linkRemovingSpaces = valueFromClipboard.replacingOccurrences(of: " ", with: "",
-                                                                         options: .literal,
-                                                                         range: nil)
+        let linkRemovingSpaces = valueFromClipboard.replacingOccurrences(
+            of: " ",
+            with: "",
+            options: .literal,
+            range: nil
+        )
 
         guard linkRemovingSpaces.count > 0 else {
             self.showError(error: L10n.LNURLManuallyEnterQRViewController.emptyClipboard)

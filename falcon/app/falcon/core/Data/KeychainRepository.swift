@@ -16,8 +16,10 @@ public class KeychainRepository {
         case fallbackDeviceToken
     }
 
-    init(keyPrefix: String = Identifiers.bundleId,
-         group: String = Identifiers.group) {
+    init(
+        keyPrefix: String = Identifiers.bundleId,
+        group: String = Identifiers.group
+    ) {
         self.keyPrefix = keyPrefix
         self.group = group
     }
@@ -28,11 +30,13 @@ public class KeychainRepository {
 
     private func buildQuery(for key: String, forInsert: Bool) -> [String: Any] {
         let scopedKey = tagFrom(key: key)
-        var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrGeneric as String: scopedKey,
-                                    kSecAttrAccount as String: scopedKey,
-                                    kSecAttrService as String: keyPrefix,
-                                    kSecAttrAccessGroup as String: group]
+        var query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrGeneric as String: scopedKey,
+            kSecAttrAccount as String: scopedKey,
+            kSecAttrService as String: keyPrefix,
+            kSecAttrAccessGroup as String: group
+        ]
 
         if forInsert {
             query[kSecAttrSynchronizable as String] = false
@@ -117,15 +121,18 @@ public class KeychainRepository {
 
         if preservePin {
             do {
-                keychainStoredKeys[SecureStorage.Keys.pin.rawValue] = try get(SecureStorage.Keys.pin.rawValue)
+                keychainStoredKeys[SecureStorage.Keys.pin.rawValue] = try get(SecureStorage.Keys.pin
+                    .rawValue)
             } catch {
                 Logger.log(error: error)
             }
         }
 
-        let dict: [NSString: Any] = [kSecClass: kSecClassGenericPassword,
-                                     kSecAttrService: keyPrefix,
-                                     kSecAttrAccessGroup: group]
+        let dict: [NSString: Any] = [
+            kSecClass: kSecClassGenericPassword,
+            kSecAttrService: keyPrefix,
+            kSecAttrAccessGroup: group
+        ]
 
         // swiftlint:disable forbidden_raw_keychain_calls
         let result = SecItemDelete(dict as CFDictionary)

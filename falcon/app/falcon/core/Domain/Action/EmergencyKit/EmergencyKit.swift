@@ -72,7 +72,10 @@ class EmergencyKit: Resolver {
                 LibwalletGenerateEmergencyKitHTML(input, NSLocale.current.languageCode, error)
             })
 
-            let srcUrl = PDFGenerator.getURL(html: out.html, fileName: "emergency_kit_no_metadata.pdf")
+            let srcUrl = PDFGenerator.getURL(
+                html: out.html,
+                fileName: "emergency_kit_no_metadata.pdf"
+            )
 
             let destUrl = getEmergencyKitTempPath()
 

@@ -31,12 +31,13 @@ public class NotificationProcessor {
     private let processingSubject = PublishSubject<NotificationProcessingState>()
     lazy var processingObservable = processingSubject.asObservable()
 
-    init(operationActions: OperationActions,
-         houstonService: HoustonService,
-         sessionRepository: SessionRepository,
-         sessionActions: SessionActions,
-         fulfillIncomingSwap: FulfillIncomingSwapAction,
-         realTimeDataAction: RealTimeDataAction
+    init(
+        operationActions: OperationActions,
+        houstonService: HoustonService,
+        sessionRepository: SessionRepository,
+        sessionActions: SessionActions,
+        fulfillIncomingSwap: FulfillIncomingSwapAction,
+        realTimeDataAction: RealTimeDataAction
     ) {
         self.operationActions = operationActions
         self.houstonService = houstonService
@@ -61,8 +62,10 @@ public class NotificationProcessor {
                 var maxSeenId = 0
                 var reportToProcess = try self.fetchNotificationsAfter(previousId, retries: 3)
 
-                _ = try self._process(notifications: reportToProcess.preview).toBlocking().materialize()
-                maxSeenId = max(maxSeenId, reportToProcess.maximumId);
+                _ = try self._process(notifications: reportToProcess.preview)
+                    .toBlocking()
+                    .materialize()
+                maxSeenId = max(maxSeenId, reportToProcess.maximumId)
                 if let lastNotification = reportToProcess.preview.last {
                     maxProcessedId = max(lastNotification.id, maxProcessedId)
                 }
@@ -70,9 +73,11 @@ public class NotificationProcessor {
                 while maxProcessedId < maxSeenId {
 
                     reportToProcess = try self.fetchNotificationsAfter(maxProcessedId, retries: 3)
-                    _ = try self._process(notifications: reportToProcess.preview).toBlocking().materialize()
+                    _ = try self._process(notifications: reportToProcess.preview)
+                        .toBlocking()
+                        .materialize()
 
-                    maxSeenId = max(maxSeenId, reportToProcess.maximumId);
+                    maxSeenId = max(maxSeenId, reportToProcess.maximumId)
                     if let lastNotification = reportToProcess.preview.last {
                         maxProcessedId = max(lastNotification.id, maxProcessedId)
                     }
@@ -105,17 +110,19 @@ public class NotificationProcessor {
 
                 var maxProcessedId = previousId
                 var maxSeenId = 0
-                var reportToProcess = report;
+                var reportToProcess = report
 
                 // If we have a gap between the report and what we last processed, ignore the report
-                // and start processing from the start of the gap. We'll refetch a bit of data, but it
-                // makes for simple code.
+                // and start processing from the start of the gap. We'll refetch a bit of data,
+                // but it makes for simple code.
                 if reportToProcess.previousId > previousId {
                     reportToProcess = try self.fetchNotificationsAfter(previousId, retries: 5)
                 }
 
-                _ = try self._process(notifications: reportToProcess.preview).toBlocking().materialize()
-                maxSeenId = max(maxSeenId, reportToProcess.maximumId);
+                _ = try self._process(notifications: reportToProcess.preview)
+                    .toBlocking()
+                    .materialize()
+                maxSeenId = max(maxSeenId, reportToProcess.maximumId)
                 if let lastNotification = reportToProcess.preview.last {
                     maxProcessedId = max(lastNotification.id, maxProcessedId)
                 }
@@ -123,9 +130,11 @@ public class NotificationProcessor {
                 while maxProcessedId < maxSeenId {
 
                     reportToProcess = try self.fetchNotificationsAfter(maxProcessedId, retries: 5)
-                    _ = try self._process(notifications: reportToProcess.preview).toBlocking().materialize()
+                    _ = try self._process(notifications: reportToProcess.preview)
+                        .toBlocking()
+                        .materialize()
 
-                    maxSeenId = max(maxSeenId, reportToProcess.maximumId);
+                    maxSeenId = max(maxSeenId, reportToProcess.maximumId)
                     if let lastNotification = reportToProcess.preview.last {
                         maxProcessedId = max(lastNotification.id, maxProcessedId)
                     }
@@ -142,10 +151,15 @@ public class NotificationProcessor {
         return subject.asObservable().ignoreElements()
     }
 
-    private func fetchNotificationsAfter(_ notificationId: Int, retries: Int) throws -> NotificationReport {
+    private func fetchNotificationsAfter(
+        _ notificationId: Int,
+        retries: Int
+    ) throws -> NotificationReport {
         // The retries param is here because we are having a weird bug in the backend.
         // Will delete it once we fix the backend.
-        let report = houstonService.fetchNotificationReportAfter(notificationId: notificationId).toBlocking()
+        let report = houstonService.fetchNotificationReportAfter(
+            notificationId: notificationId
+        ).toBlocking()
 
         switch report.materialize() {
         case .completed(let elements):
@@ -173,9 +187,10 @@ public class NotificationProcessor {
         }
     }
 
-    /// If while processing notifications a sessionExpired is received we want to let listeners know session has expired but we want to
-    /// avoid the base presenter session expired handling since it might kick the user of out the application. We can't be sure enough
-    /// session expired error will be intercepted by callers and we don't want to let it reach the base presenter.
+    /// If while processing notifications a sessionExpired is received we want to let listeners know
+    /// session has expired but we want to avoid the base presenter session expired handling since
+    /// it might kick the user of out the application. We can't be sure enough session expired error
+    /// will be intercepted by callers and we don't want to let it reach the base presenter.
     private func throwCustomSessionExpiredErrorIfSessionExpired(_ error: Error) throws {
         if error.isKindOf(.sessionExpired) {
             throw MuunError(DomainError.sessionExpiredOnNotificationProcessor)
@@ -243,9 +258,13 @@ public class NotificationProcessor {
         // This is a /just in case/ check, we should be catching this condition earlier
         let lastId = sessionRepository.getLastNotificationId()
         if lastId != notification.previousId {
-            throw MuunError(Errors.missingPreviousNotification(notificationId: notification.id,
-                                                               sessionUuid: notification.senderSessionUuid,
-                                                               lastId: lastId))
+            throw MuunError(
+                Errors.missingPreviousNotification(
+                    notificationId: notification.id,
+                    sessionUuid: notification.senderSessionUuid,
+                    lastId: lastId
+                )
+            )
         }
 
         return handler.process()
@@ -285,9 +304,13 @@ public class NotificationProcessor {
             }
 
         case .unknownMessage(let type):
-            throw MuunError(Errors.unknownType(notificationId: notification.id,
-                                               sessionUuid: notification.senderSessionUuid,
-                                               type: type))
+            throw MuunError(
+                Errors.unknownType(
+                    notificationId: notification.id,
+                    sessionUuid: notification.senderSessionUuid,
+                    type: type
+                )
+            )
 
         case .newContact:
             return FutureCompatNotificationHandler()
@@ -335,13 +358,20 @@ public class NotificationProcessor {
 
     }
 
-    private func verifyPermissions(handler: NotificationHandler, notification: Notification) throws {
+    private func verifyPermissions(
+        handler: NotificationHandler,
+        notification: Notification
+    ) throws {
 
         if let permission = handler.permission,
             !sessionActions.hasPermissionFor(status: permission) {
 
-            throw MuunError(Errors.noPermission(notificationId: notification.id,
-                                                sessionUuid: notification.senderSessionUuid))
+            throw MuunError(
+                Errors.noPermission(
+                    notificationId: notification.id,
+                    sessionUuid: notification.senderSessionUuid
+                )
+            )
         }
     }
     // swiftlint:enable cyclomatic_complexity
@@ -365,5 +395,15 @@ public class NotificationProcessor {
         case unknownType(notificationId: Int, sessionUuid: String, type: String)
         case missingPreviousNotification(notificationId: Int, sessionUuid: String, lastId: Int)
         case failedFetch(fromId: Int)
+    }
+}
+
+extension NotificationProcessor.Errors: ClassifiedError {
+    var classification: ErrorClassification {
+        switch self {
+        case .noPermission, .unknownOrigin, .unknownType, .missingPreviousNotification,
+            .failedFetch:
+            return .unexpected
+        }
     }
 }

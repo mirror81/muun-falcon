@@ -29,9 +29,11 @@ final class NfcSessionImpl: NSObject, NfcSession {
         let subject = PublishSubject<Void>()
         connectSubject = subject
 
-        session = NFCTagReaderSession(pollingOption: .iso14443,
-                                      delegate: self,
-                                      queue: .global(qos: .userInitiated))
+        session = NFCTagReaderSession(
+            pollingOption: .iso14443,
+            delegate: self,
+            queue: .global(qos: .userInitiated)
+        )
 
         self.textProvider = textProvider
         session?.alertMessage = textProvider.startMessage
@@ -47,7 +49,7 @@ final class NfcSessionImpl: NSObject, NfcSession {
                     tag.sendCommand(apdu: apdu) { (response, sw1, sw2, error) in
                         if let error {
                             Logger.log(.err, "Error trasmiting command to NFC tag")
-                            single(.error(MuunError(error)))
+                            single(.error(MuunError(error, classification: .expected)))
                             return
                         }
                         // Combines sw1 and sw2 in a Integer
@@ -111,7 +113,7 @@ extension NfcSessionImpl: NFCTagReaderSessionDelegate {
             }
         }
         Logger.log(.warn, "NFC session invalidated with error: \(error.localizedDescription)")
-        connectSubject?.onError(MuunError(error))
+        connectSubject?.onError(MuunError(error, classification: .expected))
     }
 
     func tagReaderSession(_ session: NFCTagReaderSession, didDetect tags: [NFCTag]) {
@@ -131,7 +133,9 @@ extension NfcSessionImpl: NFCTagReaderSessionDelegate {
         session.connect(to: firstTag) { [weak self] error in
             if let error = error {
                 Logger.log(.err, "Error connecting to NFC tag: \(error.localizedDescription)")
-                self?.connectSubject?.onError(MuunError(error))
+                self?.connectSubject?.onError(
+                    MuunError(error, classification: .expected)
+                )
                 return
             }
             Logger.log(.debug, "Successfully connected to NFC tag.")

@@ -13,9 +13,11 @@ public class StartRecoverCodeSetupAction: AsyncAction<()> {
     private let keysRepository: KeysRepository
     private let buildChallengeSetupAction: BuildChallengeSetupAction
 
-    init(houstonService: HoustonService,
-         keysRepository: KeysRepository,
-         buildChallengeSetupAction: BuildChallengeSetupAction) {
+    init(
+        houstonService: HoustonService,
+        keysRepository: KeysRepository,
+        buildChallengeSetupAction: BuildChallengeSetupAction
+    ) {
         self.houstonService = houstonService
         self.keysRepository = keysRepository
         self.buildChallengeSetupAction = buildChallengeSetupAction
@@ -26,7 +28,10 @@ public class StartRecoverCodeSetupAction: AsyncAction<()> {
     public func run() -> RecoveryCode {
         let recoveryCode = RecoveryCode.random()
 
-        let (key, setup) = buildChallengeSetupAction.run(type: .RECOVERY_CODE, userInput: recoveryCode.description)
+        let (key, setup) = buildChallengeSetupAction.run(
+            type: .RECOVERY_CODE,
+            userInput: recoveryCode.description
+        )
 
         runSingle(
             houstonService.startChallenge(challengeSetup: setup).map({ response in

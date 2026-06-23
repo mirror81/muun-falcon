@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 protocol MUActionSheetViewDelegate: AnyObject {
     func didSelect(option: any MUActionSheetOption)
 }
@@ -19,22 +18,26 @@ protocol MUActionSheetOption: RawRepresentable<String> {
 }
 
 /**
- In order to use this view you will have to init it with the delegate in which you will receive the selected item,
- the header title for customization and the options that will be displayed to the user.
- The option will ask you for a hightlight and a blockHeight. Do not worry about this two things unless you need it.
+ In order to use this view you will have to init it with the delegate in which you will
+ receive the selected item, the header title for customization and the options that will
+ be displayed to the user.
+ The option will ask you for a hightlight and a blockHeight. Do not worry about this two
+ things unless you need it.
  If you need it feel free to get how this two parameters work and then complete this doc :)
- MUActionSheetOptionViewModel is a model to retrieve your MUActionSheetOption in a way the action sheet is able
- to understand. Do not use it for anything  else.
+ MUActionSheetOptionViewModel is a model to retrieve your MUActionSheetOption in a way
+ the action sheet is able to understand. Do not use it for anything  else.
  */
 class MUActionSheetView: MUBottomSheetViewContainer {
     private weak var delegate: MUActionSheetViewDelegate?
     private let headerTitle: String
     private let viewOptions: [MUActionSheetOptionViewModel]
 
-    init(delegate: MUActionSheetViewDelegate,
-         headerTitle: String,
-         screenNameForLogs: String,
-         viewOptions: [MUActionSheetOptionViewModel]) {
+    init(
+        delegate: MUActionSheetViewDelegate,
+        headerTitle: String,
+        screenNameForLogs: String,
+        viewOptions: [MUActionSheetOptionViewModel]
+    ) {
         self.delegate = delegate
         self.headerTitle = headerTitle
         self.viewOptions = viewOptions

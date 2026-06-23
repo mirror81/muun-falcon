@@ -112,7 +112,10 @@ class QRCodeWithActionsView: UIView {
         stackView.addArrangedSubview(qrCodeView)
 
         NSLayoutConstraint.activate([
-            qrCodeView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -.sideMargin * 2),
+            qrCodeView.widthAnchor.constraint(
+                equalTo: stackView.widthAnchor,
+                constant: -.sideMargin * 2
+            ),
             qrCodeView.heightAnchor.constraint(equalTo: qrCodeView.widthAnchor)
         ])
 
@@ -133,7 +136,10 @@ class QRCodeWithActionsView: UIView {
         stackView.addArrangedSubview(loadingView)
 
         NSLayoutConstraint.activate([
-            loadingView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -.sideMargin * 2),
+            loadingView.widthAnchor.constraint(
+                equalTo: stackView.widthAnchor,
+                constant: -.sideMargin * 2
+            ),
             loadingView.heightAnchor.constraint(equalTo: loadingView.widthAnchor)
         ])
     }
@@ -146,8 +152,14 @@ class QRCodeWithActionsView: UIView {
         stackView.addArrangedSubview(buttonsContainerView)
 
         NSLayoutConstraint.activate([
-            buttonsContainerView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: .sideMargin),
-            buttonsContainerView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -.sideMargin),
+            buttonsContainerView.leadingAnchor.constraint(
+                equalTo: stackView.leadingAnchor,
+                constant: .sideMargin
+            ),
+            buttonsContainerView.trailingAnchor.constraint(
+                equalTo: stackView.trailingAnchor,
+                constant: -.sideMargin
+            ),
             buttonsContainerView.heightAnchor.constraint(equalToConstant: 40)
         ])
 
@@ -209,7 +221,9 @@ private extension QRCodeWithActionsView {
         labelStackView.spacing = 4
         labelStackView.distribution = .equalSpacing
         labelStackView.isUserInteractionEnabled = true
-        labelStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: .didTapLabel))
+        labelStackView.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: .didTapLabel)
+        )
         stackView.addArrangedSubview(labelStackView)
         stackView.setCustomSpacing(24, after: labelStackView)
     }
@@ -234,7 +248,9 @@ private extension QRCodeWithActionsView {
     func addTouchExpandedFrameForCheckLabel() -> UIView {
         let extendedTappableFrame = UIView()
         addSubview(extendedTappableFrame)
-        extendedTappableFrame.addGestureRecognizer(UITapGestureRecognizer(target: self, action: .didTapLabel))
+        extendedTappableFrame.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: .didTapLabel)
+        )
         extendedTappableFrame.backgroundColor = .clear
         extendedTappableFrame.translatesAutoresizingMaskIntoConstraints = false
         extendedTappableFrame.isUserInteractionEnabled = true

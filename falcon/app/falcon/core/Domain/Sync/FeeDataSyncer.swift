@@ -25,10 +25,12 @@ class FeeDataSyncer {
 
     private let dispatchGroup = DispatchGroup()
 
-    init(preloadFeeDataAction: PreloadFeeDataAction,
-         nextTransactionRepository: NextTransactionSizeRepository,
-         ntsChangesObservable: Observable<NotificationProcessingState>,
-         featureFlagsSelector: FeatureFlagsSelector) {
+    init(
+        preloadFeeDataAction: PreloadFeeDataAction,
+        nextTransactionRepository: NextTransactionSizeRepository,
+        ntsChangesObservable: Observable<NotificationProcessingState>,
+        featureFlagsSelector: FeatureFlagsSelector
+    ) {
         self.preloadFeeDataAction = preloadFeeDataAction
         self.nextTransactionRepository = nextTransactionRepository
         self.ntsChangesObservable = ntsChangesObservable
@@ -36,8 +38,9 @@ class FeeDataSyncer {
     }
 
     func appDidBecomeActive() {
-        guard featureFlagsSelector.isFlagEnabled(.effectiveFeesCalculation)
-        else { return }
+        guard featureFlagsSelector.isFlagEnabled(.effectiveFeesCalculation) else {
+            return
+        }
 
         ntsChangesObservable.subscribe(onNext: { [weak self] state in
             switch state {
@@ -72,8 +75,10 @@ class FeeDataSyncer {
                     self.pendingTasks -= 1
                     self.dispatchGroup.leave()
                 } else {
-                    Logger.log(.err,
-                               "FeeDataSyncer completed without receiving a STARTED event")
+                    Logger.log(
+                        .err,
+                        "FeeDataSyncer completed without receiving a STARTED event"
+                    )
                 }
             }
         }).disposed(by: disposeBag)

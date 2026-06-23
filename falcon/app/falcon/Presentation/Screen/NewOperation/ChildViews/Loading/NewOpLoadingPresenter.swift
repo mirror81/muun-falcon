@@ -10,9 +10,11 @@ import RxSwift
 import Libwallet
 
 protocol NewOpLoadingPresenterDelegate: BasePresenterDelegate {
-    func loadingDidFinish(feeInfo: FeeInfo,
-                          user: User,
-                          paymentRequestType: PaymentRequestType)
+    func loadingDidFinish(
+        feeInfo: FeeInfo,
+        user: User,
+        paymentRequestType: PaymentRequestType
+    )
     func expiredInvoice()
     func invalidAddress()
     func swapError(_ error: NewOpError)
@@ -37,15 +39,17 @@ class NewOpLoadingPresenter<Delegate: NewOpLoadingPresenterDelegate>: BasePresen
     private let featureFlagsSelector: FeatureFlagsSelector
     private let feeBumpFunctionsProvider: FeeBumpFunctionsProvider
 
-    init(delegate: Delegate,
-         state: PaymentIntent,
-         feeCalculatorAction: FeeCalculatorAction,
-         userSelector: UserSelector,
-         submarineSwapAction: SubmarineSwapAction,
-         bip70Action: BIP70Action,
-         preloadFeeDataAction: PreloadFeeDataAction,
-         featureFlagsSelector: FeatureFlagsSelector,
-         feeBumpFunctionsProvider: FeeBumpFunctionsProvider) {
+    init(
+        delegate: Delegate,
+        state: PaymentIntent,
+        feeCalculatorAction: FeeCalculatorAction,
+        userSelector: UserSelector,
+        submarineSwapAction: SubmarineSwapAction,
+        bip70Action: BIP70Action,
+        preloadFeeDataAction: PreloadFeeDataAction,
+        featureFlagsSelector: FeatureFlagsSelector,
+        feeBumpFunctionsProvider: FeeBumpFunctionsProvider
+    ) {
         self.paymentIntent = state
         self.feeCalculatorAction = feeCalculatorAction
         self.userSelector = userSelector
@@ -80,10 +84,12 @@ class NewOpLoadingPresenter<Delegate: NewOpLoadingPresenterDelegate>: BasePresen
 
         // baseSingle always will be executed, feeDataSyncer.getValue() in loadSingle
         // only will be executed when effectiveFeesCalculation FF is ON.
-        let baseSingle: Single<CombinedSingleResult> = Single.zip(feeCalculatorAction.getValue(),
-                                                                  paymentRequestType,
-                                                                  userSelector.get())
-            .map { CombinedSingleResult(feeInfo: $0, paymentRequestType: $1, user: $2) }
+        let baseSingle: Single<CombinedSingleResult> = Single.zip(
+            feeCalculatorAction.getValue(),
+            paymentRequestType,
+            userSelector.get()
+        )
+        .map { CombinedSingleResult(feeInfo: $0, paymentRequestType: $1, user: $2) }
 
         let loadSingle: Single<CombinedSingleResult>
         if shouldLoadFeeData() {
@@ -97,9 +103,11 @@ class NewOpLoadingPresenter<Delegate: NewOpLoadingPresenterDelegate>: BasePresen
         }
 
         subscribeTo(loadSingle) { [weak self] result in
-            self?.didLoad(feeInfo: result.feeInfo,
-                          paymentRequestType: result.paymentRequestType,
-                          user: result.user)
+            self?.didLoad(
+                feeInfo: result.feeInfo,
+                paymentRequestType: result.paymentRequestType,
+                user: result.user
+            )
         }
 
         feeCalculatorAction.run(isSwap: isSwap)
@@ -112,12 +120,15 @@ class NewOpLoadingPresenter<Delegate: NewOpLoadingPresenterDelegate>: BasePresen
     private func shouldLoadFeeData() -> Bool {
         let isEffectiveFeesCalculationTurnedOn = featureFlagsSelector
             .isFlagEnabled(.effectiveFeesCalculation)
-        let areFeeBumpFunctionsInvalidated = feeBumpFunctionsProvider.areFeeBumpFunctionsInvalidated()
+        let areFeeBumpFunctionsInvalidated = feeBumpFunctionsProvider
+            .areFeeBumpFunctionsInvalidated()
         return isEffectiveFeesCalculationTurnedOn && areFeeBumpFunctionsInvalidated
     }
 
-    private func createSubmarineSwap(invoice: LibwalletInvoice,
-                                     origin: Constant.NewOpAnalytics.Origin) -> Single<PaymentRequestType> {
+    private func createSubmarineSwap(
+        invoice: LibwalletInvoice,
+        origin: Constant.NewOpAnalytics.Origin
+    ) -> Single<PaymentRequestType> {
         submarineSwapAction.run(invoice: invoice.rawInvoice, origin: origin.rawValue)
 
         return submarineSwapAction.getValue().map({ submarineSwapCreated -> PaymentRequestType in
@@ -129,9 +140,11 @@ class NewOpLoadingPresenter<Delegate: NewOpLoadingPresenterDelegate>: BasePresen
     }
 
     func didLoad(feeInfo: FeeInfo, paymentRequestType: PaymentRequestType, user: User) {
-        delegate?.loadingDidFinish(feeInfo: feeInfo,
-                                   user: user,
-                                   paymentRequestType: paymentRequestType)
+        delegate?.loadingDidFinish(
+            feeInfo: feeInfo,
+            user: user,
+            paymentRequestType: paymentRequestType
+        )
     }
 
     override func handleError(_ e: Error) {
@@ -193,4 +206,13 @@ class NewOpLoadingPresenter<Delegate: NewOpLoadingPresenterDelegate>: BasePresen
         case invoiceMissingAmount
     }
 
+}
+
+extension NewOpLoadingPresenter.Errors: ClassifiedError {
+    var classification: ErrorClassification {
+        switch self {
+        case .expiredInvoice, .invalidAddress, .invoiceMissingAmount:
+            return .expected
+        }
+    }
 }

@@ -8,24 +8,26 @@
 
 import RxSwift
 
-
 protocol SignInAuthorizeEmailPresenterDelegate: BasePresenterDelegate {
     func onEmailVerified()
     func emailExpired()
 }
 
-class SignInAuthorizeEmailPresenter<Delegate: SignInAuthorizeEmailPresenterDelegate>: BasePresenter<Delegate> {
+class SignInAuthorizeEmailPresenter<Delegate: SignInAuthorizeEmailPresenterDelegate>:
+    BasePresenter<Delegate> {
 
     internal let fetchNotificationsAction: FetchNotificationsAction
     private let sessionActions: SessionActions
     private let preferences: Preferences
     private let authorizeEmailAction: AuthorizeEmailAction
 
-    init(delegate: Delegate,
-         fetchNotificationsAction: FetchNotificationsAction,
-         sessionActions: SessionActions,
-         preferences: Preferences,
-         authorizeEmailAction: AuthorizeEmailAction) {
+    init(
+        delegate: Delegate,
+        fetchNotificationsAction: FetchNotificationsAction,
+        sessionActions: SessionActions,
+        preferences: Preferences,
+        authorizeEmailAction: AuthorizeEmailAction
+    ) {
 
         self.fetchNotificationsAction = fetchNotificationsAction
         self.sessionActions = sessionActions

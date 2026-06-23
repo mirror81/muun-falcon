@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 enum CreatePasswordState {
     case inputPassword
     case confirmPassword
@@ -75,7 +74,12 @@ class SignUpPasswordViewController: MUViewController {
         navigationItem.rightBarButtonItem = .stepCounter(step: 3, end: 4)
 
         let backImage = Constant.Images.back
-        let newBackButton = UIBarButtonItem(image: backImage, style: .plain, target: self, action: .backButtonTouched)
+        let newBackButton = UIBarButtonItem(
+            image: backImage,
+            style: .plain,
+            target: self,
+            action: .backButtonTouched
+        )
         navigationItem.leftBarButtonItem = newBackButton
     }
 
@@ -130,17 +134,31 @@ class SignUpPasswordViewController: MUViewController {
 
     @objc func presentAlertView() {
         let msg = L10n.SignUpPasswordViewController.s10
-        let alert = UIAlertController(title: L10n.SignUpPasswordViewController.s11,
-                                      message: msg,
-                                      preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: L10n.SignUpPasswordViewController.s12, style: .default, handler: { _ in
-            alert.dismiss(animated: true)
-        }))
+        let alert = UIAlertController(
+            title: L10n.SignUpPasswordViewController.s11,
+            message: msg,
+            preferredStyle: .alert
+        )
+        alert.addAction(
+            UIAlertAction(
+                title: L10n.SignUpPasswordViewController.s12,
+                style: .default,
+                handler: { _ in
+                    alert.dismiss(animated: true)
+                }
+            )
+        )
 
-        alert.addAction(UIAlertAction(title: L10n.SignUpPasswordViewController.s13, style: .destructive, handler: { _ in
-            self.logEvent("email_setup_aborted")
-            self.navigationController!.popTo(type: SecurityCenterViewController.self)
-        }))
+        alert.addAction(
+            UIAlertAction(
+                title: L10n.SignUpPasswordViewController.s13,
+                style: .destructive,
+                handler: { _ in
+                    self.logEvent("email_setup_aborted")
+                    self.navigationController!.popTo(type: SecurityCenterViewController.self)
+                }
+            )
+        )
 
         alert.view.tintColor = Asset.Colors.muunGrayDark.color
 
@@ -181,7 +199,8 @@ extension SignUpPasswordViewController: TextInputViewDelegate {
         if textInputView == firstTextInputView {
             button.isEnabled = presenter.isValidPassword(text)
         } else if textInputView == secondTextInputView {
-            button.isEnabled = presenter.isValidPassword(text) && presenter.isValidPassword(firstTextInputView.text)
+            button.isEnabled = presenter.isValidPassword(text)
+                && presenter.isValidPassword(firstTextInputView.text)
         }
     }
 
@@ -205,14 +224,23 @@ extension SignUpPasswordViewController: ButtonViewDelegate {
             _ = secondTextInputView.becomeFirstResponder()
 
         } else if status == .confirmPassword {
-            if presenter.passwordsMatch(first: firstTextInputView.text, second: secondTextInputView.text) {
+            if presenter.passwordsMatch(
+                first: firstTextInputView.text,
+                second: secondTextInputView.text
+            ) {
                 view.endEditing(true)
 
-                let vc = FinishEmailSetupViewController(passphrase: firstTextInputView.text, wording: wording)
+                let vc = FinishEmailSetupViewController(
+                    passphrase: firstTextInputView.text,
+                    wording: wording
+                )
                 navigationController!.pushViewController(vc, animated: true)
 
             } else {
-                logEvent("password", parameters: ["error": PasswordErrorParam.did_not_match.rawValue])
+                logEvent(
+                    "password",
+                    parameters: ["error": PasswordErrorParam.did_not_match.rawValue]
+                )
                 secondTextInputView.setError(L10n.SignUpPasswordViewController.s6)
             }
         }

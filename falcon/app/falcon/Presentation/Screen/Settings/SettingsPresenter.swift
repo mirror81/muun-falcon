@@ -13,13 +13,15 @@ import Libwallet
 protocol SettingsPresenterDelegate: BasePresenterDelegate {
     func successfullyUpdateUser()
     func setCurrencyLoading(_ isLoading: Bool)
+    func setSendDebugDataLoading(_ isLoading: Bool)
+    func presentDebugDataEmail(_ report: DebugDataEmailReport)
 }
 
 enum SettingsSection {
     case general(_ generalRows: [GeneralRow])
     case security(_ securityRows: [SecurityRow])
     case advanced(_ rows: [AdvancedRow])
-    case disableFeatureFlags
+    case debug(_ rows: [DebugRow])
     case logout
     case deleteWallet
     case version
@@ -40,6 +42,11 @@ enum AdvancedRow {
     case onchain
 }
 
+enum DebugRow {
+    case disableFeatureFlags
+    case sendDebugData
+}
+
 class SettingsPresenter<Delegate: SettingsPresenterDelegate>: BasePresenter<Delegate> {
 
     private let logoutAction: LogoutAction
@@ -51,6 +58,7 @@ class SettingsPresenter<Delegate: SettingsPresenterDelegate>: BasePresenter<Dele
     private let userActivatedFeatureSelector: UserActivatedFeaturesSelector
     private let featureFlagsSelector: FeatureFlagsSelector
     private let biometricsStatusProvider: BiometricsStatusProvider
+    private let buildDebugDataEmailReportAction: BuildDebugDataEmailReportAction
 
     var sections: [SettingsSection] = []
 
@@ -59,24 +67,27 @@ class SettingsPresenter<Delegate: SettingsPresenterDelegate>: BasePresenter<Dele
     private var hasPendingOps = false
     // Users can't log out with pending incoming swaps, because they'd lose the preimages
     private var hasPendingIncomingSwaps = false
-    
+
     var biometricsAnalyticsParameters: [String: Any] {
         var parameters: [String: Any] = [:]
         parameters["biometrics_feature_status"] = biometricsStatusProvider.analyticsBiometricsStatus
-        parameters["biometrics_feature_status_reason"] = biometricsStatusProvider.analyticsBiometricsStatusReason
+        parameters["biometrics_feature_status_reason"] = biometricsStatusProvider
+            .analyticsBiometricsStatusReason
         return parameters
     }
 
-    init(delegate: Delegate,
-         logoutAction: LogoutAction,
-         sessionActions: SessionActions,
-         exchangeRateWindowRepository: ExchangeRateWindowRepository,
-         changeCurrencyAction: ChangeCurrencyAction,
-         operationActions: OperationActions,
-         balanceActions: BalanceActions,
-         userActivatedFeatureSelector: UserActivatedFeaturesSelector,
-         featureFlagsSelector: FeatureFlagsSelector,
-         biometricsStatusProvider: BiometricsStatusProvider
+    init(
+        delegate: Delegate,
+        logoutAction: LogoutAction,
+        sessionActions: SessionActions,
+        exchangeRateWindowRepository: ExchangeRateWindowRepository,
+        changeCurrencyAction: ChangeCurrencyAction,
+        operationActions: OperationActions,
+        balanceActions: BalanceActions,
+        userActivatedFeatureSelector: UserActivatedFeaturesSelector,
+        featureFlagsSelector: FeatureFlagsSelector,
+        biometricsStatusProvider: BiometricsStatusProvider,
+        buildDebugDataEmailReportAction: BuildDebugDataEmailReportAction
     ) {
         self.logoutAction = logoutAction
         self.sessionActions = sessionActions
@@ -87,6 +98,7 @@ class SettingsPresenter<Delegate: SettingsPresenterDelegate>: BasePresenter<Dele
         self.userActivatedFeatureSelector = userActivatedFeatureSelector
         self.featureFlagsSelector = featureFlagsSelector
         self.biometricsStatusProvider = biometricsStatusProvider
+        self.buildDebugDataEmailReportAction = buildDebugDataEmailReportAction
 
         super.init(delegate: delegate)
     }
@@ -98,6 +110,7 @@ class SettingsPresenter<Delegate: SettingsPresenterDelegate>: BasePresenter<Dele
         subscribeTo(changeCurrencyAction.getState(), onNext: self.onChangeCurrency)
         subscribeTo(operationActions.getOperationsChange(), onNext: self.onOperationsChange)
         subscribeTo(balanceActions.watchBalance(), onNext: self.onBalanceChange)
+        subscribeTo(buildDebugDataEmailReportAction.getState(), onNext: self.onDebugDataReport)
     }
 
     private func onOperationsChange(_ change: OperationsChange) {
@@ -115,6 +128,25 @@ class SettingsPresenter<Delegate: SettingsPresenterDelegate>: BasePresenter<Dele
 
     func deleteWallet() {
         logoutAction.run()
+    }
+
+    func sendDebugData() {
+        buildDebugDataEmailReportAction.run()
+    }
+
+    private func onDebugDataReport(_ result: ActionState<DebugDataEmailReport>) {
+        switch result.type {
+        case .EMPTY:
+            delegate.setSendDebugDataLoading(false)
+        case .LOADING:
+            delegate.setSendDebugDataLoading(true)
+        case .ERROR:
+            handleError(result.error ?? ServiceError.defaultError)
+        case .VALUE:
+            if let report = result.value {
+                delegate.presentDebugDataEmail(report)
+            }
+        }
     }
 
     private func buildSections() -> [SettingsSection] {
@@ -136,11 +168,14 @@ class SettingsPresenter<Delegate: SettingsPresenterDelegate>: BasePresenter<Dele
         }
 
         #if DOGFOOD || DEBUG
+        var debugRows: [DebugRow] = []
         if featureFlagsSelector.fetchWithoutOverrides().filter({
             $0.overrideMetadata.isOverridable
         }).count > 0 {
-            sections.append(.disableFeatureFlags)
+            debugRows.append(.disableFeatureFlags)
         }
+        debugRows.append(.sendDebugData)
+        sections.append(.debug(debugRows))
         #endif
 
         if sessionActions.isUnrecoverableUser() {

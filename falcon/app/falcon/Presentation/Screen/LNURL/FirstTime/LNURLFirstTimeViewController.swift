@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class LNURLFirstTimeViewController: MUViewController {
 
     private let imageView = UIImageView()

@@ -26,8 +26,10 @@ final class SaveEmergencyKitOptionView: UIView {
     private weak var delegate: SaveEmergencyKitOptionViewDelegate?
     private let option: EKOption
 
-    init(delegate: SaveEmergencyKitOptionViewDelegate?,
-         option: EKOption) {
+    init(
+        delegate: SaveEmergencyKitOptionViewDelegate?,
+        option: EKOption
+    ) {
         self.delegate = delegate
         self.option = option
         super.init(frame: .zero)
@@ -136,7 +138,10 @@ final class SaveEmergencyKitOptionView: UIView {
             chevron.widthAnchor.constraint(equalToConstant: 32),
             chevron.centerYAnchor.constraint(equalTo: centerYAnchor),
             chevron.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -.sideMargin),
-            chevron.leadingAnchor.constraint(equalTo: labelsView.trailingAnchor, constant: .sideMargin)
+            chevron.leadingAnchor.constraint(
+                equalTo: labelsView.trailingAnchor,
+                constant: .sideMargin
+            )
         ])
     }
 

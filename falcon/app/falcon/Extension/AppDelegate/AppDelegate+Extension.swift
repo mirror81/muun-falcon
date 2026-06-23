@@ -48,7 +48,8 @@ extension AppDelegate {
                 initialVC = PinViewController(state: .choosePin, isExistingUser: true)
                 lockManager.isShowingLockScreen = true
             } else {
-                if let syncStatus = preferences.string(forKey: .syncStatus), syncStatus == "failed" {
+                if let syncStatus = preferences.string(forKey: .syncStatus),
+                   syncStatus == "failed" {
                     initialVC = SyncViewController(
                         existingUser: true,
                         shouldRunSyncAction: true
@@ -78,10 +79,10 @@ extension AppDelegate {
         if lockManager.shouldShowLockScreen() {
             presentLockWindow()
         } else if !lockManager.isShowingLockScreen {
-            // When opening the app from a push notification, if the app is killed, the first method to run
-            // is willEnterForeground, which makes the pinWindow visible. Then, didFinishLaunchWithOptions
-            // runs, making the mainWindow visible and overlapping the pinWindow. This code avoids that
-            // issue.
+            // When opening the app from a push notification, if the app is killed, the first
+            // method to run is willEnterForeground, which makes the pinWindow visible.
+            // Then, didFinishLaunchWithOptions runs, making the mainWindow visible and
+            // overlapping the pinWindow. This code avoids that issue.
             _window?.makeKeyAndVisible()
             if let unhandledVisualNotification = unhandledVisualNotification {
                 // Everything went well, we're not displaying lock screen
@@ -174,7 +175,7 @@ extension AppDelegate {
         LibwalletStorageHelper.cleanupSocket()
 
         let libwalletConfig = App_provided_dataConfig()
-        libwalletConfig.dataDir = Environment.current.libwalletDataDirectory.absoluteString
+        libwalletConfig.dataDir = Environment.current.libwalletDataDirectory.path
         libwalletConfig.socketPath = Environment.current.libwalletSocketFile.path
         libwalletConfig.featureStatusProvider = featureFlagsSelector
         libwalletConfig.appLogSink = LibwalletLogHelper()
@@ -191,7 +192,10 @@ extension AppDelegate {
 // Force touch stuff
 extension AppDelegate {
 
-    internal func handleShortcut(_ application: UIApplication, item: UIApplicationShortcutItem) -> Bool {
+    internal func handleShortcut(
+        _ application: UIApplication,
+        item: UIApplicationShortcutItem
+    ) -> Bool {
         guard let shortcutIdentifier = ShortcutIdentifier(fullIdentifier: item.type) else {
             return false
         }
@@ -206,7 +210,10 @@ extension AppDelegate {
 
         switch shortcutIdentifier {
         case .receiveMoney:
-            navController.pushViewController(ReceiveViewController(origin: .forcePush), animated: true)
+            navController.pushViewController(
+                ReceiveViewController(origin: .forcePush),
+                animated: true
+            )
         case .sendMoney:
             navController.pushViewController(ScanQRViewController(), animated: true)
         }

@@ -58,7 +58,8 @@ public class Preferences {
         // At this point the app is still in foreground
         set(value: true, forKey: .appInForeground)
 
-        // Push notification token remains the same, as it is associated to the instance, not the user
+        // Push notification token remains the same, as it is associated to the instance, not the
+        // user
         set(value: currentToken, forKey: .gcmToken)
 
         // Environment does not change with a log out
@@ -127,7 +128,10 @@ public class Preferences {
 
     // Observables
 
-    private func watch<T>(key: Persistence, _ mapper: @escaping (Persistence) -> T?) -> Observable<T?> {
+    private func watch<T>(
+        key: Persistence,
+        _ mapper: @escaping (Persistence) -> T?
+    ) -> Observable<T?> {
 
         let firstFire = Observable.deferred({
             Observable.just(mapper(key))

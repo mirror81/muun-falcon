@@ -15,9 +15,11 @@ public class SetupChallengeAction: AsyncAction<()> {
     private let keysRepository: KeysRepository
     private let buildChallengeSetupAction: BuildChallengeSetupAction
 
-    init(houstonService: HoustonService,
-         keysRepository: KeysRepository,
-         buildChallengeSetupAction: BuildChallengeSetupAction) {
+    init(
+        houstonService: HoustonService,
+        keysRepository: KeysRepository,
+        buildChallengeSetupAction: BuildChallengeSetupAction
+    ) {
         self.houstonService = houstonService
         self.keysRepository = keysRepository
         self.buildChallengeSetupAction = buildChallengeSetupAction

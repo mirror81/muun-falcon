@@ -17,7 +17,7 @@ public class MetricsProvider {
     private let reachabilityProvider: ReachabilityProvider
     private let deviceCheckDataProvider: DeviceCheckDataProvider
     private let appInfoProvider: AppInfoProvider
-    
+
     init(
         localeTimeZoneProvider: LocaleTimeZoneProvider,
         storeKitCapabilitiesProvider: StoreKitCapabilitiesProvider,

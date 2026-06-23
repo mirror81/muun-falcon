@@ -15,4 +15,3 @@ class AppleDeviceCheckAdapter: DeviceCheckAdapter {
         DCDevice.current.generateToken(completionHandler: completion)
     }
 }
-

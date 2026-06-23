@@ -64,9 +64,18 @@ final class ChangePasswordEnterCurrentView: UIView {
         scrollView.addSubview(contentVerticalStack)
         NSLayoutConstraint.activate([
             contentVerticalStack.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentVerticalStack.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 8),
-            contentVerticalStack.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: .sideMargin),
-            contentVerticalStack.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -.sideMargin),
+            contentVerticalStack.bottomAnchor.constraint(
+                equalTo: scrollView.bottomAnchor,
+                constant: 8
+            ),
+            contentVerticalStack.leadingAnchor.constraint(
+                equalTo: scrollView.leadingAnchor,
+                constant: .sideMargin
+            ),
+            contentVerticalStack.trailingAnchor.constraint(
+                equalTo: scrollView.trailingAnchor,
+                constant: -.sideMargin
+            ),
             contentVerticalStack.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor)
         ])
 
@@ -112,8 +121,14 @@ final class ChangePasswordEnterCurrentView: UIView {
         addSubview(buttonsVerticalStack)
         NSLayoutConstraint.activate([
             bottomMarginConstraint,
-            buttonsVerticalStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: .sideMargin),
-            buttonsVerticalStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -.sideMargin)
+            buttonsVerticalStack.leadingAnchor.constraint(
+                equalTo: leadingAnchor,
+                constant: .sideMargin
+            ),
+            buttonsVerticalStack.trailingAnchor.constraint(
+                equalTo: trailingAnchor,
+                constant: -.sideMargin
+            )
         ])
 
         setUpForgotPasswordButton()

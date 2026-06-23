@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 extension BitcoinAmount {
 
     func attributedString(with font: UIFont) -> NSAttributedString {

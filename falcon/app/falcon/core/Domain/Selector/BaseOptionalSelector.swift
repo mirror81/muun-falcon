@@ -40,5 +40,13 @@ public class BaseOptionalSelector<T> {
     enum Errors: Error {
         case noValue(type: T.Type)
     }
+}
 
+extension BaseOptionalSelector.Errors: ClassifiedError {
+    var classification: ErrorClassification {
+        switch self {
+        case .noValue:
+            return .unexpected
+        }
+    }
 }

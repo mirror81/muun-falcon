@@ -14,8 +14,10 @@ class SettingToggleUserPreferenciesResolver {
     private let updateUserPreferences: UpdateUserPreferencesAction
     private let userPreferencesSelector: UserPreferencesSelector
 
-    init(updateUserPreferences: UpdateUserPreferencesAction,
-         userPreferencesSelector: UserPreferencesSelector) {
+    init(
+        updateUserPreferences: UpdateUserPreferencesAction,
+        userPreferencesSelector: UserPreferencesSelector
+    ) {
         self.updateUserPreferences = updateUserPreferences
         self.userPreferencesSelector = userPreferencesSelector
     }

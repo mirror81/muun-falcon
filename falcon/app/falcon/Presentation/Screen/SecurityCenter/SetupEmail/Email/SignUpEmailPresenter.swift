@@ -8,7 +8,6 @@
 
 import RxSwift
 
-
 protocol SignUpEmailPresenterDelegate: BasePresenterDelegate {
     func responseOkReceived()
     func emailAlreadyUsed()
@@ -24,11 +23,13 @@ class SignUpEmailPresenter<Delegate: SignUpEmailPresenterDelegate>: BasePresente
     private let sessionActions: SessionActions
     private var email: String = ""
 
-    init(delegate: Delegate,
-         startEmailSetupAction: StartEmailSetupAction,
-         fcmTokenAction: FCMTokenAction,
-         requestChallengeAction: RequestChallengeAction,
-         sessionActions: SessionActions) {
+    init(
+        delegate: Delegate,
+        startEmailSetupAction: StartEmailSetupAction,
+        fcmTokenAction: FCMTokenAction,
+        requestChallengeAction: RequestChallengeAction,
+        sessionActions: SessionActions
+    ) {
         self.startEmailSetupAction = startEmailSetupAction
         self.fcmTokenAction = fcmTokenAction
         self.requestChallengeAction = requestChallengeAction
@@ -49,10 +50,7 @@ class SignUpEmailPresenter<Delegate: SignUpEmailPresenterDelegate>: BasePresente
     }
 
     func isValidEmail(testStr: String) -> Bool {
-        let emailRegEx = "[^@ ]+@[^@ ]+[.][^@ ]*[A-Za-z0-9]$"
-        let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
-
-        return emailTest.evaluate(with: testStr)
+        return EmailValidator.isValid(testStr)
     }
 
     private func onStartEmailSetupChange(_ result: ActionState<()>) {

@@ -37,9 +37,11 @@ public class CreateBitcoinURIAction {
         self.createInvoiceAction = createInvoiceAction
     }
 
-    public func run(amount: Satoshis?,
-                    reusableInvoice: ReusableInvoiceForURICreation?,
-                    address: String) -> Single<RawBitcoinURI> {
+    public func run(
+        amount: Satoshis?,
+        reusableInvoice: ReusableInvoiceForURICreation?,
+        address: String
+    ) -> Single<RawBitcoinURI> {
         guard let reusableInvoice = reusableInvoice, reusableInvoice.isNotExpired() else {
             return createInvoiceAction.run(amount: amount).flatMap { invoice in
                 self.generateURI(amount: amount, address: address, invoice: invoice)
@@ -49,7 +51,11 @@ public class CreateBitcoinURIAction {
         return generateURI(amount: amount, address: address, invoice: reusableInvoice.raw)
     }
 
-    private func generateURI(amount: Satoshis?, address: String, invoice: String) -> Single<RawBitcoinURI> {
+    private func generateURI(
+        amount: Satoshis?,
+        address: String,
+        invoice: String
+    ) -> Single<RawBitcoinURI> {
         Single.deferred {
             let paymentURI = LibwalletMuunPaymentURI()
 
@@ -65,7 +71,12 @@ public class CreateBitcoinURIAction {
                 LibwalletGenerateBip21Uri(paymentURI, error)
             })
 
-            return Single.just(RawBitcoinURI(uri: uri, rawInvoice: invoice, address: address, amount: amount))
+            return Single.just(RawBitcoinURI(
+                uri: uri,
+                rawInvoice: invoice,
+                address: address,
+                amount: amount
+            ))
         }
     }
 }

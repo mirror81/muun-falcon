@@ -23,16 +23,20 @@ public class MUTimer {
         }
     }
 
-    func start(timeInterval: TimeInterval,
-               target: Any,
-               selector: Selector,
-               repeats: Bool) {
+    func start(
+        timeInterval: TimeInterval,
+        target: Any,
+        selector: Selector,
+        repeats: Bool
+    ) {
         DispatchQueue.main.async {
-            self.timer = Timer.scheduledTimer(timeInterval: timeInterval,
-                                              target: target,
-                                              selector: selector,
-                                              userInfo: nil,
-                                              repeats: repeats)
+            self.timer = Timer.scheduledTimer(
+                timeInterval: timeInterval,
+                target: target,
+                selector: selector,
+                userInfo: nil,
+                repeats: repeats
+            )
         }
     }
 }

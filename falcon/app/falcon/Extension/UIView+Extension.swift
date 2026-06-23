@@ -48,7 +48,11 @@ extension UIView {
         self.clipsToBounds = clipsToBounds
     }
 
-    func shake(duration: TimeInterval = 0.25, translation: CGFloat = -20, completion: (() -> Void)? = nil) {
+    func shake(
+        duration: TimeInterval = 0.25,
+        translation: CGFloat = -20,
+        completion: (() -> Void)? = nil
+    ) {
         self.transform = CGAffineTransform(translationX: translation, y: 0)
 
         UIView.animate(
@@ -56,29 +60,36 @@ extension UIView {
             delay: 0,
             usingSpringWithDamping: 0.2,
             initialSpringVelocity: 1,
-            options: .curveEaseInOut, animations: {
+            options: .curveEaseInOut,
+            animations: {
                 self.transform = CGAffineTransform.identity
-        }, completion: { _ in
-            completion?()
-        })
+            },
+            completion: { _ in
+                completion?()
+            }
+        )
     }
 
-    func setUpShadow(color: UIColor = Asset.Colors.muunGrayLight.color,
-                     opacity: Float = 0.3,
-                     offset: CGSize = CGSize.zero,
-                     radius: CGFloat = 10) {
+    func setUpShadow(
+        color: UIColor = Asset.Colors.muunGrayLight.color,
+        opacity: Float = 0.3,
+        offset: CGSize = CGSize.zero,
+        radius: CGFloat = 10
+    ) {
         layer.shadowColor = color.cgColor
         layer.shadowOpacity = opacity
         layer.shadowOffset = offset
         layer.shadowRadius = radius
     }
 
-    func animate(direction: AnimationDirection,
-                 offset: CGFloat = 20,
-                 duration: AnimationDuration,
-                 delay: AnimationDelay = .none,
-                 options: UIView.AnimationOptions = [],
-                 completion: (() -> Void)? = nil) {
+    func animate(
+        direction: AnimationDirection,
+        offset: CGFloat = 20,
+        duration: AnimationDuration,
+        delay: AnimationDelay = .none,
+        options: UIView.AnimationOptions = [],
+        completion: (() -> Void)? = nil
+    ) {
 
         func actuallyAnimate() {
             var (x, y): (CGFloat, CGFloat) = (0, 0)
@@ -97,23 +108,31 @@ extension UIView {
             self.transform = CGAffineTransform(translationX: x, y: y)
             self.alpha = 0
 
-            UIView.animate(withDuration: duration.rawValue, delay: delay.rawValue, options: options, animations: {
-                self.alpha = 1
-                self.transform = CGAffineTransform.identity
-            }, completion: { _ in
-                completion?()
-            })
+            UIView.animate(
+                withDuration: duration.rawValue,
+                delay: delay.rawValue,
+                options: options,
+                animations: {
+                    self.alpha = 1
+                    self.transform = CGAffineTransform.identity
+                },
+                completion: { _ in
+                    completion?()
+                }
+            )
         }
 
         actuallyAnimate()
     }
 
-    func animateOut(direction: AnimationDirection,
-                    offset: CGFloat = 20,
-                    duration: AnimationDuration,
-                    delay: AnimationDelay = .none,
-                    options: UIView.AnimationOptions = [],
-                    completion: (() -> Void)? = nil) {
+    func animateOut(
+        direction: AnimationDirection,
+        offset: CGFloat = 20,
+        duration: AnimationDuration,
+        delay: AnimationDelay = .none,
+        options: UIView.AnimationOptions = [],
+        completion: (() -> Void)? = nil
+    ) {
 
         func actuallyAnimate() {
             var (x, y): (CGFloat, CGFloat) = (0, 0)
@@ -131,13 +150,19 @@ extension UIView {
 
             self.alpha = 1
 
-            UIView.animate(withDuration: duration.rawValue, delay: delay.rawValue, options: options, animations: {
-                self.alpha = 0
-                self.transform = CGAffineTransform(translationX: x, y: y)
-            }, completion: { _ in
-                self.transform = CGAffineTransform.identity
-                completion?()
-            })
+            UIView.animate(
+                withDuration: duration.rawValue,
+                delay: delay.rawValue,
+                options: options,
+                animations: {
+                    self.alpha = 0
+                    self.transform = CGAffineTransform(translationX: x, y: y)
+                },
+                completion: { _ in
+                    self.transform = CGAffineTransform.identity
+                    completion?()
+                }
+            )
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + delay.rawValue) {
@@ -145,72 +170,100 @@ extension UIView {
         }
     }
 
-    func shrink(duration: Double = 0.15,
-                delay: Double = 0,
-                damping: CGFloat = 0.8,
-                initialSpringVelocity: CGFloat = 0.3,
-                options: UIView.AnimationOptions = UIView.AnimationOptions.allowUserInteraction,
-                shrinkValue: CGFloat = 0.98) {
-        UIView.animate(withDuration: duration,
-                       delay: delay,
-                       usingSpringWithDamping: damping,
-                       initialSpringVelocity: initialSpringVelocity,
-                       options: options,
-                       animations: { self.transform = CGAffineTransform(scaleX: shrinkValue, y: shrinkValue) },
-                       completion: nil)
+    func shrink(
+        duration: Double = 0.15,
+        delay: Double = 0,
+        damping: CGFloat = 0.8,
+        initialSpringVelocity: CGFloat = 0.3,
+        options: UIView.AnimationOptions = UIView.AnimationOptions.allowUserInteraction,
+        shrinkValue: CGFloat = 0.98
+    ) {
+        UIView.animate(
+            withDuration: duration,
+            delay: delay,
+            usingSpringWithDamping: damping,
+            initialSpringVelocity: initialSpringVelocity,
+            options: options,
+            animations: {
+                self.transform = CGAffineTransform(scaleX: shrinkValue, y: shrinkValue)
+            },
+            completion: nil
+        )
     }
 
-    func animateIdentity(duration: Double = 0.15,
-                         delay: Double = 0,
-                         damping: CGFloat = 0.8,
-                         initialSpringVelocity: CGFloat = 0.3,
-                         options: UIView.AnimationOptions = UIView.AnimationOptions.allowUserInteraction) {
-        UIView.animate(withDuration: duration,
-                       delay: delay,
-                       usingSpringWithDamping: damping,
-                       initialSpringVelocity: initialSpringVelocity,
-                       options: options,
-                       animations: { self.transform = CGAffineTransform.identity },
-                       completion: nil)
+    func animateIdentity(
+        duration: Double = 0.15,
+        delay: Double = 0,
+        damping: CGFloat = 0.8,
+        initialSpringVelocity: CGFloat = 0.3,
+        options: UIView.AnimationOptions = UIView.AnimationOptions.allowUserInteraction
+    ) {
+        UIView.animate(
+            withDuration: duration,
+            delay: delay,
+            usingSpringWithDamping: damping,
+            initialSpringVelocity: initialSpringVelocity,
+            options: options,
+            animations: { self.transform = CGAffineTransform.identity },
+            completion: nil
+        )
     }
 
-    func addSubviewWrappingParent(child: UIView,
-                                  skipBottomContraint: Bool = false) {
+    func addSubviewWrappingParent(
+        child: UIView,
+        skipBottomContraint: Bool = false
+    ) {
         child.translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(child)
 
-        addConstraint(NSLayoutConstraint(item: child,
-                                         attribute: .top,
-                                         relatedBy: .equal,
-                                         toItem: self,
-                                         attribute: .top,
-                                         multiplier: 1.0,
-                                         constant: 0.0))
-        addConstraint(NSLayoutConstraint(item: child,
-                                         attribute: .leading,
-                                         relatedBy: .equal,
-                                         toItem: self,
-                                         attribute: .leading,
-                                         multiplier: 1.0,
-                                         constant: 0.0))
+        addConstraint(
+            NSLayoutConstraint(
+                item: child,
+                attribute: .top,
+                relatedBy: .equal,
+                toItem: self,
+                attribute: .top,
+                multiplier: 1.0,
+                constant: 0.0
+            )
+        )
+        addConstraint(
+            NSLayoutConstraint(
+                item: child,
+                attribute: .leading,
+                relatedBy: .equal,
+                toItem: self,
+                attribute: .leading,
+                multiplier: 1.0,
+                constant: 0.0
+            )
+        )
         if !skipBottomContraint {
-            addConstraint(NSLayoutConstraint(item: self,
-                                             attribute: .bottom,
-                                             relatedBy: .equal,
-                                             toItem: child,
-                                             attribute: .bottom,
-                                             multiplier: 1.0,
-                                             constant: 0.0))
+            addConstraint(
+                NSLayoutConstraint(
+                    item: self,
+                    attribute: .bottom,
+                    relatedBy: .equal,
+                    toItem: child,
+                    attribute: .bottom,
+                    multiplier: 1.0,
+                    constant: 0.0
+                )
+            )
         }
 
-        addConstraint(NSLayoutConstraint(item: self,
-                                         attribute: .trailing,
-                                         relatedBy: .equal,
-                                         toItem: child,
-                                         attribute: .trailing,
-                                         multiplier: 1.0,
-                                         constant: 0.0))
+        addConstraint(
+            NSLayoutConstraint(
+                item: self,
+                attribute: .trailing,
+                relatedBy: .equal,
+                toItem: child,
+                attribute: .trailing,
+                multiplier: 1.0,
+                constant: 0.0
+            )
+        )
     }
 
     func fitTo(parent: UIView, replacingTop: NSLayoutYAxisAnchor? = nil) {

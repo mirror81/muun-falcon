@@ -16,21 +16,6 @@ internal protocol Rpc_WalletServiceClientProtocol: GRPCClient {
   var serviceName: String { get }
   var interceptors: Rpc_WalletServiceClientInterceptorFactoryProtocol? { get }
 
-  func setupSecurityCard(
-    _ request: SwiftProtobuf.Google_Protobuf_Empty,
-    callOptions: CallOptions?
-  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Rpc_XpubResponse>
-
-  func resetSecurityCard(
-    _ request: SwiftProtobuf.Google_Protobuf_Empty,
-    callOptions: CallOptions?
-  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, SwiftProtobuf.Google_Protobuf_Empty>
-
-  func signMessageSecurityCard(
-    _ request: Rpc_SignMessageSecurityCardRequest,
-    callOptions: CallOptions?
-  ) -> UnaryCall<Rpc_SignMessageSecurityCardRequest, Rpc_SignMessageSecurityCardResponse>
-
   func setupSecurityCardV2(
     _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions?
@@ -40,6 +25,17 @@ internal protocol Rpc_WalletServiceClientProtocol: GRPCClient {
     _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions?
   ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, SwiftProtobuf.Google_Protobuf_Empty>
+
+  func pairRequestChallenge(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions?
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, SwiftProtobuf.Google_Protobuf_Empty>
+
+  func pairSignAndSubmitChallenge(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions?,
+    handler: @escaping (Rpc_PairSignAndSubmitChallengeProgress) -> Void
+  ) -> ServerStreamingCall<SwiftProtobuf.Google_Protobuf_Empty, Rpc_PairSignAndSubmitChallengeProgress>
 
   func startDiagnosticSession(
     _ request: SwiftProtobuf.Google_Protobuf_Empty,
@@ -121,6 +117,21 @@ internal protocol Rpc_WalletServiceClientProtocol: GRPCClient {
     _ request: Rpc_GenerateEmergencyKitPDFRequest,
     callOptions: CallOptions?
   ) -> UnaryCall<Rpc_GenerateEmergencyKitPDFRequest, Rpc_GenerateEmergencyKitPDFResponse>
+
+  func resetData(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions?
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, SwiftProtobuf.Google_Protobuf_Empty>
+
+  func zipDataDir(
+    _ request: Rpc_ZipDataDirRequest,
+    callOptions: CallOptions?
+  ) -> UnaryCall<Rpc_ZipDataDirRequest, SwiftProtobuf.Google_Protobuf_Empty>
+
+  func secureKeyValueStoragePut(
+    _ request: Rpc_SecureKeyValueStoragePutRequest,
+    callOptions: CallOptions?
+  ) -> UnaryCall<Rpc_SecureKeyValueStoragePutRequest, SwiftProtobuf.Google_Protobuf_Empty>
 }
 
 extension Rpc_WalletServiceClientProtocol {
@@ -128,61 +139,7 @@ extension Rpc_WalletServiceClientProtocol {
     return "rpc.WalletService"
   }
 
-  /// V3 - NFC security cards Native->Libwallet API
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to SetupSecurityCard.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func setupSecurityCard(
-    _ request: SwiftProtobuf.Google_Protobuf_Empty,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Rpc_XpubResponse> {
-    return self.makeUnaryCall(
-      path: Rpc_WalletServiceClientMetadata.Methods.setupSecurityCard.path,
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeSetupSecurityCardInterceptors() ?? []
-    )
-  }
-
-  /// Unary call to ResetSecurityCard
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to ResetSecurityCard.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func resetSecurityCard(
-    _ request: SwiftProtobuf.Google_Protobuf_Empty,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, SwiftProtobuf.Google_Protobuf_Empty> {
-    return self.makeUnaryCall(
-      path: Rpc_WalletServiceClientMetadata.Methods.resetSecurityCard.path,
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeResetSecurityCardInterceptors() ?? []
-    )
-  }
-
-  /// Unary call to SignMessageSecurityCard
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to SignMessageSecurityCard.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func signMessageSecurityCard(
-    _ request: Rpc_SignMessageSecurityCardRequest,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<Rpc_SignMessageSecurityCardRequest, Rpc_SignMessageSecurityCardResponse> {
-    return self.makeUnaryCall(
-      path: Rpc_WalletServiceClientMetadata.Methods.signMessageSecurityCard.path,
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeSignMessageSecurityCardInterceptors() ?? []
-    )
-  }
-
-  /// Unary call to SetupSecurityCardV2
+  /// NFC security cards Native->Libwallet API
   ///
   /// - Parameters:
   ///   - request: Request to send to SetupSecurityCardV2.
@@ -215,6 +172,45 @@ extension Rpc_WalletServiceClientProtocol {
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeSignMessageSecurityCardV2Interceptors() ?? []
+    )
+  }
+
+  /// Unary call to PairRequestChallenge
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to PairRequestChallenge.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func pairRequestChallenge(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, SwiftProtobuf.Google_Protobuf_Empty> {
+    return self.makeUnaryCall(
+      path: Rpc_WalletServiceClientMetadata.Methods.pairRequestChallenge.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makePairRequestChallengeInterceptors() ?? []
+    )
+  }
+
+  /// Server streaming call to PairSignAndSubmitChallenge
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to PairSignAndSubmitChallenge.
+  ///   - callOptions: Call options.
+  ///   - handler: A closure called when each response is received from the server.
+  /// - Returns: A `ServerStreamingCall` with futures for the metadata and status.
+  internal func pairSignAndSubmitChallenge(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil,
+    handler: @escaping (Rpc_PairSignAndSubmitChallengeProgress) -> Void
+  ) -> ServerStreamingCall<SwiftProtobuf.Google_Protobuf_Empty, Rpc_PairSignAndSubmitChallengeProgress> {
+    return self.makeServerStreamingCall(
+      path: Rpc_WalletServiceClientMetadata.Methods.pairSignAndSubmitChallenge.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makePairSignAndSubmitChallengeInterceptors() ?? [],
+      handler: handler
     )
   }
 
@@ -508,6 +504,60 @@ extension Rpc_WalletServiceClientProtocol {
       interceptors: self.interceptors?.makeGenerateEmergencyKitPDFInterceptors() ?? []
     )
   }
+
+  /// Reset all data from the local SQLite database
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to ResetData.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func resetData(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, SwiftProtobuf.Google_Protobuf_Empty> {
+    return self.makeUnaryCall(
+      path: Rpc_WalletServiceClientMetadata.Methods.resetData.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeResetDataInterceptors() ?? []
+    )
+  }
+
+  /// Zip all regular files in the libwallet data directory for debug extraction
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to ZipDataDir.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func zipDataDir(
+    _ request: Rpc_ZipDataDirRequest,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<Rpc_ZipDataDirRequest, SwiftProtobuf.Google_Protobuf_Empty> {
+    return self.makeUnaryCall(
+      path: Rpc_WalletServiceClientMetadata.Methods.zipDataDir.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeZipDataDirInterceptors() ?? []
+    )
+  }
+
+  /// Secure Key-Value Storage (native hardware-encrypted storage bridge)
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to SecureKeyValueStoragePut.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func secureKeyValueStoragePut(
+    _ request: Rpc_SecureKeyValueStoragePutRequest,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<Rpc_SecureKeyValueStoragePutRequest, SwiftProtobuf.Google_Protobuf_Empty> {
+    return self.makeUnaryCall(
+      path: Rpc_WalletServiceClientMetadata.Methods.secureKeyValueStoragePut.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeSecureKeyValueStoragePutInterceptors() ?? []
+    )
+  }
 }
 
 @available(*, deprecated)
@@ -572,21 +622,6 @@ internal protocol Rpc_WalletServiceAsyncClientProtocol: GRPCClient {
   static var serviceDescriptor: GRPCServiceDescriptor { get }
   var interceptors: Rpc_WalletServiceClientInterceptorFactoryProtocol? { get }
 
-  func makeSetupSecurityCardCall(
-    _ request: SwiftProtobuf.Google_Protobuf_Empty,
-    callOptions: CallOptions?
-  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Rpc_XpubResponse>
-
-  func makeResetSecurityCardCall(
-    _ request: SwiftProtobuf.Google_Protobuf_Empty,
-    callOptions: CallOptions?
-  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, SwiftProtobuf.Google_Protobuf_Empty>
-
-  func makeSignMessageSecurityCardCall(
-    _ request: Rpc_SignMessageSecurityCardRequest,
-    callOptions: CallOptions?
-  ) -> GRPCAsyncUnaryCall<Rpc_SignMessageSecurityCardRequest, Rpc_SignMessageSecurityCardResponse>
-
   func makeSetupSecurityCardV2Call(
     _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions?
@@ -596,6 +631,16 @@ internal protocol Rpc_WalletServiceAsyncClientProtocol: GRPCClient {
     _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions?
   ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, SwiftProtobuf.Google_Protobuf_Empty>
+
+  func makePairRequestChallengeCall(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, SwiftProtobuf.Google_Protobuf_Empty>
+
+  func makePairSignAndSubmitChallengeCall(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncServerStreamingCall<SwiftProtobuf.Google_Protobuf_Empty, Rpc_PairSignAndSubmitChallengeProgress>
 
   func makeStartDiagnosticSessionCall(
     _ request: SwiftProtobuf.Google_Protobuf_Empty,
@@ -676,6 +721,21 @@ internal protocol Rpc_WalletServiceAsyncClientProtocol: GRPCClient {
     _ request: Rpc_GenerateEmergencyKitPDFRequest,
     callOptions: CallOptions?
   ) -> GRPCAsyncUnaryCall<Rpc_GenerateEmergencyKitPDFRequest, Rpc_GenerateEmergencyKitPDFResponse>
+
+  func makeResetDataCall(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, SwiftProtobuf.Google_Protobuf_Empty>
+
+  func makeZipDataDirCall(
+    _ request: Rpc_ZipDataDirRequest,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<Rpc_ZipDataDirRequest, SwiftProtobuf.Google_Protobuf_Empty>
+
+  func makeSecureKeyValueStoragePutCall(
+    _ request: Rpc_SecureKeyValueStoragePutRequest,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<Rpc_SecureKeyValueStoragePutRequest, SwiftProtobuf.Google_Protobuf_Empty>
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -686,42 +746,6 @@ extension Rpc_WalletServiceAsyncClientProtocol {
 
   internal var interceptors: Rpc_WalletServiceClientInterceptorFactoryProtocol? {
     return nil
-  }
-
-  internal func makeSetupSecurityCardCall(
-    _ request: SwiftProtobuf.Google_Protobuf_Empty,
-    callOptions: CallOptions? = nil
-  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Rpc_XpubResponse> {
-    return self.makeAsyncUnaryCall(
-      path: Rpc_WalletServiceClientMetadata.Methods.setupSecurityCard.path,
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeSetupSecurityCardInterceptors() ?? []
-    )
-  }
-
-  internal func makeResetSecurityCardCall(
-    _ request: SwiftProtobuf.Google_Protobuf_Empty,
-    callOptions: CallOptions? = nil
-  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, SwiftProtobuf.Google_Protobuf_Empty> {
-    return self.makeAsyncUnaryCall(
-      path: Rpc_WalletServiceClientMetadata.Methods.resetSecurityCard.path,
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeResetSecurityCardInterceptors() ?? []
-    )
-  }
-
-  internal func makeSignMessageSecurityCardCall(
-    _ request: Rpc_SignMessageSecurityCardRequest,
-    callOptions: CallOptions? = nil
-  ) -> GRPCAsyncUnaryCall<Rpc_SignMessageSecurityCardRequest, Rpc_SignMessageSecurityCardResponse> {
-    return self.makeAsyncUnaryCall(
-      path: Rpc_WalletServiceClientMetadata.Methods.signMessageSecurityCard.path,
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeSignMessageSecurityCardInterceptors() ?? []
-    )
   }
 
   internal func makeSetupSecurityCardV2Call(
@@ -745,6 +769,30 @@ extension Rpc_WalletServiceAsyncClientProtocol {
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeSignMessageSecurityCardV2Interceptors() ?? []
+    )
+  }
+
+  internal func makePairRequestChallengeCall(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, SwiftProtobuf.Google_Protobuf_Empty> {
+    return self.makeAsyncUnaryCall(
+      path: Rpc_WalletServiceClientMetadata.Methods.pairRequestChallenge.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makePairRequestChallengeInterceptors() ?? []
+    )
+  }
+
+  internal func makePairSignAndSubmitChallengeCall(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncServerStreamingCall<SwiftProtobuf.Google_Protobuf_Empty, Rpc_PairSignAndSubmitChallengeProgress> {
+    return self.makeAsyncServerStreamingCall(
+      path: Rpc_WalletServiceClientMetadata.Methods.pairSignAndSubmitChallenge.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makePairSignAndSubmitChallengeInterceptors() ?? []
     )
   }
 
@@ -939,46 +987,46 @@ extension Rpc_WalletServiceAsyncClientProtocol {
       interceptors: self.interceptors?.makeGenerateEmergencyKitPDFInterceptors() ?? []
     )
   }
+
+  internal func makeResetDataCall(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, SwiftProtobuf.Google_Protobuf_Empty> {
+    return self.makeAsyncUnaryCall(
+      path: Rpc_WalletServiceClientMetadata.Methods.resetData.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeResetDataInterceptors() ?? []
+    )
+  }
+
+  internal func makeZipDataDirCall(
+    _ request: Rpc_ZipDataDirRequest,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncUnaryCall<Rpc_ZipDataDirRequest, SwiftProtobuf.Google_Protobuf_Empty> {
+    return self.makeAsyncUnaryCall(
+      path: Rpc_WalletServiceClientMetadata.Methods.zipDataDir.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeZipDataDirInterceptors() ?? []
+    )
+  }
+
+  internal func makeSecureKeyValueStoragePutCall(
+    _ request: Rpc_SecureKeyValueStoragePutRequest,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncUnaryCall<Rpc_SecureKeyValueStoragePutRequest, SwiftProtobuf.Google_Protobuf_Empty> {
+    return self.makeAsyncUnaryCall(
+      path: Rpc_WalletServiceClientMetadata.Methods.secureKeyValueStoragePut.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeSecureKeyValueStoragePutInterceptors() ?? []
+    )
+  }
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
 extension Rpc_WalletServiceAsyncClientProtocol {
-  internal func setupSecurityCard(
-    _ request: SwiftProtobuf.Google_Protobuf_Empty,
-    callOptions: CallOptions? = nil
-  ) async throws -> Rpc_XpubResponse {
-    return try await self.performAsyncUnaryCall(
-      path: Rpc_WalletServiceClientMetadata.Methods.setupSecurityCard.path,
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeSetupSecurityCardInterceptors() ?? []
-    )
-  }
-
-  internal func resetSecurityCard(
-    _ request: SwiftProtobuf.Google_Protobuf_Empty,
-    callOptions: CallOptions? = nil
-  ) async throws -> SwiftProtobuf.Google_Protobuf_Empty {
-    return try await self.performAsyncUnaryCall(
-      path: Rpc_WalletServiceClientMetadata.Methods.resetSecurityCard.path,
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeResetSecurityCardInterceptors() ?? []
-    )
-  }
-
-  internal func signMessageSecurityCard(
-    _ request: Rpc_SignMessageSecurityCardRequest,
-    callOptions: CallOptions? = nil
-  ) async throws -> Rpc_SignMessageSecurityCardResponse {
-    return try await self.performAsyncUnaryCall(
-      path: Rpc_WalletServiceClientMetadata.Methods.signMessageSecurityCard.path,
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeSignMessageSecurityCardInterceptors() ?? []
-    )
-  }
-
   internal func setupSecurityCardV2(
     _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions? = nil
@@ -1000,6 +1048,30 @@ extension Rpc_WalletServiceAsyncClientProtocol {
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeSignMessageSecurityCardV2Interceptors() ?? []
+    )
+  }
+
+  internal func pairRequestChallenge(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) async throws -> SwiftProtobuf.Google_Protobuf_Empty {
+    return try await self.performAsyncUnaryCall(
+      path: Rpc_WalletServiceClientMetadata.Methods.pairRequestChallenge.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makePairRequestChallengeInterceptors() ?? []
+    )
+  }
+
+  internal func pairSignAndSubmitChallenge(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncResponseStream<Rpc_PairSignAndSubmitChallengeProgress> {
+    return self.performAsyncServerStreamingCall(
+      path: Rpc_WalletServiceClientMetadata.Methods.pairSignAndSubmitChallenge.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makePairSignAndSubmitChallengeInterceptors() ?? []
     )
   }
 
@@ -1194,6 +1266,42 @@ extension Rpc_WalletServiceAsyncClientProtocol {
       interceptors: self.interceptors?.makeGenerateEmergencyKitPDFInterceptors() ?? []
     )
   }
+
+  internal func resetData(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) async throws -> SwiftProtobuf.Google_Protobuf_Empty {
+    return try await self.performAsyncUnaryCall(
+      path: Rpc_WalletServiceClientMetadata.Methods.resetData.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeResetDataInterceptors() ?? []
+    )
+  }
+
+  internal func zipDataDir(
+    _ request: Rpc_ZipDataDirRequest,
+    callOptions: CallOptions? = nil
+  ) async throws -> SwiftProtobuf.Google_Protobuf_Empty {
+    return try await self.performAsyncUnaryCall(
+      path: Rpc_WalletServiceClientMetadata.Methods.zipDataDir.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeZipDataDirInterceptors() ?? []
+    )
+  }
+
+  internal func secureKeyValueStoragePut(
+    _ request: Rpc_SecureKeyValueStoragePutRequest,
+    callOptions: CallOptions? = nil
+  ) async throws -> SwiftProtobuf.Google_Protobuf_Empty {
+    return try await self.performAsyncUnaryCall(
+      path: Rpc_WalletServiceClientMetadata.Methods.secureKeyValueStoragePut.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeSecureKeyValueStoragePutInterceptors() ?? []
+    )
+  }
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -1215,20 +1323,17 @@ internal struct Rpc_WalletServiceAsyncClient: Rpc_WalletServiceAsyncClientProtoc
 
 internal protocol Rpc_WalletServiceClientInterceptorFactoryProtocol: Sendable {
 
-  /// - Returns: Interceptors to use when invoking 'setupSecurityCard'.
-  func makeSetupSecurityCardInterceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, Rpc_XpubResponse>]
-
-  /// - Returns: Interceptors to use when invoking 'resetSecurityCard'.
-  func makeResetSecurityCardInterceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, SwiftProtobuf.Google_Protobuf_Empty>]
-
-  /// - Returns: Interceptors to use when invoking 'signMessageSecurityCard'.
-  func makeSignMessageSecurityCardInterceptors() -> [ClientInterceptor<Rpc_SignMessageSecurityCardRequest, Rpc_SignMessageSecurityCardResponse>]
-
   /// - Returns: Interceptors to use when invoking 'setupSecurityCardV2'.
   func makeSetupSecurityCardV2Interceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, Rpc_SetupSecurityCardResponse>]
 
   /// - Returns: Interceptors to use when invoking 'signMessageSecurityCardV2'.
   func makeSignMessageSecurityCardV2Interceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, SwiftProtobuf.Google_Protobuf_Empty>]
+
+  /// - Returns: Interceptors to use when invoking 'pairRequestChallenge'.
+  func makePairRequestChallengeInterceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, SwiftProtobuf.Google_Protobuf_Empty>]
+
+  /// - Returns: Interceptors to use when invoking 'pairSignAndSubmitChallenge'.
+  func makePairSignAndSubmitChallengeInterceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, Rpc_PairSignAndSubmitChallengeProgress>]
 
   /// - Returns: Interceptors to use when invoking 'startDiagnosticSession'.
   func makeStartDiagnosticSessionInterceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, Rpc_DiagnosticSessionDescriptor>]
@@ -1277,6 +1382,15 @@ internal protocol Rpc_WalletServiceClientInterceptorFactoryProtocol: Sendable {
 
   /// - Returns: Interceptors to use when invoking 'generateEmergencyKitPDF'.
   func makeGenerateEmergencyKitPDFInterceptors() -> [ClientInterceptor<Rpc_GenerateEmergencyKitPDFRequest, Rpc_GenerateEmergencyKitPDFResponse>]
+
+  /// - Returns: Interceptors to use when invoking 'resetData'.
+  func makeResetDataInterceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, SwiftProtobuf.Google_Protobuf_Empty>]
+
+  /// - Returns: Interceptors to use when invoking 'zipDataDir'.
+  func makeZipDataDirInterceptors() -> [ClientInterceptor<Rpc_ZipDataDirRequest, SwiftProtobuf.Google_Protobuf_Empty>]
+
+  /// - Returns: Interceptors to use when invoking 'secureKeyValueStoragePut'.
+  func makeSecureKeyValueStoragePutInterceptors() -> [ClientInterceptor<Rpc_SecureKeyValueStoragePutRequest, SwiftProtobuf.Google_Protobuf_Empty>]
 }
 
 internal enum Rpc_WalletServiceClientMetadata {
@@ -1284,11 +1398,10 @@ internal enum Rpc_WalletServiceClientMetadata {
     name: "WalletService",
     fullName: "rpc.WalletService",
     methods: [
-      Rpc_WalletServiceClientMetadata.Methods.setupSecurityCard,
-      Rpc_WalletServiceClientMetadata.Methods.resetSecurityCard,
-      Rpc_WalletServiceClientMetadata.Methods.signMessageSecurityCard,
       Rpc_WalletServiceClientMetadata.Methods.setupSecurityCardV2,
       Rpc_WalletServiceClientMetadata.Methods.signMessageSecurityCardV2,
+      Rpc_WalletServiceClientMetadata.Methods.pairRequestChallenge,
+      Rpc_WalletServiceClientMetadata.Methods.pairSignAndSubmitChallenge,
       Rpc_WalletServiceClientMetadata.Methods.startDiagnosticSession,
       Rpc_WalletServiceClientMetadata.Methods.performDiagnosticScanForUtxos,
       Rpc_WalletServiceClientMetadata.Methods.submitDiagnosticLog,
@@ -1305,28 +1418,13 @@ internal enum Rpc_WalletServiceClientMetadata {
       Rpc_WalletServiceClientMetadata.Methods.getByPrefix,
       Rpc_WalletServiceClientMetadata.Methods.getSecurityCardsMarketplace,
       Rpc_WalletServiceClientMetadata.Methods.generateEmergencyKitPDF,
+      Rpc_WalletServiceClientMetadata.Methods.resetData,
+      Rpc_WalletServiceClientMetadata.Methods.zipDataDir,
+      Rpc_WalletServiceClientMetadata.Methods.secureKeyValueStoragePut,
     ]
   )
 
   internal enum Methods {
-    internal static let setupSecurityCard = GRPCMethodDescriptor(
-      name: "SetupSecurityCard",
-      path: "/rpc.WalletService/SetupSecurityCard",
-      type: GRPCCallType.unary
-    )
-
-    internal static let resetSecurityCard = GRPCMethodDescriptor(
-      name: "ResetSecurityCard",
-      path: "/rpc.WalletService/ResetSecurityCard",
-      type: GRPCCallType.unary
-    )
-
-    internal static let signMessageSecurityCard = GRPCMethodDescriptor(
-      name: "SignMessageSecurityCard",
-      path: "/rpc.WalletService/SignMessageSecurityCard",
-      type: GRPCCallType.unary
-    )
-
     internal static let setupSecurityCardV2 = GRPCMethodDescriptor(
       name: "SetupSecurityCardV2",
       path: "/rpc.WalletService/SetupSecurityCardV2",
@@ -1337,6 +1435,18 @@ internal enum Rpc_WalletServiceClientMetadata {
       name: "SignMessageSecurityCardV2",
       path: "/rpc.WalletService/SignMessageSecurityCardV2",
       type: GRPCCallType.unary
+    )
+
+    internal static let pairRequestChallenge = GRPCMethodDescriptor(
+      name: "PairRequestChallenge",
+      path: "/rpc.WalletService/PairRequestChallenge",
+      type: GRPCCallType.unary
+    )
+
+    internal static let pairSignAndSubmitChallenge = GRPCMethodDescriptor(
+      name: "PairSignAndSubmitChallenge",
+      path: "/rpc.WalletService/PairSignAndSubmitChallenge",
+      type: GRPCCallType.serverStreaming
     )
 
     internal static let startDiagnosticSession = GRPCMethodDescriptor(
@@ -1434,6 +1544,24 @@ internal enum Rpc_WalletServiceClientMetadata {
       path: "/rpc.WalletService/GenerateEmergencyKitPDF",
       type: GRPCCallType.unary
     )
+
+    internal static let resetData = GRPCMethodDescriptor(
+      name: "ResetData",
+      path: "/rpc.WalletService/ResetData",
+      type: GRPCCallType.unary
+    )
+
+    internal static let zipDataDir = GRPCMethodDescriptor(
+      name: "ZipDataDir",
+      path: "/rpc.WalletService/ZipDataDir",
+      type: GRPCCallType.unary
+    )
+
+    internal static let secureKeyValueStoragePut = GRPCMethodDescriptor(
+      name: "SecureKeyValueStoragePut",
+      path: "/rpc.WalletService/SecureKeyValueStoragePut",
+      type: GRPCCallType.unary
+    )
   }
 }
 
@@ -1441,16 +1569,14 @@ internal enum Rpc_WalletServiceClientMetadata {
 internal protocol Rpc_WalletServiceProvider: CallHandlerProvider {
   var interceptors: Rpc_WalletServiceServerInterceptorFactoryProtocol? { get }
 
-  /// V3 - NFC security cards Native->Libwallet API
-  func setupSecurityCard(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<Rpc_XpubResponse>
-
-  func resetSecurityCard(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<SwiftProtobuf.Google_Protobuf_Empty>
-
-  func signMessageSecurityCard(request: Rpc_SignMessageSecurityCardRequest, context: StatusOnlyCallContext) -> EventLoopFuture<Rpc_SignMessageSecurityCardResponse>
-
+  /// NFC security cards Native->Libwallet API
   func setupSecurityCardV2(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<Rpc_SetupSecurityCardResponse>
 
   func signMessageSecurityCardV2(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<SwiftProtobuf.Google_Protobuf_Empty>
+
+  func pairRequestChallenge(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<SwiftProtobuf.Google_Protobuf_Empty>
+
+  func pairSignAndSubmitChallenge(request: SwiftProtobuf.Google_Protobuf_Empty, context: StreamingResponseCallContext<Rpc_PairSignAndSubmitChallengeProgress>) -> EventLoopFuture<GRPCStatus>
 
   /// Diagnostic Mode API
   func startDiagnosticSession(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<Rpc_DiagnosticSessionDescriptor>
@@ -1487,6 +1613,15 @@ internal protocol Rpc_WalletServiceProvider: CallHandlerProvider {
 
   /// Emergency Kit PDF Generation
   func generateEmergencyKitPDF(request: Rpc_GenerateEmergencyKitPDFRequest, context: StatusOnlyCallContext) -> EventLoopFuture<Rpc_GenerateEmergencyKitPDFResponse>
+
+  /// Reset all data from the local SQLite database
+  func resetData(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<SwiftProtobuf.Google_Protobuf_Empty>
+
+  /// Zip all regular files in the libwallet data directory for debug extraction
+  func zipDataDir(request: Rpc_ZipDataDirRequest, context: StatusOnlyCallContext) -> EventLoopFuture<SwiftProtobuf.Google_Protobuf_Empty>
+
+  /// Secure Key-Value Storage (native hardware-encrypted storage bridge)
+  func secureKeyValueStoragePut(request: Rpc_SecureKeyValueStoragePutRequest, context: StatusOnlyCallContext) -> EventLoopFuture<SwiftProtobuf.Google_Protobuf_Empty>
 }
 
 extension Rpc_WalletServiceProvider {
@@ -1501,33 +1636,6 @@ extension Rpc_WalletServiceProvider {
     context: CallHandlerContext
   ) -> GRPCServerHandlerProtocol? {
     switch name {
-    case "SetupSecurityCard":
-      return UnaryServerHandler(
-        context: context,
-        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
-        responseSerializer: ProtobufSerializer<Rpc_XpubResponse>(),
-        interceptors: self.interceptors?.makeSetupSecurityCardInterceptors() ?? [],
-        userFunction: self.setupSecurityCard(request:context:)
-      )
-
-    case "ResetSecurityCard":
-      return UnaryServerHandler(
-        context: context,
-        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
-        responseSerializer: ProtobufSerializer<SwiftProtobuf.Google_Protobuf_Empty>(),
-        interceptors: self.interceptors?.makeResetSecurityCardInterceptors() ?? [],
-        userFunction: self.resetSecurityCard(request:context:)
-      )
-
-    case "SignMessageSecurityCard":
-      return UnaryServerHandler(
-        context: context,
-        requestDeserializer: ProtobufDeserializer<Rpc_SignMessageSecurityCardRequest>(),
-        responseSerializer: ProtobufSerializer<Rpc_SignMessageSecurityCardResponse>(),
-        interceptors: self.interceptors?.makeSignMessageSecurityCardInterceptors() ?? [],
-        userFunction: self.signMessageSecurityCard(request:context:)
-      )
-
     case "SetupSecurityCardV2":
       return UnaryServerHandler(
         context: context,
@@ -1544,6 +1652,24 @@ extension Rpc_WalletServiceProvider {
         responseSerializer: ProtobufSerializer<SwiftProtobuf.Google_Protobuf_Empty>(),
         interceptors: self.interceptors?.makeSignMessageSecurityCardV2Interceptors() ?? [],
         userFunction: self.signMessageSecurityCardV2(request:context:)
+      )
+
+    case "PairRequestChallenge":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        responseSerializer: ProtobufSerializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        interceptors: self.interceptors?.makePairRequestChallengeInterceptors() ?? [],
+        userFunction: self.pairRequestChallenge(request:context:)
+      )
+
+    case "PairSignAndSubmitChallenge":
+      return ServerStreamingServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        responseSerializer: ProtobufSerializer<Rpc_PairSignAndSubmitChallengeProgress>(),
+        interceptors: self.interceptors?.makePairSignAndSubmitChallengeInterceptors() ?? [],
+        userFunction: self.pairSignAndSubmitChallenge(request:context:)
       )
 
     case "StartDiagnosticSession":
@@ -1690,6 +1816,33 @@ extension Rpc_WalletServiceProvider {
         userFunction: self.generateEmergencyKitPDF(request:context:)
       )
 
+    case "ResetData":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        responseSerializer: ProtobufSerializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        interceptors: self.interceptors?.makeResetDataInterceptors() ?? [],
+        userFunction: self.resetData(request:context:)
+      )
+
+    case "ZipDataDir":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Rpc_ZipDataDirRequest>(),
+        responseSerializer: ProtobufSerializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        interceptors: self.interceptors?.makeZipDataDirInterceptors() ?? [],
+        userFunction: self.zipDataDir(request:context:)
+      )
+
+    case "SecureKeyValueStoragePut":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Rpc_SecureKeyValueStoragePutRequest>(),
+        responseSerializer: ProtobufSerializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        interceptors: self.interceptors?.makeSecureKeyValueStoragePutInterceptors() ?? [],
+        userFunction: self.secureKeyValueStoragePut(request:context:)
+      )
+
     default:
       return nil
     }
@@ -1702,22 +1855,7 @@ internal protocol Rpc_WalletServiceAsyncProvider: CallHandlerProvider, Sendable 
   static var serviceDescriptor: GRPCServiceDescriptor { get }
   var interceptors: Rpc_WalletServiceServerInterceptorFactoryProtocol? { get }
 
-  /// V3 - NFC security cards Native->Libwallet API
-  func setupSecurityCard(
-    request: SwiftProtobuf.Google_Protobuf_Empty,
-    context: GRPCAsyncServerCallContext
-  ) async throws -> Rpc_XpubResponse
-
-  func resetSecurityCard(
-    request: SwiftProtobuf.Google_Protobuf_Empty,
-    context: GRPCAsyncServerCallContext
-  ) async throws -> SwiftProtobuf.Google_Protobuf_Empty
-
-  func signMessageSecurityCard(
-    request: Rpc_SignMessageSecurityCardRequest,
-    context: GRPCAsyncServerCallContext
-  ) async throws -> Rpc_SignMessageSecurityCardResponse
-
+  /// NFC security cards Native->Libwallet API
   func setupSecurityCardV2(
     request: SwiftProtobuf.Google_Protobuf_Empty,
     context: GRPCAsyncServerCallContext
@@ -1727,6 +1865,17 @@ internal protocol Rpc_WalletServiceAsyncProvider: CallHandlerProvider, Sendable 
     request: SwiftProtobuf.Google_Protobuf_Empty,
     context: GRPCAsyncServerCallContext
   ) async throws -> SwiftProtobuf.Google_Protobuf_Empty
+
+  func pairRequestChallenge(
+    request: SwiftProtobuf.Google_Protobuf_Empty,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> SwiftProtobuf.Google_Protobuf_Empty
+
+  func pairSignAndSubmitChallenge(
+    request: SwiftProtobuf.Google_Protobuf_Empty,
+    responseStream: GRPCAsyncResponseStreamWriter<Rpc_PairSignAndSubmitChallengeProgress>,
+    context: GRPCAsyncServerCallContext
+  ) async throws
 
   /// Diagnostic Mode API
   func startDiagnosticSession(
@@ -1812,6 +1961,24 @@ internal protocol Rpc_WalletServiceAsyncProvider: CallHandlerProvider, Sendable 
     request: Rpc_GenerateEmergencyKitPDFRequest,
     context: GRPCAsyncServerCallContext
   ) async throws -> Rpc_GenerateEmergencyKitPDFResponse
+
+  /// Reset all data from the local SQLite database
+  func resetData(
+    request: SwiftProtobuf.Google_Protobuf_Empty,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> SwiftProtobuf.Google_Protobuf_Empty
+
+  /// Zip all regular files in the libwallet data directory for debug extraction
+  func zipDataDir(
+    request: Rpc_ZipDataDirRequest,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> SwiftProtobuf.Google_Protobuf_Empty
+
+  /// Secure Key-Value Storage (native hardware-encrypted storage bridge)
+  func secureKeyValueStoragePut(
+    request: Rpc_SecureKeyValueStoragePutRequest,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> SwiftProtobuf.Google_Protobuf_Empty
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -1833,33 +2000,6 @@ extension Rpc_WalletServiceAsyncProvider {
     context: CallHandlerContext
   ) -> GRPCServerHandlerProtocol? {
     switch name {
-    case "SetupSecurityCard":
-      return GRPCAsyncServerHandler(
-        context: context,
-        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
-        responseSerializer: ProtobufSerializer<Rpc_XpubResponse>(),
-        interceptors: self.interceptors?.makeSetupSecurityCardInterceptors() ?? [],
-        wrapping: { try await self.setupSecurityCard(request: $0, context: $1) }
-      )
-
-    case "ResetSecurityCard":
-      return GRPCAsyncServerHandler(
-        context: context,
-        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
-        responseSerializer: ProtobufSerializer<SwiftProtobuf.Google_Protobuf_Empty>(),
-        interceptors: self.interceptors?.makeResetSecurityCardInterceptors() ?? [],
-        wrapping: { try await self.resetSecurityCard(request: $0, context: $1) }
-      )
-
-    case "SignMessageSecurityCard":
-      return GRPCAsyncServerHandler(
-        context: context,
-        requestDeserializer: ProtobufDeserializer<Rpc_SignMessageSecurityCardRequest>(),
-        responseSerializer: ProtobufSerializer<Rpc_SignMessageSecurityCardResponse>(),
-        interceptors: self.interceptors?.makeSignMessageSecurityCardInterceptors() ?? [],
-        wrapping: { try await self.signMessageSecurityCard(request: $0, context: $1) }
-      )
-
     case "SetupSecurityCardV2":
       return GRPCAsyncServerHandler(
         context: context,
@@ -1876,6 +2016,24 @@ extension Rpc_WalletServiceAsyncProvider {
         responseSerializer: ProtobufSerializer<SwiftProtobuf.Google_Protobuf_Empty>(),
         interceptors: self.interceptors?.makeSignMessageSecurityCardV2Interceptors() ?? [],
         wrapping: { try await self.signMessageSecurityCardV2(request: $0, context: $1) }
+      )
+
+    case "PairRequestChallenge":
+      return GRPCAsyncServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        responseSerializer: ProtobufSerializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        interceptors: self.interceptors?.makePairRequestChallengeInterceptors() ?? [],
+        wrapping: { try await self.pairRequestChallenge(request: $0, context: $1) }
+      )
+
+    case "PairSignAndSubmitChallenge":
+      return GRPCAsyncServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        responseSerializer: ProtobufSerializer<Rpc_PairSignAndSubmitChallengeProgress>(),
+        interceptors: self.interceptors?.makePairSignAndSubmitChallengeInterceptors() ?? [],
+        wrapping: { try await self.pairSignAndSubmitChallenge(request: $0, responseStream: $1, context: $2) }
       )
 
     case "StartDiagnosticSession":
@@ -2022,6 +2180,33 @@ extension Rpc_WalletServiceAsyncProvider {
         wrapping: { try await self.generateEmergencyKitPDF(request: $0, context: $1) }
       )
 
+    case "ResetData":
+      return GRPCAsyncServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        responseSerializer: ProtobufSerializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        interceptors: self.interceptors?.makeResetDataInterceptors() ?? [],
+        wrapping: { try await self.resetData(request: $0, context: $1) }
+      )
+
+    case "ZipDataDir":
+      return GRPCAsyncServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Rpc_ZipDataDirRequest>(),
+        responseSerializer: ProtobufSerializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        interceptors: self.interceptors?.makeZipDataDirInterceptors() ?? [],
+        wrapping: { try await self.zipDataDir(request: $0, context: $1) }
+      )
+
+    case "SecureKeyValueStoragePut":
+      return GRPCAsyncServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Rpc_SecureKeyValueStoragePutRequest>(),
+        responseSerializer: ProtobufSerializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        interceptors: self.interceptors?.makeSecureKeyValueStoragePutInterceptors() ?? [],
+        wrapping: { try await self.secureKeyValueStoragePut(request: $0, context: $1) }
+      )
+
     default:
       return nil
     }
@@ -2030,18 +2215,6 @@ extension Rpc_WalletServiceAsyncProvider {
 
 internal protocol Rpc_WalletServiceServerInterceptorFactoryProtocol: Sendable {
 
-  /// - Returns: Interceptors to use when handling 'setupSecurityCard'.
-  ///   Defaults to calling `self.makeInterceptors()`.
-  func makeSetupSecurityCardInterceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, Rpc_XpubResponse>]
-
-  /// - Returns: Interceptors to use when handling 'resetSecurityCard'.
-  ///   Defaults to calling `self.makeInterceptors()`.
-  func makeResetSecurityCardInterceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, SwiftProtobuf.Google_Protobuf_Empty>]
-
-  /// - Returns: Interceptors to use when handling 'signMessageSecurityCard'.
-  ///   Defaults to calling `self.makeInterceptors()`.
-  func makeSignMessageSecurityCardInterceptors() -> [ServerInterceptor<Rpc_SignMessageSecurityCardRequest, Rpc_SignMessageSecurityCardResponse>]
-
   /// - Returns: Interceptors to use when handling 'setupSecurityCardV2'.
   ///   Defaults to calling `self.makeInterceptors()`.
   func makeSetupSecurityCardV2Interceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, Rpc_SetupSecurityCardResponse>]
@@ -2049,6 +2222,14 @@ internal protocol Rpc_WalletServiceServerInterceptorFactoryProtocol: Sendable {
   /// - Returns: Interceptors to use when handling 'signMessageSecurityCardV2'.
   ///   Defaults to calling `self.makeInterceptors()`.
   func makeSignMessageSecurityCardV2Interceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, SwiftProtobuf.Google_Protobuf_Empty>]
+
+  /// - Returns: Interceptors to use when handling 'pairRequestChallenge'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makePairRequestChallengeInterceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, SwiftProtobuf.Google_Protobuf_Empty>]
+
+  /// - Returns: Interceptors to use when handling 'pairSignAndSubmitChallenge'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makePairSignAndSubmitChallengeInterceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, Rpc_PairSignAndSubmitChallengeProgress>]
 
   /// - Returns: Interceptors to use when handling 'startDiagnosticSession'.
   ///   Defaults to calling `self.makeInterceptors()`.
@@ -2113,6 +2294,18 @@ internal protocol Rpc_WalletServiceServerInterceptorFactoryProtocol: Sendable {
   /// - Returns: Interceptors to use when handling 'generateEmergencyKitPDF'.
   ///   Defaults to calling `self.makeInterceptors()`.
   func makeGenerateEmergencyKitPDFInterceptors() -> [ServerInterceptor<Rpc_GenerateEmergencyKitPDFRequest, Rpc_GenerateEmergencyKitPDFResponse>]
+
+  /// - Returns: Interceptors to use when handling 'resetData'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeResetDataInterceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, SwiftProtobuf.Google_Protobuf_Empty>]
+
+  /// - Returns: Interceptors to use when handling 'zipDataDir'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeZipDataDirInterceptors() -> [ServerInterceptor<Rpc_ZipDataDirRequest, SwiftProtobuf.Google_Protobuf_Empty>]
+
+  /// - Returns: Interceptors to use when handling 'secureKeyValueStoragePut'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeSecureKeyValueStoragePutInterceptors() -> [ServerInterceptor<Rpc_SecureKeyValueStoragePutRequest, SwiftProtobuf.Google_Protobuf_Empty>]
 }
 
 internal enum Rpc_WalletServiceServerMetadata {
@@ -2120,11 +2313,10 @@ internal enum Rpc_WalletServiceServerMetadata {
     name: "WalletService",
     fullName: "rpc.WalletService",
     methods: [
-      Rpc_WalletServiceServerMetadata.Methods.setupSecurityCard,
-      Rpc_WalletServiceServerMetadata.Methods.resetSecurityCard,
-      Rpc_WalletServiceServerMetadata.Methods.signMessageSecurityCard,
       Rpc_WalletServiceServerMetadata.Methods.setupSecurityCardV2,
       Rpc_WalletServiceServerMetadata.Methods.signMessageSecurityCardV2,
+      Rpc_WalletServiceServerMetadata.Methods.pairRequestChallenge,
+      Rpc_WalletServiceServerMetadata.Methods.pairSignAndSubmitChallenge,
       Rpc_WalletServiceServerMetadata.Methods.startDiagnosticSession,
       Rpc_WalletServiceServerMetadata.Methods.performDiagnosticScanForUtxos,
       Rpc_WalletServiceServerMetadata.Methods.submitDiagnosticLog,
@@ -2141,28 +2333,13 @@ internal enum Rpc_WalletServiceServerMetadata {
       Rpc_WalletServiceServerMetadata.Methods.getByPrefix,
       Rpc_WalletServiceServerMetadata.Methods.getSecurityCardsMarketplace,
       Rpc_WalletServiceServerMetadata.Methods.generateEmergencyKitPDF,
+      Rpc_WalletServiceServerMetadata.Methods.resetData,
+      Rpc_WalletServiceServerMetadata.Methods.zipDataDir,
+      Rpc_WalletServiceServerMetadata.Methods.secureKeyValueStoragePut,
     ]
   )
 
   internal enum Methods {
-    internal static let setupSecurityCard = GRPCMethodDescriptor(
-      name: "SetupSecurityCard",
-      path: "/rpc.WalletService/SetupSecurityCard",
-      type: GRPCCallType.unary
-    )
-
-    internal static let resetSecurityCard = GRPCMethodDescriptor(
-      name: "ResetSecurityCard",
-      path: "/rpc.WalletService/ResetSecurityCard",
-      type: GRPCCallType.unary
-    )
-
-    internal static let signMessageSecurityCard = GRPCMethodDescriptor(
-      name: "SignMessageSecurityCard",
-      path: "/rpc.WalletService/SignMessageSecurityCard",
-      type: GRPCCallType.unary
-    )
-
     internal static let setupSecurityCardV2 = GRPCMethodDescriptor(
       name: "SetupSecurityCardV2",
       path: "/rpc.WalletService/SetupSecurityCardV2",
@@ -2173,6 +2350,18 @@ internal enum Rpc_WalletServiceServerMetadata {
       name: "SignMessageSecurityCardV2",
       path: "/rpc.WalletService/SignMessageSecurityCardV2",
       type: GRPCCallType.unary
+    )
+
+    internal static let pairRequestChallenge = GRPCMethodDescriptor(
+      name: "PairRequestChallenge",
+      path: "/rpc.WalletService/PairRequestChallenge",
+      type: GRPCCallType.unary
+    )
+
+    internal static let pairSignAndSubmitChallenge = GRPCMethodDescriptor(
+      name: "PairSignAndSubmitChallenge",
+      path: "/rpc.WalletService/PairSignAndSubmitChallenge",
+      type: GRPCCallType.serverStreaming
     )
 
     internal static let startDiagnosticSession = GRPCMethodDescriptor(
@@ -2268,6 +2457,24 @@ internal enum Rpc_WalletServiceServerMetadata {
     internal static let generateEmergencyKitPDF = GRPCMethodDescriptor(
       name: "GenerateEmergencyKitPDF",
       path: "/rpc.WalletService/GenerateEmergencyKitPDF",
+      type: GRPCCallType.unary
+    )
+
+    internal static let resetData = GRPCMethodDescriptor(
+      name: "ResetData",
+      path: "/rpc.WalletService/ResetData",
+      type: GRPCCallType.unary
+    )
+
+    internal static let zipDataDir = GRPCMethodDescriptor(
+      name: "ZipDataDir",
+      path: "/rpc.WalletService/ZipDataDir",
+      type: GRPCCallType.unary
+    )
+
+    internal static let secureKeyValueStoragePut = GRPCMethodDescriptor(
+      name: "SecureKeyValueStoragePut",
+      path: "/rpc.WalletService/SecureKeyValueStoragePut",
       type: GRPCCallType.unary
     )
   }

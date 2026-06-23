@@ -6,6 +6,7 @@
 //  Copyright © 2019 muun. All rights reserved.
 //
 
+import MessageUI
 import UIKit
 
 class SettingsViewController: MUViewController {
@@ -17,7 +18,7 @@ class SettingsViewController: MUViewController {
     override func customLoggingParameters() -> [String: Any]? {
         return presenter.biometricsAnalyticsParameters
     }
-    
+
     override var screenLoggingName: String {
         return "settings"
     }
@@ -102,7 +103,7 @@ class SettingsViewController: MUViewController {
             animated: true
         )
     }
-    
+
     private func showSystemSettings(for biometricsStatus: BiometricsStatus) {
         if let url = URL(string: UIApplication.openSettingsURLString) {
             if UIApplication.shared.canOpenURL(url) {
@@ -125,6 +126,18 @@ class SettingsViewController: MUViewController {
             }
         }
         Logger.fatal("could not find change currency cell in settings screen")
+    }
+
+    private func getSendDebugDataCell() -> SettingsTableViewCell? {
+        for (sectionIndex, section) in presenter.sections.enumerated() {
+            if case .debug(let rows) = section {
+                if let row = rows.firstIndex(of: .sendDebugData) {
+                    let index = IndexPath(row: row, section: sectionIndex)
+                    return tableView.cellForRow(at: index) as? SettingsTableViewCell
+                }
+            }
+        }
+        return nil
     }
 
     private func decideDeleteWalletAction() {
@@ -158,7 +171,7 @@ extension SettingsViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
            switch presenter.sections[section] {
-           case .general, .logout, .deleteWallet, .security, .advanced, .disableFeatureFlags:
+           case .general, .logout, .deleteWallet, .security, .advanced, .debug:
             return UITableView.automaticDimension
            case .version:
                return 12
@@ -202,8 +215,11 @@ extension SettingsViewController: UITableViewDelegate {
         case .deleteWallet:
             decideDeleteWalletAction()
 
-        case .disableFeatureFlags:
-            showDisableFeatureFlags()
+        case .debug(let rows):
+            switch rows[indexPath.row] {
+            case .disableFeatureFlags: showDisableFeatureFlags()
+            case .sendDebugData: presenter.sendDebugData()
+            }
         }
     }
 
@@ -217,7 +233,7 @@ extension SettingsViewController: UITableViewDataSource {
         case .general: return L10n.SettingsViewController.s2
         case .security: return L10n.SettingsViewController.s3
         case .advanced: return L10n.SettingsViewController.advanced
-        case .disableFeatureFlags: return L10n.SettingsViewController.s25
+        case .debug: return L10n.SettingsViewController.s25
         }
     }
 
@@ -237,7 +253,10 @@ extension SettingsViewController: UITableViewDataSource {
         case .advanced(let rows):
             return rows.count
 
-        case .logout, .version, .deleteWallet, .disableFeatureFlags:
+        case .debug(let rows):
+            return rows.count
+
+        case .logout, .version, .deleteWallet:
             return 1
         }
     }
@@ -263,8 +282,8 @@ extension SettingsViewController: UITableViewDataSource {
         case .advanced(let rows):
             return settingsAdvancedCell(indexPath: indexPath, rows: rows)
 
-        case .disableFeatureFlags:
-            return disableFeatureFlagsCell(indexPath: indexPath)
+        case .debug(let rows):
+            return settingsDebugCell(indexPath: indexPath, rows: rows)
         }
     }
 
@@ -293,11 +312,19 @@ extension SettingsViewController: UITableViewDataSource {
         return cell
     }
 
-    private func disableFeatureFlagsCell(indexPath: IndexPath) -> UITableViewCell {
+    private func settingsDebugCell(
+        indexPath: IndexPath,
+        rows: [DebugRow]
+    ) -> UITableViewCell {
         let cell = tableView.dequeue(type: SettingsTableViewCell.self, indexPath: indexPath)
 
-        cell.setUp(L10n.SettingsViewController.s24, color: Asset.Colors.title.color)
-        cell.showChevron()
+        switch rows[indexPath.row] {
+        case .disableFeatureFlags:
+            cell.setUp(L10n.SettingsViewController.s24, color: Asset.Colors.title.color)
+            cell.showChevron()
+        case .sendDebugData:
+            cell.setUp(L10n.SettingsViewController.sendDebugData, color: Asset.Colors.title.color)
+        }
 
         return cell
     }
@@ -314,9 +341,11 @@ extension SettingsViewController: UITableViewDataSource {
                 indexPath: indexPath
             )
 
-            cell.setUp(mainLabel: L10n.SettingsViewController.s7,
-                       secondLabel: presenter.getBitcoinUnit(),
-                       image: Asset.Assets.btcLogo.image)
+            cell.setUp(
+                mainLabel: L10n.SettingsViewController.s7,
+                secondLabel: presenter.getBitcoinUnit(),
+                image: Asset.Assets.btcLogo.image
+            )
             cell.hideTopSeparator()
             cell.showChevron()
             return cell
@@ -331,9 +360,11 @@ extension SettingsViewController: UITableViewDataSource {
                 image = Asset.Assets.btcLogo.image
             }
 
-            cell.setUp(mainLabel: L10n.SettingsViewController.s8,
-                       secondLabel: presenter.getReadablePrimaryCurrency(),
-                       image: image)
+            cell.setUp(
+                mainLabel: L10n.SettingsViewController.s8,
+                secondLabel: presenter.getReadablePrimaryCurrency(),
+                image: image
+            )
             cell.hideTopSeparator()
             cell.showChevron()
             return cell
@@ -351,7 +382,7 @@ extension SettingsViewController: UITableViewDataSource {
             let cell = tableView.dequeue(type: SettingsTableViewCell.self, indexPath: indexPath)
             cell.setUp(L10n.SettingsViewController.s9, color: Asset.Colors.title.color)
             return cell
-            
+
         case .manageBiometrics(let biometricsStatus):
             let cell = tableView.dequeue(type: SettingsTableViewCell.self, indexPath: indexPath)
             var title: String
@@ -532,6 +563,36 @@ extension SettingsViewController: SettingsPresenterDelegate {
 
     func successfullyUpdateUser() {
         tableView.reloadData()
+    }
+
+    func presentDebugDataEmail(_ report: DebugDataEmailReport) {
+        let mailVC = DebugDataMailHelper.makeViewController(
+            report: report,
+            delegate: self
+        )
+        present(mailVC, animated: true)
+    }
+
+    func setSendDebugDataLoading(_ isLoading: Bool) {
+        guard let cell = getSendDebugDataCell() else { return }
+        if isLoading {
+            let spinner = UIActivityIndicatorView(style: .medium)
+            spinner.startAnimating()
+            cell.accessoryView = spinner
+        } else {
+            cell.accessoryView = nil
+        }
+    }
+}
+
+extension SettingsViewController: MFMailComposeViewControllerDelegate {
+
+    func mailComposeController(
+        _ controller: MFMailComposeViewController,
+        didFinishWith result: MFMailComposeResult,
+        error: Error?
+    ) {
+        controller.dismiss(animated: true)
     }
 
 }

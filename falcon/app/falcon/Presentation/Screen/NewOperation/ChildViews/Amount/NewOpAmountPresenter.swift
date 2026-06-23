@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 enum AmountState {
     case zero
     case valid
@@ -42,8 +41,10 @@ class NewOpAmountPresenter<Delegate: NewOpAmountPresenterDelegate>: BasePresente
             return .zero
         }
 
-        // This is weird, but the int64Value of a really big NSDecimalNumber returns a really low int
+        // This is weird, but the int64Value of a really big NSDecimalNumber returns a really low
+        // int
         // So we return amount too big when satoshi amount is a negative value
+        // swiftlint:disable:next line_length
         // stackoverflow.com/questions/36322336/positive-nsdecimalnumber-returns-unexpected-64-bit-integer-values
         if satoshiAmount < Satoshis(value: 0) {
             return .tooBig
@@ -81,9 +82,11 @@ class NewOpAmountPresenter<Delegate: NewOpAmountPresenterDelegate>: BasePresente
     }
 
     func amount(from value: String, in currency: Currency) -> BitcoinAmount {
-        return BitcoinAmount.from(inputCurrency: currency.formattedNumber(from: value),
-                                  rate: data.rate,
-                                  primaryCurrency: data.primaryCurrency)
+        return BitcoinAmount.from(
+            inputCurrency: currency.formattedNumber(from: value),
+            rate: data.rate,
+            primaryCurrency: data.primaryCurrency
+        )
     }
 
     private func rate(for currency: String) -> Decimal {
@@ -103,11 +106,14 @@ class NewOpAmountPresenter<Delegate: NewOpAmountPresenterDelegate>: BasePresente
 
     func isSendingAllFundsManually(value: String, currency: Currency) -> Bool {
         // This is to avoid bad roundings to stop users manually entering all their funds
-        // I.E: User has 10000 Sats, conversion to usd is 10.009 USD, so muun displays max balance as 10.01 USD
-        // Then without this code if the user enters 10.01 the conversion to sats will be more than 10000 sats, and
-        // the flow will be interrupted.
-        let totalBalanceAmountString = currency.toAmountWithoutCode(amount: totalBalance(in: currency.code).amount,
-                                                                btcCurrencyFormat: .long)
+        // I.E: User has 10000 Sats, conversion to usd is 10.009 USD,
+        // so muun displays max balance as 10.01 USD.
+        // Then without this code if the user enters 10.01 the conversion to sats
+        // will be more than 10000 sats, and the flow will be interrupted.
+        let totalBalanceAmountString = currency.toAmountWithoutCode(
+            amount: totalBalance(in: currency.code).amount,
+            btcCurrencyFormat: .long
+        )
         return totalBalanceAmountString == value
     }
 

@@ -19,14 +19,15 @@ public class SessionActions {
     private let updateUserPreferences: UpdateUserPreferencesAction
     private let userPreferencesSelector: UserPreferencesSelector
 
-    init(repository: SessionRepository,
-         userRepository: UserRepository,
-         keysRepository: KeysRepository,
-         exchangeRateWindowRepository: ExchangeRateWindowRepository,
-         secureStorage: SecureStorage,
-         preferences: Preferences,
-         updateUserPreferences: UpdateUserPreferencesAction,
-         userPreferencesSelector: UserPreferencesSelector
+    init(
+        repository: SessionRepository,
+        userRepository: UserRepository,
+        keysRepository: KeysRepository,
+        exchangeRateWindowRepository: ExchangeRateWindowRepository,
+        secureStorage: SecureStorage,
+        preferences: Preferences,
+        updateUserPreferences: UpdateUserPreferencesAction,
+        userPreferencesSelector: UserPreferencesSelector
     ) {
         self.sessionRepository = repository
         self.userRepository = userRepository

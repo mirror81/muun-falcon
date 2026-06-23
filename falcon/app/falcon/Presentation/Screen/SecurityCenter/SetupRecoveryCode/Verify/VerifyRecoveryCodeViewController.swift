@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class VerifyRecoveryCodeViewController: MUViewController {
 
     @IBOutlet private weak var recoveryView: RecoveryView!
@@ -124,7 +123,10 @@ extension VerifyRecoveryCodeViewController: RecoveryViewDelegate {
         continueButton.isEnabled = isValidCode
 
         if !isValidCode {
-            logEvent("recovery_code", parameters: ["error": RecoveryCodeErrorParam.did_not_match.rawValue])
+            logEvent(
+                "recovery_code",
+                parameters: ["error": RecoveryCodeErrorParam.did_not_match.rawValue]
+            )
         }
     }
 

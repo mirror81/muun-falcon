@@ -60,8 +60,11 @@ func EmptyMusigNonces() *MusigNonces {
 
 // Generates a nonce for a specific address version. Returns the index of the
 // generated nonce and reallocates the arrays of the current MusigNonces.
-func (nonces *MusigNonces) GenerateNonce(addressVersion int, signerPubKeySerialized []byte) (int, error) {
-	sessionId := musig.RandomSessionId()
+func (nonces *MusigNonces) GenerateNonce( //nolint:staticcheck // TODO: methods on the same type should have the same receiver name (seen 2x "m", 2x "nonces")
+	addressVersion int,
+	signerPubKeySerialized []byte,
+) (int, error) {
+	sessionId := musig.RandomSessionId() //nolint:staticcheck // TODO: var sessionId should be sessionID
 
 	return nonces.generateStaticNonce(addressVersion, signerPubKeySerialized, sessionId)
 }
@@ -71,7 +74,11 @@ func (nonces *MusigNonces) GenerateNonce(addressVersion int, signerPubKeySeriali
 // Generates a nonce for a specific address version. Returns the index of the
 // generated nonce and reallocates the arrays of the current MusigNonces.
 // The provided sessionId MUST NOT be reused, it MUST be used only once.
-func (nonces *MusigNonces) generateStaticNonce(addressVersion int, signerPubKeySerialized []byte, sessionId [32]byte) (int, error) {
+func (nonces *MusigNonces) generateStaticNonce(
+	addressVersion int,
+	signerPubKeySerialized []byte,
+	sessionId [32]byte, //nolint:staticcheck // TODO: method parameter sessionId should be sessionID
+) (int, error) {
 	musigVersion := addresses.MusigVersionForAddress(addressVersion)
 
 	signerPubKey, err := musig.ParsePubKey(musigVersion, signerPubKeySerialized)

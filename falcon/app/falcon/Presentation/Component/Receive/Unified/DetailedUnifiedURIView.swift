@@ -13,8 +13,10 @@ class DetailedUnifiedURIView: MUBottomSheetViewContainer {
     var toast: ToastView?
     var detailedURILabel = UILabel()
 
-    init(bitcoinURIViewModel: BitcoinURIViewModel,
-         screenNameForLogs: String) {
+    init(
+        bitcoinURIViewModel: BitcoinURIViewModel,
+        screenNameForLogs: String
+    ) {
         self.bitcoinURIViewModel = bitcoinURIViewModel
         super.init(screenNameForLogs: screenNameForLogs)
     }
@@ -30,14 +32,18 @@ class DetailedUnifiedURIView: MUBottomSheetViewContainer {
         let btcTitle = formattedAsTitle(title: L10n.ReceiveViewController.detailedURIBTCTitle)
         dialogView.addArrangedSubview(multilineLabel(string: btcTitle))
 
-        let btcAddressLabel = copyableItem(string: bitcoinURIViewModel.address.attributedForDescription(),
-                                           valueToBeCopied: bitcoinURIViewModel.addressWithAmount)
+        let btcAddressLabel = copyableItem(
+            string: bitcoinURIViewModel.address.attributedForDescription(),
+            valueToBeCopied: bitcoinURIViewModel.addressWithAmount
+        )
         dialogView.addArrangedSubview(btcAddressLabel)
         addSpacer()
         let lnTitle = formattedAsTitle(title: L10n.ReceiveViewController.detailedURIBTCTitle)
         dialogView.addArrangedSubview(multilineLabel(string: lnTitle))
 
-        let lnLabel = copyableItem(string: bitcoinURIViewModel.invoice.rawInvoice.attributedForDescription())
+        let lnLabel = copyableItem(
+            string: bitcoinURIViewModel.invoice.rawInvoice.attributedForDescription()
+        )
 
         dialogView.addArrangedSubview(lnLabel)
     }
@@ -53,10 +59,14 @@ private extension DetailedUnifiedURIView {
     func addDetailedURIDisclaimer() {
         let detailedURI = L10n.ReceiveViewController.detailedURIDisclaimer
             .attributedForDescription(paragraphLineBreakMode: .byClipping)
-            .set(tint: L10n.ReceiveViewController.detailedURIDisclaimer,
-                 color: Asset.Colors.muunGrayDark.color)
-            .set(tint: L10n.ReceiveFormatSettingDropdownView.learnMoreUnderline,
-                 color: Asset.Colors.muunBlue.color)
+            .set(
+                tint: L10n.ReceiveViewController.detailedURIDisclaimer,
+                color: Asset.Colors.muunGrayDark.color
+            )
+            .set(
+                tint: L10n.ReceiveFormatSettingDropdownView.learnMoreUnderline,
+                color: Asset.Colors.muunBlue.color
+            )
         detailedURILabel = multilineLabel(string: detailedURI)
         detailedURILabel.isUserInteractionEnabled = true
         detailedURILabel.addGestureRecognizer(
@@ -67,13 +77,15 @@ private extension DetailedUnifiedURIView {
 
     func addSpacer() {
         let spacer = UIView()
-        let heightConstraint = NSLayoutConstraint(item: spacer,
-                                                  attribute: .height,
-                                                  relatedBy: .equal,
-                                                  toItem: spacer,
-                                                  attribute: .height,
-                                                  multiplier: 1,
-                                                  constant: 0)
+        let heightConstraint = NSLayoutConstraint(
+            item: spacer,
+            attribute: .height,
+            relatedBy: .equal,
+            toItem: spacer,
+            attribute: .height,
+            multiplier: 1,
+            constant: 0
+        )
         spacer.addConstraint(heightConstraint)
         dialogView.addArrangedSubview(spacer)
     }
@@ -84,9 +96,11 @@ private extension DetailedUnifiedURIView {
             return
         }
 
-        if gesture.hasUserTapped(text: L10n.ReceiveFormatSettingDropdownView.learnMoreUnderline,
-                                 in: detailedURILabel,
-                                 labelText: labelText) {
+        if gesture.hasUserTapped(
+            text: L10n.ReceiveFormatSettingDropdownView.learnMoreUnderline,
+            in: detailedURILabel,
+            labelText: labelText
+        ) {
             UIApplication.shared.open(
                 URL(string: L10n.ReceiveFormatSettingDropdownView.learnMoreLink)!, options: [:]
             )
@@ -94,10 +108,14 @@ private extension DetailedUnifiedURIView {
     }
 
     func formattedAsTitle(title: String) -> NSAttributedString {
-        let attributedTitle = title.set(font: Constant.Fonts.system(size: .desc,
-                                                                    weight: .semibold),
-                                        lineSpacing: Constant.FontAttributes.lineSpacing,
-                                        kerning: Constant.FontAttributes.kerning)
+        let attributedTitle = title.set(
+            font: Constant.Fonts.system(
+                size: .desc,
+                weight: .semibold
+            ),
+            lineSpacing: Constant.FontAttributes.lineSpacing,
+            kerning: Constant.FontAttributes.kerning
+        )
 
         return attributedTitle.set(tint: title, color: Asset.Colors.title.color)
     }
@@ -110,9 +128,11 @@ private extension DetailedUnifiedURIView {
     }
 
     func copyableItem(string: NSAttributedString, valueToBeCopied: String? = nil) -> UIView {
-        return MUDetailRowView.clipboard(title: string,
-                                         valueToBeCopied: valueToBeCopied,
-                                         controller: self,
-                                         takeTapOnlyOnButton: true)
+        return MUDetailRowView.clipboard(
+            title: string,
+            valueToBeCopied: valueToBeCopied,
+            controller: self,
+            takeTapOnlyOnButton: true
+        )
     }
 }

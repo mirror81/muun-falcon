@@ -6,17 +6,23 @@
 //  Copyright © 2023 muun. All rights reserved.
 //
 
-
-
 class WalletFundingGroup: BaseDebugExecutablesGroup {
-    init(addressActions: AddressActions,
-         createInvoice: CreateInvoiceAction,
-         userPreferencesSelector: UserPreferencesSelector) {
+    init(
+        addressActions: AddressActions,
+        createInvoice: CreateInvoiceAction,
+        userPreferencesSelector: UserPreferencesSelector
+    ) {
         let fundWallet =  FundWalletOnchainDebugExecutable(addressActions: addressActions)
-        let fundWalletOffchain = FundWalletOffchainDebugExecutable(createInvoice: createInvoice,
-                                                                   userPreferencesSelector: userPreferencesSelector)
-        super.init(category: "Wallet Funding",
-                   executables: [fundWallet,
-                                 fundWalletOffchain])
+        let fundWalletOffchain = FundWalletOffchainDebugExecutable(
+            createInvoice: createInvoice,
+            userPreferencesSelector: userPreferencesSelector
+        )
+        super.init(
+            category: "Wallet Funding",
+            executables: [
+                fundWallet,
+                fundWalletOffchain
+            ]
+        )
     }
 }

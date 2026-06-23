@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class ManuallyEnterFeeViewController: MUViewController {
 
     @IBOutlet fileprivate weak var titleLabel: UILabel!
@@ -27,9 +26,11 @@ class ManuallyEnterFeeViewController: MUViewController {
     @IBOutlet fileprivate weak var buttonView: ButtonView!
     @IBOutlet fileprivate weak var buttonViewBottomConstraint: NSLayoutConstraint!
 
-    fileprivate lazy var presenter = instancePresenter(ManuallyEnterFeePresenter.init,
-                                                       delegate: self,
-                                                       state: state)
+    fileprivate lazy var presenter = instancePresenter(
+        ManuallyEnterFeePresenter.init,
+        delegate: self,
+        state: state
+    )
     private weak var delegate: SelectFeeDelegate?
 
     private let originalFeeState: FeeState
@@ -106,9 +107,15 @@ class ManuallyEnterFeeViewController: MUViewController {
         let titleText = L10n.ManuallyEnterFeeViewController.s2
         titleLabel.attributedText = titleText
             .set(font: titleLabel.font)
-            .set(underline: L10n.ManuallyEnterFeeViewController.s3, color: Asset.Colors.muunBlue.color)
+            .set(
+                underline: L10n.ManuallyEnterFeeViewController.s3,
+                color: Asset.Colors.muunBlue.color
+            )
         titleLabel.isUserInteractionEnabled = true
-        titleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: .titleLabelTouched))
+        titleLabel.addGestureRecognizer(UITapGestureRecognizer(
+            target: self,
+            action: .titleLabelTouched
+        ))
 
         satsPerByteLabel.style = .description
         satsPerByteLabel.text = L10n.ManuallyEnterFeeViewController.s4
@@ -173,22 +180,32 @@ class ManuallyEnterFeeViewController: MUViewController {
                 return
             }
 
-            var feeAmountWithCurrency = BitcoinAmountWithSelectedCurrency(bitcoinAmount: feeAmount,
-                                                                          selectedCurrency: selectedCurrency)
-            btcLabel.setAmount(from: feeAmountWithCurrency,
-                               in: .inBTC)
+            var feeAmountWithCurrency = BitcoinAmountWithSelectedCurrency(
+                bitcoinAmount: feeAmount,
+                selectedCurrency: selectedCurrency
+            )
+            btcLabel.setAmount(
+                from: feeAmountWithCurrency,
+                in: .inBTC
+            )
             btcLabel.isHidden = false
 
             if feeAmount.inInputCurrency.currency != "BTC" {
-                let currency = GetCurrencyForCode().runAssumingCrashPosibility(code: feeAmount.inInputCurrency.currency)
-                feeAmountWithCurrency = BitcoinAmountWithSelectedCurrency(bitcoinAmount: feeAmount,
-                                                                          selectedCurrency: currency)
+                let currency = GetCurrencyForCode()
+                    .runAssumingCrashPosibility(code: feeAmount.inInputCurrency.currency)
+                feeAmountWithCurrency = BitcoinAmountWithSelectedCurrency(
+                    bitcoinAmount: feeAmount,
+                    selectedCurrency: currency
+                )
                 inInputLabel.setHelperText(for: feeAmountWithCurrency, in: .inInput)
                 inInputLabel.isHidden = false
             } else if feeAmount.inPrimaryCurrency.currency != "BTC" {
-                let currency = GetCurrencyForCode().runAssumingCrashPosibility(code: feeAmount.inInputCurrency.currency)
-                feeAmountWithCurrency = BitcoinAmountWithSelectedCurrency(bitcoinAmount: feeAmount,
-                                                                          selectedCurrency: currency)
+                let currency = GetCurrencyForCode()
+                    .runAssumingCrashPosibility(code: feeAmount.inInputCurrency.currency)
+                feeAmountWithCurrency = BitcoinAmountWithSelectedCurrency(
+                    bitcoinAmount: feeAmount,
+                    selectedCurrency: currency
+                )
                 inInputLabel.setHelperText(for: feeAmountWithCurrency, in: .inPrimary)
                 inInputLabel.isHidden = false
             } else {
@@ -214,9 +231,11 @@ class ManuallyEnterFeeViewController: MUViewController {
 }
 
 extension ManuallyEnterFeeViewController: UITextFieldDelegate {
-    func textField(_ textField: UITextField,
-                   shouldChangeCharactersIn range: NSRange,
-                   replacementString string: String) -> Bool {
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
 
         if let text = textField.text,
             let textRange = Range(range, in: text) {
@@ -307,7 +326,12 @@ extension ManuallyEnterFeeViewController: ManuallyEnterFeePresenterDelegate {
         showWarning(warningText, image: lowImage, warningColor: warnColor, buttonEnabled: true)
     }
 
-    private func showWarning(_ text: String, image: UIImage?, warningColor: UIColor, buttonEnabled: Bool) {
+    private func showWarning(
+        _ text: String,
+        image: UIImage?,
+        warningColor: UIColor,
+        buttonEnabled: Bool
+    ) {
         buttonView.isEnabled = buttonEnabled
         warningView.isHidden = false
 

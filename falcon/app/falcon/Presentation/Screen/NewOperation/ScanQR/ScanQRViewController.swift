@@ -9,7 +9,6 @@
 import UIKit
 import AVKit
 
-
 class ScanQRViewController: MUViewController {
 
     @IBOutlet fileprivate weak var enterManuallyButtonView: ButtonView!
@@ -118,7 +117,8 @@ class ScanQRViewController: MUViewController {
 
         makeNavigationVisible()
 
-        // At this point permissionView is at the top of the view herarchy, therefore the buttons arent reachables.
+        // At this point permissionView is at the top of the view herarchy, therefore the buttons
+        // arent reachables.
         // Thats why we need to bring them to the front of the view.
         view.bringSubviewToFront(enterManuallyButtonView)
     }
@@ -138,10 +138,12 @@ class ScanQRViewController: MUViewController {
         let squareSide = overlayView.bounds.width - (squareMargin * 2)
 
         let overlayPath = UIBezierPath(rect: overlayView.bounds)
-        let transparentPath = UIBezierPath(rect: CGRect(x: overlayView.bounds.midX - (squareSide / 2),
-                                                        y: overlayView.bounds.midY - (squareSide / 2),
-                                                        width: squareSide,
-                                                        height: squareSide))
+        let transparentPath = UIBezierPath(rect: CGRect(
+            x: overlayView.bounds.midX - (squareSide / 2),
+            y: overlayView.bounds.midY - (squareSide / 2),
+            width: squareSide,
+            height: squareSide
+        ))
         overlayPath.append(transparentPath)
         overlayPath.usesEvenOddFillRule = true
 
@@ -161,9 +163,11 @@ class ScanQRViewController: MUViewController {
     internal func pushToManuallyEnterQR(removeFromStack: Bool = false) {
         pauseCapture()
 
-        navigationController!.pushViewController(ManuallyEnterQRViewController(),
-                                                 animated: true,
-                                                 removeFromStack: removeFromStack)
+        navigationController!.pushViewController(
+            ManuallyEnterQRViewController(),
+            animated: true,
+            removeFromStack: removeFromStack
+        )
     }
 
     internal func pushToNewOp(_ address: String, origin: Constant.NewOpAnalytics.Origin) {

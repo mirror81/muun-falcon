@@ -91,7 +91,10 @@ class NoticeView: UIView {
         messageLabel.textAlignment = .left
         card.addSubview(messageLabel)
         NSLayoutConstraint.activate([
-            messageLabel.leadingAnchor.constraint(equalTo: helperImageView.trailingAnchor, constant: 12),
+            messageLabel.leadingAnchor.constraint(
+                equalTo: helperImageView.trailingAnchor,
+                constant: 12
+            ),
             messageLabel.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -12),
             messageLabel.centerYAnchor.constraint(equalTo: card.centerYAnchor),
             messageLabel.topAnchor.constraint(equalTo: card.topAnchor, constant: 12),
@@ -99,7 +102,9 @@ class NoticeView: UIView {
         ])
 
         messageLabel.isUserInteractionEnabled = true
-        messageLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: .messageTapped))
+        messageLabel.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: .messageTapped)
+        )
     }
 
     @objc fileprivate func messageTapped() {

@@ -14,13 +14,17 @@ protocol LightningNetworkSettingsPresenterDelegate: BasePresenterDelegate {
     func setLoading(_ loading: Bool)
 }
 
-class LightningNetworkSettingsPresenter<Delegate: LightningNetworkSettingsPresenterDelegate>: BasePresenter<Delegate> {
+class LightningNetworkSettingsPresenter<
+    Delegate: LightningNetworkSettingsPresenterDelegate
+>: BasePresenter<Delegate> {
     private let updateUserPreferences: UpdateUserPreferencesAction
     private let userPreferencesSelector: UserPreferencesSelector
 
-    init(delegate: Delegate,
-         updateUserPreferences: UpdateUserPreferencesAction,
-         userPreferencesSelector: UserPreferencesSelector) {
+    init(
+        delegate: Delegate,
+        updateUserPreferences: UpdateUserPreferencesAction,
+        userPreferencesSelector: UserPreferencesSelector
+    ) {
         self.updateUserPreferences = updateUserPreferences
         self.userPreferencesSelector = userPreferencesSelector
         super.init(delegate: delegate)

@@ -21,9 +21,11 @@ public class FeeCalculatorAction: AsyncAction<FeeInfo> {
     private let nextTransactionSizeRepository: NextTransactionSizeRepository
     private let minFeeRateRepository: MinFeeRateRepository
 
-    init(realTimeDataAction: RealTimeDataAction,
-         nextTransactionSizeRepository: NextTransactionSizeRepository,
-         minFeeRateRepository: MinFeeRateRepository) {
+    init(
+        realTimeDataAction: RealTimeDataAction,
+        nextTransactionSizeRepository: NextTransactionSizeRepository,
+        minFeeRateRepository: MinFeeRateRepository
+    ) {
 
         self.realTimeDataAction = realTimeDataAction
         self.nextTransactionSizeRepository = nextTransactionSizeRepository
@@ -40,10 +42,12 @@ public class FeeCalculatorAction: AsyncAction<FeeInfo> {
                 let minFeeRate = (self.minFeeRateRepository.fetch().satsPerVByte as NSDecimalNumber)
                     .doubleValue
 
-                return FeeInfo(nextTransactionSize: nts,
-                               feeWindow: data.feeWindow,
-                               minFeeRateInSatsPerVByte: minFeeRate,
-                               exchangeRateWindow: data.exchangeRateWindow)
+                return FeeInfo(
+                    nextTransactionSize: nts,
+                    feeWindow: data.feeWindow,
+                    minFeeRateInSatsPerVByte: minFeeRate,
+                    exchangeRateWindow: data.exchangeRateWindow
+                )
             })
 
         runSingle(single)
