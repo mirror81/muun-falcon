@@ -264,7 +264,12 @@ class HomePresenter<Delegate: HomePresenterDelegate>: BasePresenter<Delegate> {
 
     func getBTCBalance() -> MonetaryAmount {
 
-        if let window = getExchangeRateWindow() {
+        // swiftlint:disable force_error_handling
+        if let window = getExchangeRateWindow(),
+           let rate = try? window.rate(for: balance.currency),
+           rate > 0 && !rate.isNotANumber {
+            // swiftlint:enable force_error_handling
+
             let bitcoinAmount = BitcoinAmount.from(
                 inputCurrency: balance,
                 with: window,
@@ -281,7 +286,12 @@ class HomePresenter<Delegate: HomePresenterDelegate>: BasePresenter<Delegate> {
             return getBTCBalance()
         }
 
-        if let window = getExchangeRateWindow() {
+        // swiftlint:disable force_error_handling
+        if let window = getExchangeRateWindow(),
+           let rate = try? window.rate(for: balance.currency),
+           rate > 0 && !rate.isNotANumber {
+            // swiftlint:enable force_error_handling
+
             let bitcoinAmount = BitcoinAmount.from(
                 inputCurrency: balance,
                 with: window,
