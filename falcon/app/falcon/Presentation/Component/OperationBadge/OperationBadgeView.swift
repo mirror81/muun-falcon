@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 final class OperationBadgeView: UIView {
 
     private var contentView: UIView! = UIView()
@@ -55,7 +54,10 @@ final class OperationBadgeView: UIView {
             amountLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 4),
             amountLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4),
             amountLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
-            amountLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -4),
+            amountLabel.trailingAnchor.constraint(
+                equalTo: contentView.trailingAnchor,
+                constant: -4
+            ),
             amountLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             amountLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
@@ -86,13 +88,19 @@ final class OperationBadgeView: UIView {
     }
 
     func animate(opDirection: OperationDirection) {
-        let animationDirection: AnimationDirection = (opDirection == .OUTGOING || opDirection == .CYCLICAL)
+        let animationDirection: AnimationDirection =
+            (opDirection == .OUTGOING || opDirection == .CYCLICAL)
             ? .bottomToTop
             : .topToBottom
 
         animate(direction: animationDirection, offset: 48, duration: .opsBadge) {
             // The delay is because it stays frozen in the homescreen for a while
-            self.animateOut(direction: animationDirection, offset: 48, duration: .long, delay: .opsBadge) {
+            self.animateOut(
+                direction: animationDirection,
+                offset: 48,
+                duration: .long,
+                delay: .opsBadge
+            ) {
                 self.removeFromSuperview()
             }
         }

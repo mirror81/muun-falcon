@@ -33,3 +33,12 @@ public class FetchSwapServerKeyAction {
         case noKey
     }
 }
+
+extension FetchSwapServerKeyAction.Errors: ClassifiedError {
+    var classification: ErrorClassification {
+        switch self {
+        case .noKey:
+            return .unexpected
+        }
+    }
+}

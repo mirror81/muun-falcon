@@ -3,12 +3,13 @@ package scanner
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/btcsuite/btcd/btcutil"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/rpcclient"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/btcsuite/btcd/btcutil"
+	"github.com/btcsuite/btcd/chaincfg"
+	"github.com/btcsuite/btcd/rpcclient"
 )
 
 type AddressWithBalance struct {
@@ -25,7 +26,10 @@ func (ws WalletState) getBalance(address string) btcutil.Amount {
 	return ws.addressBalances[address]
 }
 
-func getBitcoindRpcClient(t *testing.T, wallet string) *rpcclient.Client {
+func getBitcoindRpcClient( //nolint:staticcheck // TODO: func getBitcoindRpcClient should be getBitcoindRPCClient
+	t *testing.T,
+	wallet string,
+) *rpcclient.Client {
 	const (
 		rpcHost     = "localhost:38443"
 		rpcUser     = "user"
@@ -54,7 +58,9 @@ func getBitcoindRpcClient(t *testing.T, wallet string) *rpcclient.Client {
 	return client
 }
 
-func mustMarshal(v interface{}) json.RawMessage {
+func mustMarshal(
+	v interface{}, //nolint:modernize // TODO: use any instead of interface{}
+) json.RawMessage {
 	data, err := json.Marshal(v)
 	if err != nil {
 		panic(err)
@@ -99,7 +105,7 @@ func rescanTheBlockchain(t *testing.T, rpc *rpcclient.Client) {
 			t.Fatalf("Failed to get wallet info: %v", err)
 		}
 
-		var info map[string]interface{}
+		var info map[string]interface{} //nolint:modernize // TODO: use any instead of interface{}
 		if err := json.Unmarshal(result, &info); err != nil {
 			t.Fatalf("Failed to unmarshal wallet info: %v", err)
 		}
@@ -116,7 +122,10 @@ func rescanTheBlockchain(t *testing.T, rpc *rpcclient.Client) {
 	t.Fatalf("Rescan did not complete within %v", maxWait)
 }
 
-func getWalletState(t *testing.T, walletRpc *rpcclient.Client) WalletState {
+func getWalletState(
+	t *testing.T,
+	walletRpc *rpcclient.Client, //nolint:staticcheck // TODO: func parameter walletRpc should be walletRPC
+) WalletState {
 	const maxConfirmations = 9999999
 
 	unspentResult, err := walletRpc.RawRequest(
@@ -127,7 +136,7 @@ func getWalletState(t *testing.T, walletRpc *rpcclient.Client) WalletState {
 		t.Fatalf("Failed to list unspent outputs: %v", err)
 	}
 
-	var unspents []map[string]interface{}
+	var unspents []map[string]interface{} //nolint:modernize // TODO: use any instead of interface{}
 	if err := json.Unmarshal(unspentResult, &unspents); err != nil {
 		t.Fatalf("Failed to unmarshal unspent outputs: %v", err)
 	}
@@ -156,7 +165,7 @@ func getWalletState(t *testing.T, walletRpc *rpcclient.Client) WalletState {
 
 func fundAddress(
 	t *testing.T,
-	senderRpc *rpcclient.Client,
+	senderRpc *rpcclient.Client, //nolint:staticcheck // TODO: func parameter senderRpc should be senderRPC
 	address string,
 	amount btcutil.Amount,
 ) {
@@ -187,12 +196,12 @@ func generateBlock(t *testing.T, rpc *rpcclient.Client) {
 
 func checkFundsAdded(
 	t *testing.T,
-	userWalletRpc *rpcclient.Client,
+	userWalletRpc *rpcclient.Client, //nolint:staticcheck // TODO: func parameter userWalletRpc should be userWalletRPC
 	fundedAddresses []AddressWithBalance,
 	walletStateBeforeFunding WalletState,
 ) {
-	// To get how much was added to an address we are comparing with the address balance
-	// before funding.
+	// To get how much was added to an address we are comparing with the address balance before
+	// funding.
 	finalState := getWalletState(t, userWalletRpc)
 
 	// Validate funding and calculate expected total
@@ -225,8 +234,8 @@ func checkFundsAdded(
 
 func spendAllFundsFromUserWallet(
 	t *testing.T,
-	userWalletRpc,
-	daemonRpc *rpcclient.Client,
+	userWalletRpc, //nolint:staticcheck // TODO: func parameter userWalletRpc should be userWalletRPC
+	daemonRpc *rpcclient.Client, //nolint:staticcheck // TODO: func parameter daemonRpc should be daemonRPC
 ) string {
 	balancesBefore := getWalletState(t, userWalletRpc)
 
@@ -240,7 +249,12 @@ func spendAllFundsFromUserWallet(
 	}
 
 	// Use PSBT for spending (required for MuSig2)
-	psbt := createFundedPSBT(t, userWalletRpc, destAddr.EncodeAddress(), balancesBefore.totalBalance)
+	psbt := createFundedPSBT(
+		t,
+		userWalletRpc,
+		destAddr.EncodeAddress(),
+		balancesBefore.totalBalance,
+	)
 	signedPsbt := signPSBT(t, userWalletRpc, psbt)
 	txHex := finalizePSBT(t, userWalletRpc, signedPsbt)
 	txid := broadcastTransaction(t, userWalletRpc, txHex)
@@ -265,7 +279,7 @@ func getTxAmountAndFee(
 		t.Fatalf("Failed to get transaction details: %v", err)
 	}
 
-	var txDetails map[string]interface{}
+	var txDetails map[string]interface{} //nolint:modernize // TODO: use any instead of interface{}
 	if err := json.Unmarshal(txResult, &txDetails); err != nil {
 		t.Fatalf("Failed to unmarshal transaction details: %v", err)
 	}
@@ -287,15 +301,26 @@ func getTxAmountAndFee(
 	return txAmount, txFee
 }
 
-func createFundedPSBT(t *testing.T, rpc *rpcclient.Client, destAddr string, amount btcutil.Amount) string {
+func createFundedPSBT(
+	t *testing.T,
+	rpc *rpcclient.Client,
+	destAddr string,
+	amount btcutil.Amount,
+) string {
 	amountStr := fmt.Sprintf("%.8f", amount.ToBTC())
 	result, err := rpc.RawRequest(
 		"walletcreatefundedpsbt",
 		[]json.RawMessage{
-			mustMarshal([]interface{}{}),                                 // inputs (auto-select)
-			mustMarshal([]map[string]interface{}{{destAddr: amountStr}}), // outputs
+			mustMarshal(
+				[]interface{}{}, //nolint:modernize // TODO: use any instead of interface{} // inputs (auto-select)
+			),
+			mustMarshal(
+				[]map[string]interface{}{{destAddr: amountStr}}, //nolint:modernize // TODO: use any instead of interface{} // outputs
+			),
 			mustMarshal(0), // locktime
-			mustMarshal(map[string]interface{}{"subtractFeeFromOutputs": []int{0}}), // options
+			mustMarshal(
+				map[string]interface{}{"subtractFeeFromOutputs": []int{0}}, //nolint:modernize // TODO: use any instead of interface{} // options
+			),
 		},
 	)
 	if err != nil {
@@ -337,7 +362,7 @@ func finalizePSBT(t *testing.T, rpc *rpcclient.Client, psbt string) string {
 		t.Fatalf("Failed to finalize PSBT: %v", err)
 	}
 
-	var response map[string]interface{}
+	var response map[string]interface{} //nolint:modernize // TODO: use any instead of interface{}
 	if err := json.Unmarshal(result, &response); err != nil {
 		t.Fatalf("Failed to unmarshal finalized PSBT: %v", err)
 	}
@@ -373,7 +398,7 @@ func broadcastTransaction(t *testing.T, rpc *rpcclient.Client, txHex string) str
 }
 
 func extractPSBTFromResponse(t *testing.T, result json.RawMessage, description string) string {
-	var response map[string]interface{}
+	var response map[string]interface{} //nolint:modernize // TODO: use any instead of interface{}
 	if err := json.Unmarshal(result, &response); err != nil {
 		t.Fatalf("Failed to unmarshal %s response: %v", description, err)
 	}

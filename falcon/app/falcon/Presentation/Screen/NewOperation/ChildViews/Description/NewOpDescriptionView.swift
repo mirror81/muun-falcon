@@ -22,11 +22,17 @@ class NewOpDescriptionView: MUView, PresenterInstantior {
 
     weak var delegate: NewOpViewDelegate?
     weak var transitionsDelegate: OpDescriptionTransitions?
-    fileprivate lazy var presenter = instancePresenter(NewOpDescriptionPresenter.init, delegate: self, state: data)
+    fileprivate lazy var presenter = instancePresenter(
+        NewOpDescriptionPresenter.init,
+        delegate: self,
+        state: data
+    )
 
-    init(data: NewOpData.Description,
-         delegate: NewOpViewDelegate?,
-         transitionsDelegate: OpDescriptionTransitions?) {
+    init(
+        data: NewOpData.Description,
+        delegate: NewOpViewDelegate?,
+        transitionsDelegate: OpDescriptionTransitions?
+    ) {
         self.data = data
         self.delegate = delegate
         self.transitionsDelegate = transitionsDelegate
@@ -110,7 +116,11 @@ extension NewOpDescriptionView: NewOperationChildView {
 
 extension NewOpDescriptionView: UITextViewDelegate {
 
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText string: String) -> Bool {
+    func textView(
+        _ textView: UITextView,
+        shouldChangeTextIn range: NSRange,
+        replacementText string: String
+    ) -> Bool {
 
         if let text = textView.text,
             let textRange = Range(range, in: text) {

@@ -71,8 +71,10 @@ class MUPlainInfoDisplayerViewController: UIViewController {
         textView.textColor = Asset.Colors.muunGrayDark.color
         textView.font = Constant.Fonts.system(size: .desc, weight: .medium)
         contentView.addSubview(textView)
-        textView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16).isActive = true
-        textView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16).isActive = true
+        textView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
+            .isActive = true
+        textView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
+            .isActive = true
         textView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         textView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
     }
@@ -83,14 +85,17 @@ class MUPlainInfoDisplayerViewController: UIViewController {
         closeButton.setTitleColor(.black, for: .normal)
         closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
         view.addSubview(closeButton)
-        closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16).isActive = true
+        closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16)
+            .isActive = true
+        closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16)
+            .isActive = true
     }
 
     private func layoutViews() {
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: closeButton.bottomAnchor, constant: 8).isActive = true
+        scrollView.topAnchor.constraint(equalTo: closeButton.bottomAnchor, constant: 8)
+            .isActive = true
         scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
 

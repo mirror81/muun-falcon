@@ -18,13 +18,15 @@ public class ApiMigrationsManager {
         apiMigrationsVersionRepository: ApiMigrationsVersionRepository,
         fetchSwapServerKeyAction: FetchSwapServerKeyAction,
         migrateFingerprintsAction: MigrateFingerprintsAction,
-        migrateUserSkippedEmail: MigrateUserSkippedEmailAction) {
+        migrateUserSkippedEmail: MigrateUserSkippedEmailAction
+    ) {
 
         self.apiMigrationsVersionRepository = apiMigrationsVersionRepository
 
         registerMigration(version: 1, action: fetchSwapServerKeyAction.run)
         registerMigration(version: 2, action: migrateFingerprintsAction.run)
-        // redo migrate fingerprints migration because it did not have proper error handling the first time
+        // redo migrate fingerprints migration because it did not have proper error handling the
+        // first time
         registerMigration(version: 3, action: migrateFingerprintsAction.run)
         registerMigration(version: 4, action: migrateUserSkippedEmail.run)
     }

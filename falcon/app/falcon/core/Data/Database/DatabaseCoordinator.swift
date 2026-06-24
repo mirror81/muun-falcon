@@ -18,10 +18,12 @@ public class DatabaseCoordinator {
     let secureStorage: SecureStorage
     let walletService: WalletService
 
-    public init(queue: DatabaseQueue,
-                preferences: Preferences,
-                secureStorage: SecureStorage,
-                walletService: WalletService) throws {
+    public init(
+        queue: DatabaseQueue,
+        preferences: Preferences,
+        secureStorage: SecureStorage,
+        walletService: WalletService
+    ) throws {
         self.queue = queue
         self.preferences = preferences
         self.secureStorage = secureStorage
@@ -349,15 +351,18 @@ public class DatabaseCoordinator {
                     .notNull()
             })
 
-            try Row.fetchAll(db, sql: "SELECT incomingSwapUuid, paymentAmountInSats FROM incomingSwapHtlcDB")
+            try Row.fetchAll(
+                db,
+                sql: "SELECT incomingSwapUuid, paymentAmountInSats FROM incomingSwapHtlcDB"
+            )
                 .forEach { row in
                     try db.execute(sql: """
                             UPDATE incomingSwapDb
                             SET paymentAmountInSats = :amount
                             WHERE uuid = :uuid
                          """, arguments: [
-                            "amount": row["paymentAmountInSats"] as Int,
-                            "uuid": row["incomingSwapUuid"] as String
+                             "amount": row["paymentAmountInSats"] as Int,
+                             "uuid": row["incomingSwapUuid"] as String
                          ])
                 }
 
@@ -448,7 +453,8 @@ public class DatabaseCoordinator {
             if let exportDate = user.emergencyKitLastExportedDate {
                 let code: String
 
-                if let codes = preferences.array(forKey: .emergencyKitVerificationCodes) as? [String],
+                if let codes = preferences
+                    .array(forKey: .emergencyKitVerificationCodes) as? [String],
                    let lastCode = codes.last {
                     code = lastCode
                 } else {
@@ -484,7 +490,8 @@ public class DatabaseCoordinator {
         // Migration to init utxo status for pre-existing sizeForAmounts. Will be properly
         // initialized after first NTS refresh (e.g first newOperation, incoming operation, or any
         // operationUpdate).
-        // NOTE: we're choosing to init status as CONFIRMED as this field won't be used right away and
+        // NOTE: we're choosing to init status as CONFIRMED as this field won't be used right away
+        // and
         // for our intended first use CONFIRMED will be handled gracefully as "ignorable".
         migrator.registerMigration("init NTS utxoStatus") { [self] _ in
             let nts: NextTransactionSize? = preferences.object(forKey: .nextTransactionSize)
@@ -498,7 +505,10 @@ public class DatabaseCoordinator {
 
         migrator.registerMigration("move isBalanceHidden to libwallet storage") { _ in
             let isBalanceHidden = self.preferences.bool(forKey: .isBalanceHidden)
-            self.walletService.saveBool(key: Persistence.isBalanceHidden.rawValue, value: isBalanceHidden)
+            self.walletService.saveBool(
+                key: Persistence.isBalanceHidden.rawValue,
+                value: isBalanceHidden
+            )
             self.preferences.remove(key: .isBalanceHidden)
         }
 

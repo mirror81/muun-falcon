@@ -16,8 +16,10 @@ class ActivateEmergencyKitViewController: MUViewController {
     private let helpNavigationController = UINavigationController()
     private let flow: EmergencyKitFlow
 
-    fileprivate lazy var presenter = instancePresenter(ActivateEmergencyKitPresenter.init,
-                                                       delegate: self)
+    fileprivate lazy var presenter = instancePresenter(
+        ActivateEmergencyKitPresenter.init,
+        delegate: self
+    )
 
     override var screenLoggingName: String {
         return "emergency_kit_verify"
@@ -91,8 +93,10 @@ extension ActivateEmergencyKitViewController: ActivateEmergencyKitViewDelegate {
         if code == kit.verificationCode {
             showLoading("")
             presenter.reportExported(kit: kit)
-            logEvent("emergency_kit_exported",
-                     parameters: ["share_option": shareOption ?? "unknown"])
+            logEvent(
+                "emergency_kit_exported",
+                parameters: ["share_option": shareOption ?? "unknown"]
+            )
         } else if presenter.isOld(code: code) {
             let firstDigitsOfOriginalCode = String(describing: kit.verificationCode.prefix(2))
             activateView.oldCode(firstDigitsOfOriginalCode)
@@ -113,7 +117,7 @@ extension ActivateEmergencyKitViewController: ActivateEmergencyKitPresenterDeleg
 
     func reported() {
         navigationController!.pushViewController(
-                FeedbackViewController(feedback: flow.successFeedback), animated: true
+            FeedbackViewController(feedback: flow.successFeedback), animated: true
         )
     }
 }

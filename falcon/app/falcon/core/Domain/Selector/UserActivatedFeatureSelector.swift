@@ -22,9 +22,11 @@ public class UserActivatedFeaturesSelector {
     private let featureFlagsSelector: FeatureFlagsSelector
     private let userRepository: UserRepository
 
-    init(blockheightRepository: BlockchainHeightRepository,
-         featureFlagsSelector: FeatureFlagsSelector,
-         userRepository: UserRepository) {
+    init(
+        blockheightRepository: BlockchainHeightRepository,
+        featureFlagsSelector: FeatureFlagsSelector,
+        userRepository: UserRepository
+    ) {
         self.blockheightRepository = blockheightRepository
         self.featureFlagsSelector = featureFlagsSelector
         self.userRepository = userRepository
@@ -44,7 +46,9 @@ public class UserActivatedFeaturesSelector {
 
     }
 
-    public func get(for feature: LibwalletUserActivatedFeatureProtocol) -> UserActivatedFeatureStatus {
+    public func get(
+        for feature: LibwalletUserActivatedFeatureProtocol
+    ) -> UserActivatedFeatureStatus {
         return determineStatus(
             for: feature,
             blockHeight: blockheightRepository.getCurrentBlockchainHeight(),
@@ -57,7 +61,8 @@ public class UserActivatedFeaturesSelector {
         for feature: LibwalletUserActivatedFeatureProtocol,
         blockHeight: Int?,
         user: User?,
-        featureFlags: [FeatureFlags]) -> UserActivatedFeatureStatus {
+        featureFlags: [FeatureFlags]
+    ) -> UserActivatedFeatureStatus {
 
         guard let user = user, let blockHeight = blockHeight else {
             return .off
@@ -77,7 +82,8 @@ public class UserActivatedFeaturesSelector {
             Environment.current.network
         )
 
-        let activationHeight = Libwallet.userActivatedFeatureTaproot()!.blockheight(Environment.current.network)
+        let taproot = Libwallet.userActivatedFeatureTaproot()!
+        let activationHeight = taproot.blockheight(Environment.current.network)
         let currentHeight = blockheightRepository.getCurrentBlockchainHeight()
         let blocksLeft = UInt(max(0, activationHeight - currentHeight))
 

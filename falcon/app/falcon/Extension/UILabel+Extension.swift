@@ -49,7 +49,8 @@ extension UILabel {
             with: CGSize(width: frame.size.width, height: .greatestFiniteMagnitude),
             options: .usesLineFragmentOrigin,
             attributes: [.font: font],
-            context: nil).size
+            context: nil
+        ).size
 
         return labelTextSize.height > bounds.size.height
     }

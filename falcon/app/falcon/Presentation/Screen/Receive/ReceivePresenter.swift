@@ -9,7 +9,6 @@
 import Foundation
 import RxSwift
 
-
 protocol ReceivePresenterDelegate: BasePresenterDelegate {
     func didReceiveNewOperation(message: String)
     func show(invoice: IncomingInvoiceInfo?)
@@ -41,15 +40,17 @@ class ReceivePresenter<Delegate: ReceivePresenterDelegate>: BasePresenter<Delega
     private var amountChanged: Bool = false
     private var lastGeneratedBitcoinUri: BitcoinURIViewModel?
 
-    init(delegate: Delegate,
-         addressActions: AddressActions,
-         preferences: Preferences,
-         operationActions: OperationActions,
-         createInvoiceAction: CreateInvoiceAction,
-         createBitcoinURIAction: CreateBitcoinURIAction,
-         fetchNotificationsAction: FetchNotificationsAction,
-         userPreferencesSelector: UserPreferencesSelector,
-         featureFlagsSelector: FeatureFlagsSelector) {
+    init(
+        delegate: Delegate,
+        addressActions: AddressActions,
+        preferences: Preferences,
+        operationActions: OperationActions,
+        createInvoiceAction: CreateInvoiceAction,
+        createBitcoinURIAction: CreateBitcoinURIAction,
+        fetchNotificationsAction: FetchNotificationsAction,
+        userPreferencesSelector: UserPreferencesSelector,
+        featureFlagsSelector: FeatureFlagsSelector
+    ) {
         self.addressActions = addressActions
         self.preferences = preferences
         self.operationActions = operationActions
@@ -115,7 +116,9 @@ class ReceivePresenter<Delegate: ReceivePresenterDelegate>: BasePresenter<Delega
         }
     }
 
-    func refreshUnifiedQR(replacingSelectedAddressTypeBy newAddressType: AddressTypeViewModel? = nil) {
+    func refreshUnifiedQR(
+        replacingSelectedAddressTypeBy newAddressType: AddressTypeViewModel? = nil
+    ) {
         self.currentAddressType = newAddressType ?? currentAddressType
         self.delegate.show(bitcoinURIViewModel: nil)
 
@@ -123,9 +126,11 @@ class ReceivePresenter<Delegate: ReceivePresenterDelegate>: BasePresenter<Delega
 
         let address = getAddressBy(addressType: getCurrentAddressTypeOrDefault())
 
-        var action = createBitcoinURIAction.run(amount: amount,
-                                                reusableInvoice: retrieveReusableInvoice(),
-                                                address: address)
+        var action = createBitcoinURIAction.run(
+            amount: amount,
+            reusableInvoice: retrieveReusableInvoice(),
+            address: address
+        )
         if amountChanged {
             action = action.delay(.seconds(1), scheduler: MainScheduler.instance)
             amountChanged = false
@@ -140,8 +145,10 @@ class ReceivePresenter<Delegate: ReceivePresenterDelegate>: BasePresenter<Delega
     private func retrieveReusableInvoice() -> ReusableInvoiceForURICreation? {
         var reusableInvoice: ReusableInvoiceForURICreation?
         lastGeneratedBitcoinUri.map {
-            reusableInvoice = ReusableInvoiceForURICreation(raw: $0.invoice.rawInvoice,
-                                                            expiresAt: $0.invoice.expiresAt)
+            reusableInvoice = ReusableInvoiceForURICreation(
+                raw: $0.invoice.rawInvoice,
+                expiresAt: $0.invoice.expiresAt
+            )
         }
 
         return reusableInvoice
@@ -164,7 +171,8 @@ class ReceivePresenter<Delegate: ReceivePresenterDelegate>: BasePresenter<Delega
             self.numberOfOperations = change.numberOfOperations
         }
 
-        if let ops = numberOfOperations, change.numberOfOperations > ops, let newOp = change.lastOperation {
+        if let ops = numberOfOperations, change.numberOfOperations > ops,
+           let newOp = change.lastOperation {
 
             // Only do this for BROADCASTED to avoid refreshing the invoice or
             // showing a toast again for CONFIRMED ops

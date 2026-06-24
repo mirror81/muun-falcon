@@ -13,7 +13,10 @@ func NewSubmitDiagnosticAction(service service.HoustonService) *SubmitDiagnostic
 	return &SubmitDiagnosticAction{service}
 }
 
-func (action SubmitDiagnosticAction) Run(sessionId string, debugLog string) error {
+func (action SubmitDiagnosticAction) Run(
+	sessionId string, //nolint:staticcheck // TODO: method parameter sessionId should be sessionID
+	debugLog string,
+) error {
 	return action.houstonService.SubmitDiagnosticsScanData(model.DiagnosticScanDataJson{
 		ScanId: sessionId,
 		Logs:   debugLog,

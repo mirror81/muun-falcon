@@ -26,11 +26,13 @@ class SignInWithRCPresenter<Delegate: SignInWithRCPresenterDelegate>: BasePresen
     private let preferences: Preferences
     private let fcmTokenAction: FCMTokenAction
 
-    init(delegate: Delegate,
-         createRCLoginSessionAction: CreateRCLoginSessionAction,
-         logInWithRCAction: LogInWithRCAction,
-         preferences: Preferences,
-         fcmTokenAction: FCMTokenAction) {
+    init(
+        delegate: Delegate,
+        createRCLoginSessionAction: CreateRCLoginSessionAction,
+        logInWithRCAction: LogInWithRCAction,
+        preferences: Preferences,
+        fcmTokenAction: FCMTokenAction
+    ) {
         self.createRCLoginSessionAction = createRCLoginSessionAction
         self.logInWithRCAction = logInWithRCAction
         self.preferences = preferences
@@ -97,7 +99,9 @@ class SignInWithRCPresenter<Delegate: SignInWithRCPresenterDelegate>: BasePresen
         }
     }
 
-    private func onLogInChange(_ value: ActionState<(hasEmailSetup: Bool, obfuscatedEmail: String?)>) {
+    private func onLogInChange(
+        _ value: ActionState<(hasEmailSetup: Bool, obfuscatedEmail: String?)>
+    ) {
         switch value.type {
 
         case .EMPTY:
@@ -105,7 +109,8 @@ class SignInWithRCPresenter<Delegate: SignInWithRCPresenterDelegate>: BasePresen
 
         case .ERROR:
             if let e = value.error {
-                if e.isKindOf(.staleChallengeKey) {
+                if e.isKindOf(.staleChallengeKey), let muunError = e as? MuunError {
+                    AnalyticsHelper.logEvent(ErrorEvent(type: .rcStaleError, error: muunError))
                     delegate.showStaleRcError()
                 } else {
                     handleError(e)
@@ -118,7 +123,8 @@ class SignInWithRCPresenter<Delegate: SignInWithRCPresenterDelegate>: BasePresen
             delegate.setLoading(true)
 
         case .VALUE:
-            if let hasEmailSetup = value.value?.hasEmailSetup, hasEmailSetup, let email = value.value?.obfuscatedEmail {
+            if let hasEmailSetup = value.value?.hasEmailSetup, hasEmailSetup,
+               let email = value.value?.obfuscatedEmail {
                 delegate.needsEmailVerify(obfuscatedEmail: email)
             } else {
                 delegate.loggedIn()
@@ -130,4 +136,13 @@ class SignInWithRCPresenter<Delegate: SignInWithRCPresenterDelegate>: BasePresen
         case invalidRCVersion
     }
 
+}
+
+extension SignInWithRCPresenter.Errors: ClassifiedError {
+    var classification: ErrorClassification {
+        switch self {
+        case .invalidRCVersion:
+            return .expected
+        }
+    }
 }

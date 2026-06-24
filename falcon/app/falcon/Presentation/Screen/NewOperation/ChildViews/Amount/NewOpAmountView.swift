@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 protocol OpAmountTransitions: NewOperationTransitions {
     func didEnter(amount: BitcoinAmount, data: NewOperationStateLoaded, takeFeeFromAmount: Bool)
     func requestCurrencyPicker(data: NewOperationStateLoaded, currency: Currency)
@@ -28,11 +27,17 @@ class NewOpAmountView: MUView, PresenterInstantior {
         return amountInputView.currency
     }
 
-    fileprivate lazy var presenter = instancePresenter(NewOpAmountPresenter.init, delegate: self, state: data)
+    fileprivate lazy var presenter = instancePresenter(
+        NewOpAmountPresenter.init,
+        delegate: self,
+        state: data
+    )
 
-    init(data: NewOpData.Amount,
-         delegate: NewOpViewDelegate?,
-         transitionsDelegate: OpAmountTransitions?) {
+    init(
+        data: NewOpData.Amount,
+        delegate: NewOpViewDelegate?,
+        transitionsDelegate: OpAmountTransitions?
+    ) {
         self.data = data
         self.delegate = delegate
         self.transitionsDelegate = transitionsDelegate
@@ -106,11 +111,14 @@ class NewOpAmountView: MUView, PresenterInstantior {
         let currency = data.selectedCurrency
 
         if data.amount.inSatoshis.asDecimal() > 0 {
-            amountInputView.value = data.amount.inInputCurrency.toAmountWithoutCode(btcCurrencyFormat: .short,
-                                                                                    currencyOfAmount: currency)
+            amountInputView.value = data.amount.inInputCurrency.toAmountWithoutCode(
+                btcCurrencyFormat: .short,
+                currencyOfAmount: currency
+            )
         }
 
-        let amount = data.totalBalance.inInputCurrency.toAmountWithoutCode(currencyOfAmount: currency)
+        let amount = data.totalBalance.inInputCurrency
+            .toAmountWithoutCode(currencyOfAmount: currency)
         amountInputView?.subtitle = L10n.NewOpAmountView.s2(
             amount,
             currency.displayCode
@@ -153,8 +161,10 @@ extension NewOpAmountView: LinkButtonViewDelegate {
 
     func linkButton(didPress linkButton: LinkButtonView) {
         let totalBalanceAmount = presenter.totalBalance(in: inputCurrency.code).amount
-        let allFundsString = inputCurrency.toAmountWithoutCode(amount: totalBalanceAmount,
-                                                           btcCurrencyFormat: .long)
+        let allFundsString = inputCurrency.toAmountWithoutCode(
+            amount: totalBalanceAmount,
+            btcCurrencyFormat: .long
+        )
         amountInputView.value = allFundsString
         useAllFunds = true
 
@@ -181,7 +191,10 @@ extension NewOpAmountView: NewOperationChildViewDelegate {
     func pushNextState() {
         let input = amountInputView.value
         let amount: BitcoinAmount
-        let isUsingAllFunds = useAllFunds || presenter.isSendingAllFundsManually(value: input, currency: inputCurrency)
+        let isUsingAllFunds = useAllFunds || presenter.isSendingAllFundsManually(
+            value: input,
+            currency: inputCurrency
+        )
 
         if isUsingAllFunds {
             amount = presenter.allFunds(in: inputCurrency.code)
@@ -189,7 +202,11 @@ extension NewOpAmountView: NewOperationChildViewDelegate {
             amount = presenter.amount(from: input, in: inputCurrency)
         }
 
-        transitionsDelegate?.didEnter(amount: amount, data: data, takeFeeFromAmount: isUsingAllFunds)
+        transitionsDelegate?.didEnter(
+            amount: amount,
+            data: data,
+            takeFeeFromAmount: isUsingAllFunds
+        )
     }
 
 }

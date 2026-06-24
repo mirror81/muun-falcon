@@ -111,7 +111,9 @@ final class VerifyEmergencyKitView: UIView {
             contentContainerView.bottomAnchor.constraint(equalTo: buttonsStackView.topAnchor),
 
             contentStackView.leadingAnchor.constraint(equalTo: contentContainerView.leadingAnchor),
-            contentStackView.trailingAnchor.constraint(equalTo: contentContainerView.trailingAnchor),
+            contentStackView.trailingAnchor.constraint(
+                equalTo: contentContainerView.trailingAnchor
+            ),
             contentStackView.centerYAnchor.constraint(equalTo: contentContainerView.centerYAnchor)
         ])
 

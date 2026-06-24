@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class EnterFeeManuallyTableViewCell: UITableViewCell {
 
     @IBOutlet fileprivate weak var titleLabel: UILabel!

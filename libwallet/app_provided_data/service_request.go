@@ -12,7 +12,7 @@ type Session struct {
 	DeviceToken                string
 }
 
-type HttpClientSessionProvider interface {
+type HttpClientSessionProvider interface { //nolint:staticcheck // TODO: type HttpClientSessionProvider should be HTTPClientSessionProvider
 	Session() (*Session, error)
 	SetSessionStatus(status string)
 	SetMinClientVersion(minClientVersion string)

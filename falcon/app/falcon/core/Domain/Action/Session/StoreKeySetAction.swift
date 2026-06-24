@@ -25,7 +25,10 @@ public class StoreKeySetAction {
                 try self.keysRepository.storeVerified(challengeKey: key)
             }
 
-            let privateKey = try KeyCrypter.decrypt(keySet.encryptedPrivateKey, passphrase: userInput)
+            let privateKey = try KeyCrypter.decrypt(
+                keySet.encryptedPrivateKey,
+                passphrase: userInput
+            )
             let derivedKey = try privateKey.derive(to: .base)
 
             try self.keysRepository.store(key: derivedKey)

@@ -117,10 +117,11 @@ class ButtonView: MUView {
                 } else {
                     self.button.alpha = 0.2
                 }
-        },
+            },
             completion: { _ in
                 self.button.isUserInteractionEnabled = isEnabled
-        })
+            }
+        )
 
         setUpBackground()
     }

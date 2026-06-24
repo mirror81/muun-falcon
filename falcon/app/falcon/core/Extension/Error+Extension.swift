@@ -64,7 +64,7 @@ extension Error {
            let selfAsKeyStorageError = selfAsMuunError.kind as? KeyStorageError {
             return selfAsKeyStorageError == comparedError
         }
-        
+
         return false
     }
 

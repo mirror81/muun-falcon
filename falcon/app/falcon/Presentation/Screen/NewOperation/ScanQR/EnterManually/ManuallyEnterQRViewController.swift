@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class ManuallyEnterQRViewController: MUViewController {
 
     @IBOutlet private weak var largeTextInputView: LargeTextInputView!
@@ -225,17 +224,22 @@ extension ManuallyEnterQRViewController {
             }
 
             if clipboardValue.canLoadObject(ofClass: String.self) {
-                _ = clipboardValue.loadObject(ofClass: String.self) { [weak self] textFromClipboard, error in
+                _ = clipboardValue
+                    .loadObject(ofClass: String.self) { [weak self] textFromClipboard, error in
                     guard error == nil else {
                         error.map { Logger.log(error: $0) }
                         self?.showError(error: L10n.ManuallyEnterQRViewController.s8)
                         return
                     }
-                    textFromClipboard.map { self?.onTextRetrievedFromUIPasteControl(textFromClipboard: $0) }
+                    textFromClipboard
+                        .map { self?.onTextRetrievedFromUIPasteControl(textFromClipboard: $0) }
                 }
             } else {
                 // paste button should never be enabled with something that is not an String.
-                Logger.log(error: NSError(domain: "paste_button_enabled_with_not_supported_content", code: 19993))
+                Logger.log(error: NSError(
+                    domain: "paste_button_enabled_with_not_supported_content",
+                    code: 19993
+                ))
             }
         }
     }
@@ -243,7 +247,12 @@ extension ManuallyEnterQRViewController {
 
 private extension ManuallyEnterQRViewController {
     func onTextRetrievedFromUIPasteControl(textFromClipboard: String) {
-        let address = textFromClipboard.replacingOccurrences(of: " ", with: "", options: .literal, range: nil)
+        let address = textFromClipboard.replacingOccurrences(
+            of: " ",
+            with: "",
+            options: .literal,
+            range: nil
+        )
 
         guard address.count > 0 else {
             self.showError(error: L10n.ManuallyEnterQRViewController.s7)

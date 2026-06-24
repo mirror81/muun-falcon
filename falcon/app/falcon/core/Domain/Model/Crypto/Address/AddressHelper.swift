@@ -74,16 +74,18 @@ public enum AddressHelper {
                 throw MuunError(ParseError.addressError)
         }
 
-        let uri = MuunPaymentURI(address: address,
-                                 label: muunUri.label,
-                                 message: muunUri.message,
-                                 amount: Decimal(string: muunUri.amount),
-                                 others: [:],
-                                 uri: url,
-                                 bip70URL: bip70Url,
-                                 creationTime: nil,
-                                 expiresTime: nil,
-                                 raw: rawAddress)
+        let uri = MuunPaymentURI(
+            address: address,
+            label: muunUri.label,
+            message: muunUri.message,
+            amount: Decimal(string: muunUri.amount),
+            others: [:],
+            uri: url,
+            bip70URL: bip70Url,
+            creationTime: nil,
+            expiresTime: nil,
+            raw: rawAddress
+        )
 
         return .toAddress(uri: uri)
     }
@@ -103,8 +105,14 @@ public enum AddressHelper {
         return nil
     }
 
-    private enum ParseError: Error {
+    private enum ParseError: Error, ClassifiedError {
         case addressError
-    }
 
+        var classification: ErrorClassification {
+            switch self {
+            case .addressError:
+                return .expected
+            }
+        }
+    }
 }

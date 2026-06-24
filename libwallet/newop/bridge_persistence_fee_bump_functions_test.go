@@ -69,8 +69,10 @@ func TestPersistFeeBumpFunctions(t *testing.T) {
 		err                 bool
 	}{
 		{
-			desc:                "Persist single fee bump function",
-			encodedFunctionList: []string{"QsgAAAAAAAAAAAAAf4AAAD+AAABAAAAA"}, // [[100, 0, 0], [+Inf, 1, 2]]
+			desc: "Persist single fee bump function",
+			encodedFunctionList: []string{
+				"QsgAAAAAAAAAAAAAf4AAAD+AAABAAAAA",
+			}, // [[100, 0, 0], [+Inf, 1, 2]]
 			expectedFunctions: []*operation.FeeBumpFunction{
 				{
 					PartialLinearFunctions: []*operation.PartialLinearFunction{
@@ -164,7 +166,10 @@ func TestPersistFeeBumpFunctions(t *testing.T) {
 		}
 
 		for i, expectedFunction := range tC.expectedFunctions {
-			if !reflect.DeepEqual(expectedFunction.PartialLinearFunctions, feeBumpFunctionSet.FeeBumpFunctions[i].PartialLinearFunctions) {
+			if !reflect.DeepEqual(
+				expectedFunction.PartialLinearFunctions,
+				feeBumpFunctionSet.FeeBumpFunctions[i].PartialLinearFunctions,
+			) {
 				t.Fatalf("fee bump functions were not saved properly")
 			}
 		}

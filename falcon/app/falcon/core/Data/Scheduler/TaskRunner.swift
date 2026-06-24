@@ -20,11 +20,13 @@ public class TaskRunner {
     private let preloadFeeDataAction: PreloadFeeDataAction
     private var disposeBag = DisposeBag()
 
-    public init(syncExternalAddressesAction: SyncExternalAddresses,
-                fetchNotificationsAction: FetchNotificationsAction,
-                refreshInvoicesAction: RefreshInvoicesAction,
-                fcmTokenAction: FCMTokenAction,
-                preloadFeeDataAction: PreloadFeeDataAction) {
+    public init(
+        syncExternalAddressesAction: SyncExternalAddresses,
+        fetchNotificationsAction: FetchNotificationsAction,
+        refreshInvoicesAction: RefreshInvoicesAction,
+        fcmTokenAction: FCMTokenAction,
+        preloadFeeDataAction: PreloadFeeDataAction
+    ) {
         self.syncExternalAddressesAction = syncExternalAddressesAction
         self.fetchNotificationsAction = fetchNotificationsAction
         self.refreshInvoicesAction = refreshInvoicesAction
@@ -46,15 +48,18 @@ public class TaskRunner {
             self.run(action: self.refreshInvoicesAction)
         }
 
-        schedulePeriodic(after: .seconds(0),
-                         period: .seconds(preloadFeeDataAction.refreshIntervalInSeconds)) {
+        schedulePeriodic(
+            after: .seconds(0),
+            period: .seconds(preloadFeeDataAction.refreshIntervalInSeconds)
+        ) {
             self.run(action: self.preloadFeeDataAction)
         }
 
         // We only run this once since after that FCM should do the rest
         run(action: fetchNotificationsAction, retries: 0)
 
-        // We only run this once since after the first run failure modes will be contemplated inside the action.
+        // We only run this once since after the first run failure modes will be contemplated inside
+        // the action.
         run(action: fcmTokenAction, retries: 0)
     }
 
@@ -66,7 +71,11 @@ public class TaskRunner {
         }
     }
 
-    private func run(action: RunnableAsyncAction, retryInterval: DispatchTimeInterval = .seconds(1), retries: Int = 3) {
+    private func run(
+        action: RunnableAsyncAction,
+        retryInterval: DispatchTimeInterval = .seconds(1),
+        retries: Int = 3
+    ) {
 
         _ = action.getValue()
             .do(onError: { err in
@@ -83,11 +92,18 @@ public class TaskRunner {
                     level = .warn
                 }
 
-                Logger.log(level,
-                           "Retrying action \(action.`self`().description) due to error \(err.localizedDescription)")
+                Logger.log(
+                    level,
+                    "Retrying action \(action.`self`().description) due"
+                    + " to error \(err.localizedDescription)"
+                )
 
                 self.schedule(after: retryInterval) {
-                    self.run(action: action, retryInterval: retryInterval.duplicate(), retries: retries - 1)
+                    self.run(
+                        action: action,
+                        retryInterval: retryInterval.duplicate(),
+                        retries: retries - 1
+                    )
                 }
             })
             .subscribe()
@@ -95,13 +111,17 @@ public class TaskRunner {
         action.run()
     }
 
-    private func schedulePeriodic(after: DispatchTimeInterval,
-                                  period: DispatchTimeInterval,
-                                  cb: @escaping () -> Void) {
-        Scheduler.backgroundScheduler.schedulePeriodic((),
-                                                       startAfter: after,
-                                                       period: period,
-                                                       action: cb)
+    private func schedulePeriodic(
+        after: DispatchTimeInterval,
+        period: DispatchTimeInterval,
+        cb: @escaping () -> Void
+    ) {
+        Scheduler.backgroundScheduler.schedulePeriodic(
+            (),
+            startAfter: after,
+            period: period,
+            action: cb
+        )
         .disposed(by: disposeBag)
     }
 }

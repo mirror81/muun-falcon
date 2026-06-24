@@ -51,6 +51,10 @@ platform :ios do
   - INDIVIDUAL_API_KEY_ID: API key ID
   - FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: App-specific password
 
+  Optional environment variables:
+  - DOGFOOD_CHANGELOG: Custom 'What to Test' notes shown to internal testers.
+    If unset, falls back to recent falcon/libwallet commit subjects.
+
   CI environment variables (set by infra team, rotated annually on certificate
   expiration):
   - distribution_notifications_mobileprovision_base64
@@ -271,18 +275,51 @@ platform :ios do
     app_identifier = params[:app_identifier]
     skip_internal_distribution = params[:skip_internal_distribution].nil? ? false : params[:skip_internal_distribution]
 
-    # When skip_internal_distribution == true, we upload only; no internal/external distribution.
-    upload_to_testflight(
+    upload_args = {
       username: muun_email,
       app_identifier: app_identifier,
       skip_submission: skip_internal_distribution,
-    )
+    }
+
+    # Populate "What to Test" so TestFlight's processing email to internal testers carries release notes.
+    if env == ENV_DOGFOOD
+      upload_args[:changelog] = build_dogfood_changelog
+    end
+
+    # When skip_internal_distribution == true, we upload only; no internal/external distribution.
+    upload_to_testflight(upload_args)
 
     # Upload them to crashlytics
     upload_symbols_to_crashlytics(
       gsp_path:"falcon/GoogleService-Info-#{env}.plist",
       dsym_worker_threads: 10
     )
+  end
+
+  # TestFlight caps "What to Test" at 4000 chars.
+  TESTFLIGHT_CHANGELOG_MAX_LENGTH = 4000
+
+  # Bors merge commit PR header: "<num>: <title> r=<reviewer> a=<author>".
+  # Captures the PR number and the title, only when the title is prefixed with falcon/libwallet.
+  BORS_FALCON_PR_REGEX = /^(\d+):\s+((?:falcon|libwallet)(?:,[a-z]+)*:.+?)\s+r=\S+\s+a=\S+\s*$/
+
+  private_lane :build_dogfood_changelog do
+    override = ENV["DOGFOOD_CHANGELOG"]
+    if override && !override.strip.empty?
+      next override.strip[0, TESTFLIGHT_CHANGELOG_MAX_LENGTH]
+    end
+
+    # Each push to master triggers a build, so only HEAD's merge body is relevant.
+    raw = `git log -1 --pretty=format:%B HEAD`.force_encoding("UTF-8")
+    entries = []
+    raw.lines.each do |line|
+      if line =~ BORS_FALCON_PR_REGEX
+        entries << "- ##{$1}: #{$2.strip}"
+      end
+    end
+
+    body = entries.empty? ? "Internal dogfood build." : entries.join("\n")
+    body[0, TESTFLIGHT_CHANGELOG_MAX_LENGTH]
   end
 
   private_lane :setup_dogfood_provisioning do |params|

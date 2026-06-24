@@ -10,9 +10,9 @@ import Foundation
 import RxSwift
 import Libwallet
 
-
 class NewOperationStateMachine {
-    private let subject: BehaviorSubject<NewopStateProtocol> = BehaviorSubject(value: NewopStartState())
+    private let subject: BehaviorSubject<NewopStateProtocol> =
+        BehaviorSubject(value: NewopStartState())
     private let listener: Listener
 
     init() {

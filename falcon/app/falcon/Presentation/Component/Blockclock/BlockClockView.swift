@@ -67,11 +67,26 @@ class BlockClockView: UIView {
         NSLayoutConstraint.activate([
             // Leading to trailing for the digits
             digitBoxes[0].leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            digitBoxes[1].leadingAnchor.constraint(equalTo: digitBoxes[0].trailingAnchor, constant: 6),
-            digitBoxes[2].leadingAnchor.constraint(equalTo: digitBoxes[1].trailingAnchor, constant: 6),
-            digitBoxes[3].leadingAnchor.constraint(equalTo: digitBoxes[2].trailingAnchor, constant: 6),
-            digitBoxes[4].leadingAnchor.constraint(equalTo: digitBoxes[3].trailingAnchor, constant: 6),
-            digitBoxes[5].leadingAnchor.constraint(equalTo: digitBoxes[4].trailingAnchor, constant: 6),
+            digitBoxes[1].leadingAnchor.constraint(
+                equalTo: digitBoxes[0].trailingAnchor,
+                constant: 6
+            ),
+            digitBoxes[2].leadingAnchor.constraint(
+                equalTo: digitBoxes[1].trailingAnchor,
+                constant: 6
+            ),
+            digitBoxes[3].leadingAnchor.constraint(
+                equalTo: digitBoxes[2].trailingAnchor,
+                constant: 6
+            ),
+            digitBoxes[4].leadingAnchor.constraint(
+                equalTo: digitBoxes[3].trailingAnchor,
+                constant: 6
+            ),
+            digitBoxes[5].leadingAnchor.constraint(
+                equalTo: digitBoxes[4].trailingAnchor,
+                constant: 6
+            ),
             trailingAnchor.constraint(equalTo: digitBoxes[5].trailingAnchor, constant: 10),
 
             // All digit boxes have the same width

@@ -48,8 +48,14 @@ class TooltipView: UIView {
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo: topAnchor),
             containerView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            containerView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: .sideMargin),
-            containerView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -.sideMargin)
+            containerView.leadingAnchor.constraint(
+                greaterThanOrEqualTo: leadingAnchor,
+                constant: .sideMargin
+            ),
+            containerView.trailingAnchor.constraint(
+                lessThanOrEqualTo: trailingAnchor,
+                constant: -.sideMargin
+            )
         ])
     }
 
@@ -83,8 +89,14 @@ class TooltipView: UIView {
         NSLayoutConstraint.activate([
             messageLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 8),
             messageLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8),
-            messageLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
-            messageLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8)
+            messageLabel.leadingAnchor.constraint(
+                equalTo: containerView.leadingAnchor,
+                constant: 8
+            ),
+            messageLabel.trailingAnchor.constraint(
+                equalTo: containerView.trailingAnchor,
+                constant: -8
+            )
         ])
     }
 

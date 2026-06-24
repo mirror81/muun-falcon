@@ -53,8 +53,10 @@ class ActionCardView: MUView {
         stepTitleLabel.font = Constant.Fonts.system(size: .desc, weight: .semibold)
         stepDescriptionLabel.font = Constant.Fonts.description
 
-        stepNumberLabel.font = Constant.Fonts.monospacedDigitSystemFont(size: .desc,
-                                                                        weight: .medium)
+        stepNumberLabel.font = Constant.Fonts.monospacedDigitSystemFont(
+            size: .desc,
+            weight: .medium
+        )
         stepNumberLabel.textColor = .white
     }
 
@@ -103,10 +105,12 @@ class ActionCardView: MUView {
         hideSkippedView()
 
         // Hide shadow
-        shadowView.setUpShadow(color: muunGrayDark,
-                               opacity: 0,
-                               offset: CGSize(width: 0, height: 8),
-                               radius: 8)
+        shadowView.setUpShadow(
+            color: muunGrayDark,
+            opacity: 0,
+            offset: CGSize(width: 0, height: 8),
+            radius: 8
+        )
     }
 
     private func setActiveState() {
@@ -125,10 +129,12 @@ class ActionCardView: MUView {
         hideSkippedView()
 
         // Show shadow
-        shadowView.setUpShadow(color: muunGrayDark,
-                               opacity: 0.08,
-                               offset: CGSize(width: 0, height: 8),
-                               radius: 8)
+        shadowView.setUpShadow(
+            color: muunGrayDark,
+            opacity: 0.08,
+            offset: CGSize(width: 0, height: 8),
+            radius: 8
+        )
     }
 
     private func setDoneState() {
@@ -148,10 +154,12 @@ class ActionCardView: MUView {
         hideSkippedView()
 
         // Hide shadow
-        shadowView.setUpShadow(color: muunGrayDark,
-                               opacity: 0,
-                               offset: CGSize(width: 0, height: 8),
-                               radius: 8)
+        shadowView.setUpShadow(
+            color: muunGrayDark,
+            opacity: 0,
+            offset: CGSize(width: 0, height: 8),
+            radius: 8
+        )
     }
 
     private func setHomeState() {
@@ -173,10 +181,12 @@ class ActionCardView: MUView {
         hideSkippedView()
 
         // Hide shadow
-        shadowView.setUpShadow(color: muunGrayDark,
-                               opacity: 0,
-                               offset: CGSize(width: 0, height: 8),
-                               radius: 8)
+        shadowView.setUpShadow(
+            color: muunGrayDark,
+            opacity: 0,
+            offset: CGSize(width: 0, height: 8),
+            radius: 8
+        )
     }
 
     private func setSkippedState() {
@@ -195,10 +205,12 @@ class ActionCardView: MUView {
         setSkippedView()
 
         // Hide shadow
-        shadowView.setUpShadow(color: muunGrayDark,
-                               opacity: 0,
-                               offset: CGSize(width: 0, height: 8),
-                               radius: 8)
+        shadowView.setUpShadow(
+            color: muunGrayDark,
+            opacity: 0,
+            offset: CGSize(width: 0, height: 8),
+            radius: 8
+        )
     }
 
     private func setSkippedView() {

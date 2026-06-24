@@ -50,7 +50,9 @@ public class HardwareCapabilitiesProvider {
     private func load(vm_stat: inout vm_statistics, host_port: mach_port_t) {
         withUnsafeMutablePointer(to: &vm_stat) { (vmStatPointer) -> Void in
             // swiftlint:disable line_length
-            var host_size: mach_msg_type_number_t = mach_msg_type_number_t(MemoryLayout<vm_statistics_data_t>.stride / MemoryLayout<integer_t>.stride)
+            var host_size: mach_msg_type_number_t =
+                mach_msg_type_number_t(MemoryLayout<vm_statistics_data_t>
+                .stride / MemoryLayout<integer_t>.stride)
 
             vmStatPointer.withMemoryRebound(to: integer_t.self, capacity: Int(host_size)) {
                 // swiftlint:disable control_statement

@@ -41,7 +41,8 @@ class SessionExpiredViewController: MUViewController {
     }
 
     private func dismissPinLock() {
-        // We have to dismiss the pin window if it's being presented because the pin code will be erased with the logout
+        // We have to dismiss the pin window if it's being presented because the pin code will be
+        // erased with the logout
         if let myDelegate = UIApplication.shared.delegate as? AppDelegate {
             myDelegate.unlockApp()
         }

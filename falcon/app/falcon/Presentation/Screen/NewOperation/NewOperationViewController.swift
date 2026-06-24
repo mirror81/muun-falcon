@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 protocol NewOpViewDelegate: AnyObject {
     func readyForNextState(_ isReady: Bool, error: String?)
 
@@ -56,26 +55,34 @@ class NewOperationViewController: MUViewController {
         case .toAddress(let uri):
             presenter.start(uri: uri.raw)
 
-            self.viewBuilder = OpToAddressViewBuilder(transitionDelegate: presenter,
-                                                      newOpViewDelegate: self,
-                                                      filledDataDelegate: self,
-                                                      amountDelegate: newOpView,
-                                                      origin: origin)
+            self.viewBuilder = OpToAddressViewBuilder(
+                transitionDelegate: presenter,
+                newOpViewDelegate: self,
+                filledDataDelegate: self,
+                amountDelegate: newOpView,
+                origin: origin
+            )
 
-            newOpParams = ["type": Constant.NewOpAnalytics.OpType.toAddress.rawValue,
-                           "origin": origin.rawValue]
+            newOpParams = [
+                "type": Constant.NewOpAnalytics.OpType.toAddress.rawValue,
+                "origin": origin.rawValue
+            ]
             title = L10n.NewOperationViewController.s1
 
         case .submarineSwap(let invoice):
             presenter.start(invoice: invoice)
 
-            self.viewBuilder = OpSubmarineSwapViewBuilder(transitionDelegate: presenter,
-                                                          newOpViewDelegate: self,
-                                                          filledDataDelegate: self,
-                                                          amountDelegate: newOpView,
-                                                          origin: origin)
-            newOpParams = ["type": Constant.NewOpAnalytics.OpType.submarineSwap.rawValue,
-                           "origin": origin.rawValue]
+            self.viewBuilder = OpSubmarineSwapViewBuilder(
+                transitionDelegate: presenter,
+                newOpViewDelegate: self,
+                filledDataDelegate: self,
+                amountDelegate: newOpView,
+                origin: origin
+            )
+            newOpParams = [
+                "type": Constant.NewOpAnalytics.OpType.submarineSwap.rawValue,
+                "origin": origin.rawValue
+            ]
             title = L10n.NewOperationViewController.s2
 
         case .fromHardwareWallet, .toContact, .toHardwareWallet:
@@ -89,8 +96,10 @@ class NewOperationViewController: MUViewController {
     override func loadView() {
         newOpView = NewOperationView(stateTransitions: presenter, filledDataDelegate: self)
 
-        let recognizer = UIScreenEdgePanGestureRecognizer(target: self,
-                                                          action: #selector(swipe(_:)))
+        let recognizer = UIScreenEdgePanGestureRecognizer(
+            target: self,
+            action: #selector(swipe(_:))
+        )
         recognizer.edges = .left
         newOpView.addGestureRecognizer(recognizer)
 
@@ -120,17 +129,20 @@ class NewOperationViewController: MUViewController {
     }
 
     fileprivate func setUpNavigation() {
-        // If an error is being shown the navigationBar must be hidden. This codepath is called from viewWillAppear and errors might be detected in viewDidLoad.
+        // If an error is being shown the navigationBar must be hidden. This codepath is called from
+        // viewWillAppear and errors might be detected in viewDidLoad.
         guard !isBlockingFlowErrorViewAlreadyShown() else {
             return
         }
 
         navigationController!.setNavigationBarHidden(false, animated: true)
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: Constant.Images.back,
-                                                           style: .plain,
-                                                           target: self,
-                                                           action: .back)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: Constant.Images.back,
+            style: .plain,
+            target: self,
+            action: .back
+        )
     }
 
     @objc func swipe(_ sender: UIGestureRecognizer) {
@@ -189,13 +201,18 @@ class NewOperationViewController: MUViewController {
 
 extension NewOperationViewController: NewOpViewDelegate {
 
-    private func showInsufficientFundsScreen(amountPlusFee: MonetaryAmount, totalBalance: MonetaryAmount) {
+    private func showInsufficientFundsScreen(
+        amountPlusFee: MonetaryAmount,
+        totalBalance: MonetaryAmount
+    ) {
         var amountPlusFeeValue = amountPlusFee.toAmountPlusCode()
         var totalBalanceValue = totalBalance.toAmountPlusCode()
 
         if let lastSelectedCurrency = presenter.lastSelectedCurrency {
-            amountPlusFeeValue = amountPlusFee.toAmountPlusCode(currencyOfAmount: lastSelectedCurrency)
-            totalBalanceValue = totalBalance.toAmountPlusCode(currencyOfAmount: lastSelectedCurrency)
+            amountPlusFeeValue = amountPlusFee
+                .toAmountPlusCode(currencyOfAmount: lastSelectedCurrency)
+            totalBalanceValue = totalBalance
+                .toAmountPlusCode(currencyOfAmount: lastSelectedCurrency)
         }
 
         displayErrorView(type: .insufficientFunds(
@@ -226,11 +243,14 @@ extension NewOperationViewController: NewOpStateMachineDelegate {
     }
 
     private func pushToSupportScreen() {
-        // We remove ourself from the stack to avoid weird keyboard animations when pushing and popping
+        // We remove ourself from the stack to avoid weird keyboard animations when pushing and
+        // popping
         // And since there is nothing else to do in the new op when we reach this error
-        navigationController?.pushViewController(SupportViewController(type: .support),
-                                                 animated: true,
-                                                 removeFromStack: true)
+        navigationController?.pushViewController(
+            SupportViewController(type: .support),
+            animated: true,
+            removeFromStack: true
+        )
     }
 
     func requestNextStep(_ data: NewOpState) {
@@ -241,7 +261,8 @@ extension NewOperationViewController: NewOpStateMachineDelegate {
         switch nextStep {
         case .view(let view, let filledData):
             replaceCurrentView(with: view, filledData: filledData)
-            newOpView.displayOneConfNotice(viewBuilder?.shouldDisplayOneConfNotice(state: data) ?? false)
+            newOpView
+                .displayOneConfNotice(viewBuilder?.shouldDisplayOneConfNotice(state: data) ?? false)
         case .modal(let vc):
             let navController = UINavigationController(rootViewController: vc)
             if vc.isKind(of: CurrencyPickerViewController.self) {
@@ -285,7 +306,9 @@ extension NewOperationViewController: NewOpStateMachineDelegate {
         })
 
         navigationController?.navigationBar.isUserInteractionEnabled = isEnabled
-        let color: UIColor = isEnabled ? Asset.Colors.muunGrayDark.color : Asset.Colors.muunDisabled.color
+        let color: UIColor = isEnabled
+            ? Asset.Colors.muunGrayDark.color
+            : Asset.Colors.muunDisabled.color
         navigationController?.navigationBar.tintColor = color
     }
 
@@ -354,8 +377,8 @@ extension NewOperationViewController: NewOpStateMachineDelegate {
            style: .default,
            handler: { _ in
                AnalyticsHelper.logEvent(NewOpActionEvent(
-                    type: .disableFlag,
-                    has2fa: self.presenter.hasNfc2fa
+                   type: .disableFlag,
+                   has2fa: self.presenter.hasNfc2fa
                ))
                self.forceHideKeyboard()
                self.presenter.disableSecurityCardFlag()
@@ -366,8 +389,8 @@ extension NewOperationViewController: NewOpStateMachineDelegate {
 
        self.navigationController!.present(alert, animated: true) {
            AnalyticsHelper.logEvent(NewOpActionEvent(
-                type: .disableFlagDialogShown,
-                has2fa: self.presenter.hasNfc2fa
+               type: .disableFlagDialogShown,
+               has2fa: self.presenter.hasNfc2fa
            ))
        }
     }

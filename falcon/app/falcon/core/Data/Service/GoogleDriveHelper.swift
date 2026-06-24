@@ -56,22 +56,33 @@ public enum GoogleDriveHelper {
                 service: service
             ) { existingKit, error in
 
-                let uploadParameters = GTLRUploadParameters(fileURL: emergencyKitUrl, mimeType: mimeTypePdf)
+                let uploadParameters = GTLRUploadParameters(
+                    fileURL: emergencyKitUrl,
+                    mimeType: mimeTypePdf
+                )
 
                 let file = GTLRDrive_File()
                 let userId = CloudConstants.userToKitId(user: user)
 
                 // Ensure the properties are up to date
                 file.appProperties = GTLRDrive_File_AppProperties()
-                file.appProperties?.setAdditionalProperty("\(kitVersion)", forName: CloudConstants.versionProperty)
-                file.appProperties?.setAdditionalProperty(userId, forName: CloudConstants.userProperty)
-                
+                file.appProperties?.setAdditionalProperty(
+                    "\(kitVersion)",
+                    forName: CloudConstants.versionProperty
+                )
+                file.appProperties?.setAdditionalProperty(
+                    userId,
+                    forName: CloudConstants.userProperty
+                )
+
                 let query: GTLRDriveQuery
                 if let existingKit = existingKit,
                    let id = existingKit.identifier {
 
                     // Pin the existing revision just in case we're overwriting another wallet
-                    if existingKit.appProperties?.additionalProperty(forName: CloudConstants.userProperty) as? String != userId,
+                    if existingKit.appProperties?
+                        .additionalProperty(forName: CloudConstants.userProperty) as? String !=
+                        userId,
                        let revisionId = existingKit.headRevisionId {
 
                         let revision = GTLRDrive_Revision()
@@ -97,7 +108,10 @@ public enum GoogleDriveHelper {
                     file.name = fileName
                     file.parents = [folderId]
 
-                    query = GTLRDriveQuery_FilesCreate.query(withObject: file, uploadParameters: uploadParameters)
+                    query = GTLRDriveQuery_FilesCreate.query(
+                        withObject: file,
+                        uploadParameters: uploadParameters
+                    )
                 }
 
                 service.executeQuery(query) { (_, _, error) in
@@ -113,7 +127,8 @@ public enum GoogleDriveHelper {
         name: String,
         service: GTLRDriveService,
         user: GIDGoogleUser,
-        completion: @escaping (String?, String?, Error?) -> Void) {
+        completion: @escaping (String?, String?, Error?) -> Void
+    ) {
 
         getFolderID(name: name, service: service, user: user) { folderID, folderLink, err in
             if err != nil {
@@ -143,7 +158,8 @@ public enum GoogleDriveHelper {
         // Comma-separated list of areas the search applies to. E.g., appDataFolder, photos, drive.
         query.spaces = "drive"
 
-        // Comma-separated list of access levels to search in. Some possible values are "user,allTeamDrives" or "user"
+        // Comma-separated list of access levels to search in. Some possible values are
+        // "user,allTeamDrives" or "user"
         query.corpora = "user"
         query.fields = "*" // This is important to retreive the link of the document later
 
@@ -152,9 +168,9 @@ public enum GoogleDriveHelper {
         let ownedByUser = "'\(googleUser.profile!.email)' in owners"
         let insideFolder = "'\(folderId)' in parents"
         query.q = """
-                  \(withName) 
-                  and \(pdfsOnly) 
-                  and \(ownedByUser) 
+                  \(withName)
+                  and \(pdfsOnly)
+                  and \(ownedByUser)
                   and \(insideFolder)
                   and trashed = false
                   """
@@ -178,7 +194,8 @@ public enum GoogleDriveHelper {
 
             // First check for properties matching
             for file in files {
-                if let kitUser = file.appProperties?.additionalProperty(forName: CloudConstants.userProperty) as? String {
+                if let kitUser = file.appProperties?
+                    .additionalProperty(forName: CloudConstants.userProperty) as? String {
                     if kitUser == kitUserToFind && file.isAppAuthorized?.boolValue ?? false {
                         completion(file, nil)
                         return
@@ -187,7 +204,8 @@ public enum GoogleDriveHelper {
             }
 
             // No matches, so we use the 1 file kit heuristic
-            // We do however check first that it has no properties. If it has, and it hasn't been selected
+            // We do however check first that it has no properties. If it has, and it hasn't been
+            // selected
             // by the previous for, that means it's not from this wallet.
             if files.count == 1,
                let file = files.first,
@@ -202,22 +220,22 @@ public enum GoogleDriveHelper {
         }
     }
 
-    /**
-     The method below performs a case-insensitive search for a specified folder by name. If a folder is found, the
-     folder’s identifier is passed to the completion handler.
-     */
+    /// The method below performs a case-insensitive search for a specified folder by name.
+    /// If a folder is found, the folder's identifier is passed to the completion handler.
     private static func getFolderID(
         name: String,
         service: GTLRDriveService,
         user: GIDGoogleUser,
-        completion: @escaping (String?, String?, Error?) -> Void) {
+        completion: @escaping (String?, String?, Error?) -> Void
+    ) {
 
         let query = GTLRDriveQuery_FilesList.query()
 
         // Comma-separated list of areas the search applies to. E.g., appDataFolder, photos, drive.
         query.spaces = "drive"
 
-        // Comma-separated list of access levels to search in. Some possible values are "user,allTeamDrives" or "user"
+        // Comma-separated list of access levels to search in. Some possible values are
+        // "user,allTeamDrives" or "user"
         query.corpora = "user"
         query.fields = "*" // This is important to retreive the link of the document later
 
@@ -234,7 +252,11 @@ public enum GoogleDriveHelper {
 
             if let folderList = result as? GTLRDrive_FileList {
                 // For brevity, assumes only one folder is returned.
-                completion(folderList.files?.first?.identifier, folderList.files?.first?.webViewLink, nil)
+                completion(
+                    folderList.files?.first?.identifier,
+                    folderList.files?.first?.webViewLink,
+                    nil
+                )
             } else {
                 completion(nil, nil, Errors.noFolder)
             }
@@ -246,7 +268,8 @@ public enum GoogleDriveHelper {
     private static func createFolder(
         name: String,
         service: GTLRDriveService,
-        completion: @escaping (String, String?, Error?) -> Void) {
+        completion: @escaping (String, String?, Error?) -> Void
+    ) {
 
         let folder = GTLRDrive_File()
         folder.mimeType = "application/vnd.google-apps.folder"
@@ -256,7 +279,7 @@ public enum GoogleDriveHelper {
         let query = GTLRDriveQuery_FilesCreate.query(withObject: folder, uploadParameters: nil)
         query.fields = "*" // This is important to retreive the link of the document later
 
-        service.executeQuery(query) { (ticket, file, error) in
+        service.executeQuery(query) { (_, file, error) in
             guard error == nil else {
                 completion("", nil, error)
                 return
@@ -267,6 +290,15 @@ public enum GoogleDriveHelper {
             } else {
                 completion("", nil, MuunError(Errors.noFolder))
             }
+        }
+    }
+}
+
+extension GoogleDriveHelper.Errors: ClassifiedError {
+    var classification: ErrorClassification {
+        switch self {
+        case .noFolder:
+            return .unexpected
         }
     }
 }

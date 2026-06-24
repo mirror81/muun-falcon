@@ -9,9 +9,14 @@
 import UIKit
 
 final class MarketplaceViewController: MUViewController {
+    private enum Constants {
+        static let tabsViewHeight = MuunTheme.Legacy.s52
+    }
 
+    private let titleLabel = UILabel()
     private let providerTabsView = SecurityCardProvidersTabsView()
     private var selectedProviderIndex = 0
+    private var selectedCountry: Country
     private lazy var presenter = instancePresenter(MarketplacePresenter.init, delegate: self)
     private var cachedProviders: [SecurityCardProvider] = []
     private var pages: [UIViewController] = []
@@ -21,10 +26,21 @@ final class MarketplaceViewController: MUViewController {
         vc.delegate = self
         return vc
     }()
+
     private var currentIndex: Int = 0
 
     override var screenLoggingName: String {
         "security_cards_marketplace"
+    }
+
+    init(selectedCountry: Country) {
+        self.selectedCountry = selectedCountry
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
@@ -34,14 +50,31 @@ final class MarketplaceViewController: MUViewController {
         presenter.loadData()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        additionalSafeAreaInsets = .zero
+        setupTransparentNavBar()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        restoreNavBar()
+    }
+
     // Interface
 
     private func setupView() {
-        title = L10n.MarketplaceViewController.title
-
         setupCountryBarButton()
+        setupTitleView()
         setupProviderTabs()
         setupPages()
+    }
+
+    private func setupTitleView() {
+        titleLabel.text = L10n.MarketplaceViewController.title
+        titleLabel.font = MuunTheme.Font.Heading.h1
+        titleLabel.textAlignment = .center
+        navigationItem.titleView = titleLabel
     }
 
     private func setupPages() {
@@ -55,7 +88,10 @@ final class MarketplaceViewController: MUViewController {
         pageVC.didMove(toParent: self)
 
         NSLayoutConstraint.activate([
-            pageContainer.topAnchor.constraint(equalTo: providerTabsView.bottomAnchor, constant: 12),
+            pageContainer.topAnchor.constraint(
+                equalTo: providerTabsView.bottomAnchor,
+                constant: MuunTheme.Spacing.sm
+            ),
             pageContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             pageContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             pageContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -77,15 +113,17 @@ final class MarketplaceViewController: MUViewController {
             providerTabsView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             providerTabsView.topAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.topAnchor,
-                constant: .verticalRowMargin
+                constant: MuunTheme.Spacing.sm
             ),
-            providerTabsView.heightAnchor.constraint(equalToConstant: securityCardProvidersTabsViewHeight)
+            providerTabsView.heightAnchor.constraint(
+                equalToConstant: Constants.tabsViewHeight
+            )
         ])
     }
 
     private func setupCountryBarButton() {
         let countryButtonItem = UIBarButtonItem(
-            title: "AR",
+            title: selectedCountry.flag,
             style: .plain,
             target: self,
             action: #selector(MarketplaceViewController.didTapCountry)
@@ -98,9 +136,40 @@ final class MarketplaceViewController: MUViewController {
 
     @objc
     private func didTapCountry() {
-        // TODO: implement country selection
+        let vc = CountrySelectorViewController(
+            selectedCountryCode: selectedCountry.code,
+            delegate: self
+        )
+        let nav = UINavigationController(rootViewController: vc)
+        present(nav, animated: true)
     }
+}
 
+// MARK: - SecurityCardsProviderCarouselViewControllerDelegate
+
+extension MarketplaceViewController: SecurityCardsProviderCarouselViewControllerDelegate {
+    func carouselDidSelectCard(
+        provider: SecurityCardProvider,
+        card: SecurityCard,
+        fromView: UIView,
+        fromPriceFooter: UIView
+    ) {
+        let fromFrame = fromView.convert(fromView.bounds, to: nil)
+        let priceFooterFrame = fromPriceFooter.convert(fromPriceFooter.bounds, to: nil)
+        let priceFooterSnapshot = fromPriceFooter.snapshotView(afterScreenUpdates: false)
+        let vc = BuyDetailsViewController(
+            provider: provider,
+            card: card,
+            initialCardFrame: fromFrame,
+            initialPriceFooterSnapshot: priceFooterSnapshot,
+            initialPriceFooterFrame: priceFooterFrame
+        )
+        // Push without the slide animation so BuyDetails can drive its own hero
+        // entrance (card flies from the tapped cell to its final position, the
+        // marketplace price footer slides down off-screen, and the rest of the
+        // content fades in).
+        navigationController?.pushViewController(vc, animated: false)
+    }
 }
 
 // MARK: - MarketplacePresenterDelegate
@@ -108,9 +177,19 @@ final class MarketplaceViewController: MUViewController {
 extension MarketplaceViewController: MarketplacePresenterDelegate {
     func update(providers: [SecurityCardProvider]) {
         cachedProviders = providers
-        providerTabsView.configure(securityCardProviders: providers, selectedIndex: selectedProviderIndex)
+        providerTabsView.configure(
+            securityCardProviders: providers,
+            selectedIndex: selectedProviderIndex
+        )
 
-        pages = providers.map { SecurityCardsProviderCarouselViewController(provider: $0, delegate: self) }
+        pages = providers.map {
+            let carousel = SecurityCardsProviderCarouselViewController(
+                provider: $0,
+                priceFormatter: self.presenter
+            )
+            carousel.delegate = self
+            return carousel
+        }
         guard let first = pages.first else { return }
         pageVC.setViewControllers([first], direction: .forward, animated: false)
         currentIndex = 0
@@ -125,18 +204,27 @@ extension MarketplaceViewController: SecurityCardProvidersTabsViewDelegate {
         selectedProviderIndex = index
 
         guard index < pages.count else { return }
-        let direction: UIPageViewController.NavigationDirection = index >= currentIndex ? .forward : .reverse
+        let direction: UIPageViewController
+            .NavigationDirection = index >= currentIndex ? .forward : .reverse
         pageVC.setViewControllers([pages[index]], direction: direction, animated: true)
         currentIndex = index
+    }
+}
+
+// MARK: - CountrySelectorViewControllerDelegate
+
+extension MarketplaceViewController: CountrySelectorViewControllerDelegate {
+    func countrySelectorDidSelect(country: Country) {
+        selectedCountry = country
+        navigationItem.rightBarButtonItem?.title = country.flag
     }
 }
 
 // MARK: - UIPageViewController DataSource/Delegate
 
 extension MarketplaceViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
-
     func pageViewController(
-        _ pageViewController: UIPageViewController,
+        _: UIPageViewController,
         viewControllerBefore viewController: UIViewController
     ) -> UIViewController? {
         guard let idx = pages.firstIndex(of: viewController), idx - 1 >= 0 else { return nil }
@@ -144,17 +232,18 @@ extension MarketplaceViewController: UIPageViewControllerDataSource, UIPageViewC
     }
 
     func pageViewController(
-        _ pageViewController: UIPageViewController,
+        _: UIPageViewController,
         viewControllerAfter viewController: UIViewController
     ) -> UIViewController? {
-        guard let idx = pages.firstIndex(of: viewController), idx + 1 < pages.count else { return nil }
+        guard let idx = pages.firstIndex(of: viewController),
+              idx + 1 < pages.count else { return nil }
         return pages[idx + 1]
     }
 
     func pageViewController(
         _ pageViewController: UIPageViewController,
-        didFinishAnimating finished: Bool,
-        previousViewControllers: [UIViewController],
+        didFinishAnimating _: Bool,
+        previousViewControllers _: [UIViewController],
         transitionCompleted completed: Bool
     ) {
         guard completed,
@@ -166,12 +255,3 @@ extension MarketplaceViewController: UIPageViewControllerDataSource, UIPageViewC
     }
 }
 
-// MARK: - SecurityCardsProviderCarouselViewControllerDelegate
-
-extension MarketplaceViewController: SecurityCardsProviderCarouselViewControllerDelegate {
-    func carouselDidSelectCard(provider: SecurityCardProvider, card: SecurityCard) {
-        // TODO: handle card selection
-    }
-}
-
-private let securityCardProvidersTabsViewHeight: CGFloat = 52

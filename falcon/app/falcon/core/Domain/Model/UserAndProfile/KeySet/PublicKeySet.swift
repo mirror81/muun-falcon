@@ -13,10 +13,12 @@ struct PublicKeySet {
     let baseSwapServerPublicKey: WalletPublicKey?
     let externalPublicKeyIndices: ExternalAddressesRecord?
 
-    init(basePublicKey: WalletPublicKey,
-         baseCosigningPublicKey: WalletPublicKey?,
-         baseSwapServerPublicKey: WalletPublicKey?,
-         externalPublicKeyIndices: ExternalAddressesRecord?) {
+    init(
+        basePublicKey: WalletPublicKey,
+        baseCosigningPublicKey: WalletPublicKey?,
+        baseSwapServerPublicKey: WalletPublicKey?,
+        externalPublicKeyIndices: ExternalAddressesRecord?
+    ) {
         self.basePublicKey = basePublicKey
         self.baseCosigningPublicKey = baseCosigningPublicKey
         self.baseSwapServerPublicKey = baseSwapServerPublicKey
@@ -24,10 +26,12 @@ struct PublicKeySet {
     }
 
     init(basePublicKey: WalletPublicKey) {
-        self.init(basePublicKey: basePublicKey,
-                  baseCosigningPublicKey: nil,
-                  baseSwapServerPublicKey: nil,
-                  externalPublicKeyIndices: nil)
+        self.init(
+            basePublicKey: basePublicKey,
+            baseCosigningPublicKey: nil,
+            baseSwapServerPublicKey: nil,
+            externalPublicKeyIndices: nil
+        )
     }
 }
 

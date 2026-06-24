@@ -43,7 +43,7 @@ class SettingsTableViewCell: UITableViewCell {
         mainLabel.font = Constant.Fonts.description
         mainLabel.textColor = Asset.Colors.title.color
     }
-    
+
     private func setupSwitch(enabled: Bool?) {
         if let enabled = enabled {
             uiSwitch.isHidden = false

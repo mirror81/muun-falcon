@@ -54,3 +54,12 @@ public struct ExchangeRateWindow: Codable {
         case unknown(currency: String, window: Int)
     }
 }
+
+extension ExchangeRateWindow.Errors: ClassifiedError {
+    var classification: ErrorClassification {
+        switch self {
+        case .unknown:
+            return .unexpected
+        }
+    }
+}

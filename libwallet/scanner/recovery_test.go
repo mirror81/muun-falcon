@@ -3,11 +3,13 @@ package scanner
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/btcsuite/btcd/btcutil"
-	"github.com/btcsuite/btcd/rpcclient"
-	"github.com/muun/libwallet"
 	"testing"
 	"time"
+
+	"github.com/btcsuite/btcd/btcutil"
+	"github.com/btcsuite/btcd/rpcclient"
+
+	"github.com/muun/libwallet"
 )
 
 /*
@@ -24,15 +26,16 @@ The idea is to test:
 - Given every single type of address we can generate with libwallet,
 there are output descriptors that bitcoin core can understand and use to move the user sats.
 
-This test depends on regtest-musig, that container will be up for this test on CI but not on local envs. if you want to
-run it locally use `docker compose up regtest-musig.`
+This test depends on regtest-musig, that container will be up
+for this test on CI but not on local envs. if you want to run
+it locally use `docker compose up regtest-musig.`
 */
 func TestKitToBtcCore_Integration(t *testing.T) {
 	// MARK: - Step 1: Set up test data
 	const (
 		// Test keys and recovery data
-		encodedUserKey        = "Fw11jm3oFyL4EEo8tZHpvApSdQ9DkCspVuxG7ZmH9ziTkfFkfpBg9itmFwwmi5GTekvaEwyghJG2phyBJkW4DkqKNqdZx1DRDCmL3s2PuyhticTA8pgfraQo26kLW9zrKVES2pvfgygHms1y"
-		encodedMuunKey        = "FvGKMF7cr7mTTF44ZHohs9M7Fh3L5LuUBnDjqJM8kBxuCnYz28i3cjKLEavim2wviGfH95LVBjuxwipbiTyBzDJWwMrQfTG8hq5X144rDeetHHAyGsXBDiyNFWxwN1u6qfQWH9bcC9TGNp6M"
+		encodedUserKey        = "Fw11jm3oFyL4EEo8tZHpvApSdQ9DkCspVuxG7ZmH9ziTkfFkfpBg9itmFwwmi5GTekvaEwyghJG2phyBJkW4DkqKNqdZx1DRDCmL3s2PuyhticTA8pgfraQo26kLW9zrKVES2pvfgygHms1y" //nolint:lll
+		encodedMuunKey        = "FvGKMF7cr7mTTF44ZHohs9M7Fh3L5LuUBnDjqJM8kBxuCnYz28i3cjKLEavim2wviGfH95LVBjuxwipbiTyBzDJWwMrQfTG8hq5X144rDeetHHAyGsXBDiyNFWxwN1u6qfQWH9bcC9TGNp6M" //nolint:lll
 		recoveryCode          = "LAWN-AXNA-RQ8K-APEA-JKW5-BT2Y-QH75-DRQM"
 		inAppGeneratedAddress = "2N1PtMVLGB2cV3Afn4HwouPZJK1tkFE7GEi"
 
@@ -66,8 +69,16 @@ func TestKitToBtcCore_Integration(t *testing.T) {
 
 	// MARK: - Step 3: Create wallets
 	// Use default wallet for funding operations (empty string uses wallet/ path)
-	daemonRpc := getBitcoindRpcClient(t, "")
-	userWalletRpc := loadUserWallet(t, userKey, muunKey, walletDescriptors)
+	daemonRpc := getBitcoindRpcClient( //nolint:staticcheck // TODO: var daemonRpc should be daemonRPC
+		t,
+		"",
+	)
+	userWalletRpc := loadUserWallet( //nolint:staticcheck // TODO: var userWalletRpc should be userWalletRPC
+		t,
+		userKey,
+		muunKey,
+		walletDescriptors,
+	)
 
 	// MARK: - Step 4: Fund addresses
 	// Generate and fund one address per version
@@ -97,19 +108,26 @@ func TestKitToBtcCore_Integration(t *testing.T) {
 	// MARK: - Step 7: Validate transaction
 	// Verify transaction amounts and fees match expected values
 	checkUserBalanceIsZero(t, userWalletRpc)
-	checkTxAmountIsConsistentWithUserBalanceBeforeSpend(t, userWalletRpc, txid, userWalletStateBeforeSpendAllFunds)
+	checkTxAmountIsConsistentWithUserBalanceBeforeSpend(
+		t,
+		userWalletRpc,
+		txid,
+		userWalletStateBeforeSpendAllFunds,
+	)
 }
 
-func checkTxAmountIsConsistentWithUserBalanceBeforeSpend(t *testing.T,
-	userWalletRpc *rpcclient.Client,
+func checkTxAmountIsConsistentWithUserBalanceBeforeSpend(
+	t *testing.T,
+	userWalletRpc *rpcclient.Client, //nolint:staticcheck // TODO: func parameter userWalletRpc should be userWalletRPC
 	txid string,
-	userWalletStateBeforeSpendAllFunds WalletState) {
+	userWalletStateBeforeSpendAllFunds WalletState,
+) {
 
 	txAmount, txFee := getTxAmountAndFee(t, userWalletRpc, txid)
 	walletBalanceBeforeSpendAllFunds := userWalletStateBeforeSpendAllFunds.totalBalance
 
-	// Since we use subtractfeefromamount=true, the transaction amount + fee should equal
-	// wallet balance
+	// Since we use subtractfeefromamount=true, the transaction amount + fee should equal wallet
+	// balance
 	if txAmount+txFee != walletBalanceBeforeSpendAllFunds {
 		t.Fatalf(
 			"Transaction validation failed: "+
@@ -128,7 +146,10 @@ func checkTxAmountIsConsistentWithUserBalanceBeforeSpend(t *testing.T,
 	)
 }
 
-func checkUserBalanceIsZero(t *testing.T, userWalletRpc *rpcclient.Client) {
+func checkUserBalanceIsZero(
+	t *testing.T,
+	userWalletRpc *rpcclient.Client, //nolint:staticcheck // TODO: func parameter userWalletRpc should be userWalletRPC
+) {
 	userWalletStateAfterSpendingAllFunds := getWalletState(t, userWalletRpc)
 
 	if userWalletStateAfterSpendingAllFunds.totalBalance != 0 {
@@ -144,12 +165,15 @@ func loadUserWallet(
 	userKey,
 	muunKey *libwallet.HDPrivateKey,
 	walletDescriptors []struct {
-	template string
-	internal bool
-},
+		template string
+		internal bool
+	},
 ) *rpcclient.Client {
 	walletName := fmt.Sprintf("recovery_%d", time.Now().UnixNano())
-	walletRpc := createDescriptorWallet(t, walletName)
+	walletRpc := createDescriptorWallet( //nolint:staticcheck // TODO: var walletRpc should be walletRPC
+		t,
+		walletName,
+	)
 
 	for _, desc := range walletDescriptors {
 		descriptor := fmt.Sprintf(
@@ -158,7 +182,8 @@ func loadUserWallet(
 			muunKey.String(),
 		)
 
-		// The btcCore protocol requires the checksum in the importDescriptor function to be already added.
+		// The btcCore protocol requires the checksum in the importDescriptor function to be already
+		// added.
 		descriptorWithChecksum := addDescriptorChecksum(t, walletRpc, descriptor)
 		importDescriptor(t, walletRpc, descriptorWithChecksum, desc.internal)
 	}
@@ -170,7 +195,7 @@ func loadUserWallet(
 
 func addDescriptorChecksum(
 	t *testing.T,
-	walletRpc *rpcclient.Client,
+	walletRpc *rpcclient.Client, //nolint:staticcheck // TODO: func parameter walletRpc should be walletRPC
 	descriptor string,
 ) string {
 	result, err := walletRpc.RawRequest(
@@ -181,12 +206,12 @@ func addDescriptorChecksum(
 		t.Fatalf("Failed to get descriptor info for %s: %v", descriptor, err)
 	}
 
-	var info map[string]interface{}
+	var info map[string]interface{} //nolint:modernize // TODO: use any instead of interface{}
 	if err := json.Unmarshal(result, &info); err != nil {
 		t.Fatalf("Failed to unmarshal descriptor info: %v", err)
 	}
 
-	// Carefull here, getdescriptorinfo is responding with the complete descriptor plus the
+	// Careful here, getdescriptorinfo is responding with the complete descriptor plus the
 	// checksum. DO NOT use it as the descriptor returned uses the xpub instead of the xpriv,
 	// extract the checksum instead.
 	if checksum, ok := info["checksum"].(string); ok {
@@ -198,26 +223,28 @@ func addDescriptorChecksum(
 
 func importDescriptor(
 	t *testing.T,
-	walletRpc *rpcclient.Client,
+	walletRpc *rpcclient.Client, //nolint:staticcheck // TODO: func parameter walletRpc should be walletRPC
 	descriptorWithChecksum string,
 	internal bool,
 ) {
 	const maxDerivationIndex = 200
 
-	importDesc := map[string]interface{}{
+	importDesc := map[string]interface{}{ //nolint:modernize // TODO: use any instead of interface{}
 		"desc": descriptorWithChecksum, "timestamp": 0, "active": true,
 		"internal": internal, "range": [2]int{0, maxDerivationIndex},
 	}
 
 	result, err := walletRpc.RawRequest(
 		"importdescriptors",
-		[]json.RawMessage{mustMarshal([]interface{}{importDesc})},
+		[]json.RawMessage{
+			mustMarshal([]interface{}{importDesc}), //nolint:modernize // TODO: use any instead of interface{}
+		},
 	)
 	if err != nil {
 		t.Fatalf("Failed to import descriptor %s: %v", descriptorWithChecksum, err)
 	}
 
-	var results []map[string]interface{}
+	var results []map[string]interface{} //nolint:modernize // TODO: use any instead of interface{}
 	if err := json.Unmarshal(result, &results); err != nil {
 		t.Fatalf("Failed to unmarshal import results: %v", err)
 	}
@@ -239,9 +266,9 @@ func fundOneAddressPerVersion(
 	t *testing.T,
 	userKey *libwallet.HDPrivateKey,
 	muunKey *libwallet.HDPrivateKey,
-	daemonRpc *rpcclient.Client,
+	daemonRpc *rpcclient.Client, //nolint:staticcheck // TODO: func parameter daemonRpc should be daemonRPC
 	inAppGeneratedAddress string,
-	userWalletRpc *rpcclient.Client,
+	userWalletRpc *rpcclient.Client, //nolint:staticcheck // TODO: func parameter userWalletRpc should be userWalletRPC
 ) []AddressWithBalance {
 	addressesByVersion := generateOneAddressPerVersion(t, userKey, muunKey)
 	// Track what we're going to fund (only recoverable addresses)

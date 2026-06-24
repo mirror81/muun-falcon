@@ -15,6 +15,8 @@ class MUViewController: UIViewController {
     var alreadyDismissedPopUp: Bool = false
     var containerView: UIView!
 
+    private var savedNavBarIsTranslucent = false
+
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         handleTabBarVisibility()
@@ -64,7 +66,8 @@ class MUViewController: UIViewController {
 
     func navigationIsBeingPresented() -> Bool {
         return presentingViewController != nil ||
-            navigationController?.presentingViewController?.presentedViewController === navigationController
+            navigationController?.presentingViewController?
+            .presentedViewController === navigationController
     }
 
     private func setNavigationStyle() {
@@ -88,21 +91,36 @@ class MUViewController: UIViewController {
         }
         let showCloseButton = isModal && navigationController?.viewControllers.count == 1
         if showCloseButton {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(image: Constant.Images.close,
-                                                               style: .plain,
-                                                               target: self,
-                                                               action: .onCloseTap)
+            navigationItem.leftBarButtonItem = UIBarButtonItem(
+                image: Constant.Images.close,
+                style: .plain,
+                target: self,
+                action: .onCloseTap
+            )
         }
 
         navigationItem.setHidesBackButton(false, animated: true)
-        navigationItem.backBarButtonItem = UIBarButtonItem(image: Constant.Images.back,
-                                                           style: .plain,
-                                                           target: nil,
-                                                           action: nil)
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            image: Constant.Images.back,
+            style: .plain,
+            target: nil,
+            action: nil
+        )
     }
 
     @objc func onCloseTap() {
         dismiss(animated: true, completion: nil)
+    }
+
+    func setupTransparentNavBar() {
+        savedNavBarIsTranslucent = navigationController?.navigationBar.isTranslucent ?? false
+        navigationController?.navigationBar.barTintColor = .clear
+        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.hideSeparator()
+    }
+
+    func restoreNavBar() {
+        navigationController?.navigationBar.isTranslucent = savedNavBarIsTranslucent
     }
 
     func showLoading(_ text: String) {
@@ -133,7 +151,10 @@ class MUViewController: UIViewController {
         view.addSubview(label)
         NSLayoutConstraint.activate([
             label.heightAnchor.constraint(equalToConstant: 20),
-            label.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -.sideMargin),
+            label.bottomAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                constant: -.sideMargin
+            ),
             label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -.sideMargin)
         ])
         label.backgroundColor = Asset.Colors.muunRed.color
@@ -143,10 +164,12 @@ class MUViewController: UIViewController {
         label.roundCorners(cornerRadius: 10, clipsToBounds: true)
     }
 
-    // We only want to display the tab bar in the top level view controllers of the tab bar controller.
+    // We only want to display the tab bar in the top level view controllers of the tab bar
+    // controller.
     // If for some reason you need another view controller to display the tab bar, you can either:
     // 1. add it to the isTopLevelVc check; or
-    // 2. override the `init(nibName, bundle)` method of the VC and add the `hidesBottomBarWhenPushed = false` line
+    // 2. override the `init(nibName, bundle)` method of the VC and add the
+    // `hidesBottomBarWhenPushed = false` line
     // just below the `super.init(nibName, bundle)` call.
     fileprivate func handleTabBarVisibility() {
         let isTopLevelVc = isKind(of: HomeViewController.self)
@@ -156,7 +179,8 @@ class MUViewController: UIViewController {
         hidesBottomBarWhenPushed = !isTopLevelVc
     }
 
-    // Use this method whenever the user needs a clean restart of the view herarchy (ie: log out, delete wallet, etc)
+    // Use this method whenever the user needs a clean restart of the view herarchy (ie: log out,
+    // delete wallet, etc)
     func resetWindowToGetStarted() {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             fatalError("Couldn't get access to the App Delegate")
@@ -227,16 +251,20 @@ extension MUViewController {
 extension MUViewController {
 
     internal func addClipboardObserver() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: .clipboardChanged,
-                                               name: UIPasteboard.changedNotification,
-                                               object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: .clipboardChanged,
+            name: UIPasteboard.changedNotification,
+            object: nil
+        )
     }
 
     internal func removeClipboardObserver() {
-        NotificationCenter.default.removeObserver(self,
-                                                  name: UIPasteboard.changedNotification,
-                                                  object: nil)
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIPasteboard.changedNotification,
+            object: nil
+        )
     }
 
     @objc func clipboardChanged() {

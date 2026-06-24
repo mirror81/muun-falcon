@@ -131,3 +131,12 @@ extension LocaleAmountFormatter {
     }
 
 }
+
+extension LocaleAmountFormatter.Errors: ClassifiedError {
+    var classification: ErrorClassification {
+        switch self {
+        case .format:
+            return .unexpected
+        }
+    }
+}

@@ -18,8 +18,10 @@ extension UIBarButtonItem {
         let barButtonItem = UIBarButtonItem(title: string, style: .plain, target: self, action: nil)
 
         barButtonItem.setTitleTextAttributes(
-            [.foregroundColor: Asset.Colors.muunDisabled.color,
-             .font: Constant.Fonts.system(size: .desc, weight: .light)],
+            [
+                .foregroundColor: Asset.Colors.muunDisabled.color,
+                .font: Constant.Fonts.system(size: .desc, weight: .light)
+            ],
             for: .disabled
         )
 

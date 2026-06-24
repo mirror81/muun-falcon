@@ -8,8 +8,9 @@
 
 import UIKit
 
-/// This view is a bottom sheet container with a vertical stackview in it. Just add whatever you want into dialogView
-/// overriding setUpView method and call super before anything and it wil lbe displayed as a bottomSheet.
+/// This view is a bottom sheet container with a vertical stackview in it.
+/// Just add whatever you want into dialogView overriding setUpView method and call super before
+/// anything and it will be displayed as a bottomSheet.
 class MUBottomSheetViewContainer: UIViewController {
     var dialogView = UIStackView()
     private let screenNameForLogs: String
@@ -38,9 +39,10 @@ class MUBottomSheetViewContainer: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // This log is usually logged by a MUBottomSheetViewContainer parent. Since MUViewController only support pushing
-        // VC instead of presententing them, I added this log in order to get the screen logged. As a future work we
-        // must refactor MUViewController in order to support presetingVCs
+        // This log is usually logged by a MUBottomSheetViewContainer parent. Since
+        // MUViewController only supports pushing VC instead of presenting them, I added this log
+        // in order to get the screen logged. As a future work we must refactor MUViewController
+        // in order to support presenting VCs
         logScreen()
     }
 
@@ -63,6 +65,7 @@ class MUBottomSheetViewContainer: UIViewController {
         dismiss(animated: true)
     }
 
+    // swiftlint:disable:next line_length
     // Ref: https://betterprogramming.pub/simple-drag-dismiss-on-presented-view-controller-tutorial-5f2f44f86f7b
     var viewTranslation = CGPoint(x: 0, y: 0)
     @objc func handleDismiss(sender: UIPanGestureRecognizer) {
@@ -70,15 +73,32 @@ class MUBottomSheetViewContainer: UIViewController {
         case .changed:
             viewTranslation = sender.translation(in: view)
             if self.viewTranslation.y > 0 {
-                UIView.animate(withDuration: 0.05, delay: 0, usingSpringWithDamping: 5, initialSpringVelocity: 2, options: .curveEaseOut, animations: {
-                    self.view.transform = CGAffineTransform(translationX: 0, y: self.viewTranslation.y)
-                })
+                UIView.animate(
+                    withDuration: 0.05,
+                    delay: 0,
+                    usingSpringWithDamping: 5,
+                    initialSpringVelocity: 2,
+                    options: .curveEaseOut,
+                    animations: {
+                        self.view.transform = CGAffineTransform(
+                            translationX: 0,
+                            y: self.viewTranslation.y
+                        )
+                    }
+                )
             }
         case .ended:
             if viewTranslation.y < 5 {
-                UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-                    self.view.transform = .identity
-                })
+                UIView.animate(
+                    withDuration: 0.1,
+                    delay: 0,
+                    usingSpringWithDamping: 0.7,
+                    initialSpringVelocity: 1,
+                    options: .curveEaseOut,
+                    animations: {
+                        self.view.transform = .identity
+                    }
+                )
             } else {
                 dismiss(animated: true, completion: nil)
             }
@@ -93,22 +113,31 @@ fileprivate extension Selector {
 }
 
 extension MUBottomSheetViewContainer: UIViewControllerTransitioningDelegate {
-    func animationController(forPresented presented: UIViewController,
-                             presenting: UIViewController,
-                             source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(
+        forPresented presented: UIViewController,
+        presenting: UIViewController,
+        source: UIViewController
+    ) -> UIViewControllerAnimatedTransitioning? {
 
         return ModalAnimationController(presenting: true)
     }
 
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(
+        forDismissed dismissed: UIViewController
+    ) -> UIViewControllerAnimatedTransitioning? {
         return ModalAnimationController(presenting: false)
     }
 
-    func presentationController(forPresented presented: UIViewController,
-                                presenting: UIViewController?,
-                                source: UIViewController) -> UIPresentationController? {
+    func presentationController(
+        forPresented presented: UIViewController,
+        presenting: UIViewController?,
+        source: UIViewController
+    ) -> UIPresentationController? {
 
-        return ModalPresentationController(presentedViewController: presented, presenting: presenting)
+        return ModalPresentationController(
+            presentedViewController: presented,
+            presenting: presenting
+        )
     }
 }
 
@@ -124,7 +153,9 @@ private extension MUBottomSheetViewContainer {
         dialogView.layoutMargins = margins
         dialogView.spacing = .spacing
         dialogView.alignment = .fill
-        dialogView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(killTap)))
+        dialogView.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: #selector(killTap))
+        )
         view.addSubview(dialogView)
 
         NSLayoutConstraint.activate([

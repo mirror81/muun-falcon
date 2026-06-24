@@ -14,6 +14,12 @@ protocol SecurityCardProvidersTabsViewDelegate: AnyObject {
 
 final class SecurityCardProvidersTabsView: UIView {
 
+    private enum Constants {
+        static let preferredCellsOnScreen: CGFloat = 3
+        static let cellHorizontalPadding = MuunTheme.Spacing.xs2
+        static let cellHeight: CGFloat = 36
+    }
+
     private var securityCardProviders: [SecurityCardProvider] = []
     private var selectedIndex: Int = 0
     weak var delegate: SecurityCardProvidersTabsViewDelegate?
@@ -121,10 +127,13 @@ extension SecurityCardProvidersTabsView: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        let cellWidth = frame.width / numberOfCellsOnScreen
-        return CGSize(width: cellWidth, height: cellHeight)
+        let name = securityCardProviders[indexPath.item].name
+        let textWidth = (name as NSString)
+            .size(withAttributes: [.font: MuunTheme.Font.Body.lg])
+            .width
+        let dynamicWidth = ceil(textWidth) + 2 * Constants.cellHorizontalPadding
+        let evenWidth = frame.width / Constants.preferredCellsOnScreen
+        let cellWidth = max(dynamicWidth, evenWidth)
+        return CGSize(width: cellWidth, height: Constants.cellHeight)
     }
 }
-
-private let numberOfCellsOnScreen: CGFloat = 3
-private let cellHeight: CGFloat = 36

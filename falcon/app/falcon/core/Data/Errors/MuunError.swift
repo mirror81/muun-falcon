@@ -14,10 +14,32 @@ public struct MuunError: Error, LocalizedError {
     let callsite: String
     let shortCallsite: String
     public let kind: Error
+    public let classification: ErrorClassification
 
+    /// Creates a MuunError wrapping the given error.
+    ///
+    /// Classification is determined by:
+    /// 1. If `classification` parameter is provided, use it
+    /// 2. If the error conforms to `ClassifiedError`, use its classification
+    /// 3. Otherwise, default to `.unexpected` (safe default)
     @inline(never)
-    public init(_ kind: Error, filename: StaticString = #file, line: UInt = #line, funcName: StaticString = #function) {
+    public init(
+        _ kind: Error,
+        classification: ErrorClassification? = nil,
+        filename: StaticString = #file,
+        line: UInt = #line,
+        funcName: StaticString = #function
+    ) {
         self.kind = kind
+
+        if let classification = classification {
+            self.classification = classification
+        } else if let classified = kind as? ClassifiedError {
+            self.classification = classified.classification
+        } else {
+            self.classification = .unexpected
+        }
+
         self.callsite = "[\(MuunError.sourcePath(filePath: filename))]:\(line) \(funcName)"
         self.shortCallsite = "\(MuunError.sourceFileName(filePath: filename)) \(funcName)"
         self.stacktrace = Thread.callStackReturnAddresses

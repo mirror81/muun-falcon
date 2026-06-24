@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 protocol SelectFeeDelegate: AnyObject {
     func selected(fee: BitcoinAmount, rate: FeeRate)
     func cancel()
@@ -22,8 +21,11 @@ class SelectFeeViewController: MUViewController {
     @IBOutlet fileprivate weak var noticeLabel: UILabel!
     @IBOutlet fileprivate weak var noticeSeparatorView: UIView!
 
-    fileprivate lazy var presenter = instancePresenter(SelectFeePresenter.init,
-                                                       delegate: self, state: state)
+    fileprivate lazy var presenter = instancePresenter(
+        SelectFeePresenter.init,
+        delegate: self,
+        state: state
+    )
     private weak var delegate: SelectFeeDelegate?
 
     private var selectedFee: FeeState {
@@ -153,9 +155,11 @@ extension SelectFeeViewController: UITableViewDelegate {
             tableView.reloadData()
 
         case .enterManually:
-            let vc = ManuallyEnterFeeViewController(delegate: delegate,
-                                                    state: state,
-                                                    selectedCurrency: state.amount.selectedCurrency)
+            let vc = ManuallyEnterFeeViewController(
+                delegate: delegate,
+                state: state,
+                selectedCurrency: state.amount.selectedCurrency
+            )
             navigationController!.pushViewController(vc, animated: true)
             tableView.reloadData()
 
@@ -164,7 +168,11 @@ extension SelectFeeViewController: UITableViewDelegate {
         }
     }
 
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    func tableView(
+        _ tableView: UITableView,
+        willDisplay cell: UITableViewCell,
+        forRowAt indexPath: IndexPath
+    ) {
         switch presenter.sections[indexPath.section] {
 
         case .targetedFees:
@@ -239,9 +247,11 @@ extension SelectFeeViewController: UITableViewDataSource {
         let fee = presenter.fee(for: indexPath)
         let timeText = presenter.timeText(for: indexPath)
 
-        cell.setUp(fee: fee,
-                   confirmationTime: timeText,
-                   currencyToShow: state.amount.selectedCurrency)
+        cell.setUp(
+            fee: fee,
+            confirmationTime: timeText,
+            currencyToShow: state.amount.selectedCurrency
+        )
         cell.selectionStyle = .none
 
         return cell
@@ -266,8 +276,10 @@ extension SelectFeeViewController: UITableViewDataSource {
         var fee: BitcoinAmountWithSelectedCurrency?
 
         if let finalFee = finalFee {
-            fee = BitcoinAmountWithSelectedCurrency(bitcoinAmount: finalFee,
-                                                    selectedCurrency: state.amount.selectedCurrency)
+            fee = BitcoinAmountWithSelectedCurrency(
+                bitcoinAmount: finalFee,
+                selectedCurrency: state.amount.selectedCurrency
+            )
         }
         cell.setUp(fee: fee)
         return cell
@@ -308,7 +320,9 @@ extension SelectFeeViewController: UITestablePage {
 
 extension SelectFeeViewController: UIAdaptivePresentationControllerDelegate {
 
-    public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+    public func presentationControllerDidDismiss(
+        _ presentationController: UIPresentationController
+    ) {
         delegate?.cancel()
     }
 }

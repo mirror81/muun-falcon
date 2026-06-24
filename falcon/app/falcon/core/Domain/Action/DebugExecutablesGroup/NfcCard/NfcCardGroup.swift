@@ -11,12 +11,12 @@ import Foundation
 final class NfcCardGroup: BaseDebugExecutablesGroup {
     init() {
         let pairCard = CardPairingDebugExecutable()
-        let unpairCard = CardUnpairingDebugExecutable()
-        let signMessage = SignMessageDebugExecutable()
 
-        super.init(category: "NFC Card",
-                   executables: [pairCard,
-                                unpairCard,
-                                signMessage])
+        super.init(
+            category: "NFC Card",
+            executables: [
+                pairCard,
+            ]
+        )
     }
 }

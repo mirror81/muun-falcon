@@ -8,8 +8,12 @@
 
 class AddressGenerationGroup: BaseDebugExecutablesGroup {
     init() {
-        super.init(category: "Address generation",
-                   executables: [CopyRandomAddressDebugExecutable(),
-                                 CopyRandomInvoiceDebugExecutable()])
+        super.init(
+            category: "Address generation",
+            executables: [
+                CopyRandomAddressDebugExecutable(),
+                CopyRandomInvoiceDebugExecutable()
+            ]
+        )
     }
 }

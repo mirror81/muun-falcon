@@ -15,10 +15,12 @@ public class StartEmailSetupAction: AsyncAction<()> {
     private let preferences: Preferences
     private let signChallengeAction: SignChallengeWithUserKeyAction
 
-    init(houstonService: HoustonService,
-         keysRepository: KeysRepository,
-         preferences: Preferences,
-         signChallengeAction: SignChallengeWithUserKeyAction) {
+    init(
+        houstonService: HoustonService,
+        keysRepository: KeysRepository,
+        preferences: Preferences,
+        signChallengeAction: SignChallengeWithUserKeyAction
+    ) {
         self.houstonService = houstonService
         self.keysRepository = keysRepository
         self.preferences = preferences

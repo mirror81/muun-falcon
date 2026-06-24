@@ -24,7 +24,10 @@ public class BeginPasswordChangeAction: AsyncAction<String> {
         let challengePrivateKey = getChallengePrivateKey(challenge: challenge, userInput: userInput)
         let single = Single.deferred({
             let signature = try challengePrivateKey.signSha(Data(hex: challenge.challenge))
-                return Single.just(ChallengeSignature(type: challenge.type, hex: signature.toHexString()))
+                return Single.just(ChallengeSignature(
+                    type: challenge.type,
+                    hex: signature.toHexString()
+                ))
             })
             .flatMap({ payload in
                 self.houstonService.beginPasswordChange(challengeSignature: payload)
@@ -36,7 +39,10 @@ public class BeginPasswordChangeAction: AsyncAction<String> {
         runSingle(single)
     }
 
-    private func getChallengePrivateKey(challenge: Challenge, userInput: String) -> LibwalletChallengePrivateKey {
+    private func getChallengePrivateKey(
+        challenge: Challenge,
+        userInput: String
+    ) -> LibwalletChallengePrivateKey {
         do {
             let challengePrivateKey: LibwalletChallengePrivateKey
             if challenge.type == .PASSWORD {

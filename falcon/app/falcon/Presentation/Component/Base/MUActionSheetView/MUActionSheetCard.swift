@@ -9,14 +9,18 @@
 import Foundation
 import UIKit
 
-
 struct MUActionSheetOptionViewModel {
     let type: any MUActionSheetOption
     let status: MUActionSheetCard.Status
     let highlight: String?
     let blocksLeft: UInt
 
-    init(type: any MUActionSheetOption, status: MUActionSheetCard.Status, highlight: String?, blocksLeft: UInt = 0) {
+    init(
+        type: any MUActionSheetOption,
+        status: MUActionSheetCard.Status,
+        highlight: String?,
+        blocksLeft: UInt = 0
+    ) {
         self.type = type
         self.blocksLeft = blocksLeft
         self.status = status
@@ -40,10 +44,11 @@ class MUActionSheetCard: UIStackView {
     private weak var delegate: MUActionSheetCardDelegate?
     let status: Status
 
-    init(selectedOptionType: any MUActionSheetOption,
-         status: Status,
-         delegate: MUActionSheetCardDelegate?,
-         highlight: String?
+    init(
+        selectedOptionType: any MUActionSheetOption,
+        status: Status,
+        delegate: MUActionSheetCardDelegate?,
+        highlight: String?
     ) {
         self.selectedOptionType = selectedOptionType
         self.delegate = delegate
@@ -95,9 +100,12 @@ class MUActionSheetCard: UIStackView {
         addTitleLabel(titleColor: titleColor)
         addDescriptionLabel(highlight: highlight)
 
-        // Always make it tappable so it intercepts touch events and the whole dialog isn't dismissed when tapping
+        // Always make it tappable so it intercepts touch events and the whole dialog isn't
+        // dismissed when tapping
         // a disabled card
-        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapped(sender:))))
+        addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: #selector(tapped(sender:)))
+        )
     }
 
     @objc private func tapped(sender: UIView) {

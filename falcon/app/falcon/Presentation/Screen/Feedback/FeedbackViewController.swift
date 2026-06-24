@@ -115,7 +115,10 @@ class FeedbackViewController: MUViewController {
         NSLayoutConstraint.activate([ble])
 
         descriptionLabel.isUserInteractionEnabled = true
-        descriptionLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: .descriptionTouched))
+        descriptionLabel.addGestureRecognizer(UITapGestureRecognizer(
+            target: self,
+            action: .descriptionTouched
+        ))
     }
 
     fileprivate func setUpImageView() {
@@ -136,8 +139,10 @@ class FeedbackViewController: MUViewController {
             height,
             width,
 
-            feedbackIImageView.widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor,
-                                                      constant: -2 * .sideMargin)
+            feedbackIImageView.widthAnchor.constraint(
+                lessThanOrEqualTo: view.widthAnchor,
+                constant: -2 * .sideMargin
+            )
         ])
     }
 
@@ -165,7 +170,10 @@ class FeedbackViewController: MUViewController {
         blockClock.alpha = 0
         blockClock.translatesAutoresizingMaskIntoConstraints = false
         blockClock.blocks = blocksLeft
-        stackView.insertArrangedSubview(blockClock, at: stackView.arrangedSubviews.firstIndex(of: titleLabel)!)
+        stackView.insertArrangedSubview(
+            blockClock,
+            at: stackView.arrangedSubviews.firstIndex(of: titleLabel)!
+        )
 
         stackView.setCustomSpacing(-.closeSpacing, after: feedbackIImageView)
     }
@@ -186,7 +194,8 @@ class FeedbackViewController: MUViewController {
 
     @objc fileprivate func descriptionTouched() {
         if feedback == FeedbackInfo.deleteWallet {
-            let nc = UINavigationController(rootViewController: SupportViewController(type: .feedback))
+            let nc =
+                UINavigationController(rootViewController: SupportViewController(type: .feedback))
             navigationController!.present(nc, animated: true)
         }
     }

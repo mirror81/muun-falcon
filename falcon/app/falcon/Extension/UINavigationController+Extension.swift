@@ -10,11 +10,17 @@ import UIKit
 
 extension UINavigationController {
 
-    func pushViewController(_ viewController: UIViewController, animated: Bool, removeFromStack: Bool = false) {
+    func pushViewController(
+        _ viewController: UIViewController,
+        animated: Bool,
+        removeFromStack: Bool = false
+    ) {
 
         if removeFromStack {
-            var navigationArray = self.viewControllers // To get all UIViewController stack as Array
-            navigationArray.remove(at: (navigationArray.count) - 1) // To remove previous UIViewController
+            // Get all UIViewController stack as Array
+            var navigationArray = self.viewControllers
+            // Remove previous UIViewController
+            navigationArray.remove(at: (navigationArray.count) - 1)
             self.setViewControllers(navigationArray, animated: false)
         }
 

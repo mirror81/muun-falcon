@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 enum SelectFeeSection {
     case title
     case targetedFees(targets: [UInt])
@@ -29,9 +28,11 @@ class SelectFeePresenter<Delegate: BasePresenterDelegate>: FeeEditorPresenter<De
     }
 
     private var allTargetBlocks: [UInt] {
-        return [feeConfirmationTargets.fast,
-                feeConfirmationTargets.medium,
-                feeConfirmationTargets.slow]
+        return [
+            feeConfirmationTargets.fast,
+            feeConfirmationTargets.medium,
+            feeConfirmationTargets.slow
+        ]
     }
 
     func numberOfRowsForSection(_ section: Int) -> Int {
@@ -47,7 +48,8 @@ class SelectFeePresenter<Delegate: BasePresenterDelegate>: FeeEditorPresenter<De
         for target in allTargetBlocks {
             let rate = minFeeRate(target)
             let fee = calculateFee(rate).adapt()
-            // To avoid duplicated values, only different fee / target blocks will be presented to users.
+            // To avoid duplicated values, only different fee / target blocks will be presented to
+            // users.
             if !allFeesData.contains(where: { $0.fee == fee }) {
                 let feeData = FeeData(fee: fee, targetBlock: target)
                 allFeesData.append(feeData)

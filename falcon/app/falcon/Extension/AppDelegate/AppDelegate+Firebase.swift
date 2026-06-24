@@ -6,7 +6,6 @@
 //  Copyright © 2019 muun. All rights reserved.
 //
 
-
 import GoogleSignIn
 import Firebase
 
@@ -38,9 +37,11 @@ extension AppDelegate {
     }
 
     /**
-     In order to send push notifications, we rely on FCM. If we have push notification permissions, we must have an FCM token;
-     otherwise, we can assume there is a bug in either APNS or FCM preventing us from getting an FCM token. This logic is a best effort
-     to detect cases in which we have notification permissions but do not have an FCM token.
+     In order to send push notifications, we rely on FCM. If we have push notification
+     permissions, we must have an FCM token; otherwise, we can assume there is a bug in
+     either APNS or FCM preventing us from getting an FCM token. This logic is a best
+     effort to detect cases in which we have notification permissions but do not have an
+     FCM token.
      */
     private func logAbsentFCMTokenWhenHavingPushPermissions() {
         // Avoid logging twice.
@@ -51,7 +52,11 @@ extension AppDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 30) {
             if !self.preferences.has(key: .gcmToken) {
                 let hasAPNSToken = (Messaging.messaging().apnsToken != nil)
-                Logger.log(.err, "FCMToken inconsistency: permission granted but fcmToken not received. has ApnsToken: \(hasAPNSToken)")
+                Logger.log(
+                    .err,
+                    "FCMToken inconsistency: permission granted but fcmToken not received."
+                    + " has ApnsToken: \(hasAPNSToken)"
+                )
                 return
             }
         }

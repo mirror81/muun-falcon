@@ -6,8 +6,6 @@
 //  Copyright © 2020 muun. All rights reserved.
 //
 
-
-
 protocol EmailPrimingPresenterDelegate: BasePresenterDelegate {}
 
 class EmailPrimingPresenter<Delegate: EmailPrimingPresenterDelegate>: BasePresenter<Delegate> {

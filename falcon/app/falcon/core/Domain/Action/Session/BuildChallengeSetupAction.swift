@@ -17,8 +17,12 @@ public class BuildChallengeSetupAction: AsyncAction<()> {
         super.init(name: "BuildChallengeSetupAction")
     }
 
-    // Returns a Challenge Key to be stored in the phone and a Challenge Setup prepared to be sent to the backend
-    func run(type: ChallengeType, userInput: String) -> (challengeKey: ChallengeKey, challengeSetup: ChallengeSetup) {
+    // Returns a Challenge Key to be stored in the phone and a Challenge Setup prepared to be sent
+    // to the backend
+    func run(
+        type: ChallengeType,
+        userInput: String
+    ) -> (challengeKey: ChallengeKey, challengeSetup: ChallengeSetup) {
 
         let salt = SecureRandom.randomBytes(count: 8)
 
@@ -26,11 +30,14 @@ public class BuildChallengeSetupAction: AsyncAction<()> {
             let privKey = try getPrivateChallengeKey(type: type, userInput: userInput, salt: salt)
             let pubKey = privKey.pubKeyHex()
 
-            let encryptedKey = KeyCrypter.encrypt(try keysRepository.getBasePrivateKey(), passphrase: userInput)
+            let encryptedKey = KeyCrypter.encrypt(
+                try keysRepository.getBasePrivateKey(),
+                passphrase: userInput
+            )
             let challengeKey = buildChallengeKey(type: type, pubKey: pubKey, salt: salt)
 
-            // In order to save ourselves from a huge backend refactor, we will continue to send a salt on all challenge
-            // setups, but it wont be used for challenge types = RECOVERY_CODE
+            // In order to save ourselves from a huge backend refactor, we will continue to send a
+            // salt on all challenge setups, but it wont be used for challenge types = RECOVERY_CODE
             let challengeSetup = ChallengeSetup(
                 type: type,
                 passwordSecretPublicKey: pubKey,
@@ -45,8 +52,11 @@ public class BuildChallengeSetupAction: AsyncAction<()> {
         }
     }
 
-    private func getPrivateChallengeKey(type: ChallengeType, userInput: String, salt: Data) throws
-        -> LibwalletChallengePrivateKey {
+    private func getPrivateChallengeKey(
+        type: ChallengeType,
+        userInput: String,
+        salt: Data
+    ) throws -> LibwalletChallengePrivateKey {
         switch type {
         case .PASSWORD:
             return LibwalletChallengePrivateKey(Data(userInput.stringBytes), salt: salt)!
@@ -59,7 +69,11 @@ public class BuildChallengeSetupAction: AsyncAction<()> {
         }
     }
 
-    private func buildChallengeKey(type: ChallengeType, pubKey: String, salt: Data) -> ChallengeKey {
+    private func buildChallengeKey(
+        type: ChallengeType,
+        pubKey: String,
+        salt: Data
+    ) -> ChallengeKey {
         switch type {
         case .PASSWORD:
             return ChallengeKey(

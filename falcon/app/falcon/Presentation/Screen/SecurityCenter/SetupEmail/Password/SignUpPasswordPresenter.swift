@@ -8,7 +8,6 @@
 
 import RxSwift
 
-
 protocol SignUpPasswordPresenterDelegate: BasePresenterDelegate {}
 
 class SignUpPasswordPresenter<Delegate: SignUpPasswordPresenterDelegate>: BasePresenter<Delegate> {

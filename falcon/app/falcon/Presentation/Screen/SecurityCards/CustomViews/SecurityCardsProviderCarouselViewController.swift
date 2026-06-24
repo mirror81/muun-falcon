@@ -8,19 +8,34 @@
 import UIKit
 
 protocol SecurityCardsProviderCarouselViewControllerDelegate: AnyObject {
-    func carouselDidSelectCard(provider: SecurityCardProvider, card: SecurityCard)
+    func carouselDidSelectCard(
+        provider: SecurityCardProvider,
+        card: SecurityCard,
+        fromView: UIView,
+        fromPriceFooter: UIView
+    )
 }
 
 final class SecurityCardsProviderCarouselViewController: UIViewController {
 
+    private enum Constants {
+        static let cardHorizontalInset: CGFloat = 22
+        static let cardAspectRatio: CGFloat = 0.63
+        static let cardFooterHeight: CGFloat = 72
+    }
+
     private let provider: SecurityCardProvider
     private let footerView = SecurityCardPriceFooterView()
+    private weak var priceFormatter: CardPriceFormatter?
+    private var isShowingBTC = false
 
     private lazy var layout: CenterScalingFlowLayout = {
         let l = CenterScalingFlowLayout()
         l.scrollDirection = .vertical
-        l.minimumLineSpacing = .bigSpacing
-        l.sectionInset = UIEdgeInsets(top: .bigSpacing, left: 0, bottom: .bigSpacing, right: 0)
+        l.minimumLineSpacing = MuunTheme.Spacing.xl3
+        l.sectionInset = UIEdgeInsets(
+            top: MuunTheme.Spacing.xl3, left: 0, bottom: MuunTheme.Spacing.xl3, right: 0
+        )
         return l
     }()
 
@@ -38,12 +53,12 @@ final class SecurityCardsProviderCarouselViewController: UIViewController {
     weak var delegate: SecurityCardsProviderCarouselViewControllerDelegate?
 
     init(
-       provider: SecurityCardProvider,
-       delegate: SecurityCardsProviderCarouselViewControllerDelegate
+        provider: SecurityCardProvider,
+        priceFormatter: CardPriceFormatter
     ) {
         self.provider = provider
         super.init(nibName: nil, bundle: nil)
-        self.delegate = delegate
+        self.priceFormatter = priceFormatter
     }
 
     @available(*, unavailable)
@@ -57,22 +72,27 @@ final class SecurityCardsProviderCarouselViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        layout.itemSize = itemSize(for: view.bounds.width)
+        let size = itemSize(for: view.bounds.width)
+        layout.itemSize = size
+
+        let availableHeight = collectionView.bounds.height
+        let verticalInset = max(0, (availableHeight - size.height) / 2)
+        layout.sectionInset = UIEdgeInsets(
+            top: verticalInset, left: 0, bottom: verticalInset, right: 0
+        )
     }
 
-    private let cardHorizontalInset: CGFloat = 22
-    private let cardAspectRatio: CGFloat = 0.63
-    private let cardFooterHeight: CGFloat = 72
-
     private func itemSize(for viewWidth: CGFloat) -> CGSize {
-        let width = viewWidth - cardHorizontalInset
-        let height = (width * cardAspectRatio) + cardFooterHeight
+        let width = viewWidth - Constants.cardHorizontalInset
+        let height = (width * Constants.cardAspectRatio) + Constants.cardFooterHeight
         return CGSize(width: width, height: height)
     }
 
     private func centeredIndex() -> Int {
-        let center = CGPoint(x: collectionView.bounds.midX,
-                             y: collectionView.bounds.midY + collectionView.contentOffset.y)
+        let center = CGPoint(
+            x: collectionView.bounds.midX,
+            y: collectionView.bounds.midY + collectionView.contentOffset.y
+        )
 
         if let indexPath = collectionView.indexPathForItem(at: center) {
             return indexPath.item
@@ -81,17 +101,21 @@ final class SecurityCardsProviderCarouselViewController: UIViewController {
         let centerY = center.y
         return collectionView.indexPathsForVisibleItems
             .min(by: { a, b in
-                let aY = collectionView.layoutAttributesForItem(at: a)?.center.y ?? .greatestFiniteMagnitude
-                let bY = collectionView.layoutAttributesForItem(at: b)?.center.y ?? .greatestFiniteMagnitude
+                let aY = collectionView.layoutAttributesForItem(at: a)?.center
+                    .y ?? .greatestFiniteMagnitude
+                let bY = collectionView.layoutAttributesForItem(at: b)?.center
+                    .y ?? .greatestFiniteMagnitude
                 return abs(aY - centerY) < abs(bY - centerY)
             })?
             .item ?? 0
     }
 
     private func scrollToItem(_ index: Int, animated: Bool) {
-        collectionView.scrollToItem(at: IndexPath(item: index, section: 0),
-                                    at: .centeredVertically,
-                                    animated: animated)
+        collectionView.scrollToItem(
+            at: IndexPath(item: index, section: 0),
+            at: .centeredVertically,
+            animated: animated
+        )
     }
 
     private func setupCollectionView() {
@@ -108,6 +132,7 @@ final class SecurityCardsProviderCarouselViewController: UIViewController {
 
     private func setupFooter() {
         footerView.translatesAutoresizingMaskIntoConstraints = false
+        footerView.delegate = self
         view.addSubview(footerView)
 
         NSLayoutConstraint.activate([
@@ -116,20 +141,40 @@ final class SecurityCardsProviderCarouselViewController: UIViewController {
             footerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
 
-        footerView.configure(provider: provider)
+        let initialPrice = priceFormatter?.formattedPrice(for: provider, showBTC: false)
+            ?? FormattedCardPrice(price: "", shipping: "")
+        footerView.configure(colorHex: provider.colorHex, price: initialPrice)
+    }
+}
+
+// MARK: - SecurityCardPriceFooterViewDelegate
+
+extension SecurityCardsProviderCarouselViewController: SecurityCardPriceFooterViewDelegate {
+    func footerViewDidTapPrice(_ footerView: SecurityCardPriceFooterView) {
+        let newValue = !isShowingBTC
+        guard let price = priceFormatter?.formattedPrice(for: provider, showBTC: newValue)
+            else { return }
+        isShowingBTC = newValue
+        footerView.updatePrice(price)
     }
 }
 
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 
-extension SecurityCardsProviderCarouselViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension SecurityCardsProviderCarouselViewController: UICollectionViewDataSource,
+    UICollectionViewDelegateFlowLayout {
 
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
         provider.cards.count
     }
 
-    func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
         let cell = collectionView.dequeue(type: SecurityCardCell.self, indexPath: indexPath)
         cell.configure(imageName: provider.cards[indexPath.item].imageName)
         return cell
@@ -147,6 +192,12 @@ extension SecurityCardsProviderCarouselViewController: UICollectionViewDataSourc
             return
         }
 
-        delegate?.carouselDidSelectCard(provider: provider, card: card)
+        guard let cell = collectionView.cellForItem(at: indexPath) else { return }
+        delegate?.carouselDidSelectCard(
+            provider: provider,
+            card: card,
+            fromView: cell,
+            fromPriceFooter: footerView
+        )
     }
 }

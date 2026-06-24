@@ -47,7 +47,6 @@ public enum Persistence: String, CaseIterable {
 
     case lastOwnAddressCopied
 
-
     case displayBTCasSAT // Bool
 
     case hasRecoveryCode // Bool

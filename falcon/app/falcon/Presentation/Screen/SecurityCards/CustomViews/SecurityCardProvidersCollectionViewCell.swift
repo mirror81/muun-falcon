@@ -9,6 +9,10 @@
 import UIKit
 
 final class SecurityCardProvidersCollectionViewCell: UICollectionViewCell {
+    private enum Constants {
+        static let bottomLineHeight: CGFloat = 2
+    }
+
     private let label = UILabel()
     private let bottomLineView = UIView()
 
@@ -23,7 +27,7 @@ final class SecurityCardProvidersCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
     private func setupLabel() {
-        label.font = .systemFont(ofSize: 18, weight: .regular)
+        label.font = MuunTheme.Font.Body.lg
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(label)
@@ -35,15 +39,24 @@ final class SecurityCardProvidersCollectionViewCell: UICollectionViewCell {
     }
 
     private func setupConstraints() {
-        let horizontalPadding: CGFloat = 12
-        let verticalPadding: CGFloat = 8
-        let lineHeight: CGFloat = 2
         NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: horizontalPadding),
-            label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -horizontalPadding),
-            label.topAnchor.constraint(equalTo: contentView.topAnchor, constant: verticalPadding),
-            label.bottomAnchor.constraint(equalTo: bottomLineView.topAnchor, constant: -verticalPadding),
-            bottomLineView.heightAnchor.constraint(equalToConstant: lineHeight),
+            label.leadingAnchor.constraint(
+                equalTo: contentView.leadingAnchor,
+                constant: MuunTheme.Spacing.xs2
+            ),
+            label.trailingAnchor.constraint(
+                equalTo: contentView.trailingAnchor,
+                constant: -MuunTheme.Spacing.xs2
+            ),
+            label.topAnchor.constraint(
+                equalTo: contentView.topAnchor,
+                constant: MuunTheme.Spacing.xs
+            ),
+            label.bottomAnchor.constraint(
+                equalTo: bottomLineView.topAnchor,
+                constant: -MuunTheme.Spacing.xs
+            ),
+            bottomLineView.heightAnchor.constraint(equalToConstant: Constants.bottomLineHeight),
             bottomLineView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             bottomLineView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             bottomLineView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
@@ -56,7 +69,7 @@ final class SecurityCardProvidersCollectionViewCell: UICollectionViewCell {
             label.textColor = color
             bottomLineView.backgroundColor = color
         } else {
-            label.textColor = .label
+            label.textColor = MuunTheme.Color.Text.bodyPrimary
             bottomLineView.backgroundColor = .clear
         }
     }

@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class RecoveryCodePrimingViewController: MUViewController {
 
     @IBOutlet fileprivate weak var buttonView: ButtonView!
@@ -17,8 +16,10 @@ class RecoveryCodePrimingViewController: MUViewController {
     fileprivate weak var errorViewRetryButton: ButtonView?
     fileprivate var errorView: ErrorView?
 
-    fileprivate lazy var presenter = instancePresenter(RecoveryCodePrimingPresenter.init,
-                                                       delegate: self)
+    fileprivate lazy var presenter = instancePresenter(
+        RecoveryCodePrimingPresenter.init,
+        delegate: self
+    )
 
     private var wording: SetUpRecoveryCodeWording
 
@@ -128,9 +129,13 @@ extension RecoveryCodePrimingViewController: ErrorViewDelegate {
 
 extension RecoveryCodePrimingViewController: RecoveryCodePrimingPresenterDelegate {
     func goToNextScreen(recoveryCode: RecoveryCode) {
-        navigationController?.pushViewController(GenerateRecoveryCodeViewController(wording: wording,
-                                                                                    recoveryCode: recoveryCode),
-                                                 animated: true)
+        navigationController?.pushViewController(
+            GenerateRecoveryCodeViewController(
+                wording: wording,
+                recoveryCode: recoveryCode
+            ),
+            animated: true
+        )
     }
 
     func continueButtonIs(loading: Bool) {

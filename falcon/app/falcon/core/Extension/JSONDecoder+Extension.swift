@@ -53,7 +53,13 @@ public extension JSONDecoder.DateDecodingStrategy {
             return date
         }
 
-        throw MuunError(DecodingError.dataCorruptedError(in: container, debugDescription: "Invalid date: \(string)"))
+        throw MuunError(
+            DecodingError.dataCorruptedError(
+                in: container,
+                debugDescription: "Invalid date: \(string)"
+            ),
+            classification: .unexpected
+        )
     }
 }
 

@@ -6,15 +6,15 @@ package musig
 
 import (
 	"crypto/rand"
-	"errors"
 
 	"github.com/btcsuite/btcd/btcec/v2/schnorr"
 	"github.com/decred/dcrd/dcrec/secp256k1/v4"
+	"github.com/go-errors/errors"
 )
 
 // RandomSessionId returns a safe random session id. Session IDs must not be
 // repeated otherwise private keys are compromised.
-func RandomSessionId() [32]byte {
+func RandomSessionId() [32]byte { //nolint:staticcheck // TODO: func RandomSessionId should be RandomSessionID
 	var buf [32]byte
 	_, err := rand.Read(buf[:])
 	if err != nil {
@@ -52,7 +52,7 @@ func ComputeMuunPartialSignature(
 	userPublicKeyBytes []byte,
 	muunPrivateKeyBytes []byte,
 	rawUserPublicNonce []byte,
-	muunSessionId []byte,
+	muunSessionId []byte, //nolint:staticcheck // TODO: func parameter muunSessionId should be muunSessionID
 	tweak *MuSig2Tweaks,
 ) ([]byte, error) {
 
@@ -121,7 +121,7 @@ func ComputeUserPartialSignature(
 	muunPublicKeyBytes []byte,
 	muunPartialSigBytes []byte,
 	muunPublicNonceBytes []byte,
-	userSessionId []byte,
+	userSessionId []byte, //nolint:staticcheck // TODO: func parameter userSessionId should be userSessionID
 	tweak *MuSig2Tweaks,
 ) ([]byte, error) {
 

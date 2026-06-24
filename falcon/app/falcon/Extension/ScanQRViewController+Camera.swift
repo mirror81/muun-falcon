@@ -9,7 +9,6 @@
 import UIKit
 import AVKit
 
-
 extension ScanQRViewController {
 
     internal func cameraAuthorizationStatus() -> AVAuthorizationStatus {
@@ -47,7 +46,10 @@ extension ScanQRViewController {
         case .authorized, .restricted:
             hidePermissionView()
         @unknown default:
-            Logger.log(.err, "Got unknown camera autorization status \(cameraAuthorizationStatus())")
+            Logger.log(
+                .err,
+                "Got unknown camera autorization status \(cameraAuthorizationStatus())"
+            )
             showPermissionsView()
         }
     }
@@ -61,9 +63,11 @@ extension ScanQRViewController {
         status = .paused
         setUpOverlayView()
 
-        let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera],
-                                                                      mediaType: AVMediaType.video,
-                                                                      position: .back)
+        let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(
+            deviceTypes: [.builtInWideAngleCamera],
+            mediaType: AVMediaType.video,
+            position: .back
+        )
 
         guard let captureDevice = deviceDiscoverySession.devices.first else {
             Logger.log(.err, "Failed to get the camera device")
@@ -120,7 +124,8 @@ extension ScanQRViewController: CameraPermissionViewDelegate {
             }
 
         case .denied:
-            // In case that the user has previusly denied permissions, it's impossible to request access again.
+            // In case that the user has previusly denied permissions, it's impossible to request
+            // access again.
             // So we take her to the iOS Settings of muun
             UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
 
@@ -144,9 +149,11 @@ extension ScanQRViewController: AVCaptureMetadataOutputObjectsDelegate {
         self.view.gestureRecognizers?.removeAll()
     }
 
-    func metadataOutput(_ output: AVCaptureMetadataOutput,
-                        didOutput metadataObjects: [AVMetadataObject],
-                        from connection: AVCaptureConnection) {
+    func metadataOutput(
+        _ output: AVCaptureMetadataOutput,
+        didOutput metadataObjects: [AVMetadataObject],
+        from connection: AVCaptureConnection
+    ) {
         if status != .scanning {
             return
         }

@@ -8,13 +8,14 @@
 
 import RxSwift
 
-
 protocol ChangePasswordEnterNewPresenterDelegate: BasePresenterDelegate {
     func setLoading(_ isLoading: Bool)
     func passwordChanged()
 }
 
-class ChangePasswordEnterNewPresenter<Delegate: ChangePasswordEnterNewPresenterDelegate>: BasePresenter<Delegate> {
+class ChangePasswordEnterNewPresenter<
+    Delegate: ChangePasswordEnterNewPresenterDelegate
+>: BasePresenter<Delegate> {
 
     private let finishPasswordAction: FinishPasswordChangeAction
 

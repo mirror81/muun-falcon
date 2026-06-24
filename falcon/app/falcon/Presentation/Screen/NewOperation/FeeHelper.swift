@@ -48,9 +48,11 @@ struct FeeHelper {
         let feeInInput = amountInInput(satoshis: feeInSatoshis, data: data)
         let feeInPrimary = amountInPrimary(satoshis: feeInSatoshis, data: data)
 
-        var state = FeeState.finalFee(BitcoinAmount(inSatoshis: feeInSatoshis,
-                                                    inInputCurrency: feeInInput,
-                                                    inPrimaryCurrency: feeInPrimary))
+        var state = FeeState.finalFee(BitcoinAmount(
+            inSatoshis: feeInSatoshis,
+            inInputCurrency: feeInInput,
+            inPrimaryCurrency: feeInPrimary
+        ))
 
         var isValid = true
         var updatedRequest = data.request
@@ -66,26 +68,32 @@ struct FeeHelper {
                     satoshis: finalAmountInSatoshis,
                     data: data
                 )
-                let finalAmount = BitcoinAmount(inSatoshis: finalAmountInSatoshis,
-                                                inInputCurrency: finalAmountInInput,
-                                                inPrimaryCurrency: finalAmountInPrimary)
+                let finalAmount = BitcoinAmount(
+                    inSatoshis: finalAmountInSatoshis,
+                    inInputCurrency: finalAmountInInput,
+                    inPrimaryCurrency: finalAmountInPrimary
+                )
 
-                updatedRequest = PaymentRequest(type: data.request.type,
-                                                amount: finalAmount,
-                                                description: data.request.description)
+                updatedRequest = PaymentRequest(
+                    type: data.request.type,
+                    amount: finalAmount,
+                    description: data.request.description
+                )
             }
         }
 
-        return NewOperation.ConfirmData(request: updatedRequest,
-                                        exchangeRateWindow: data.exchangeRateWindow,
-                                        feeWindow: data.feeWindow,
-                                        feeCalculator: data.feeCalculator,
-                                        fee: Fee(
-                                            feeRate: fee.feeRate,
-                                            state: state,
-                                            isValid: isValid
-                                        ),
-                                        takeFeeFromAmount: data.takeFeeFromAmount)
+        return NewOperation.ConfirmData(
+            request: updatedRequest,
+            exchangeRateWindow: data.exchangeRateWindow,
+            feeWindow: data.feeWindow,
+            feeCalculator: data.feeCalculator,
+            fee: Fee(
+                feeRate: fee.feeRate,
+                state: state,
+                isValid: isValid
+            ),
+            takeFeeFromAmount: data.takeFeeFromAmount
+        )
     }
 
     static func calculateFee(data: NewOperation.ConfirmData, target: UInt) -> Fee {
@@ -103,9 +111,11 @@ struct FeeHelper {
         var validFee = false
 
         do {
-            feeInSatoshis = try data.feeCalculator.feeFor(amount: amount.inSatoshis,
-                                                          feeRate: feeRate,
-                                                          takeFeeFromAmount: data.takeFeeFromAmount)
+            feeInSatoshis = try data.feeCalculator.feeFor(
+                amount: amount.inSatoshis,
+                feeRate: feeRate,
+                takeFeeFromAmount: data.takeFeeFromAmount
+            )
             if data.takeFeeFromAmount {
                 validFee = data.feeCalculator.totalBalance() - feeInSatoshis > Satoshis.dust
             } else {
@@ -119,9 +129,11 @@ struct FeeHelper {
             do {
                 // If we cannot get a fee for a block, it means we didnt have enough balance.
                 // We calculate it anyways for UI purposes
-                feeInSatoshis = try data.feeCalculator.feeFor(amount: amount.inSatoshis,
-                                                              feeRate: feeRate,
-                                                              takeFeeFromAmount: true)
+                feeInSatoshis = try data.feeCalculator.feeFor(
+                    amount: amount.inSatoshis,
+                    feeRate: feeRate,
+                    takeFeeFromAmount: true
+                )
                 validFee = false
             } catch {
                 // This means that we couldnt calculate the fee even taking it from the amount.
@@ -133,9 +145,11 @@ struct FeeHelper {
 
         let feeInInput = FeeHelper.amountInInput(satoshis: feeInSatoshis, data: data)
         let feeInPrimary = FeeHelper.amountInPrimary(satoshis: feeInSatoshis, data: data)
-        let fee = BitcoinAmount(inSatoshis: feeInSatoshis,
-                                inInputCurrency: feeInInput,
-                                inPrimaryCurrency: feeInPrimary)
+        let fee = BitcoinAmount(
+            inSatoshis: feeInSatoshis,
+            inInputCurrency: feeInInput,
+            inPrimaryCurrency: feeInPrimary
+        )
 
         return Fee(feeRate: feeRate, state: .finalFee(fee), isValid: validFee)
     }

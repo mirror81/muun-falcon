@@ -17,18 +17,20 @@ protocol OnchainSettingsPresenterDelegate: BasePresenterDelegate {
     func setLoading(_ loading: Bool)
 }
 
-class OnchainSettingsPresenter<Delegate: OnchainSettingsPresenterDelegate>: BasePresenter<Delegate> {
+class OnchainSettingsPresenter<Delegate: OnchainSettingsPresenterDelegate>:
+    BasePresenter<Delegate> {
 
     private let updateUserPreferences: UpdateUserPreferencesAction
     private let userPreferencesSelector: UserPreferencesSelector
     private let userActivatedFeatureSelector: UserActivatedFeaturesSelector
     private let blockheightRepository: BlockchainHeightRepository
 
-    init(delegate: Delegate,
-         updateUserPreferences: UpdateUserPreferencesAction,
-         userPreferencesSelector: UserPreferencesSelector,
-         userActivatedFeatureSelector: UserActivatedFeaturesSelector,
-         blockheightRepository: BlockchainHeightRepository
+    init(
+        delegate: Delegate,
+        updateUserPreferences: UpdateUserPreferencesAction,
+        userPreferencesSelector: UserPreferencesSelector,
+        userActivatedFeatureSelector: UserActivatedFeaturesSelector,
+        blockheightRepository: BlockchainHeightRepository
     ) {
         self.updateUserPreferences = updateUserPreferences
         self.userPreferencesSelector = userPreferencesSelector

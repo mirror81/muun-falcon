@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 protocol DebugMenuPresenterDelegate: BasePresenterDelegate,
                                      MUViewController {
     func askUserForText(message: String, completion: @escaping (String) -> Void)
@@ -20,8 +19,10 @@ protocol DebugMenuPresenterDelegate: BasePresenterDelegate,
 class DebugMenuPresenter<Delegate: DebugMenuPresenterDelegate>: BasePresenter<Delegate> {
     private let executableGroups: [DebugExecutablesGroup]
 
-    init(delegate: Delegate,
-         executableGroups: [DebugExecutablesGroup]) {
+    init(
+        delegate: Delegate,
+        executableGroups: [DebugExecutablesGroup]
+    ) {
         self.executableGroups = executableGroups
 
         super.init(delegate: delegate)
@@ -69,7 +70,7 @@ extension DebugMenuPresenter: DebugMenuExecutableContext {
     func showAnalytics() {
         delegate.showAnalytics()
     }
-    
+
     func showAlert(title: String?, message: String?) {
         delegate.showAlert(title: title, message: message)
     }

@@ -22,17 +22,21 @@ struct PublicProfileDB: Codable, FetchableRecord, PersistableRecord {
 extension PublicProfileDB: DatabaseModelConvertible {
 
     init(from: PublicProfile) {
-        self.init(id: from.userId,
-                  firstName: from.firstName,
-                  lastName: from.lastName,
-                  profilePictureUrl: from.profilePictureUrl)
+        self.init(
+            id: from.userId,
+            firstName: from.firstName,
+            lastName: from.lastName,
+            profilePictureUrl: from.profilePictureUrl
+        )
     }
 
     func to(using db: Database) throws -> PublicProfile {
-        return PublicProfile(userId: id,
-                             firstName: firstName,
-                             lastName: lastName,
-                             profilePictureUrl: profilePictureUrl)
+        return PublicProfile(
+            userId: id,
+            firstName: firstName,
+            lastName: lastName,
+            profilePictureUrl: profilePictureUrl
+        )
     }
 
 }

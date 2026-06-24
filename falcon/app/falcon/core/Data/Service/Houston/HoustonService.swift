@@ -8,27 +8,32 @@
 
 import RxSwift
 
+// swiftlint:disable type_body_length
 public class HoustonService: BaseService {
 
     private let decrypter: OperationMetadataDecrypter
 
-    init(preferences: Preferences,
-         urlSession: URLSession,
-         sessionRepository: SessionRepository,
-         debugRequestRepository: DebugRequestsRepository,
-         deviceCheckTokenProvider: DeviceCheckTokenProvider,
-         backgroundExecutionMetricsProvider: BackgroundExecutionMetricsProvider,
-         decrypter: OperationMetadataDecrypter) {
+    init(
+        preferences: Preferences,
+        urlSession: URLSession,
+        sessionRepository: SessionRepository,
+        debugRequestRepository: DebugRequestsRepository,
+        deviceCheckTokenProvider: DeviceCheckTokenProvider,
+        backgroundExecutionMetricsProvider: BackgroundExecutionMetricsProvider,
+        decrypter: OperationMetadataDecrypter
+    ) {
 
         self.decrypter = decrypter
 
-        super.init(preferences: preferences,
-                   urlSession: urlSession,
-                   sessionRepository: sessionRepository,
-                   debugRequestsRepository: debugRequestRepository,
-                   deviceCheckTokenProvider: deviceCheckTokenProvider,
-                   backgroundExecutionMetricsProvider: backgroundExecutionMetricsProvider,
-                   sendAuth: true)
+        super.init(
+            preferences: preferences,
+            urlSession: urlSession,
+            sessionRepository: sessionRepository,
+            debugRequestsRepository: debugRequestRepository,
+            deviceCheckTokenProvider: deviceCheckTokenProvider,
+            backgroundExecutionMetricsProvider: backgroundExecutionMetricsProvider,
+            sendAuth: true
+        )
     }
 
     override public func getBaseURL() -> String {
@@ -48,10 +53,12 @@ public class HoustonService: BaseService {
     func createFirstSession(firstSession: CreateFirstSession) -> Single<CreateFirstSessionOk> {
         let jsonData = JSONEncoder.data(from: firstSession)
 
-        return post("sessions-v2/first",
-                    body: jsonData,
-                    andReturn: CreateFirstSessionOkJson.self,
-                    shouldForceDeviceCheckToken: true)
+        return post(
+            "sessions-v2/first",
+            body: jsonData,
+            andReturn: CreateFirstSessionOkJson.self,
+            shouldForceDeviceCheckToken: true
+        )
         .map({ $0.toModel() })
     }
 
@@ -65,7 +72,11 @@ public class HoustonService: BaseService {
     func confirmPhone(phoneConfirmation: PhoneConfirmation) -> Single<PhoneConfirmation> {
         let jsonData = JSONEncoder.data(from: phoneConfirmation)
 
-        return put("sessions/current/confirm-phone", body: jsonData, andReturn: PhoneConfirmationJson.self)
+        return put(
+            "sessions/current/confirm-phone",
+            body: jsonData,
+            andReturn: PhoneConfirmationJson.self
+        )
             .map({ $0.toModel() })
     }
 
@@ -88,10 +99,12 @@ public class HoustonService: BaseService {
             fatalError("Cant encode value for key")
         }
 
-        return put("sessions/current/gcm-token",
-                   body: data,
-                   andReturn: EmptyJson.self,
-                   maxRetries: 5)
+        return put(
+            "sessions/current/gcm-token",
+            body: data,
+            andReturn: EmptyJson.self,
+            maxRetries: 5
+        )
         .map({ $0.toModel() })
     }
 
@@ -107,14 +120,20 @@ public class HoustonService: BaseService {
             queryParams = ["after": nId]
         }
 
-        return get("sessions/notification_report", queryParams: queryParams, andReturn: NotificationReportJson.self)
+        return get(
+            "sessions/notification_report",
+            queryParams: queryParams,
+            andReturn: NotificationReportJson.self
+        )
             .map({ $0.toModel(decrypter: self.decrypter) })
     }
 
-    func confirmNotificationsDeliveryUntil(notificationId: Int,
-                                           deviceModel: String,
-                                           osVersion: String,
-                                           appStatus: String) -> Completable {
+    func confirmNotificationsDeliveryUntil(
+        notificationId: Int,
+        deviceModel: String,
+        osVersion: String,
+        appStatus: String
+    ) -> Completable {
         let queryParams: [String: Any] = [
             "until": notificationId,
             "deviceModel": deviceModel,
@@ -122,10 +141,12 @@ public class HoustonService: BaseService {
             "appStatus": appStatus
         ]
 
-        return put("sessions/notifications/confirm",
-                   body: Data(),
-                   queryParams: queryParams,
-                   andReturn: EmptyJson.self)
+        return put(
+            "sessions/notifications/confirm",
+            body: Data(),
+            queryParams: queryParams,
+            andReturn: EmptyJson.self
+        )
             .asCompletable()
     }
 
@@ -139,35 +160,51 @@ public class HoustonService: BaseService {
     func setupChallenge(challengeSetup: ChallengeSetup) -> Single<SetupChallengeResponse> {
         let jsonData = JSONEncoder.data(from: challengeSetup)
 
-        return post("user/challenge/setup", body: jsonData, andReturn: SetupChallengeResponseJson.self)
+        return post(
+            "user/challenge/setup",
+            body: jsonData,
+            andReturn: SetupChallengeResponseJson.self
+        )
             .map({ $0.toModel() })
     }
-    
+
     func startChallenge(challengeSetup: ChallengeSetup) -> Single<SetupChallengeResponse> {
         let jsonData = JSONEncoder.data(from: challengeSetup)
 
-        return post("user/challenge/setup/start", body: jsonData, andReturn: SetupChallengeResponseJson.self)
+        return post(
+            "user/challenge/setup/start",
+            body: jsonData,
+            andReturn: SetupChallengeResponseJson.self
+        )
             .map({ $0.toModel() })
     }
-    
-    func finishChallenge(challengeType: ChallengeType, challengeSetupPublicKey: String) -> Completable {
+
+    func finishChallenge(
+        challengeType: ChallengeType,
+        challengeSetupPublicKey: String
+    ) -> Completable {
         precondition(challengeType == .RECOVERY_CODE)
 
-        let challengeSetup = ChallengeSetupVerifyJson(type: ChallengeTypeJson.RECOVERY_CODE,
-                                                      publicKey: challengeSetupPublicKey)
-        
+        let challengeSetup = ChallengeSetupVerifyJson(
+            type: ChallengeTypeJson.RECOVERY_CODE,
+            publicKey: challengeSetupPublicKey
+        )
+
         let jsonData = JSONEncoder.data(json: challengeSetup)
 
-        return post("user/challenge/setup/finish", body: jsonData, andReturn: EmptyJson.self).asCompletable()
+        return post("user/challenge/setup/finish", body: jsonData, andReturn: EmptyJson.self)
+            .asCompletable()
     }
 
     func logIn(loginJson: LoginJson) -> Single<KeySet> {
         let jsonData = JSONEncoder.data(json: loginJson)
 
-        return post("sessions/current/login",
-                    body: jsonData,
-                    andReturn: KeySetJson.self,
-                    shouldForceDeviceCheckToken: true)
+        return post(
+            "sessions/current/login",
+            body: jsonData,
+            andReturn: KeySetJson.self,
+            shouldForceDeviceCheckToken: true
+        )
             .map({ $0.toModel() })
     }
 
@@ -181,13 +218,16 @@ public class HoustonService: BaseService {
     }
 
     // Create session for an existing user with a given recovery code.
-    func createRecoveryCodeLoginSession(_ rcLoginSession: CreateRcLoginSession) -> Single<(Challenge)> {
+    func createRecoveryCodeLoginSession(_ rcLoginSession: CreateRcLoginSession)
+        -> Single<(Challenge)> {
         let jsonData = JSONEncoder.data(from: rcLoginSession)
 
-        return post("sessions-v2/recovery-code/start",
-                    body: jsonData,
-                    andReturn: ChallengeJson.self,
-                    shouldForceDeviceCheckToken: true)
+        return post(
+            "sessions-v2/recovery-code/start",
+            body: jsonData,
+            andReturn: ChallengeJson.self,
+            shouldForceDeviceCheckToken: true
+        )
             .map({ $0.toModel() })
     }
 
@@ -195,14 +235,22 @@ public class HoustonService: BaseService {
     func loginWithRecoveryCode(_ signature: ChallengeSignature) -> Single<(CreateSessionRcOk)> {
         let jsonData = JSONEncoder.data(from: signature)
 
-        return post("sessions-v2/recovery-code/finish", body: jsonData, andReturn: CreateSessionRcOkJson.self)
+        return post(
+            "sessions-v2/recovery-code/finish",
+            body: jsonData,
+            andReturn: CreateSessionRcOkJson.self
+        )
             .map({ $0.toModel() })
     }
 
     func authorizeLoginWithRecoveryCode(linkAction: LinkAction) -> Single<()> {
         let jsonData = JSONEncoder.data(from: linkAction)
 
-        return post("sessions-v2/recovery-code/authorize", body: jsonData, andReturn: EmptyJson.self)
+        return post(
+            "sessions-v2/recovery-code/authorize",
+            body: jsonData,
+            andReturn: EmptyJson.self
+        )
             .map({ $0.toModel() })
     }
 
@@ -247,8 +295,10 @@ public class HoustonService: BaseService {
     }
 
     func fetchKeySet(challengeType: String, signature: String) -> Single<KeySet> {
-        let queryParams = ["challenge_type": challengeType,
-                           "challenge_signature": signature]
+        let queryParams = [
+            "challenge_type": challengeType,
+            "challenge_signature": signature
+        ]
 
         return get("user/key-set", queryParams: queryParams, andReturn: KeySetJson.self)
             .map({ $0.toModel() })
@@ -270,7 +320,11 @@ public class HoustonService: BaseService {
         -> Single<ExternalAddressesRecord> {
         let jsonData = JSONEncoder.data(from: externalAddressesRecord)
 
-        return put("user/external-addresses-record", body: jsonData, andReturn: ExternalAddressesRecordJson.self)
+        return put(
+            "user/external-addresses-record",
+            body: jsonData,
+            andReturn: ExternalAddressesRecordJson.self
+        )
             .map({ $0.toModel() })
     }
 
@@ -288,7 +342,8 @@ public class HoustonService: BaseService {
             .map({ $0.toModel() })
     }
 
-    func beginPasswordChange(challengeSignature: ChallengeSignature) -> Single<PendingChallengeUpdate> {
+    func beginPasswordChange(challengeSignature: ChallengeSignature)
+        -> Single<PendingChallengeUpdate> {
         let jsonData = JSONEncoder.data(from: challengeSignature)
 
         return post("user/password", body: jsonData, andReturn: PendingChallengeUpdateJson.self)
@@ -305,7 +360,11 @@ public class HoustonService: BaseService {
     func finishPasswordChange(challengeUpdate: ChallengeUpdate) -> Single<SetupChallengeResponse> {
         let jsonData = JSONEncoder.data(from: challengeUpdate)
 
-        return post("user/password/finish", body: jsonData, andReturn: SetupChallengeResponseJson.self)
+        return post(
+            "user/password/finish",
+            body: jsonData,
+            andReturn: SetupChallengeResponseJson.self
+        )
             .map({ $0.toModel() })
     }
 
@@ -329,7 +388,7 @@ public class HoustonService: BaseService {
 
     func updateUserPreferences(_ preferences: UserPreferences) -> Completable {
         let jsonData = JSONEncoder.data(json: preferences)
-        
+
         return put("user/preferences", body: jsonData, andReturn: EmptyJson.self)
             .asCompletable()
     }
@@ -344,7 +403,10 @@ public class HoustonService: BaseService {
 
     func fetchContact(contactId: Double) -> Single<Contact> {
         let path = "contacts/{contactId}"
-        let finalPath = path.replacingOccurrences(of: "{contactId}", with: String(describing: contactId))
+        let finalPath = path.replacingOccurrences(
+            of: "{contactId}",
+            with: String(describing: contactId)
+        )
 
         return get(finalPath, andReturn: ContactJson.self)
             .map({ $0.toModel() })
@@ -408,7 +470,10 @@ public class HoustonService: BaseService {
         ))
 
         let path = "operations/{operationId}/raw-transactions"
-        let finalPath = path.replacingOccurrences(of: "{operationId}", with: String(describing: operationId))
+        let finalPath = path.replacingOccurrences(
+            of: "{operationId}",
+            with: String(describing: operationId)
+        )
 
         return put(
             finalPath,
@@ -427,7 +492,8 @@ public class HoustonService: BaseService {
     // ---------------------------------------------------------------------------------------------
     // Submarine swaps:
 
-    func createSubmarineSwap(submarineSwapRequest: SubmarineSwapRequest) -> Single<SubmarineSwapCreated> {
+    func createSubmarineSwap(submarineSwapRequest: SubmarineSwapRequest)
+        -> Single<SubmarineSwapCreated> {
         let jsonData = JSONEncoder.data(from: submarineSwapRequest)
 
         return post("operations/sswap/create", body: jsonData, andReturn: SubmarineSwapJson.self)
@@ -450,11 +516,17 @@ public class HoustonService: BaseService {
     }
 
     func fetchFulfillmentData(for uuid: String) -> Single<IncomingSwapFulfillmentData> {
-        return post("incoming-swaps/\(uuid)/fulfillment", andReturn: IncomingSwapFulfillmentDataJson.self)
+        return post(
+            "incoming-swaps/\(uuid)/fulfillment",
+            andReturn: IncomingSwapFulfillmentDataJson.self
+        )
             .map({ $0.toModel() })
     }
 
-    func pushFulfillmentTransaction(rawTransaction: RawTransaction, incomingSwap: String) -> Single<FulfillmentPushed> {
+    func pushFulfillmentTransaction(
+        rawTransaction: RawTransaction,
+        incomingSwap: String
+    ) -> Single<FulfillmentPushed> {
         let jsonData = JSONEncoder.data(from: rawTransaction)
 
         let path = "incoming-swaps/\(incomingSwap)/fulfillment"
@@ -477,7 +549,11 @@ public class HoustonService: BaseService {
     // Other endpoints:
 
     func checkIntegrity(request: IntegrityCheck) -> Single<IntegrityStatus> {
-        return post("integrity/check", body: JSONEncoder.data(from: request), andReturn: IntegrityStatusJson.self)
+        return post(
+            "integrity/check",
+            body: JSONEncoder.data(from: request),
+            andReturn: IntegrityStatusJson.self
+        )
             .map({ $0.toModel() })
     }
 

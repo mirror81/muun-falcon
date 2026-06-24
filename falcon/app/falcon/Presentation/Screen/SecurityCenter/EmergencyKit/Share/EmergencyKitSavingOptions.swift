@@ -31,17 +31,23 @@ enum EmergencyKitSavingOption {
 
     func description() -> NSAttributedString {
         switch self {
-        case .drive: return L10n.SaveEmergencyKitOptionView.driveDescription.attributedForDescription()
-        case .icloud: return L10n.SaveEmergencyKitOptionView.icloudDescription.attributedForDescription()
-        case .anotherCloud: return L10n.SaveEmergencyKitOptionView.anotherCloudDescription.attributedForDescription()
+        case .drive: return L10n.SaveEmergencyKitOptionView.driveDescription
+            .attributedForDescription()
+        case .icloud: return L10n.SaveEmergencyKitOptionView.icloudDescription
+            .attributedForDescription()
+        case .anotherCloud: return L10n.SaveEmergencyKitOptionView.anotherCloudDescription
+            .attributedForDescription()
         }
     }
 
     func disabledDescription() -> NSAttributedString {
         switch self {
-        case .drive: return L10n.SaveEmergencyKitOptionView.driveDescription.attributedForDescription()
-        case .icloud: return L10n.SaveEmergencyKitOptionView.icloudDisabledDescription.attributedForDescription()
-        case .anotherCloud: return L10n.SaveEmergencyKitOptionView.anotherCloudDescription.attributedForDescription()
+        case .drive: return L10n.SaveEmergencyKitOptionView.driveDescription
+            .attributedForDescription()
+        case .icloud: return L10n.SaveEmergencyKitOptionView.icloudDisabledDescription
+            .attributedForDescription()
+        case .anotherCloud: return L10n.SaveEmergencyKitOptionView.anotherCloudDescription
+            .attributedForDescription()
         }
     }
 

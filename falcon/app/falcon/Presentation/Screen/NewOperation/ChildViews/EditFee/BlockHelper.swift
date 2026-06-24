@@ -94,7 +94,10 @@ class BlockHelper {
             sum += term
 
             if term >= factor {
-                let numFactors: Int = min(impreciseLog(x: term, base: factor), time - appliedFactors)
+                let numFactors: Int = min(
+                    impreciseLog(x: term, base: factor),
+                    time - appliedFactors
+                )
                 appliedFactors += numFactors
 
                 let divisor: Double = pow(factor, Double(numFactors))
@@ -117,12 +120,18 @@ class BlockHelper {
     }
 
     public static func hoursFor(_ blocks: UInt) -> Int {
-        let secs = Double(BlockHelper.timeInSecs(numBlocks: blocks, certainty: blockConfirmationCertainty))
+        let secs = Double(BlockHelper.timeInSecs(
+            numBlocks: blocks,
+            certainty: blockConfirmationCertainty
+        ))
         return Int(ceil(secs / (60 * 60)))
     }
 
     public static func timeFor(_ blocks: UInt) -> String {
-        let secs = Double(BlockHelper.timeInSecs(numBlocks: blocks, certainty: blockConfirmationCertainty))
+        let secs = Double(BlockHelper.timeInSecs(
+            numBlocks: blocks,
+            certainty: blockConfirmationCertainty
+        ))
         var roundedSecs: Int = 0
 
         let formatter = DateComponentsFormatter()

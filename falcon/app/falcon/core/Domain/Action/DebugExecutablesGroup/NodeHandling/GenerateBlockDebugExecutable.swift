@@ -6,8 +6,6 @@
 //  Copyright © 2023 muun. All rights reserved.
 //
 
-
-
 class GenerateBlockDebugExecutable: DebugExecutable {
 
     func execute(context: DebugMenuExecutableContext, completion: @escaping () -> Void) {

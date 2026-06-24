@@ -57,13 +57,16 @@ final class ReceiveUnifiedView: UIView {
         stackView.topAnchor.constraint(equalTo: topAnchor, constant: 16)
     ]
 
-    // We display a expiration warning message when the invoice has only 3 minutes remaining of expiration time
+    // We display a expiration warning message when the invoice has only 3 minutes remaining of
+    // expiration time
     private let expirationMessageThresholdInSecs = 180
 
     private weak var delegate: ReceiveUnifiedViewDelegate?
 
-    init(delegate: ReceiveUnifiedViewDelegate?,
-         addressType: AddressTypeViewModel) {
+    init(
+        delegate: ReceiveUnifiedViewDelegate?,
+        addressType: AddressTypeViewModel
+    ) {
         let qrAccessibilityLabel = L10n.QRCodeWithActionsView.unifiedQRAccessibilityLabel
         self.qrCodeView = QRCodeWithActionsView(tapQRAccessibilityLabel: qrAccessibilityLabel)
         self.delegate = delegate
@@ -118,9 +121,18 @@ final class ReceiveUnifiedView: UIView {
         stackView.setCustomSpacing(24, after: qrCodeView)
 
         NSLayoutConstraint.activate([
-            qrCodeView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: .sideMargin),
-            qrCodeView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -.sideMargin),
-            qrCodeView.topAnchor.constraint(equalTo: expirationNoticeView.bottomAnchor, constant: .sideMargin)
+            qrCodeView.leadingAnchor.constraint(
+                equalTo: stackView.leadingAnchor,
+                constant: .sideMargin
+            ),
+            qrCodeView.trailingAnchor.constraint(
+                equalTo: stackView.trailingAnchor,
+                constant: -.sideMargin
+            ),
+            qrCodeView.topAnchor.constraint(
+                equalTo: expirationNoticeView.bottomAnchor,
+                constant: .sideMargin
+            )
         ])
     }
 
@@ -134,8 +146,14 @@ final class ReceiveUnifiedView: UIView {
         stackView.addArrangedSubview(expirationNoticeView)
 
         NSLayoutConstraint.activate([
-            expirationNoticeView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: .sideMargin),
-            expirationNoticeView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -.sideMargin)
+            expirationNoticeView.leadingAnchor.constraint(
+                equalTo: stackView.leadingAnchor,
+                constant: .sideMargin
+            ),
+            expirationNoticeView.trailingAnchor.constraint(
+                equalTo: stackView.trailingAnchor,
+                constant: -.sideMargin
+            )
         ])
     }
 
@@ -175,8 +193,10 @@ final class ReceiveUnifiedView: UIView {
     private func displayInvoiceExpiredViewAndStopTimer() {
         let text = L10n.ReceiveInLightningView.s5
             .attributedForDescription(alignment: .center)
-        createInvoiceView.display(text: text,
-                                  buttonText: L10n.ReceiveInLightningView.s6)
+        createInvoiceView.display(
+            text: text,
+            buttonText: L10n.ReceiveInLightningView.s6
+        )
         timer.invalidate()
     }
 

@@ -17,10 +17,26 @@ struct OperationDB: Codable, FetchableRecord, PersistableRecord {
     static let submarineSwapKey = ForeignKey(["swapUuid"], to: ["swapUuid"])
     static let incomingSwapKey = ForeignKey(["uuid"], to: ["incomingSwapUuid"])
 
-    static let senderProfile = hasOne(PublicProfileDB.self, key: "senderProfileId", using: senderProfileKey)
-    static let receiverProfile = hasOne(PublicProfileDB.self, key: "receiverProfileId", using: receiverProfileKey)
-    static let submarineSwap = hasOne(SubmarineSwapDB.self, key: "swapUuid", using: submarineSwapKey)
-    static let incomingSwap = hasOne(IncomingSwapDB.self, key: "incomingSwapUuid", using: incomingSwapKey)
+    static let senderProfile = hasOne(
+        PublicProfileDB.self,
+        key: "senderProfileId",
+        using: senderProfileKey
+    )
+    static let receiverProfile = hasOne(
+        PublicProfileDB.self,
+        key: "receiverProfileId",
+        using: receiverProfileKey
+    )
+    static let submarineSwap = hasOne(
+        SubmarineSwapDB.self,
+        key: "swapUuid",
+        using: submarineSwapKey
+    )
+    static let incomingSwap = hasOne(
+        IncomingSwapDB.self,
+        key: "incomingSwapUuid",
+        using: incomingSwapKey
+    )
 
     let id: Int
     let direction: OperationDirection
@@ -74,36 +90,41 @@ extension OperationDB: DatabaseModelConvertible {
             metadata = nil
         }
 
-        self.init(id: from.id!,
-                  direction: from.direction,
-                  isExternal: from.isExternal,
-                  senderProfileId: from.senderProfile?.userId,
-                  senderIsExternal: from.senderIsExternal,
-                  receiverProfileId: from.receiverProfile?.userId,
-                  receiverIsExternal: from.receiverIsExternal,
-                  receiverAddress: from.receiverAddress,
-                  receiverAddressDerivationPath: from.receiverAddressDerivationPath,
-                  amountInSatoshis: from.amount.inSatoshis.value,
-                  amountInPrimaryCurrency: from.amount.inPrimaryCurrency.amount
+        self.init(
+            id: from.id!,
+            direction: from.direction,
+            isExternal: from.isExternal,
+            senderProfileId: from.senderProfile?.userId,
+            senderIsExternal: from.senderIsExternal,
+            receiverProfileId: from.receiverProfile?.userId,
+            receiverIsExternal: from.receiverIsExternal,
+            receiverAddress: from.receiverAddress,
+            receiverAddressDerivationPath: from.receiverAddressDerivationPath,
+            amountInSatoshis: from.amount.inSatoshis.value,
+            amountInPrimaryCurrency: from.amount.inPrimaryCurrency.amount
                     .stringValue(locale: Constant.houstonLocale),
-                  amountPrimaryCurrency: from.amount.inPrimaryCurrency.currency,
-                  amountInInputCurrency: from.amount.inInputCurrency.amount.stringValue(locale: Constant.houstonLocale),
-                  amountInputCurrency: from.amount.inInputCurrency.currency,
-                  feeInSatoshis: from.fee.inSatoshis.value,
-                  feeInPrimaryCurrency: from.fee.inPrimaryCurrency.amount.stringValue(locale: Constant.houstonLocale),
-                  feePrimaryCurrency: from.fee.inPrimaryCurrency.currency,
-                  feeInInputCurrency: from.fee.inInputCurrency.amount.stringValue(locale: Constant.houstonLocale),
-                  feeInputCurrency: from.fee.inInputCurrency.currency,
-                  confirmations: from.confirmations,
-                  isReplaceableByFee: from.transaction?.isReplaceableByFee ?? false,
-                  hashDB: from.transaction?.hash,
-                  descriptionDB: from.description,
-                  status: from.status,
-                  creationDate: from.creationDate,
-                  exchangeRateWindowHid: from.exchangeRatesWindowId,
-                  swapUuid: from.submarineSwap?._swapUuid,
-                  incomingSwapUuid: from.incomingSwap?.uuid,
-                  metadata: metadata)
+            amountPrimaryCurrency: from.amount.inPrimaryCurrency.currency,
+            amountInInputCurrency: from.amount.inInputCurrency.amount
+                  .stringValue(locale: Constant.houstonLocale),
+            amountInputCurrency: from.amount.inInputCurrency.currency,
+            feeInSatoshis: from.fee.inSatoshis.value,
+            feeInPrimaryCurrency: from.fee.inPrimaryCurrency.amount
+                  .stringValue(locale: Constant.houstonLocale),
+            feePrimaryCurrency: from.fee.inPrimaryCurrency.currency,
+            feeInInputCurrency: from.fee.inInputCurrency.amount
+                  .stringValue(locale: Constant.houstonLocale),
+            feeInputCurrency: from.fee.inInputCurrency.currency,
+            confirmations: from.confirmations,
+            isReplaceableByFee: from.transaction?.isReplaceableByFee ?? false,
+            hashDB: from.transaction?.hash,
+            descriptionDB: from.description,
+            status: from.status,
+            creationDate: from.creationDate,
+            exchangeRateWindowHid: from.exchangeRatesWindowId,
+            swapUuid: from.submarineSwap?._swapUuid,
+            incomingSwapUuid: from.incomingSwap?.uuid,
+            metadata: metadata
+        )
 
     }
 
@@ -112,17 +133,25 @@ extension OperationDB: DatabaseModelConvertible {
 
         let btcAmount = BitcoinAmount(
             inSatoshis: Satoshis(value: amountInSatoshis),
-            inInputCurrency: MonetaryAmount(amount: amountInInputCurrency,
-                                            currency: amountInputCurrency)!,
-            inPrimaryCurrency: MonetaryAmount(amount: amountInPrimaryCurrency,
-                                              currency: amountPrimaryCurrency)!
+            inInputCurrency: MonetaryAmount(
+                amount: amountInInputCurrency,
+                currency: amountInputCurrency
+            )!,
+            inPrimaryCurrency: MonetaryAmount(
+                amount: amountInPrimaryCurrency,
+                currency: amountPrimaryCurrency
+            )!
         )
         let feeAmount = BitcoinAmount(
             inSatoshis: Satoshis(value: feeInSatoshis),
-            inInputCurrency: MonetaryAmount(amount: feeInInputCurrency,
-                                            currency: feeInputCurrency)!,
-            inPrimaryCurrency: MonetaryAmount(amount: feeInPrimaryCurrency,
-                                              currency: feePrimaryCurrency)!
+            inInputCurrency: MonetaryAmount(
+                amount: feeInInputCurrency,
+                currency: feeInputCurrency
+            )!,
+            inPrimaryCurrency: MonetaryAmount(
+                amount: feeInPrimaryCurrency,
+                currency: feePrimaryCurrency
+            )!
         )
 
         var senProfile: PublicProfile?
@@ -156,7 +185,8 @@ extension OperationDB: DatabaseModelConvertible {
         do {
             if let data = metadata?.data(using: .utf8) {
                 metadataJson = try JSONDecoder().decode(
-                    OperationMetadataJson.self, from: data)
+                    OperationMetadataJson.self, from: data
+                )
             }
         } catch {
             // ignore

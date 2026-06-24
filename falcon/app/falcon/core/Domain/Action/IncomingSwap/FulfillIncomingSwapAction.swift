@@ -16,14 +16,15 @@ class FulfillIncomingSwapAction {
     private let nextTransactionSizeRepository: NextTransactionSizeRepository
     private let feeBumpFunctionsProvider: FeeBumpFunctionsProvider
 
-    init(keysRepository: KeysRepository,
-         houstonService: HoustonService,
-         operationRepository: OperationRepository,
-         incomingSwapRepository: IncomingSwapRepository,
-         verifyFulfillable: VerifyFulfillableAction,
-         nextTransactionSizeRepository: NextTransactionSizeRepository,
-         feeBumpFunctionsProvider: FeeBumpFunctionsProvider
-         ) {
+    init(
+        keysRepository: KeysRepository,
+        houstonService: HoustonService,
+        operationRepository: OperationRepository,
+        incomingSwapRepository: IncomingSwapRepository,
+        verifyFulfillable: VerifyFulfillableAction,
+        nextTransactionSizeRepository: NextTransactionSizeRepository,
+        feeBumpFunctionsProvider: FeeBumpFunctionsProvider
+    ) {
         self.keysRepository = keysRepository
         self.houstonService = houstonService
         self.operationRepository = operationRepository
@@ -49,7 +50,8 @@ class FulfillIncomingSwapAction {
                     .andThen(fulfill)
                     .andThen(self.persistPreimage(for: swap))
                     .catchError { error in
-                        if error.contains(Errors.unknownSwap) || error.contains(Errors.unfulfillable) {
+                        if error.contains(Errors.unknownSwap) ||
+                            error.contains(Errors.unfulfillable) {
                             return self.houstonService.expireInvoice(swap.paymentHash.toHexString())
 
                         } else if error.isKindOf(.incomingSwapAlreadyFulfilled) {
@@ -90,7 +92,10 @@ class FulfillIncomingSwapAction {
 
                 do {
                     return try swap.fulfill(
-                        fulfillmentData, userKey: userKey, muunKey: muunKey)
+                        fulfillmentData,
+                        userKey: userKey,
+                        muunKey: muunKey
+                    )
                 } catch {
 
                     if error.localizedDescription.contains("payment is multipart") {
@@ -158,4 +163,13 @@ class FulfillIncomingSwapAction {
         case unfulfillable
     }
 
+}
+
+extension FulfillIncomingSwapAction.Errors: ClassifiedError {
+    var classification: ErrorClassification {
+        switch self {
+        case .unknownSwap, .unfulfillable:
+            return .unexpected
+        }
+    }
 }

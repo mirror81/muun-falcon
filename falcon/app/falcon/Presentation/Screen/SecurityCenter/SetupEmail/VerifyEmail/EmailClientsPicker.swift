@@ -37,7 +37,11 @@ extension EmailClientsPicker {
             emailActionSheet.addAction(action)
         }
 
-        emailActionSheet.addAction(UIAlertAction(title: L10n.EmailClientsPicker.s1, style: .cancel, handler: nil))
+        emailActionSheet.addAction(UIAlertAction(
+            title: L10n.EmailClientsPicker.s1,
+            style: .cancel,
+            handler: nil
+        ))
     }
 
     fileprivate func openAction(withURL: String, andTitleActionTitle: String) -> UIAlertAction? {

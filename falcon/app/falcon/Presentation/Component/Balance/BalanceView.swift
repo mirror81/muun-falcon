@@ -52,7 +52,10 @@ final class BalanceView: UIView {
 
     private func setUpBalances() {
         balanceTappableContainerView.isUserInteractionEnabled = true
-        balanceTappableContainerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: .balanceTap))
+        balanceTappableContainerView.addGestureRecognizer(UITapGestureRecognizer(
+            target: self,
+            action: .balanceTap
+        ))
         balanceTappableContainerView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(balanceTappableContainerView)
         NSLayoutConstraint.activate([
@@ -64,8 +67,12 @@ final class BalanceView: UIView {
         bitcoinAmountContainerView.translatesAutoresizingMaskIntoConstraints = false
         balanceTappableContainerView.addSubview(bitcoinAmountContainerView)
         NSLayoutConstraint.activate([
-            bitcoinAmountContainerView.topAnchor.constraint(equalTo: balanceTappableContainerView.topAnchor),
-            bitcoinAmountContainerView.centerXAnchor.constraint(equalTo: balanceTappableContainerView.centerXAnchor),
+            bitcoinAmountContainerView.topAnchor.constraint(
+                equalTo: balanceTappableContainerView.topAnchor
+            ),
+            bitcoinAmountContainerView.centerXAnchor.constraint(
+                equalTo: balanceTappableContainerView.centerXAnchor
+            ),
             bitcoinAmountContainerView.leadingAnchor.constraint(
                 greaterThanOrEqualTo: balanceTappableContainerView.leadingAnchor
             ),
@@ -93,13 +100,24 @@ final class BalanceView: UIView {
         bitcoinAmountContainerView.addSubview(bitcoinCurrencyLabel)
 
         NSLayoutConstraint.activate([
-            bitcoinBalanceLabel.leadingAnchor.constraint(equalTo: bitcoinAmountContainerView.leadingAnchor),
-            bitcoinBalanceLabel.bottomAnchor.constraint(equalTo: bitcoinAmountContainerView.bottomAnchor),
+            bitcoinBalanceLabel.leadingAnchor.constraint(
+                equalTo: bitcoinAmountContainerView.leadingAnchor
+            ),
+            bitcoinBalanceLabel.bottomAnchor.constraint(
+                equalTo: bitcoinAmountContainerView.bottomAnchor
+            ),
             bitcoinBalanceLabel.topAnchor.constraint(equalTo: bitcoinAmountContainerView.topAnchor),
 
-            bitcoinCurrencyLabel.leadingAnchor.constraint(equalTo: bitcoinBalanceLabel.trailingAnchor, constant: 6),
-            bitcoinCurrencyLabel.trailingAnchor.constraint(equalTo: bitcoinAmountContainerView.trailingAnchor),
-            bitcoinCurrencyLabel.firstBaselineAnchor.constraint(equalTo: bitcoinBalanceLabel.firstBaselineAnchor)
+            bitcoinCurrencyLabel.leadingAnchor.constraint(
+                equalTo: bitcoinBalanceLabel.trailingAnchor,
+                constant: 6
+            ),
+            bitcoinCurrencyLabel.trailingAnchor.constraint(
+                equalTo: bitcoinAmountContainerView.trailingAnchor
+            ),
+            bitcoinCurrencyLabel.firstBaselineAnchor.constraint(
+                equalTo: bitcoinBalanceLabel.firstBaselineAnchor
+            )
         ])
 
         bitcoinBalanceLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -123,7 +141,10 @@ final class BalanceView: UIView {
         clockCenterYConstraint = centerY
 
         NSLayoutConstraint.activate([
-            clockImageView.trailingAnchor.constraint(equalTo: bitcoinAmountContainerView.leadingAnchor, constant: -8),
+            clockImageView.trailingAnchor.constraint(
+                equalTo: bitcoinAmountContainerView.leadingAnchor,
+                constant: -8
+            ),
             centerY,
             clockImageView.heightAnchor.constraint(equalToConstant: 20),
             clockImageView.widthAnchor.constraint(equalToConstant: 20)
@@ -138,10 +159,20 @@ final class BalanceView: UIView {
         balanceTappableContainerView.addSubview(primaryBalanceLabel)
 
         NSLayoutConstraint.activate([
-            primaryBalanceLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: .sideMargin),
-            primaryBalanceLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -.sideMargin),
-            primaryBalanceLabel.topAnchor.constraint(equalTo: bitcoinAmountContainerView.bottomAnchor, constant: 4),
-            primaryBalanceLabel.bottomAnchor.constraint(equalTo: balanceTappableContainerView.bottomAnchor)
+            primaryBalanceLabel.leadingAnchor.constraint(
+                equalTo: leadingAnchor,
+                constant: .sideMargin
+            ),
+            primaryBalanceLabel.trailingAnchor.constraint(
+                equalTo: trailingAnchor,
+                constant: -.sideMargin
+            ),
+            primaryBalanceLabel.topAnchor.constraint(
+                equalTo: bitcoinAmountContainerView.bottomAnchor,
+                constant: 4
+            ),
+            primaryBalanceLabel.bottomAnchor
+            .constraint(equalTo: balanceTappableContainerView.bottomAnchor)
         ])
     }
 
@@ -150,9 +181,18 @@ final class BalanceView: UIView {
         addSubview(buttonsContainerView)
 
         NSLayoutConstraint.activate([
-            buttonsContainerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: .sideMargin),
-            buttonsContainerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -.sideMargin),
-            buttonsContainerView.topAnchor.constraint(equalTo: primaryBalanceLabel.bottomAnchor, constant: 48),
+            buttonsContainerView.leadingAnchor.constraint(
+                equalTo: leadingAnchor,
+                constant: .sideMargin
+            ),
+            buttonsContainerView.trailingAnchor.constraint(
+                equalTo: trailingAnchor,
+                constant: -.sideMargin
+            ),
+            buttonsContainerView.topAnchor.constraint(
+                equalTo: primaryBalanceLabel.bottomAnchor,
+                constant: 48
+            ),
             buttonsContainerView.heightAnchor.constraint(equalToConstant: 40),
             buttonsContainerView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
@@ -179,7 +219,10 @@ final class BalanceView: UIView {
             receiveButton.topAnchor.constraint(equalTo: buttonsContainerView.topAnchor),
             receiveButton.bottomAnchor.constraint(equalTo: buttonsContainerView.bottomAnchor),
 
-            sendButton.leadingAnchor.constraint(equalTo: receiveButton.trailingAnchor, constant: .sideMargin),
+            sendButton.leadingAnchor.constraint(
+                equalTo: receiveButton.trailingAnchor,
+                constant: .sideMargin
+            ),
             sendButton.trailingAnchor.constraint(equalTo: buttonsContainerView.trailingAnchor),
             sendButton.topAnchor.constraint(equalTo: buttonsContainerView.topAnchor),
             sendButton.bottomAnchor.constraint(equalTo: buttonsContainerView.bottomAnchor)
@@ -199,8 +242,10 @@ final class BalanceView: UIView {
             hideLabelsForAnimationInitialState()
         }
         let currencyByCode = GetCurrencyForCode().runDefaultingFiat(code: btcBalance.currency)
-        bitcoinBalanceLabel.text = currencyByCode.toAmountWithoutCode(amount: btcBalance.amount,
-                                                                      btcCurrencyFormat: .long)
+        bitcoinBalanceLabel.text = currencyByCode.toAmountWithoutCode(
+            amount: btcBalance.amount,
+            btcCurrencyFormat: .long
+        )
         bitcoinCurrencyLabel.text = currencyByCode.displayCode
         if primaryBalance.currency == btcBalance.currency {
             primaryBalanceLabel.isHidden = true

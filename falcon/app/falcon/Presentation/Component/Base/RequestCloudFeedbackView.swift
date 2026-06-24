@@ -78,10 +78,14 @@ private extension RequestCloudFeedbackView {
         stack.addArrangedSubview(titleLabel)
 
         NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor,
-                                                constant: .sideMargin),
-            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor,
-                                                 constant: -.sideMargin)
+            titleLabel.leadingAnchor.constraint(
+                greaterThanOrEqualTo: leadingAnchor,
+                constant: .sideMargin
+            ),
+            titleLabel.trailingAnchor.constraint(
+                lessThanOrEqualTo: trailingAnchor,
+                constant: -.sideMargin
+            )
         ])
     }
 }

@@ -10,9 +10,11 @@ import UIKit
 
 class DebugAnalyticsViewController: MUViewController {
     private lazy var presenter = instancePresenter(DebugAnalyticsPresenter.init, delegate: self)
-    private lazy var tableView = DebugTableView(presenter: presenter,
-                                                tableViewDelegate: self,
-                                                presentingViewController: self)
+    private lazy var tableView = DebugTableView(
+        presenter: presenter,
+        tableViewDelegate: self,
+        presentingViewController: self
+    )
 
     override var screenLoggingName: String {
         return "debug_analytics"

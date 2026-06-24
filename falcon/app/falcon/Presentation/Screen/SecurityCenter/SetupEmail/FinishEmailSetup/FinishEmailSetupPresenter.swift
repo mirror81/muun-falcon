@@ -8,24 +8,26 @@
 
 import RxSwift
 
-
 protocol FinishEmailSetupPresenterDelegate: BasePresenterDelegate {
     func passwordSetUp()
     func setLoading(_ isLoading: Bool)
 }
 
-class FinishEmailSetupPresenter<Delegate: FinishEmailSetupPresenterDelegate>: BasePresenter<Delegate> {
+class FinishEmailSetupPresenter<Delegate: FinishEmailSetupPresenterDelegate>:
+    BasePresenter<Delegate> {
 
     private let setUpPasswordAction: SetUpPasswordAction
     private let requestChallengeAction: RequestChallengeAction
     private let sessionActions: SessionActions
     private var password: String = ""
 
-    init(delegate: Delegate,
-         setUpPasswordAction: SetUpPasswordAction,
-         requestChallengeAction: RequestChallengeAction,
-         sessionActions: SessionActions,
-         preferences: Preferences) {
+    init(
+        delegate: Delegate,
+        setUpPasswordAction: SetUpPasswordAction,
+        requestChallengeAction: RequestChallengeAction,
+        sessionActions: SessionActions,
+        preferences: Preferences
+    ) {
         self.setUpPasswordAction = setUpPasswordAction
         self.requestChallengeAction = requestChallengeAction
         self.sessionActions = sessionActions

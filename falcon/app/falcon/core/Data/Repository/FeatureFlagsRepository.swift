@@ -7,7 +7,7 @@ import Foundation
 import RxSwift
 import Libwallet
 
-public class FeatureFlagsRepository : NSObject {
+public class FeatureFlagsRepository: NSObject {
 
     private let preferences: Preferences
 

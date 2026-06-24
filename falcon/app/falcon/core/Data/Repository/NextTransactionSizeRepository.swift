@@ -35,10 +35,12 @@ class NextTransactionSizeRepository {
         return preferences.object(forKey: .nextTransactionSize)
     }
 
-    private func logOnStaleNTS(_ nextTransactionSize: NextTransactionSize,
-                             _ filename: StaticString,
-                             _ line: UInt,
-                             _ funcName: StaticString) {
+    private func logOnStaleNTS(
+        _ nextTransactionSize: NextTransactionSize,
+        _ filename: StaticString,
+        _ line: UInt,
+        _ funcName: StaticString
+    ) {
         if let currentNTSOpId = getNextTransactionSize()?.validAtOperationHid,
            let newNTSOpId = nextTransactionSize.validAtOperationHid,
            newNTSOpId < currentNTSOpId {

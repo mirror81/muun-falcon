@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 protocol SignInWithRCViewDelegate: AnyObject {
     func didConfirmRecoveryCode(_ code: String)
     func moreInfoTouched()
@@ -69,7 +68,10 @@ final class SignInWithRCView: UIView {
         NSLayoutConstraint.activate([
             bottomMarginConstraint,
             continueButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: .sideMargin),
-            continueButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -.sideMargin),
+            continueButton.trailingAnchor.constraint(
+                equalTo: trailingAnchor,
+                constant: -.sideMargin
+            ),
             scrollView.bottomAnchor.constraint(equalTo: continueButton.topAnchor)
         ])
     }
@@ -164,7 +166,10 @@ final class SignInWithRCView: UIView {
         errorLabel.isHidden = false
         errorLabel.isUserInteractionEnabled = true
 
-        errorLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: .tapOnErrorLabel))
+        errorLabel.addGestureRecognizer(UITapGestureRecognizer(
+            target: self,
+            action: .tapOnErrorLabel
+        ))
     }
 
     func animateBottomMarginTransition(height: CGFloat) {

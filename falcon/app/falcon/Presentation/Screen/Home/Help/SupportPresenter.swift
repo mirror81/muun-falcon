@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 protocol SupportPresenterDelegeate: BasePresenterDelegate {
     func didSendRequest()
     func didFailRequest()
@@ -20,10 +19,12 @@ class SupportPresenter<Delegate: SupportPresenterDelegeate>: BasePresenter<Deleg
     private let supportAction: SupportAction
     private let sessionActions: SessionActions
 
-    init(delegate: Delegate,
-         state: SupportAction.RequestType,
-         supportAction: SupportAction,
-         sessionActions: SessionActions) {
+    init(
+        delegate: Delegate,
+        state: SupportAction.RequestType,
+        supportAction: SupportAction,
+        sessionActions: SessionActions
+    ) {
         self.type = state
         self.supportAction = supportAction
         self.sessionActions = sessionActions

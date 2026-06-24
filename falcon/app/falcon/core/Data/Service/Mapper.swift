@@ -27,10 +27,12 @@ extension CreateLoginSession: APIConvertible {
 extension CreateSessionOkJson: ModelConvertible {
 
     public func toModel() -> CreateSessionOk {
-        return CreateSessionOk(isExistingUser: isExistingUser,
-                               canUseRecoveryCode: canUseRecoveryCode,
-                               passwordSetupDate: passwordSetupDate,
-                               recoveryCodeSetupDate: recoveryCodeSetupDate)
+        return CreateSessionOk(
+            isExistingUser: isExistingUser,
+            canUseRecoveryCode: canUseRecoveryCode,
+            passwordSetupDate: passwordSetupDate,
+            recoveryCodeSetupDate: recoveryCodeSetupDate
+        )
     }
 
 }
@@ -157,8 +159,10 @@ extension StartEmailSetup: APIConvertible {
 extension PasswordSetup: APIConvertible {
 
     func toJson() -> PasswordSetupJson {
-        return PasswordSetupJson(challengeSignature: challengeSignature.toJson(),
-                                 challengeSetup: challengeSetup.toJson())
+        return PasswordSetupJson(
+            challengeSignature: challengeSignature.toJson(),
+            challengeSetup: challengeSetup.toJson()
+        )
     }
 
 }
@@ -166,11 +170,13 @@ extension PasswordSetup: APIConvertible {
 extension ChallengeSetup: APIConvertible {
 
     func toJson() -> ChallengeSetupJson {
-        return ChallengeSetupJson(type: type.toJson(),
-                                  passwordSecretPublicKey: passwordSecretPublicKey,
-                                  passwordSecretSalt: passwordSecretSalt,
-                                  encryptedPrivateKey: encryptedPrivateKey,
-                                  version: version)
+        return ChallengeSetupJson(
+            type: type.toJson(),
+            passwordSecretPublicKey: passwordSecretPublicKey,
+            passwordSecretSalt: passwordSecretSalt,
+            encryptedPrivateKey: encryptedPrivateKey,
+            version: version
+        )
     }
 
 }
@@ -195,10 +201,12 @@ extension ChallengeType: APIConvertible {
 extension NotificationJson: ModelOperationConvertible {
 
     public func toModel(decrypter: OperationMetadataDecrypter) -> Notification {
-        return Notification(id: id,
-                            previousId: previousId,
-                            senderSessionUuid: senderSessionUuid,
-                            message: message.toModel(decrypter: decrypter))
+        return Notification(
+            id: id,
+            previousId: previousId,
+            senderSessionUuid: senderSessionUuid,
+            message: message.toModel(decrypter: decrypter)
+        )
     }
 
 }
@@ -213,7 +221,8 @@ extension NotificationJson.MessagePayloadJson: ModelOperationConvertible {
         case .newOperation(let newOperation):
             return .newOperation(newOperation.toModel(decrypter: decrypter))
 
-        case .operationUpdate(let operationUpdate): return .operationUpdate(operationUpdate.toModel())
+        case .operationUpdate(let operationUpdate): return .operationUpdate(operationUpdate
+            .toModel())
 
         case .fulfillIncomingSwap(let uuid): return .fulfillIncomingSwap(uuid: uuid)
 
@@ -256,8 +265,10 @@ extension NotificationJson.MessagePayloadJson: ModelOperationConvertible {
 extension NotificationJson.NewOperationJson: ModelOperationConvertible {
 
     func toModel(decrypter: OperationMetadataDecrypter) -> Notification.NewOperation {
-        return Notification.NewOperation(operation: operation.toModel(decrypter: decrypter),
-                                         nextTransactionSize: nextTransactionSize.toModel())
+        return Notification.NewOperation(
+            operation: operation.toModel(decrypter: decrypter),
+            nextTransactionSize: nextTransactionSize.toModel()
+        )
     }
 
 }
@@ -265,12 +276,14 @@ extension NotificationJson.NewOperationJson: ModelOperationConvertible {
 extension NotificationJson.OperationUpdateJson: ModelConvertible {
 
     public func toModel() -> Notification.OperationUpdate {
-        return Notification.OperationUpdate(id: id,
-                                            confirmations: confirmations,
-                                            status: status.toModel(),
-                                            hash: hash,
-                                            nextTransactionSize: nextTransactionSize.toModel(),
-                                            swapDetails: swapDetails?.toModel())
+        return Notification.OperationUpdate(
+            id: id,
+            confirmations: confirmations,
+            status: status.toModel(),
+            hash: hash,
+            nextTransactionSize: nextTransactionSize.toModel(),
+            swapDetails: swapDetails?.toModel()
+        )
     }
 
 }
@@ -289,21 +302,22 @@ extension NotificationReportJson: ModelOperationConvertible {
 extension UserJson: ModelConvertible {
 
     public func toModel() -> User {
-        return User(id: id,
-                    firstName: firstName,
-                    lastName: lastName,
-                    email: email,
-                    phoneNumber: phoneNumber?.toModel(),
-                    profilePictureUrl: profilePictureUrl,
-                    primaryCurrency: primaryCurrency,
-                    isEmailVerified: isEmailVerified,
-                    hasPasswordChallengeKey: hasPasswordChallengeKey,
-                    hasRecoveryCodeChallengeKey: hasRecoveryCodeChallengeKey,
-                    hasP2PEnabled: hasP2PEnabled,
-                    hasExportedKeys: hasExportedKeys,
-                    createdAt: createdAt,
-                    emergencyKit: emergencyKit?.toModel(),
-                    exportedKitVersions: exportedKitVersions
+        return User(
+            id: id,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            phoneNumber: phoneNumber?.toModel(),
+            profilePictureUrl: profilePictureUrl,
+            primaryCurrency: primaryCurrency,
+            isEmailVerified: isEmailVerified,
+            hasPasswordChallengeKey: hasPasswordChallengeKey,
+            hasRecoveryCodeChallengeKey: hasRecoveryCodeChallengeKey,
+            hasP2PEnabled: hasP2PEnabled,
+            hasExportedKeys: hasExportedKeys,
+            createdAt: createdAt,
+            emergencyKit: emergencyKit?.toModel(),
+            exportedKitVersions: exportedKitVersions
         )
     }
 
@@ -312,22 +326,23 @@ extension UserJson: ModelConvertible {
 extension User: APIConvertible {
 
     func toJson() -> UserJson {
-        return UserJson(id: id,
-                        firstName: firstName,
-                        lastName: lastName,
-                        email: email,
-                        phoneNumber: phoneNumber?.toJson(),
-                        profilePictureUrl: profilePictureUrl,
-                        primaryCurrency: primaryCurrency,
-                        isEmailVerified: isEmailVerified,
-                        hasPasswordChallengeKey: hasPasswordChallengeKey,
-                        hasRecoveryCodeChallengeKey: hasRecoveryCodeChallengeKey,
-                        hasP2PEnabled: hasP2PEnabled,
-                        hasExportedKeys: hasExportedKeys ?? false,
-                        createdAt: createdAt ?? nil,
-                        preferences: nil,
-                        emergencyKit: nil,
-                        exportedKitVersions: exportedKitVersions ?? []
+        return UserJson(
+            id: id,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            phoneNumber: phoneNumber?.toJson(),
+            profilePictureUrl: profilePictureUrl,
+            primaryCurrency: primaryCurrency,
+            isEmailVerified: isEmailVerified,
+            hasPasswordChallengeKey: hasPasswordChallengeKey,
+            hasRecoveryCodeChallengeKey: hasRecoveryCodeChallengeKey,
+            hasP2PEnabled: hasP2PEnabled,
+            hasExportedKeys: hasExportedKeys ?? false,
+            createdAt: createdAt ?? nil,
+            preferences: nil,
+            emergencyKit: nil,
+            exportedKitVersions: exportedKitVersions ?? []
         )
     }
 
@@ -391,8 +406,10 @@ extension ExportEmergencyKit.Method: APIConvertible {
 extension PhoneNumber: APIConvertible {
 
     func toJson() -> PhoneNumberJson {
-        return PhoneNumberJson(isVerified: isVerified,
-                               number: number)
+        return PhoneNumberJson(
+            isVerified: isVerified,
+            number: number
+        )
     }
 
 }
@@ -400,8 +417,10 @@ extension PhoneNumber: APIConvertible {
 extension PhoneNumberJson: ModelConvertible {
 
     public func toModel() -> PhoneNumber {
-        return PhoneNumber(isVerified: isVerified,
-                           number: number)
+        return PhoneNumber(
+            isVerified: isVerified,
+            number: number
+        )
     }
 
 }
@@ -409,8 +428,10 @@ extension PhoneNumberJson: ModelConvertible {
 extension PendingChallengeUpdateJson: ModelConvertible {
 
     public func toModel() -> PendingChallengeUpdate {
-        return PendingChallengeUpdate(uuid: uuid,
-                                      type: type.toModel())
+        return PendingChallengeUpdate(
+            uuid: uuid,
+            type: type.toModel()
+        )
     }
 
 }
@@ -426,9 +447,11 @@ extension ChallengeUpdate: APIConvertible {
 extension ChallengeJson: ModelConvertible {
 
     public func toModel() -> Challenge {
-        return Challenge(type: type.toModel(),
-                         challenge: challenge,
-                         salt: salt)
+        return Challenge(
+            type: type.toModel(),
+            challenge: challenge,
+            salt: salt
+        )
     }
 
 }
@@ -466,8 +489,10 @@ extension SetupChallengeResponse: APIConvertible {
 extension ChallengeSignature: APIConvertible {
 
     func toJson() -> ChallengeSignatureJson {
-        return ChallengeSignatureJson(type: type.toJson(),
-                                      hex: hex)
+        return ChallengeSignatureJson(
+            type: type.toJson(),
+            hex: hex
+        )
     }
 
 }
@@ -476,10 +501,12 @@ extension KeySetJson: ModelConvertible {
 
     public func toModel() -> KeySet {
 
-        return KeySet(encryptedPrivateKey: encryptedPrivateKey,
-                      muunKey: muunKey,
-                      muunKeyFingerprint: muunKeyFingerprint,
-                      challengeKeys: challengeKeys.map({ $0.toModel() }))
+        return KeySet(
+            encryptedPrivateKey: encryptedPrivateKey,
+            muunKey: muunKey,
+            muunKeyFingerprint: muunKeyFingerprint,
+            challengeKeys: challengeKeys.map({ $0.toModel() })
+        )
     }
 
 }
@@ -518,10 +545,12 @@ extension ChallengeKeyJson: ModelConvertible {
 extension PhoneConfirmation: APIConvertible {
 
     func toJson() -> PhoneConfirmationJson {
-        return PhoneConfirmationJson(verificationCode: verificationCode,
-                                     signedUp: signedUp,
-                                     hasPasswordChallengeKey: hasPasswordChallengeKey,
-                                     hasRecoveryCodeChallengeKey: hasRecoveryCodeChallengeKey)
+        return PhoneConfirmationJson(
+            verificationCode: verificationCode,
+            signedUp: signedUp,
+            hasPasswordChallengeKey: hasPasswordChallengeKey,
+            hasRecoveryCodeChallengeKey: hasRecoveryCodeChallengeKey
+        )
     }
 
 }
@@ -529,10 +558,12 @@ extension PhoneConfirmation: APIConvertible {
 extension PhoneConfirmationJson: ModelConvertible {
 
     public func toModel() -> PhoneConfirmation {
-        return PhoneConfirmation(verificationCode: verificationCode,
-                                 signedUp: signedUp,
-                                 hasPasswordChallengeKey: hasPasswordChallengeKey,
-                                 hasRecoveryCodeChallengeKey: hasRecoveryCodeChallengeKey)
+        return PhoneConfirmation(
+            verificationCode: verificationCode,
+            signedUp: signedUp,
+            hasPasswordChallengeKey: hasPasswordChallengeKey,
+            hasRecoveryCodeChallengeKey: hasRecoveryCodeChallengeKey
+        )
     }
 
 }
@@ -540,8 +571,10 @@ extension PhoneConfirmationJson: ModelConvertible {
 extension ExternalAddressesRecord: APIConvertible {
 
     func toJson() -> ExternalAddressesRecordJson {
-        return ExternalAddressesRecordJson(maxUsedIndex: maxUsedIndex,
-                                           maxWatchingIndex: maxWatchingIndex)
+        return ExternalAddressesRecordJson(
+            maxUsedIndex: maxUsedIndex,
+            maxWatchingIndex: maxWatchingIndex
+        )
     }
 
 }
@@ -549,8 +582,10 @@ extension ExternalAddressesRecord: APIConvertible {
 extension ExternalAddressesRecordJson: ModelConvertible {
 
     public func toModel() -> ExternalAddressesRecord {
-        return ExternalAddressesRecord(maxUsedIndex: maxUsedIndex,
-                                       maxWatchingIndex: maxWatchingIndex)
+        return ExternalAddressesRecord(
+            maxUsedIndex: maxUsedIndex,
+            maxWatchingIndex: maxWatchingIndex
+        )
     }
 
 }
@@ -558,10 +593,12 @@ extension ExternalAddressesRecordJson: ModelConvertible {
 extension PublicKeySet: APIConvertible {
 
     func toJson() -> PublicKeySetJson {
-        return PublicKeySetJson(basePublicKey: basePublicKey.toJson(),
-                                baseCosigningPublicKey: baseCosigningPublicKey?.toJson(),
-                                baseSwapServerPublicKey: baseSwapServerPublicKey?.toJson(),
-                                externalPublicKeyIndices: externalPublicKeyIndices?.toJson())
+        return PublicKeySetJson(
+            basePublicKey: basePublicKey.toJson(),
+            baseCosigningPublicKey: baseCosigningPublicKey?.toJson(),
+            baseSwapServerPublicKey: baseSwapServerPublicKey?.toJson(),
+            externalPublicKeyIndices: externalPublicKeyIndices?.toJson()
+        )
     }
 
 }
@@ -569,10 +606,12 @@ extension PublicKeySet: APIConvertible {
 extension PublicKeySetJson: ModelConvertible {
 
     public func toModel() -> PublicKeySet {
-        return PublicKeySet(basePublicKey: basePublicKey.toModel(),
-                            baseCosigningPublicKey: baseCosigningPublicKey?.toModel(),
-                            baseSwapServerPublicKey: baseSwapServerPublicKey?.toModel(),
-                            externalPublicKeyIndices: externalPublicKeyIndices?.toModel())
+        return PublicKeySet(
+            basePublicKey: basePublicKey.toModel(),
+            baseCosigningPublicKey: baseCosigningPublicKey?.toModel(),
+            baseSwapServerPublicKey: baseSwapServerPublicKey?.toModel(),
+            externalPublicKeyIndices: externalPublicKeyIndices?.toModel()
+        )
     }
 
 }
@@ -588,7 +627,10 @@ extension SendEncryptedKeys: APIConvertible {
 extension IntegrityCheck: APIConvertible {
 
     func toJson() -> IntegrityCheckJson {
-        return IntegrityCheckJson(publicKeySet: publicKeySet.toJson(), balanceInSatoshis: balanceInSatoshis)
+        return IntegrityCheckJson(
+            publicKeySet: publicKeySet.toJson(),
+            balanceInSatoshis: balanceInSatoshis
+        )
     }
 
 }
@@ -596,9 +638,11 @@ extension IntegrityCheck: APIConvertible {
 extension IntegrityStatusJson: ModelConvertible {
 
     public func toModel() -> IntegrityStatus {
-        return IntegrityStatus(isBasePublicKeyOk: isBasePublicKeyOk,
-                               isExternalMaxUsedIndexOk: isExternalMaxUsedIndexOk,
-                               isBalanceOk: isBalanceOk)
+        return IntegrityStatus(
+            isBasePublicKeyOk: isBasePublicKeyOk,
+            isExternalMaxUsedIndexOk: isExternalMaxUsedIndexOk,
+            isBalanceOk: isBalanceOk
+        )
     }
 
 }
@@ -606,9 +650,11 @@ extension IntegrityStatusJson: ModelConvertible {
 extension NextTransactionSizeJson: ModelConvertible {
 
     public func toModel() -> NextTransactionSize {
-        return NextTransactionSize(sizeProgression: sizeProgression.map({ $0.toModel() }),
-                                   validAtOperationHid: validAtOperationHid,
-                                   _expectedDebt: Satoshis(value: expectedDebtInSat))
+        return NextTransactionSize(
+            sizeProgression: sizeProgression.map({ $0.toModel() }),
+            validAtOperationHid: validAtOperationHid,
+            _expectedDebt: Satoshis(value: expectedDebtInSat)
+        )
     }
 
 }
@@ -616,9 +662,11 @@ extension NextTransactionSizeJson: ModelConvertible {
 extension NextTransactionSize: APIConvertible {
 
     func toJson() -> NextTransactionSizeJson {
-        return NextTransactionSizeJson(sizeProgression: sizeProgression.map({ $0.toJson() }),
-                                       validAtOperationHid: validAtOperationHid,
-                                       expectedDebtInSat: expectedDebt.value)
+        return NextTransactionSizeJson(
+            sizeProgression: sizeProgression.map({ $0.toJson() }),
+            validAtOperationHid: validAtOperationHid,
+            expectedDebtInSat: expectedDebt.value
+        )
     }
 
 }
@@ -703,10 +751,12 @@ extension RawTransactionResponseJson: ModelOperationConvertible {
 extension PublicProfile: APIConvertible {
 
     func toJson() -> PublicProfileJson {
-        return PublicProfileJson(userId: userId,
-                                 firstName: firstName,
-                                 lastName: lastName,
-                                 profilePictureUrl: profilePictureUrl)
+        return PublicProfileJson(
+            userId: userId,
+            firstName: firstName,
+            lastName: lastName,
+            profilePictureUrl: profilePictureUrl
+        )
     }
 
 }
@@ -714,10 +764,12 @@ extension PublicProfile: APIConvertible {
 extension PublicProfileJson: ModelConvertible {
 
     public func toModel() -> PublicProfile {
-        return PublicProfile(userId: userId,
-                             firstName: firstName,
-                             lastName: lastName,
-                             profilePictureUrl: profilePictureUrl)
+        return PublicProfile(
+            userId: userId,
+            firstName: firstName,
+            lastName: lastName,
+            profilePictureUrl: profilePictureUrl
+        )
     }
 
 }
@@ -725,9 +777,11 @@ extension PublicProfileJson: ModelConvertible {
 extension BitcoinAmount: APIConvertible {
 
     func toJson() -> BitcoinAmountJson {
-        return BitcoinAmountJson(inSatoshis: inSatoshis.value,
-                                 inInputCurrency: inInputCurrency.toJson(),
-                                 inPrimaryCurrency: inPrimaryCurrency.toJson())
+        return BitcoinAmountJson(
+            inSatoshis: inSatoshis.value,
+            inInputCurrency: inInputCurrency.toJson(),
+            inPrimaryCurrency: inPrimaryCurrency.toJson()
+        )
     }
 
 }
@@ -735,9 +789,11 @@ extension BitcoinAmount: APIConvertible {
 extension BitcoinAmountJson: ModelConvertible {
 
     public func toModel() -> BitcoinAmount {
-        return BitcoinAmount(inSatoshis: Satoshis(value: inSatoshis),
-                             inInputCurrency: inInputCurrency.toModel(),
-                             inPrimaryCurrency: inPrimaryCurrency.toModel())
+        return BitcoinAmount(
+            inSatoshis: Satoshis(value: inSatoshis),
+            inInputCurrency: inInputCurrency.toModel(),
+            inPrimaryCurrency: inPrimaryCurrency.toModel()
+        )
     }
 
 }
@@ -745,8 +801,10 @@ extension BitcoinAmountJson: ModelConvertible {
 extension MonetaryAmount: APIConvertible {
 
     func toJson() -> MonetaryAmountJson {
-        return MonetaryAmountJson(amount: amount.stringValue(locale: Constant.houstonLocale),
-                                  currency: currency)
+        return MonetaryAmountJson(
+            amount: amount.stringValue(locale: Constant.houstonLocale),
+            currency: currency
+        )
     }
 
 }
@@ -862,126 +920,149 @@ extension Operation: APIConvertible {
             description: description,
             outpoints: outpoints,
             incomingSwap: nil,
-            userPublicNoncesHex: [])
+            userPublicNoncesHex: []
+        )
     }
 }
 
 extension SubmarineSwap: APIConvertible {
     func toJson() -> SubmarineSwapJson {
-        return SubmarineSwapJson(swapUuid: _swapUuid,
-                                 invoice: _invoice,
-                                 receiver: _receiver.toJson(),
-                                 fundingOutput: _fundingOutput.toJson(),
-                                 fees: _fees?.toJson(),
-                                 expiresAt: _expiresAt,
-                                 willPreOpenChannel: _willPreOpenChannel,
-                                 bestRouteFees: nil,
-                                 fundingOutputPolicies: nil,
-                                 payedAt: _payedAt,
-                                 preimageInHex: _preimageInHex,
-                                 maxAlternativeTransactionCount: 0)
+        return SubmarineSwapJson(
+            swapUuid: _swapUuid,
+            invoice: _invoice,
+            receiver: _receiver.toJson(),
+            fundingOutput: _fundingOutput.toJson(),
+            fees: _fees?.toJson(),
+            expiresAt: _expiresAt,
+            willPreOpenChannel: _willPreOpenChannel,
+            bestRouteFees: nil,
+            fundingOutputPolicies: nil,
+            payedAt: _payedAt,
+            preimageInHex: _preimageInHex,
+            maxAlternativeTransactionCount: 0
+        )
     }
 }
 
 extension SubmarineSwapFees: APIConvertible {
     func toJson() -> SubmarineSwapFeesJson {
-        return SubmarineSwapFeesJson(lightningInSats: _lightning.value,
-                                     sweepInSats: _sweep.value,
-                                     channelOpenInSats: _channelOpen.value,
-                                     channelCloseInSats: _channelClose.value)
+        return SubmarineSwapFeesJson(
+            lightningInSats: _lightning.value,
+            sweepInSats: _sweep.value,
+            channelOpenInSats: _channelOpen.value,
+            channelCloseInSats: _channelClose.value
+        )
     }
 }
 
 extension SubmarineSwapFeesJson: ModelConvertible {
     func toModel() -> SubmarineSwapFees {
-        return SubmarineSwapFees(lightning: Satoshis(value: lightningInSats),
-                                 sweep: Satoshis(value: sweepInSats),
-                                 channelOpen: Satoshis(value: channelOpenInSats),
-                                 channelClose: Satoshis(value: channelCloseInSats))
+        return SubmarineSwapFees(
+            lightning: Satoshis(value: lightningInSats),
+            sweep: Satoshis(value: sweepInSats),
+            channelOpen: Satoshis(value: channelOpenInSats),
+            channelClose: Satoshis(value: channelCloseInSats)
+        )
     }
 }
 
 extension SubmarineSwapReceiver: APIConvertible {
     func toJson() -> SubmarineSwapReceiverJson {
-        return SubmarineSwapReceiverJson(alias: _alias,
-                                         networkAddresses: _networkAddresses,
-                                         publicKey: _publicKey)
+        return SubmarineSwapReceiverJson(
+            alias: _alias,
+            networkAddresses: _networkAddresses,
+            publicKey: _publicKey
+        )
     }
 }
 
 extension SubmarineSwapFundingOutput: APIConvertible {
     func toJson() -> SubmarineSwapFundingOutputJson {
-        return SubmarineSwapFundingOutputJson(scriptVersion: _scriptVersion,
-                                              outputAddress: _outputAddress,
-                                              outputAmountInSatoshis: _outputAmount?.value,
-                                              confirmationsNeeded: _confirmationsNeeded,
-                                              userLockTime: _userLockTime,
-                                              serverPaymentHashInHex: _serverPaymentHashInHex,
-                                              serverPublicKeyInHex: _serverPublicKeyInHex,
-                                              expirationInBlocks: _expirationInBlocks,
-                                              userRefundAddress: _userRefundAddress?.toJson(),
-                                              userPublicKey: _userPublicKey?.toJson(),
-                                              muunPublicKey: _muunPublicKey?.toJson(),
-                                              debtType: _debtType?.rawValue,
-                                              debtAmountInSats: _debtAmount?.value)
+        return SubmarineSwapFundingOutputJson(
+            scriptVersion: _scriptVersion,
+            outputAddress: _outputAddress,
+            outputAmountInSatoshis: _outputAmount?.value,
+            confirmationsNeeded: _confirmationsNeeded,
+            userLockTime: _userLockTime,
+            serverPaymentHashInHex: _serverPaymentHashInHex,
+            serverPublicKeyInHex: _serverPublicKeyInHex,
+            expirationInBlocks: _expirationInBlocks,
+            userRefundAddress: _userRefundAddress?.toJson(),
+            userPublicKey: _userPublicKey?.toJson(),
+            muunPublicKey: _muunPublicKey?.toJson(),
+            debtType: _debtType?.rawValue,
+            debtAmountInSats: _debtAmount?.value
+        )
     }
 }
 
 extension SubmarineSwapJson: ModelConvertible {
     public func toModel() -> SubmarineSwap {
-        return SubmarineSwap(swapUuid: swapUuid,
-                             invoice: invoice,
-                             receiver: receiver.toModel(),
-                             fundingOutput: fundingOutput.toModel(),
-                             fees: fees?.toModel(),
-                             expiresAt: expiresAt,
-                             willPreOpenChannel: willPreOpenChannel,
-                             bestRouteFees: bestRouteFees?.toModel(),
-                             fundingOutputPolicies: fundingOutputPolicies?.toModel(),
-                             payedAt: payedAt,
-                             preimageInHex: preimageInHex)
+        return SubmarineSwap(
+            swapUuid: swapUuid,
+            invoice: invoice,
+            receiver: receiver.toModel(),
+            fundingOutput: fundingOutput.toModel(),
+            fees: fees?.toModel(),
+            expiresAt: expiresAt,
+            willPreOpenChannel: willPreOpenChannel,
+            bestRouteFees: bestRouteFees?.toModel(),
+            fundingOutputPolicies: fundingOutputPolicies?.toModel(),
+            payedAt: payedAt,
+            preimageInHex: preimageInHex
+        )
     }
 }
 
 extension BestRouteFeesJson: ModelConvertible {
     public func toModel() -> BestRouteFees {
-        return BestRouteFees(_maxCapacityInSat: maxCapacityInSat,
-                             _proportionalMillionth: proportionalMillionth,
-                             _baseInSat: baseInSat)
+        return BestRouteFees(
+            _maxCapacityInSat: maxCapacityInSat,
+            _proportionalMillionth: proportionalMillionth,
+            _baseInSat: baseInSat
+        )
     }
 }
 
 extension FundingOutputPoliciesJson: ModelConvertible {
     public func toModel() -> FundingOutputPolicies {
-        return FundingOutputPolicies(_maximumDebtInSat: maximumDebtInSat,
-                                     _potentialCollectInSat: potentialCollectInSat,
-                                     _maxAmountInSatFor0Conf: maxAmountInSatFor0Conf)
+        return FundingOutputPolicies(
+            _maximumDebtInSat: maximumDebtInSat,
+            _potentialCollectInSat: potentialCollectInSat,
+            _maxAmountInSatFor0Conf: maxAmountInSatFor0Conf
+        )
     }
 }
 
 extension SubmarineSwapReceiverJson: ModelConvertible {
     public func toModel() -> SubmarineSwapReceiver {
-        return SubmarineSwapReceiver(alias: alias,
-                                     networkAddresses: networkAddresses,
-                                     publicKey: publicKey)
+        return SubmarineSwapReceiver(
+            alias: alias,
+            networkAddresses: networkAddresses,
+            publicKey: publicKey
+        )
     }
 }
 
 extension SubmarineSwapFundingOutputJson: ModelConvertible {
     public func toModel() -> SubmarineSwapFundingOutput {
-        return SubmarineSwapFundingOutput(scriptVersion: scriptVersion,
-                                          outputAddress: outputAddress,
-                                          outputAmount: outputAmountInSatoshis.map(Satoshis.init(value:)),
-                                          confirmationsNeeded: confirmationsNeeded,
-                                          userLockTime: userLockTime,
-                                          userRefundAddress: userRefundAddress?.toModel(),
-                                          serverPaymentHashInHex: serverPaymentHashInHex,
-                                          serverPublicKeyInHex: serverPublicKeyInHex,
-                                          expirationTimeInBlocks: expirationInBlocks,
-                                          userPublicKey: userPublicKey?.toModel(),
-                                          muunPublicKey: muunPublicKey?.toModel(),
-                                          debtType: debtType.map { DebtType(rawValue: $0) ?? .NONE },
-                                          debtAmount: debtAmountInSats.map(Satoshis.init(value:)))
+        return SubmarineSwapFundingOutput(
+            scriptVersion: scriptVersion,
+            outputAddress: outputAddress,
+            outputAmount: outputAmountInSatoshis
+                                          .map(Satoshis.init(value:)),
+            confirmationsNeeded: confirmationsNeeded,
+            userLockTime: userLockTime,
+            userRefundAddress: userRefundAddress?.toModel(),
+            serverPaymentHashInHex: serverPaymentHashInHex,
+            serverPublicKeyInHex: serverPublicKeyInHex,
+            expirationTimeInBlocks: expirationInBlocks,
+            userPublicKey: userPublicKey?.toModel(),
+            muunPublicKey: muunPublicKey?.toModel(),
+            debtType: debtType
+                                          .map { DebtType(rawValue: $0) ?? .NONE },
+            debtAmount: debtAmountInSats.map(Satoshis.init(value:))
+        )
     }
 }
 
@@ -996,33 +1077,34 @@ extension OperationJson: ModelOperationConvertible {
         } catch {
             Logger.log(error: error)
         }
-            
 
         // Collect all the metadata fields
         let description = metadata?.description ?? self.description
 
-        return Operation(id: id,
-                         requestId: requestId,
-                         isExternal: isExternal,
-                         direction: direction.toModel(),
-                         senderProfile: senderProfile?.toModel(),
-                         senderIsExternal: senderIsExternal,
-                         receiverProfile: receiverProfile?.toModel(),
-                         receiverIsExternal: receiverIsExternal,
-                         receiverAddress: receiverAddress,
-                         receiverAddressDerivationPath: receiverAddressDerivationPath,
-                         amount: amount.toModel(),
-                         fee: fee.toModel(),
-                         confirmations: confirmations,
-                         exchangeRatesWindowId: exchangeRatesWindowId,
-                         description: description,
-                         status: status.toModel(),
-                         transaction: transaction?.toModel(),
-                         creationDate: creationDate,
-                         submarineSwap: swap?.toModel(),
-                         outpoints: outpoints,
-                         incomingSwap: incomingSwap?.toModel(),
-                         metadata: metadata)
+        return Operation(
+            id: id,
+            requestId: requestId,
+            isExternal: isExternal,
+            direction: direction.toModel(),
+            senderProfile: senderProfile?.toModel(),
+            senderIsExternal: senderIsExternal,
+            receiverProfile: receiverProfile?.toModel(),
+            receiverIsExternal: receiverIsExternal,
+            receiverAddress: receiverAddress,
+            receiverAddressDerivationPath: receiverAddressDerivationPath,
+            amount: amount.toModel(),
+            fee: fee.toModel(),
+            confirmations: confirmations,
+            exchangeRatesWindowId: exchangeRatesWindowId,
+            description: description,
+            status: status.toModel(),
+            transaction: transaction?.toModel(),
+            creationDate: creationDate,
+            submarineSwap: swap?.toModel(),
+            outpoints: outpoints,
+            incomingSwap: incomingSwap?.toModel(),
+            metadata: metadata
+        )
     }
 
 }
@@ -1074,7 +1156,11 @@ extension MuunAddressJson: ModelConvertible {
 extension MuunAddress: APIConvertible {
 
     func toJson() -> MuunAddressJson {
-        return MuunAddressJson(version: _version, derivationPath: _derivationPath, address: _address)
+        return MuunAddressJson(
+            version: _version,
+            derivationPath: _derivationPath,
+            address: _address
+        )
     }
 
 }
@@ -1093,14 +1179,15 @@ extension MuunInputJson: ModelConvertible {
 
         let nonce = rawMuunPublicNonceHex.map { Data(hex: $0) }
 
-        return MuunInput(prevOut: prevOut.toModel(),
-                         address: address.toModel(),
-                         userSignature: userSignature?.toModel(),
-                         muunSignature: muunSignature?.toModel(),
-                         submarineSwapV1: submarineSwap?.toModel(),
-                         submarineSwapV2: submarineSwapV102?.toModel(),
-                         incomingSwap: incomingSwap?.toModel(),
-                         muunPublicNonce: nonce
+        return MuunInput(
+            prevOut: prevOut.toModel(),
+            address: address.toModel(),
+            userSignature: userSignature?.toModel(),
+            muunSignature: muunSignature?.toModel(),
+            submarineSwapV1: submarineSwap?.toModel(),
+            submarineSwapV2: submarineSwapV102?.toModel(),
+            incomingSwap: incomingSwap?.toModel(),
+            muunPublicNonce: nonce
         )
     }
 
@@ -1109,10 +1196,12 @@ extension MuunInputJson: ModelConvertible {
 extension InputSubmarineSwapV1Json: ModelConvertible {
 
     public func toModel() -> InputSubmarineSwapV1 {
-        return InputSubmarineSwapV1(refundAddress: refundAddress,
-                                    paymentHash256: Data(hex: swapPaymentHash256Hex),
-                                    serverPublicKey: Data(hex: swapServerPublicKeyHex),
-                                    locktime: lockTime)
+        return InputSubmarineSwapV1(
+            refundAddress: refundAddress,
+            paymentHash256: Data(hex: swapPaymentHash256Hex),
+            serverPublicKey: Data(hex: swapServerPublicKeyHex),
+            locktime: lockTime
+        )
     }
 
 }
@@ -1121,12 +1210,14 @@ extension InputSubmarineSwapV2Json: ModelConvertible {
 
     public func toModel() -> InputSubmarineSwapV2 {
         let sig = swapServerSignature.map({ Data(hex: $0.hex) })
-        return InputSubmarineSwapV2(paymentHash256: Data(hex: swapPaymentHash256Hex),
-                                    userPublicKey: Data(hex: userPublicKeyHex),
-                                    muunPublicKey: Data(hex: muunPublicKeyHex),
-                                    serverPublicKey: Data(hex: swapServerPublicKeyHex),
-                                    blocksForExpiration: Int64(numBlocksForExpiration),
-                                    serverSignature: sig)
+        return InputSubmarineSwapV2(
+            paymentHash256: Data(hex: swapPaymentHash256Hex),
+            userPublicKey: Data(hex: userPublicKeyHex),
+            muunPublicKey: Data(hex: muunPublicKeyHex),
+            serverPublicKey: Data(hex: swapServerPublicKeyHex),
+            blocksForExpiration: Int64(numBlocksForExpiration),
+            serverSignature: sig
+        )
     }
 
 }
@@ -1138,22 +1229,26 @@ extension InputIncomingSwapJson: ModelConvertible {
         if let preimageHex = preimageHex {
             preimage = Data(hex: preimageHex)
         }
-        return InputIncomingSwap(sphinx: Data(hex: sphinxHex),
-                                 htlcTx: Data(hex: htlcTxHex),
-                                 paymentHash256: Data(hex: paymentHash256Hex),
-                                 swapServerPublicKey: Data(hex: swapServerPublicKeyHex),
-                                 expirationHeight: expirationHeight,
-                                 collect: Satoshis(value: collectInSats),
-                                 preimage: preimage,
-                                 htlcOutputKeyPath: htlcOutputKeyPath)
+        return InputIncomingSwap(
+            sphinx: Data(hex: sphinxHex),
+            htlcTx: Data(hex: htlcTxHex),
+            paymentHash256: Data(hex: paymentHash256Hex),
+            swapServerPublicKey: Data(hex: swapServerPublicKeyHex),
+            expirationHeight: expirationHeight,
+            collect: Satoshis(value: collectInSats),
+            preimage: preimage,
+            htlcOutputKeyPath: htlcOutputKeyPath
+        )
     }
 }
 
 extension PartiallySignedTransactionJson: ModelConvertible {
 
     public func toModel() -> PartiallySignedTransaction {
-        return PartiallySignedTransaction(hexTransaction: hexTransaction,
-                                          inputs: inputs.map({ $0.toModel() }))
+        return PartiallySignedTransaction(
+            hexTransaction: hexTransaction,
+            inputs: inputs.map({ $0.toModel() })
+        )
     }
 
 }
@@ -1161,11 +1256,13 @@ extension PartiallySignedTransactionJson: ModelConvertible {
 extension OperationCreatedJson: ModelOperationConvertible {
 
     public func toModel(decrypter: OperationMetadataDecrypter) -> OperationCreated {
-        return OperationCreated(operation: operation.toModel(decrypter: decrypter),
-                                partiallySignedTransaction: partiallySignedTransaction.toModel(),
-                                alternativeTransactions: alternativeTransactions.toModel(),
-                                nextTransactionSize: nextTransactionSize.toModel(),
-                                change: changeAddress?.toModel())
+        return OperationCreated(
+            operation: operation.toModel(decrypter: decrypter),
+            partiallySignedTransaction: partiallySignedTransaction.toModel(),
+            alternativeTransactions: alternativeTransactions.toModel(),
+            nextTransactionSize: nextTransactionSize.toModel(),
+            change: changeAddress?.toModel()
+        )
     }
 
 }
@@ -1197,9 +1294,11 @@ extension FeeWindowJson: ModelConvertible {
 extension ExchangeRateWindowJson: ModelConvertible {
 
     public func toModel() -> ExchangeRateWindow {
-        return ExchangeRateWindow(id: id,
-                                  fetchDate: fetchDate,
-                                  rates: rates)
+        return ExchangeRateWindow(
+            id: id,
+            fetchDate: fetchDate,
+            rates: rates
+        )
     }
 
 }
@@ -1214,16 +1313,18 @@ extension FeeBumpFunctionsJson: ModelConvertible {
 extension RealTimeDataJson: ModelConvertible {
 
     public func toModel() -> RealTimeData {
-        return RealTimeData(feeWindow: feeWindow.toModel(),
-                            exchangeRateWindow: exchangeRateWindow.toModel(),
-                            currentBlockchainHeight: currentBlockchainHeight,
-                            forwardingPolicies: forwardingPolicies.toModel(),
-                            minFeeRateInWeightUnits: minFeeRateInWeightUnits,
-                            features: features.compactMap({ feature in
+        return RealTimeData(
+            feeWindow: feeWindow.toModel(),
+            exchangeRateWindow: exchangeRateWindow.toModel(),
+            currentBlockchainHeight: currentBlockchainHeight,
+            forwardingPolicies: forwardingPolicies.toModel(),
+            minFeeRateInWeightUnits: minFeeRateInWeightUnits,
+            features: features.compactMap({ feature in
                                 // We map this manually with a failable init so that we ignore
                                 // any new values the backend may know about but we don't
                                 FeatureFlags(rawValue: feature)
-                            }))
+                            })
+        )
     }
 
 }
@@ -1240,31 +1341,40 @@ extension RealTimeFeesJson: ModelConvertible {
         targetedFees.forEach { convertedTargetedFees[UInt($0.key)] = $0.value }
 
         // Creating here to have fetchData(computedAt)
-        let feeWindow = FeeWindow(id: 1, // Houston constant, should be removed later
-                                  fetchDate: computedAt,
-                                  targetedFees: convertedTargetedFees,
-                                  fastConfTarget: targetFeeRates.fastConfTarget,
-                                  mediumConfTarget: targetFeeRates.mediumConfTarget,
-                                  slowConfTarget: targetFeeRates.slowConfTarget)
+        let feeWindow = FeeWindow(
+            id: 1, // Houston constant, should be removed later
+            fetchDate: computedAt,
+            targetedFees: convertedTargetedFees,
+            fastConfTarget: targetFeeRates.fastConfTarget,
+            mediumConfTarget: targetFeeRates.mediumConfTarget,
+            slowConfTarget: targetFeeRates.slowConfTarget
+        )
 
-        let feeBumpFunctions = FeeBumpFunctions(uuid: feeBumpFunctions.uuid,
-                                                functions: feeBumpFunctions.functions)
-        return RealTimeFees(feeBumpFunctions: feeBumpFunctions,
-                            feeWindow: feeWindow,
-                            minMempoolFeeRateInSatPerVbyte: minMempoolFeeRateInSatPerVbyte,
-                            minFeeRateIncrementToReplaceByFeeInSatPerVbyte: minFeeRateIncrementToReplaceByFeeInSatPerVbyte,
-                            computedAt: computedAt)
+        let feeBumpFunctions = FeeBumpFunctions(
+            uuid: feeBumpFunctions.uuid,
+            functions: feeBumpFunctions.functions
+        )
+        return RealTimeFees(
+            feeBumpFunctions: feeBumpFunctions,
+            feeWindow: feeWindow,
+            minMempoolFeeRateInSatPerVbyte: minMempoolFeeRateInSatPerVbyte,
+            minFeeRateIncrementToReplaceByFeeInSatPerVbyte:
+                minFeeRateIncrementToReplaceByFeeInSatPerVbyte,
+            computedAt: computedAt
+        )
     }
 }
 
 extension ContactJson: ModelConvertible {
 
     public func toModel() -> Contact {
-        return Contact(publicProfile: publicProfile.toModel(),
-                       maxAddressVersion: maxAddressVersion,
-                       publicKey: publicKey.toModel(),
-                       cosigningPublicKey: cosigningPublicKey.toModel(),
-                       lastDerivationIndex: lastDerivationIndex)
+        return Contact(
+            publicProfile: publicProfile.toModel(),
+            maxAddressVersion: maxAddressVersion,
+            publicKey: publicKey.toModel(),
+            cosigningPublicKey: cosigningPublicKey.toModel(),
+            lastDerivationIndex: lastDerivationIndex
+        )
     }
 
 }
@@ -1280,10 +1390,12 @@ extension LinkAction: APIConvertible {
 extension SubmarineSwapRequest: APIConvertible {
 
     func toJson() -> SubmarineSwapRequestJson {
-        return SubmarineSwapRequestJson(invoice: _invoice,
-                                        swapExpirationInBlocks: _swapExpirationInBlocks,
-                                        origin: _origin,
-                                        bkgTimes: _bkgTimes)
+        return SubmarineSwapRequestJson(
+            invoice: _invoice,
+            swapExpirationInBlocks: _swapExpirationInBlocks,
+            origin: _origin,
+            bkgTimes: _bkgTimes
+        )
     }
 
 }
@@ -1291,10 +1403,12 @@ extension SubmarineSwapRequest: APIConvertible {
 extension ForwardingPolicyJson: ModelConvertible {
 
     func toModel() -> ForwardingPolicy {
-        return ForwardingPolicy(identityKeyHex: identityKeyHex,
-                                feeBaseMsat: feeBaseMsat,
-                                feeProportionalMillionths: feeProportionalMillionths,
-                                cltvExpiryDelta: cltvExpiryDelta)
+        return ForwardingPolicy(
+            identityKeyHex: identityKeyHex,
+            feeBaseMsat: feeBaseMsat,
+            feeProportionalMillionths: feeProportionalMillionths,
+            cltvExpiryDelta: cltvExpiryDelta
+        )
     }
 
 }
@@ -1385,17 +1499,31 @@ extension Array: APIConvertible where Element: APIConvertible {
 
 extension Rpc_GetSecurityCardsMarketplaceResponse: ModelConvertible {
 
+    // The proto now exposes per-card prices, per-country shipping, themed
+    // colors and specs. The current UI still consumes the legacy flat shape,
+    // so we derive it here: provider price/currency from the first card, and
+    // shipping from the first estimated group. Per-card pricing, dark theme,
+    // specs and tag rendering are ignored until the UI is redesigned.
     func toModel() -> [SecurityCardProvider] {
         return providers.map { provider in
-            SecurityCardProvider(
+            let firstCard = provider.securityCards.first
+            let firstShipping = provider.estimatedShippingPrices.first
+            let price = firstCard.flatMap { Double($0.cardCost.amount) } ?? 0
+            let shippingCost = firstShipping.flatMap { Double($0.price.amount) } ?? 0
+            let currencyCode = firstCard?.cardCost.currencyCode ?? ""
+
+            return SecurityCardProvider(
                 name: provider.name,
-                colorHex: provider.colorHex,
-                material: provider.material,
-                price: provider.price,
-                shippingCost: provider.shippingCost,
-                currencyCode: provider.currency,
+                colorHex: provider.lightTheme.primaryColor,
+                siteUrl: URL(string: provider.siteURL),
+                price: price,
+                shippingCost: shippingCost,
+                currencyCode: currencyCode,
                 cards: provider.securityCards.map { card in
-                    SecurityCard(imageName: card.image, stock: card.stock)
+                    SecurityCard(
+                        imageName: "sc_\(card.id)",
+                        stock: card.tag == "OUT_OF_STOCK" ? 0 : 1
+                    )
                 }
             )
         }

@@ -25,7 +25,10 @@ public class SyncExternalAddresses: AsyncAction<()>, Runnable {
 
         let completable = Single.deferred { () -> Single<ExternalAddressesRecord> in
                 let maxUsedIndex = self.keysRepository.getMaxUsedIndex()
-                let newRecord = ExternalAddressesRecord(maxUsedIndex: maxUsedIndex, maxWatchingIndex: nil)
+                let newRecord = ExternalAddressesRecord(
+                    maxUsedIndex: maxUsedIndex,
+                    maxWatchingIndex: nil
+                )
                 return self.houstonService.update(externalAddressesRecord: newRecord)
             }.do(onSuccess: { newIndexes in
                 if let maxWatchIndex = newIndexes.maxWatchingIndex {

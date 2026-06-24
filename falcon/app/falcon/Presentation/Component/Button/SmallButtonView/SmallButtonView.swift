@@ -50,10 +50,11 @@ class SmallButtonView: MUView {
                 } else {
                     self.alpha = 0.2
                 }
-        },
+            },
             completion: { _ in
                 self.button.isUserInteractionEnabled = isEnabled
-        })
+            }
+        )
 
         layoutSubviews()
     }

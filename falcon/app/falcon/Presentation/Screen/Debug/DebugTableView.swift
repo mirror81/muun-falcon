@@ -15,9 +15,11 @@ class DebugTableView: UIView {
     private let presentingViewController: UIViewController
     private var tableViewDelegate: UITableViewDelegate
 
-    init(presenter: DebugListPresenter,
-         tableViewDelegate: UITableViewDelegate,
-         presentingViewController: UIViewController) {
+    init(
+        presenter: DebugListPresenter,
+        tableViewDelegate: UITableViewDelegate,
+        presentingViewController: UIViewController
+    ) {
         self.presenter = presenter
         self.tableViewDelegate = tableViewDelegate
         self.presentingViewController = presentingViewController
@@ -50,10 +52,14 @@ class DebugTableView: UIView {
         closeButton.setTitleColor(.black, for: .normal)
         closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
         addSubview(closeButton)
-        closeButton.leadingAnchor.constraint(equalTo: leadingAnchor,
-                                             constant: 16).isActive = true
-        closeButton.topAnchor.constraint(equalTo: topAnchor,
-                                         constant: 16).isActive = true
+        closeButton.leadingAnchor.constraint(
+            equalTo: leadingAnchor,
+            constant: 16
+        ).isActive = true
+        closeButton.topAnchor.constraint(
+            equalTo: topAnchor,
+            constant: 16
+        ).isActive = true
     }
 
     @objc func closeButtonTapped() {

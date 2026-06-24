@@ -23,14 +23,16 @@ class MuunInput: NSObject {
     let _incomingSwap: InputIncomingSwap?
     let _muunPublicNonce: Data?
 
-    init(prevOut: MuunOutput,
-         address: MuunAddress,
-         userSignature: Signature?,
-         muunSignature: Signature?,
-         submarineSwapV1: InputSubmarineSwapV1?,
-         submarineSwapV2: InputSubmarineSwapV2?,
-         incomingSwap: InputIncomingSwap?,
-         muunPublicNonce: Data?) {
+    init(
+        prevOut: MuunOutput,
+        address: MuunAddress,
+        userSignature: Signature?,
+        muunSignature: Signature?,
+        submarineSwapV1: InputSubmarineSwapV1?,
+        submarineSwapV2: InputSubmarineSwapV2?,
+        incomingSwap: InputIncomingSwap?,
+        muunPublicNonce: Data?
+    ) {
         self._prevOut = prevOut
         self._address = address
         self._userSignature = userSignature
@@ -96,8 +98,14 @@ class InputSubmarineSwapV2: NSObject {
     let _blocksForExpiration: Int64
     let _serverSignature: Data?
 
-    init(paymentHash256: Data, userPublicKey: Data, muunPublicKey: Data,
-         serverPublicKey: Data, blocksForExpiration: Int64, serverSignature: Data?) {
+    init(
+        paymentHash256: Data,
+        userPublicKey: Data,
+        muunPublicKey: Data,
+        serverPublicKey: Data,
+        blocksForExpiration: Int64,
+        serverSignature: Data?
+    ) {
         self._swapPaymentHash256 = paymentHash256
         self._userPublicKey = userPublicKey
         self._muunPublicKey = muunPublicKey
@@ -119,14 +127,16 @@ class InputIncomingSwap: NSObject {
     let _preimage: Data?
     let _htlcOutputKeyPath: String
 
-    init(sphinx: Data,
-         htlcTx: Data,
-         paymentHash256: Data,
-         swapServerPublicKey: Data,
-         expirationHeight: Int64,
-         collect: Satoshis,
-         preimage: Data?,
-         htlcOutputKeyPath: String) {
+    init(
+        sphinx: Data,
+        htlcTx: Data,
+        paymentHash256: Data,
+        swapServerPublicKey: Data,
+        expirationHeight: Int64,
+        collect: Satoshis,
+        preimage: Data?,
+        htlcOutputKeyPath: String
+    ) {
         self._sphinx = sphinx
         self._htlcTx = htlcTx
         self._paymentHash256 = paymentHash256

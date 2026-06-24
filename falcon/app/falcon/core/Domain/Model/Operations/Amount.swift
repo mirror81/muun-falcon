@@ -8,14 +8,18 @@
 
 import Foundation
 
-
-/// An absolute value represented in satoshis, currency selected by user (inputCurrency) and currency selected by default (primaryCurrency)
+/// An absolute value represented in satoshis, currency selected by user (inputCurrency) and
+/// currency selected by default (primaryCurrency)
 public struct BitcoinAmount {
     public let inSatoshis: Satoshis
     public let inInputCurrency: MonetaryAmount
     public let inPrimaryCurrency: MonetaryAmount
-    
-    public init(inSatoshis: Satoshis, inInputCurrency: MonetaryAmount, inPrimaryCurrency: MonetaryAmount) {
+
+    public init(
+        inSatoshis: Satoshis,
+        inInputCurrency: MonetaryAmount,
+        inPrimaryCurrency: MonetaryAmount
+    ) {
         self.inSatoshis = inSatoshis
         self.inInputCurrency = inInputCurrency
         self.inPrimaryCurrency = inPrimaryCurrency
@@ -36,9 +40,11 @@ extension BitcoinAmount: Comparable {
 
 extension BitcoinAmount {
 
-    public static func from(inputCurrency inInputCurrency: MonetaryAmount,
-                            with window: ExchangeRateWindow,
-                            primaryCurrency: String) -> BitcoinAmount {
+    public static func from(
+        inputCurrency inInputCurrency: MonetaryAmount,
+        with window: ExchangeRateWindow,
+        primaryCurrency: String
+    ) -> BitcoinAmount {
 
         func rate(for currency: String) -> Decimal {
             do {
@@ -51,9 +57,11 @@ extension BitcoinAmount {
         return from(inputCurrency: inInputCurrency, rate: rate, primaryCurrency: primaryCurrency)
     }
 
-    public static func from(inputCurrency inInputCurrency: MonetaryAmount,
-                            rate: (String) -> Decimal,
-                            primaryCurrency: String) -> BitcoinAmount {
+    public static func from(
+        inputCurrency inInputCurrency: MonetaryAmount,
+        rate: (String) -> Decimal,
+        primaryCurrency: String
+    ) -> BitcoinAmount {
 
         let rateForInput = rate(inInputCurrency.currency)
         let satoshis = Satoshis.from(amount: inInputCurrency.amount, at: rateForInput)
@@ -62,18 +70,24 @@ extension BitcoinAmount {
         if inInputCurrency.currency == primaryCurrency {
             inPrimaryCurrency = inInputCurrency
         } else {
-            inPrimaryCurrency = satoshis.valuation(at: rate(primaryCurrency),
-                                                   currency: primaryCurrency)
+            inPrimaryCurrency = satoshis.valuation(
+                at: rate(primaryCurrency),
+                currency: primaryCurrency
+            )
         }
 
-        return BitcoinAmount(inSatoshis: satoshis,
-                             inInputCurrency: inInputCurrency,
-                             inPrimaryCurrency: inPrimaryCurrency)
+        return BitcoinAmount(
+            inSatoshis: satoshis,
+            inInputCurrency: inInputCurrency,
+            inPrimaryCurrency: inPrimaryCurrency
+        )
     }
 
-    public static func from(satoshis: Satoshis,
-                            with window: ExchangeRateWindow,
-                            mirroring mirror: BitcoinAmount) -> BitcoinAmount {
+    public static func from(
+        satoshis: Satoshis,
+        with window: ExchangeRateWindow,
+        mirroring mirror: BitcoinAmount
+    ) -> BitcoinAmount {
 
         func valuation(for currency: String) -> MonetaryAmount {
             do {
@@ -84,9 +98,11 @@ extension BitcoinAmount {
             }
         }
 
-        return BitcoinAmount(inSatoshis: satoshis,
-                             inInputCurrency: valuation(for: mirror.inInputCurrency.currency),
-                             inPrimaryCurrency: valuation(for: mirror.inPrimaryCurrency.currency))
+        return BitcoinAmount(
+            inSatoshis: satoshis,
+            inInputCurrency: valuation(for: mirror.inInputCurrency.currency),
+            inPrimaryCurrency: valuation(for: mirror.inPrimaryCurrency.currency)
+        )
     }
 
 }
@@ -118,18 +134,29 @@ extension Satoshis {
     }
 
     public func valuation(at exchangeRate: Decimal, currency: String) -> MonetaryAmount {
-        return MonetaryAmount(amount: toBTCDecimal() * exchangeRate,
-                              currency: currency)
+        return MonetaryAmount(
+            amount: toBTCDecimal() * exchangeRate,
+            currency: currency
+        )
     }
 
-    // This method creates a bitcoin amount model from a Satoshis model with a reference BitcoinAmount model
-    // It uses the reference to apply a rule of three and calculates how much $ are worth those sats in the primary
-    // currency of the reference.
+    // This method creates a bitcoin amount model from a Satoshis model
+    // with a reference BitcoinAmount model.
+    // It uses the reference to apply a rule of three and calculates how much $ are worth those sats
+    // in the primary currency of the reference.
     // This method should only be used for display purposes.
     public func toBitcoinAmount(reference: BitcoinAmount) -> BitcoinAmount {
-        let amountInPrimary = self.asDecimal() * reference.inPrimaryCurrency.amount / reference.inSatoshis.asDecimal()
-        let inPrimary = MonetaryAmount(amount: amountInPrimary, currency: reference.inPrimaryCurrency.currency)
-        return BitcoinAmount(inSatoshis: self, inInputCurrency: toBTC(), inPrimaryCurrency: inPrimary)
+        let amountInPrimary = self.asDecimal() * reference.inPrimaryCurrency.amount
+            / reference.inSatoshis.asDecimal()
+        let inPrimary = MonetaryAmount(
+            amount: amountInPrimary,
+            currency: reference.inPrimaryCurrency.currency
+        )
+        return BitcoinAmount(
+            inSatoshis: self,
+            inInputCurrency: toBTC(),
+            inPrimaryCurrency: inPrimary
+        )
     }
 
     public static func bounded(amount: Decimal, at rate: Decimal) throws -> Satoshis {
@@ -141,7 +168,8 @@ extension Satoshis {
         }
 
         // We HAVE to round before converting, otherwise some strange things happen
-        // Rounding down makes sense for satoshi amounts: 1 satoshi is too small a number to complain about
+        // Rounding down makes sense for satoshi amounts: 1 satoshi is too small a number to
+        // complain about
         let rounded = decimalValue.round(scale: 0, roundingMode: .bankers)
 
         return Satoshis(value: NSDecimalNumber(decimal: rounded).int64Value)
@@ -152,7 +180,8 @@ extension Satoshis {
         let decimalValue = (amount / rate).multiplyByPowerOf10(power: Satoshis.magnitude)
 
         // We HAVE to round before converting, otherwise some strange things happen
-        // Rounding down makes sense for satoshi amounts: 1 satoshi is too small a number to complain about
+        // Rounding down makes sense for satoshi amounts: 1 satoshi is too small a number to
+        // complain about
         let rounded = decimalValue.round(scale: 0, roundingMode: .bankers)
 
         return Satoshis(value: NSDecimalNumber(decimal: rounded).int64Value)
@@ -181,7 +210,10 @@ extension Satoshis {
 
     public static func calculateFee(feePerVByte: Decimal, sizeInVBytes: Int64) -> Satoshis {
         let decimalSize = Decimal(sizeInVBytes)
-        let decimalSatoshis = (feePerVByte * decimalSize).round(scale: 0, roundingMode: .up) as NSDecimalNumber
+        let decimalSatoshis = (feePerVByte * decimalSize).round(
+            scale: 0,
+            roundingMode: .up
+        ) as NSDecimalNumber
 
         return Satoshis(value: decimalSatoshis.int64Value)
     }
@@ -229,8 +261,10 @@ public struct FeeRate: Codable, Equatable {
     public func calculateFee(sizeInWeightUnit: Int64) -> Satoshis {
         // WeightUnit divided by 4 gives us the size in vBytes
         let decimalSizeInVirtualBytes = Decimal(sizeInWeightUnit) / 4
-        let decimalSatoshis = (satsPerVByte * decimalSizeInVirtualBytes).round(scale: 0, roundingMode: .up)
-            as NSDecimalNumber
+        let decimalSatoshis = (satsPerVByte * decimalSizeInVirtualBytes).round(
+            scale: 0,
+            roundingMode: .up
+        ) as NSDecimalNumber
 
         return Satoshis(value: decimalSatoshis.int64Value)
     }
@@ -243,4 +277,13 @@ public struct FeeRate: Codable, Equatable {
         return rounded().stringValue()
     }
 
+}
+
+extension Satoshis.Errors: ClassifiedError {
+    var classification: ErrorClassification {
+        switch self {
+        case .amountNotRepresentable:
+            return .unexpected
+        }
+    }
 }

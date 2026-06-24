@@ -26,51 +26,60 @@ public extension DependencyContainer {
             container.register(.singleton, factory: RequestChallengeAction.init)
             container.register(.singleton, factory: SetUpPasswordAction.init)
             container.register(.singleton) {
-                SessionActions(repository: $0,
-                               userRepository: $1,
-                               keysRepository: $2,
-                               exchangeRateWindowRepository: $3,
-                               secureStorage: $4,
-                               preferences: $5,
-                               updateUserPreferences: try container.resolve(),
-                               userPreferencesSelector: try container.resolve())
+                SessionActions(
+                    repository: $0,
+                    userRepository: $1,
+                    keysRepository: $2,
+                    exchangeRateWindowRepository: $3,
+                    secureStorage: $4,
+                    preferences: $5,
+                    updateUserPreferences: try container.resolve(),
+                    userPreferencesSelector: try container.resolve()
+                )
             }
             container.register(.singleton, factory: AddressActions.init)
             container.register(.singleton) {
-                OperationActions(operationRepository: $0,
-                                 houstonService: $1,
-                                 nextTransactionSizeRepository: $2,
-                                 feeWindowRepository: $3,
-                                 keysRepository: $4,
-                                 verifyFulfillable: $5,
-                                 notificationScheduler: try container.resolve(),
-                                 feeBumpFunctionsProvider: $6)
+                OperationActions(
+                    operationRepository: $0,
+                    houstonService: $1,
+                    nextTransactionSizeRepository: $2,
+                    feeWindowRepository: $3,
+                    keysRepository: $4,
+                    verifyFulfillable: $5,
+                    notificationScheduler: try container.resolve(),
+                    feeBumpFunctionsProvider: $6
+                )
             }
             container.register(.singleton, factory: BalanceActions.init)
             container.register(.singleton, factory: CurrencyActions.init)
             container.register(.singleton) {
-                RealTimeDataAction(houstonService: $0,
-                                   feeWindowRepository: $1,
-                                   exchangeRateWindowRepository: $2,
-                                   blockchainHeightRepository: $3,
-                                   forwardingPoliciesRepository: $4,
-                                   minFeeRateRepository: $5,
-                                   featureFlagsRepository: try container.resolve(),
-                                   userRepository: try container.resolve())
+                RealTimeDataAction(
+                    houstonService: $0,
+                    feeWindowRepository: $1,
+                    exchangeRateWindowRepository: $2,
+                    blockchainHeightRepository: $3,
+                    forwardingPoliciesRepository: $4,
+                    minFeeRateRepository: $5,
+                    featureFlagsRepository: try container.resolve(),
+                    userRepository: try container.resolve()
+                )
             }
             container.register(.singleton, factory: PreloadFeeDataAction.init)
             container.register(.singleton) {
                 let notificationProcessor: NotificationProcessor = try container.resolve()
                 let observable = notificationProcessor.processingObservable
-                return FeeDataSyncer(preloadFeeDataAction: $0,
-                                     nextTransactionRepository: $1,
-                                     ntsChangesObservable: observable,
-                                     featureFlagsSelector: $2)
+                return FeeDataSyncer(
+                    preloadFeeDataAction: $0,
+                    nextTransactionRepository: $1,
+                    ntsChangesObservable: observable,
+                    featureFlagsSelector: $2
+                )
             }
             container.register(.singleton, factory: FCMTokenAction.init)
             container.register(.singleton, factory: SyncExternalAddresses.init)
             container.register(.singleton, factory: FeeCalculatorAction.init)
             container.register(.singleton, factory: LogoutAction.init)
+            container.register(.singleton, factory: BuildDebugDataEmailReportAction.init)
             container.register(.singleton, factory: SetupChallengeAction.init)
             container.register(.singleton, factory: StartRecoverCodeSetupAction.init)
             container.register(.singleton, factory: FinishRecoverCodeSetupAction.init)
@@ -106,6 +115,10 @@ public extension DependencyContainer {
             container.register(.singleton, factory: VerifyFulfillableAction.init)
             container.register(.singleton, factory: LNURLWithdrawAction.init)
             container.register(.singleton, factory: GetSecurityCardsMarketplaceAction.init)
+            container.register(.singleton) {
+                DefaultCardPriceFormatter(exchangeRateRepository: $0) as CardPriceFormatter
+            }
+            container.register(.singleton, factory: GetSecurityCardCountryAction.init)
 
             container.register(.singleton, factory: UserSelector.init)
             container.register(.singleton, factory: EmergencyKitDataSelector.init)
@@ -125,43 +138,50 @@ public extension DependencyContainer {
             }
             container.register {
                 BackgroundExecutionMetricsProvider(
-                    metricsProvider: try container.resolve())
+                    metricsProvider: try container.resolve()
+                )
             }
             container.register {
-                MetricsProvider(localeTimeZoneProvider: try container.resolve(),
+                MetricsProvider(
+                    localeTimeZoneProvider: try container.resolve(),
                     storeKitCapabilitiesProvider: try container.resolve(),
                     conectivityCapabilitiesProvider: try container.resolve(),
                     hardwareCapabilitiesProvider: try container.resolve(),
                     processInfoProvider: try container.resolve(),
                     reachabilityProvider: try container.resolve(),
                     deviceCheckDataProvider: try container.resolve(),
-                    appInfoProvider: try container.resolve())
+                    appInfoProvider: try container.resolve()
+                )
             }
             container.register(.singleton, factory: ApiMigrationsManager.init)
 
             container.register(factory: TimeTracker.init)
 
             container.register(.singleton) {
-                SyncAction(houstonService: $0,
-                           addressActions: $1,
-                           operationActions: $2,
-                           userRepository: $3,
-                           realTimeDataAction: $4,
-                           nextTransactionSizeRepository: $5,
-                           fetchNotificationsAction: try container.resolve(),
-                           createFirstSessionAction: try container.resolve(),
-                           refreshInvoices: try container.resolve(),
-                           apiMigrationsManager: try container.resolve(),
-                           userPreferencesRepository: try container.resolve())
+                SyncAction(
+                    houstonService: $0,
+                    addressActions: $1,
+                    operationActions: $2,
+                    userRepository: $3,
+                    realTimeDataAction: $4,
+                    nextTransactionSizeRepository: $5,
+                    fetchNotificationsAction: try container.resolve(),
+                    createFirstSessionAction: try container.resolve(),
+                    refreshInvoices: try container.resolve(),
+                    apiMigrationsManager: try container.resolve(),
+                    userPreferencesRepository: try container.resolve()
+                )
             }
 
             container.register(.singleton, factory: ClientSelector.init)
 
             container.register(.singleton) {
-                ApiReachabilityClient(sessionActions: $0,
-                                      featureFlagsRepository: $1,
-                                      reachabilityStatusRepository: $2,
-                                      pingService: $3) as ReachabilityService
+                ApiReachabilityClient(
+                    sessionActions: $0,
+                    featureFlagsRepository: $1,
+                    reachabilityStatusRepository: $2,
+                    pingService: $3
+                ) as ReachabilityService
             }.resolvingProperties { container, client in
                 // swiftlint:disable force_cast
                 (client as! ApiReachabilityClient).houstonService = try container.resolve()
@@ -174,11 +194,14 @@ public extension DependencyContainer {
                     UserAccountManagementGroup.init(createVerifiedRcV1Executable: $0),
                     AppSyncingGroup.init(realTimeData: $1),
                     AddressGenerationGroup(),
-                    WalletFundingGroup.init(addressActions: $2,
-                                            createInvoice: $3,
-                                            userPreferencesSelector: $4),
+                    WalletFundingGroup.init(
+                        addressActions: $2,
+                        createInvoice: $3,
+                        userPreferencesSelector: $4
+                    ),
                     NodeHandlingGroup(),
-                    NfcCardGroup()] as [DebugExecutablesGroup]
+                    NfcCardGroup()
+                ] as [DebugExecutablesGroup]
             }
         }
     }

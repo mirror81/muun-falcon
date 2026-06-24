@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 protocol TransactionListViewDelegate: AnyObject {
     func didTapLoadWallet()
     func didTapOperation(_ operation: Operation)
@@ -146,7 +145,11 @@ extension TransactionListView: UITableViewDelegate {
         }
     }
 
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    func tableView(
+        _ tableView: UITableView,
+        willDisplay cell: UITableViewCell,
+        forRowAt indexPath: IndexPath
+    ) {
         if operations.count - indexPath.row < 10 {
             loadMore()
         }

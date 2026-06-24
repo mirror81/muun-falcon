@@ -22,7 +22,7 @@ target 'Muun' do
   pod 'GoogleAPIClientForREST/Drive', '3.5.1'
   pod 'SwiftLint', '0.50.1' # Keep in mind you will need to modify swiftlint.yml
   pod 'SwiftGen', '~> 6.0'
-  
+
   # core
   pod 'Dip', '7.0.1'
   pod 'GRDB.swift', '4.14.0'

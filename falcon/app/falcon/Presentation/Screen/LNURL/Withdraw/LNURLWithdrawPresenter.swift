@@ -29,13 +29,15 @@ class LNURLWithdrawPresenter<Delegate: LNURLWithdrawPresenterDelegate>: BasePres
 
     private var error: MuunError?
 
-    init(delegate: Delegate,
-         state: String,
-         sessionActions: SessionActions,
-         lnurlWithdrawAction: LNURLWithdrawAction,
-         notificationScheduler: NotificationScheduler,
-         fetchNotificationsAction: FetchNotificationsAction,
-         errorReporter: ErrorReporter) {
+    init(
+        delegate: Delegate,
+        state: String,
+        sessionActions: SessionActions,
+        lnurlWithdrawAction: LNURLWithdrawAction,
+        notificationScheduler: NotificationScheduler,
+        fetchNotificationsAction: FetchNotificationsAction,
+        errorReporter: ErrorReporter
+    ) {
         self.sessionActions = sessionActions
         self.lnurlWithdrawAction = lnurlWithdrawAction
         self.notificationScheduler = notificationScheduler
@@ -241,25 +243,28 @@ struct LNURLWithdrawErrorViewModel: ErrorViewModel {
     func analyticsEvent() -> AnalyticsEvent {
         switch error {
         case .invalidCode:
-            return ErrorEvent(type: .lnurlInvalidCode)
+            return ErrorEvent(type: .lnurlInvalidCode, error: wrappedError)
         case .unresponsive:
-            return ErrorEvent(type: .lnurlUnresponsive)
+            return ErrorEvent(type: .lnurlUnresponsive, error: wrappedError)
         case .wrongTag:
-            return ErrorEvent(type: .lnurlInvalidTag) // previously lnurl_wrong_tag
+            return ErrorEvent(
+                type: .lnurlInvalidTag,
+                error: wrappedError
+            ) // previously lnurl_wrong_tag
         case .requestExpired:
-            return ErrorEvent(type: .lnurlRequestExpired)
+            return ErrorEvent(type: .lnurlRequestExpired, error: wrappedError)
         case .noAvailableBalance:
-            return ErrorEvent(type: .lnurlNoBalance)
+            return ErrorEvent(type: .lnurlNoBalance, error: wrappedError)
         case .noRoute:
-            return ErrorEvent(type: .lnurlNoRoute)
+            return ErrorEvent(type: .lnurlNoRoute, error: wrappedError)
         case .unknown:
-            return ErrorEvent(type: .lnurlUnknownError)
+            return ErrorEvent(type: .lnurlUnknownError, error: wrappedError)
         case .expiredInvoice:
-            return ErrorEvent(type: .lnurlExpiredInvoice)
+            return ErrorEvent(type: .lnurlExpiredInvoice, error: wrappedError)
         case .countryNotSupported:
-            return ErrorEvent(type: .lnurlCountryNotSupported)
+            return ErrorEvent(type: .lnurlCountryNotSupported, error: wrappedError)
         case .alreadyUsed:
-            return ErrorEvent(type: .lnurlAlreadyUsed)
+            return ErrorEvent(type: .lnurlAlreadyUsed, error: wrappedError)
         }
     }
 

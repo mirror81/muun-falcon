@@ -6,8 +6,6 @@
 //  Copyright © 2019 muun. All rights reserved.
 //
 
-
-
 protocol ManuallyEnterFeePresenterDelegate: BasePresenterDelegate {
     func insufficientFunds()
     func feeIsTooHigh(maxFee: FeeRate)
@@ -17,7 +15,8 @@ protocol ManuallyEnterFeePresenterDelegate: BasePresenterDelegate {
     func noWarnings()
 }
 
-class ManuallyEnterFeePresenter<Delegate: ManuallyEnterFeePresenterDelegate>: FeeEditorPresenter<Delegate> {
+class ManuallyEnterFeePresenter<Delegate: ManuallyEnterFeePresenterDelegate>:
+    FeeEditorPresenter<Delegate> {
 
     func checkWarnings(_ fee: FeeState) {
         let feeRate: FeeRate

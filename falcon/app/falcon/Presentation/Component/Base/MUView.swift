@@ -83,11 +83,17 @@ extension MUView: BasePresenterDelegate {
         }
     }
 
-    func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)?) {
+    func present(
+        _ viewControllerToPresent: UIViewController,
+        animated flag: Bool,
+        completion: (() -> Void)?
+    ) {
         if let currentVc = self.parentViewController {
-            currentVc.navigationController?.present(viewControllerToPresent,
-                                                    animated: flag,
-                                                    completion: completion)
+            currentVc.navigationController?.present(
+                viewControllerToPresent,
+                animated: flag,
+                completion: completion
+            )
         }
     }
 

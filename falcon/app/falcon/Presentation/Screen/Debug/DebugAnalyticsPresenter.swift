@@ -6,8 +6,6 @@
 //  Copyright © 2024 muun. All rights reserved.
 //
 
-
-
 protocol DebugAnalyticsPresenterDelegate: BasePresenterDelegate,
                                          MUViewController {
 }
@@ -17,8 +15,10 @@ class DebugAnalyticsPresenter<Delegate: DebugAnalyticsPresenterDelegate>: BasePr
 
     private let analyticsEvents: [DebugAnalyticsEvent]
 
-    init(delegate: Delegate,
-         debugRequestsRepository: DebugAnalyticsRepository) {
+    init(
+        delegate: Delegate,
+        debugRequestsRepository: DebugAnalyticsRepository
+    ) {
         analyticsEvents = debugRequestsRepository.getAll()
 
         super.init(delegate: delegate)

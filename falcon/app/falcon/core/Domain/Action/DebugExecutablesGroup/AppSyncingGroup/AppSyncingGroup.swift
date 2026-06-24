@@ -12,9 +12,13 @@ class AppSyncingGroup: BaseDebugExecutablesGroup {
         let showRequests = ShowRequestsDebugExecutable()
         let showAnalytics = ShowAnalyticsDebugExecutable()
 
-        super.init(category: "App syncing",
-                   executables: [syncRealTimeData,
-                                 showRequests,
-                                 showAnalytics])
+        super.init(
+            category: "App syncing",
+            executables: [
+                syncRealTimeData,
+                showRequests,
+                showAnalytics
+            ]
+        )
     }
 }

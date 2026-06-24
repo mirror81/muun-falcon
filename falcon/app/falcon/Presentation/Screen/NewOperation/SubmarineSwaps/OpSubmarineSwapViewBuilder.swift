@@ -33,11 +33,13 @@ class OpSubmarineSwapViewBuilder: OpViewBuilder {
     private var params: [String: Any] = [:]
     private var swapUuid: String?
 
-    init(transitionDelegate: Transitions,
-         newOpViewDelegate: NewOpViewDelegate,
-         filledDataDelegate: NewOperationView.FilledDataDelegate,
-         amountDelegate: AmountDelegate?,
-         origin: Constant.NewOpAnalytics.Origin) {
+    init(
+        transitionDelegate: Transitions,
+        newOpViewDelegate: NewOpViewDelegate,
+        filledDataDelegate: NewOperationView.FilledDataDelegate,
+        amountDelegate: AmountDelegate?,
+        origin: Constant.NewOpAnalytics.Origin
+    ) {
         self.transitionDelegate = transitionDelegate
         self.newOpViewDelegate = newOpViewDelegate
         self.filledDataDelegate = filledDataDelegate
@@ -49,24 +51,32 @@ class OpSubmarineSwapViewBuilder: OpViewBuilder {
         switch state {
 
         case .loading(let data):
-            return .view(NewOpLoadingView(paymentIntent: data.type,
-                                          delegate: transitionDelegate,
-                                          origin: origin),
-                         filledData: [])
+            return .view(
+                NewOpLoadingView(
+                    paymentIntent: data.type,
+                    delegate: transitionDelegate,
+                    origin: origin
+                ),
+                filledData: []
+            )
 
         case .amount(let data):
-            let view = NewOpAmountView(data: data,
-                                       delegate: newOpViewDelegate,
-                                       transitionsDelegate: transitionDelegate)
+            let view = NewOpAmountView(
+                data: data,
+                delegate: newOpViewDelegate,
+                transitionsDelegate: transitionDelegate
+            )
 
             return .view(view, filledData: [
                 buildDestination(type: data.type)
             ])
 
         case .description(let data):
-            let descriptionView = NewOpDescriptionView(data: data,
-                                                       delegate: newOpViewDelegate,
-                                                       transitionsDelegate: transitionDelegate)
+            let descriptionView = NewOpDescriptionView(
+                data: data,
+                delegate: newOpViewDelegate,
+                transitionsDelegate: transitionDelegate
+            )
             return .view(descriptionView, filledData: [
                 buildDestination(type: data.type),
                 buildAmountView(data.amount)
@@ -75,9 +85,11 @@ class OpSubmarineSwapViewBuilder: OpViewBuilder {
         case .confirmation(let data):
             addAnalyticsParams(data: data)
 
-            let view = NewOpConfirmView(feeState: data.feeState,
-                                        delegate: newOpViewDelegate,
-                                        transitionDelegate: transitionDelegate)
+            let view = NewOpConfirmView(
+                feeState: data.feeState,
+                delegate: newOpViewDelegate,
+                transitionDelegate: transitionDelegate
+            )
             view.validityCheck()
 
             var filledData = [
@@ -162,12 +174,15 @@ class OpSubmarineSwapViewBuilder: OpViewBuilder {
 
         let pubKey = submarineSwap.receiver!.publicKey
         let moreInfo = BottomDrawerInfo.swapDestination(
-            pubKey: pubKey, destinationInfo: destinationInfo(type: type))
+            pubKey: pubKey, destinationInfo: destinationInfo(type: type)
+        )
 
-        return NewOpDestinationFilledDataView(type: type,
-                                              delegate: filledDataDelegate,
-                                              confirm: confirm,
-                                              moreInfo: moreInfo)
+        return NewOpDestinationFilledDataView(
+            type: type,
+            delegate: filledDataDelegate,
+            confirm: confirm,
+            moreInfo: moreInfo
+        )
     }
 
     private func destinationInfo(type: PaymentRequestType) -> NSAttributedString {
@@ -201,7 +216,10 @@ class OpSubmarineSwapViewBuilder: OpViewBuilder {
         return attrDesc
     }
 
-    private func buildAmountView(_ amount: BitcoinAmountWithSelectedCurrency, confirm: Bool = false) -> MUView {
+    private func buildAmountView(
+        _ amount: BitcoinAmountWithSelectedCurrency,
+        confirm: Bool = false
+    ) -> MUView {
         let filledAmount = NewOpFilledAmount(type: .amount, amountWithCurrency: amount)
         let view = NewOpAmountFilledDataView(filledData: filledAmount, delegate: amountDelegate)
         if !confirm {
@@ -216,18 +234,27 @@ class OpSubmarineSwapViewBuilder: OpViewBuilder {
             Logger.fatal("expected fee to be final for lightning payments")
         }
         let selectedCurrency = confirmState.amount.selectedCurrency
-        let amountWithCurrency = BitcoinAmountWithSelectedCurrency(bitcoinAmount: fee,
-                                                                   selectedCurrency: selectedCurrency)
-        let lightningFeeFilled = NewOpFilledAmount(type: .lightningFee, amountWithCurrency: amountWithCurrency)
+        let amountWithCurrency = BitcoinAmountWithSelectedCurrency(
+            bitcoinAmount: fee,
+            selectedCurrency: selectedCurrency
+        )
+        let lightningFeeFilled = NewOpFilledAmount(
+            type: .lightningFee,
+            amountWithCurrency: amountWithCurrency
+        )
         return NewOpAmountFilledDataView(filledData: lightningFeeFilled, delegate: amountDelegate)
     }
 
     private func buildTotalView(_ confirmState: NewOpData.Confirm) -> MUView {
         let selectedCurrency = confirmState.amount.selectedCurrency
-        let bitcoinAmountWithCurrency = BitcoinAmountWithSelectedCurrency(bitcoinAmount: confirmState.total,
-                                                                          selectedCurrency: selectedCurrency)
-        let totalFilled = NewOpFilledAmount(type: .total,
-                                            amountWithCurrency: bitcoinAmountWithCurrency)
+        let bitcoinAmountWithCurrency = BitcoinAmountWithSelectedCurrency(
+            bitcoinAmount: confirmState.total,
+            selectedCurrency: selectedCurrency
+        )
+        let totalFilled = NewOpFilledAmount(
+            type: .total,
+            amountWithCurrency: bitcoinAmountWithCurrency
+        )
         let totalView = NewOpAmountFilledDataView(filledData: totalFilled, delegate: amountDelegate)
 
         totalView.showSeparator()

@@ -12,7 +12,16 @@ public struct FeeBumpInfo: Equatable {
     let uuid: String
     let amountInSat: Satoshis
     let refreshPolicy: String
+    // Derived from time.Since(CreatedAt) in libwallet, so it changes on every materialization
+    // of the same underlying fee bump set. Excluded from equality to keep FeeState comparisons
+    // stable across re-computations.
     let secondsSinceLastUpdate: Int64
+
+    public static func == (lhs: FeeBumpInfo, rhs: FeeBumpInfo) -> Bool {
+        return lhs.uuid == rhs.uuid
+            && lhs.amountInSat == rhs.amountInSat
+            && lhs.refreshPolicy == rhs.refreshPolicy
+    }
 }
 
 enum FeeState: Equatable {
@@ -41,8 +50,10 @@ enum FeeState: Equatable {
 
     static func == (lhs: FeeState, rhs: FeeState) -> Bool {
         switch (lhs, rhs) {
-        case (.finalFee(let lhsFee, let lhsRate, let lhsFeeBumpInfo),
-            .finalFee(let rhsFee, let rhsRate, let rhsFeeBumpInfo)):
+        case (
+            .finalFee(let lhsFee, let lhsRate, let lhsFeeBumpInfo),
+            .finalFee(let rhsFee, let rhsRate, let rhsFeeBumpInfo)
+        ):
             return lhsFee.inSatoshis == rhsFee.inSatoshis &&
                     lhsRate == rhsRate &&
                     lhsFeeBumpInfo == rhsFeeBumpInfo

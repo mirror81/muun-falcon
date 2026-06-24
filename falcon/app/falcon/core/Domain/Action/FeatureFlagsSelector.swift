@@ -64,7 +64,7 @@ public class FeatureFlagsSelector: AsyncAction<[FeatureFlags]> {
 // until we implement a more generic libwallet-side storage mechanism.
 // Even though the method is named `isBackendFlagEnabled`, it intentionally
 // takes local overrides into account.
-extension FeatureFlagsSelector : App_provided_dataBackendActivatedFeatureStatusProviderProtocol {
+extension FeatureFlagsSelector: App_provided_dataBackendActivatedFeatureStatusProviderProtocol {
     public func isBackendFlagEnabled(_ flag: String?) -> Bool {
         guard let flagName = flag, let flag = FeatureFlags(rawValue: flagName) else {
             Logger.log(.err, "Tried to read null or invalid feature flag from libwallet.")

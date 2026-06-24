@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 enum Constant {
 
     enum Dimens {

@@ -23,10 +23,12 @@ extension BottomDrawerInfo {
             description = L10n.Recover.s4.attributedForDescription()
         }
 
-        return MoreInfo(title: L10n.Recover.s1,
-                        description: description,
-                        type: .whatIsTheRecoveryCode,
-                        action: nil)
+        return MoreInfo(
+            title: L10n.Recover.s1,
+            description: description,
+            type: .whatIsTheRecoveryCode,
+            action: nil
+        )
     }
 
     static func forgottenPassword(rcSetupDate: Date?) -> MoreInfo {
@@ -38,10 +40,12 @@ extension BottomDrawerInfo {
             description = L10n.Recover.s6
         }
 
-        return MoreInfo(title: L10n.Recover.s2,
-                        description: description.attributedForDescription(),
-                        type: .forgotPassword,
-                        action: nil)
+        return MoreInfo(
+            title: L10n.Recover.s2,
+            description: description.attributedForDescription(),
+            type: .forgotPassword,
+            action: nil
+        )
     }
 
 }

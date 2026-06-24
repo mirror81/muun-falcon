@@ -8,13 +8,14 @@
 
 import Foundation
 
-
 class FundWalletOffchainDebugExecutable: DebugExecutable {
     private var createInvoice: CreateInvoiceAction
     private var userPreferencesSelector: UserPreferencesSelector
 
-    init(createInvoice: CreateInvoiceAction,
-         userPreferencesSelector: UserPreferencesSelector) {
+    init(
+        createInvoice: CreateInvoiceAction,
+        userPreferencesSelector: UserPreferencesSelector
+    ) {
         self.createInvoice = createInvoice
         self.userPreferencesSelector = userPreferencesSelector
     }
@@ -30,9 +31,11 @@ class FundWalletOffchainDebugExecutable: DebugExecutable {
             .toBlocking()
             .single()
 
-        TestLapp.payWithLapp(invoice: invoice,
-                             amountInSats: 11000,
-                             turboChannelsEnabled: preferences!.receiveStrictMode) {
+        TestLapp.payWithLapp(
+            invoice: invoice,
+            amountInSats: 11000,
+            turboChannelsEnabled: preferences!.receiveStrictMode
+        ) {
             completion()
         }
     }

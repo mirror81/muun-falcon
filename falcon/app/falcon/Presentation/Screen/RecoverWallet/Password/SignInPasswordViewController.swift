@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class SignInPasswordViewController: MUViewController {
 
     @IBOutlet private weak var titleAndDescriptionView: TitleAndDescriptionView!
@@ -67,7 +66,12 @@ class SignInPasswordViewController: MUViewController {
         title = L10n.SignInPasswordViewController.s1
 
         let backImage = Constant.Images.back
-        let newBackButton = UIBarButtonItem(image: backImage, style: .plain, target: self, action: .backButtonTouched)
+        let newBackButton = UIBarButtonItem(
+            image: backImage,
+            style: .plain,
+            target: self,
+            action: .backButtonTouched
+        )
         navigationItem.leftBarButtonItem = newBackButton
     }
 
@@ -117,17 +121,29 @@ class SignInPasswordViewController: MUViewController {
     }
 
     @objc func presentAlertView() {
-        let alert = UIAlertController(title: L10n.SignInPasswordViewController.s8,
-                                      message: L10n.SignInPasswordViewController.s9,
-                                      preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: L10n.SignInPasswordViewController.s10, style: .default, handler: { _ in
-            alert.dismiss(animated: true)
-        }))
+        let alert = UIAlertController(
+            title: L10n.SignInPasswordViewController.s8,
+            message: L10n.SignInPasswordViewController.s9,
+            preferredStyle: .alert
+        )
+        let dismissAction = UIAlertAction(
+            title: L10n.SignInPasswordViewController.s10,
+            style: .default,
+            handler: { _ in
+                alert.dismiss(animated: true)
+            }
+        )
+        alert.addAction(dismissAction)
 
-        alert.addAction(UIAlertAction(title: L10n.SignInPasswordViewController.s11, style: .destructive, handler: { _ in
-            self.logEvent("sign_in_aborted")
-            self.navigationController!.popToRootViewController(animated: true)
-        }))
+        let abortAction = UIAlertAction(
+            title: L10n.SignInPasswordViewController.s11,
+            style: .destructive,
+            handler: { _ in
+                self.logEvent("sign_in_aborted")
+                self.navigationController!.popToRootViewController(animated: true)
+            }
+        )
+        alert.addAction(abortAction)
 
         alert.view.tintColor = Asset.Colors.muunGrayDark.color
 
@@ -183,9 +199,13 @@ extension SignInPasswordViewController: LinkButtonViewDelegate {
     func linkButton(didPress linkButton: LinkButtonView) {
         if sessionOk.canUseRecoveryCode {
             view.endEditing(true)
-            navigationController!.pushViewController(SignInEmailAndRCViewController(sessionOk), animated: true)
+            navigationController!.pushViewController(
+                SignInEmailAndRCViewController(sessionOk),
+                animated: true
+            )
         } else {
-            let moreInfo = BottomDrawerInfo.forgottenPassword(rcSetupDate: sessionOk.passwordSetupDate)
+            let moreInfo = BottomDrawerInfo
+                .forgottenPassword(rcSetupDate: sessionOk.passwordSetupDate)
             let overlayVc = BottomDrawerOverlayViewController(info: moreInfo)
             navigationController!.present(overlayVc, animated: true)
         }

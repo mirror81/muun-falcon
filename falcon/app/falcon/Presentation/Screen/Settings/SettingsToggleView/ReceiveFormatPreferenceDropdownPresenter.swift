@@ -18,15 +18,21 @@ protocol SettingsDropdownPresenter: AnyObject {
 protocol SettingsDropdownPresenterDelegate: BasePresenterDelegate {
     var state: ReceiveFormatPreferenceViewModel { get set }
     var loading: Bool { get set }
-    func presentActionSheet(actionSheetDelegate: MUActionSheetViewDelegate,
-                            selectedOption: any MUActionSheetOption)
+    func presentActionSheet(
+        actionSheetDelegate: MUActionSheetViewDelegate,
+        selectedOption: any MUActionSheetOption
+    )
 }
 
-class ReceiveFormatPreferenceDropdownPresenter<Delegate: SettingsDropdownPresenterDelegate>: BasePresenter<Delegate> {
+class ReceiveFormatPreferenceDropdownPresenter<
+    Delegate: SettingsDropdownPresenterDelegate
+>: BasePresenter<Delegate> {
     private let userPreferencesResolver: SettingToggleUserPreferenciesResolver
     private var currentState: ReceiveFormatPreference?
-    init(delegate: Delegate,
-         userPreferencesResolver: SettingToggleUserPreferenciesResolver) {
+    init(
+        delegate: Delegate,
+        userPreferencesResolver: SettingToggleUserPreferenciesResolver
+    ) {
         self.userPreferencesResolver = userPreferencesResolver
         super.init(delegate: delegate)
     }
@@ -45,7 +51,8 @@ class ReceiveFormatPreferenceDropdownPresenter<Delegate: SettingsDropdownPresent
             switch action.type {
             case .EMPTY, .ERROR:
                 self?.currentState = prefs.receiveFormatPreference
-                self?.delegate.state = ReceiveFormatPreferenceViewModel.from(model: prefs.receiveFormatPreference)
+                self?.delegate.state = ReceiveFormatPreferenceViewModel
+                    .from(model: prefs.receiveFormatPreference)
                 self?.delegate.loading = false
             case .LOADING:
                 self?.delegate.loading = true
@@ -66,14 +73,20 @@ class ReceiveFormatPreferenceDropdownPresenter<Delegate: SettingsDropdownPresent
         let updateUserPreferences: UpdateUserPreferencesAction = AppDelegate.resolve()
         let userPreferencesSelector: UserPreferencesSelector = AppDelegate.resolve()
 
-        let preferences = SettingToggleUserPreferenciesResolver(updateUserPreferences: updateUserPreferences,
-                                                                 userPreferencesSelector: userPreferencesSelector)
+        let preferences = SettingToggleUserPreferenciesResolver(
+            updateUserPreferences: updateUserPreferences,
+            userPreferencesSelector: userPreferencesSelector
+        )
         let subtitleLabel = createSubtitleLabel()
-        let view = ReceiveFormatSettingDropdownView(title: L10n.ReceiveFormatSettingDropdownView.title,
-                                        subtitle: subtitleLabel)
+        let view = ReceiveFormatSettingDropdownView(
+            title: L10n.ReceiveFormatSettingDropdownView.title,
+            subtitle: subtitleLabel
+        )
         // swiftlint:disable force_cast
-        let presenter = ReceiveFormatPreferenceDropdownPresenter(delegate: view as! Delegate,
-                                                                 userPreferencesResolver: preferences)
+        let presenter = ReceiveFormatPreferenceDropdownPresenter(
+            delegate: view as! Delegate,
+            userPreferencesResolver: preferences
+        )
 
         view.presenter = presenter
         return view
@@ -84,8 +97,10 @@ class ReceiveFormatPreferenceDropdownPresenter<Delegate: SettingsDropdownPresent
         learnMoreLabel.translatesAutoresizingMaskIntoConstraints = false
         learnMoreLabel.attributedText = L10n.ReceiveFormatSettingDropdownView.description
             .set(font: Constant.Fonts.system(size: .notice))
-            .set(underline: L10n.ReceiveFormatSettingDropdownView.learnMoreUnderline,
-                 color: Asset.Colors.muunBlue.color)
+            .set(
+                underline: L10n.ReceiveFormatSettingDropdownView.learnMoreUnderline,
+                color: Asset.Colors.muunBlue.color
+            )
         learnMoreLabel.setContentHuggingPriority(.required, for: .vertical)
         learnMoreLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         learnMoreLabel.isUserInteractionEnabled = true
@@ -109,15 +124,19 @@ extension ReceiveFormatPreferenceDropdownPresenter: SettingsDropdownPresenter {
         guard let currentState = currentState else {
             return // User has tapped the setting before it was loaded
         }
-        delegate.presentActionSheet(actionSheetDelegate: self,
-                                    selectedOption: ReceiveFormatPreferenceViewModel.from(model: currentState))
+        delegate.presentActionSheet(
+            actionSheetDelegate: self,
+            selectedOption: ReceiveFormatPreferenceViewModel.from(model: currentState)
+        )
     }
 }
 
 extension ReceiveFormatPreferenceDropdownPresenter: MUActionSheetViewDelegate {
     func didSelect(option: any MUActionSheetOption) {
         let selectedReceiveOption = option as! ReceiveFormatPreferenceViewModel
-        let currentModelSelection = ReceiveFormatPreference(rawValue: selectedReceiveOption.rawValue)
+        let currentModelSelection = ReceiveFormatPreference(
+            rawValue: selectedReceiveOption.rawValue
+        )
         userPreferencesResolver.updateSetting { prefs in
             prefs.copy(receiveFormatPreference: currentModelSelection)
         }

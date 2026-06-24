@@ -8,30 +8,38 @@
 
 import Foundation
 
-
 protocol FinishRecoveryCodeSetupPresenterDelegate: BasePresenterDelegate {
     func challengeSuccess()
     func showFinishErrorSetupError()
     func finishButtonIs(loading: Bool)
 }
 
-class FinishRecoveryCodeSetupPresenter<Delegate: FinishRecoveryCodeSetupPresenterDelegate>: BasePresenter<Delegate> {
+class FinishRecoveryCodeSetupPresenter<
+    Delegate: FinishRecoveryCodeSetupPresenterDelegate
+>: BasePresenter<Delegate> {
 
     fileprivate let recoveryCode: RecoveryCode
     fileprivate let finishRecoveryCodeSetupAction: FinishRecoverCodeSetupAction
 
-    init(delegate: Delegate,
-         state: RecoveryCode,
-         finishRecoveryCodeSetupAction: FinishRecoverCodeSetupAction) {
+    init(
+        delegate: Delegate,
+        state: RecoveryCode,
+        finishRecoveryCodeSetupAction: FinishRecoverCodeSetupAction
+    ) {
         self.recoveryCode = state
         self.finishRecoveryCodeSetupAction = finishRecoveryCodeSetupAction
         super.init(delegate: delegate)
     }
 
     func confirm() {
-        subscribeTo(finishRecoveryCodeSetupAction.getState(), onNext: onStartRecoverySetupStateChanged)
-        finishRecoveryCodeSetupAction.run(type: .RECOVERY_CODE,
-                                          recoveryCode: recoveryCode)
+        subscribeTo(
+            finishRecoveryCodeSetupAction.getState(),
+            onNext: onStartRecoverySetupStateChanged
+        )
+        finishRecoveryCodeSetupAction.run(
+            type: .RECOVERY_CODE,
+            recoveryCode: recoveryCode
+        )
     }
 
     private func onStartRecoverySetupStateChanged(_ result: ActionState<Void>) {
@@ -51,7 +59,9 @@ class FinishRecoveryCodeSetupPresenter<Delegate: FinishRecoveryCodeSetupPresente
 
     func retryTappedAfterError() {
         delegate.finishButtonIs(loading: true)
-        finishRecoveryCodeSetupAction.run(type: .RECOVERY_CODE,
-                                          recoveryCode: recoveryCode)
+        finishRecoveryCodeSetupAction.run(
+            type: .RECOVERY_CODE,
+            recoveryCode: recoveryCode
+        )
     }
 }

@@ -28,12 +28,14 @@ public class PreloadFeeDataAction: AsyncAction<()>, Runnable {
         return 10
     }()
 
-    init(houstonService: HoustonService,
-         feeWindowRepository: FeeWindowRepository,
-         minFeeRateRepository: MinFeeRateRepository,
-         nextTransactionSizeRepository: NextTransactionSizeRepository,
-         featureFlagsSelector: FeatureFlagsSelector,
-         feeBumpFunctionsProvider: FeeBumpFunctionsProvider) {
+    init(
+        houstonService: HoustonService,
+        feeWindowRepository: FeeWindowRepository,
+        minFeeRateRepository: MinFeeRateRepository,
+        nextTransactionSizeRepository: NextTransactionSizeRepository,
+        featureFlagsSelector: FeatureFlagsSelector,
+        feeBumpFunctionsProvider: FeeBumpFunctionsProvider
+    ) {
 
         self.houstonService = houstonService
         self.feeWindowRepository = feeWindowRepository
@@ -69,20 +71,26 @@ public class PreloadFeeDataAction: AsyncAction<()>, Runnable {
         guard DeviceUtils.appState == .active else { return }
         guard featureFlagsSelector.isFlagEnabled(.effectiveFeesCalculation) else { return }
         if let request = makeRealTimeFeeRequest(refreshPolicy: refreshPolicy) {
-            runCompletable(fetchRealTimeFees(realTimeFeesRequest: request,
-                                             refreshPolicy: refreshPolicy))
+            runCompletable(fetchRealTimeFees(
+                realTimeFeesRequest: request,
+                refreshPolicy: refreshPolicy
+            ))
         } else {
             // If there are no unconfirmed UTXOs, it means there are no fee bump functions.
             // Remove the fee bump functions by storing an empty list.
             let emptyFeeBumpFunctions = FeeBumpFunctions(uuid: "", functions: [String]())
             feeBumpFunctionsProvider
-                .persistFeeBumpFunctions(feeBumpFunctions: emptyFeeBumpFunctions,
-                                         refreshPolicy: refreshPolicy)
+                .persistFeeBumpFunctions(
+                    feeBumpFunctions: emptyFeeBumpFunctions,
+                    refreshPolicy: refreshPolicy
+                )
         }
     }
 
-    private func fetchRealTimeFees(realTimeFeesRequest: RealTimeFeesRequestJson,
-                                   refreshPolicy: FeeBumpRefreshPolicy) -> Completable {
+    private func fetchRealTimeFees(
+        realTimeFeesRequest: RealTimeFeesRequestJson,
+        refreshPolicy: FeeBumpRefreshPolicy
+    ) -> Completable {
 
         return houstonService.fetchRealTimeFees(realTimeFeesRequest: realTimeFeesRequest)
             .do(onSuccess: { [weak self] (data) in
@@ -91,14 +99,18 @@ public class PreloadFeeDataAction: AsyncAction<()>, Runnable {
                 self?.minFeeRateRepository
                     .store(satsPerWeightUnit: minMempoolFeeRateInSatsPerWeightUnit)
                 self?.feeBumpFunctionsProvider
-                    .persistFeeBumpFunctions(feeBumpFunctions: data.feeBumpFunctions,
-                                             refreshPolicy: refreshPolicy)
+                    .persistFeeBumpFunctions(
+                        feeBumpFunctions: data.feeBumpFunctions,
+                        refreshPolicy: refreshPolicy
+                    )
                 self?.lastSyncTime = Date()
             })
             .asCompletable()
     }
 
-    private func makeRealTimeFeeRequest(refreshPolicy: FeeBumpRefreshPolicy) -> RealTimeFeesRequestJson? {
+    private func makeRealTimeFeeRequest(
+        refreshPolicy: FeeBumpRefreshPolicy
+    ) -> RealTimeFeesRequestJson? {
         let unconfirmedUtxos = nextTransactionSizeRepository
             .getNextTransactionSize()?
             .sizeProgression
@@ -111,8 +123,10 @@ public class PreloadFeeDataAction: AsyncAction<()>, Runnable {
 
         guard let unconfirmedUtxos else { return nil }
 
-        return RealTimeFeesRequestJson(unconfirmedOutpoints: unconfirmedUtxos,
-                                       feeBumpRefreshPolicy: refreshPolicy.toJson())
+        return RealTimeFeesRequestJson(
+            unconfirmedOutpoints: unconfirmedUtxos,
+            feeBumpRefreshPolicy: refreshPolicy.toJson()
+        )
     }
 
     private func shouldUpdateData() -> Bool {

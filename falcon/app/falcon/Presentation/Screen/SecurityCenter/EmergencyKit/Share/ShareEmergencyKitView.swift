@@ -23,9 +23,11 @@ final class ShareEmergencyKitView: UIView {
     private weak var delegate: ShareEmergencyKitViewDelegate?
     private let options: [EKOption]
 
-    init(delegate: ShareEmergencyKitViewDelegate?,
-         options: [EKOption],
-         flow: EmergencyKitFlow) {
+    init(
+        delegate: ShareEmergencyKitViewDelegate?,
+        options: [EKOption],
+        flow: EmergencyKitFlow
+    ) {
         self.delegate = delegate
         self.options = options
         super.init(frame: .zero)
@@ -68,10 +70,14 @@ final class ShareEmergencyKitView: UIView {
         scrollView.addSubview(titleAndDescriptionView)
 
         NSLayoutConstraint.activate([
-            titleAndDescriptionView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                                             constant: .sideMargin),
-            titleAndDescriptionView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor,
-                                                              constant: -.sideMargin),
+            titleAndDescriptionView.leadingAnchor.constraint(
+                equalTo: scrollView.leadingAnchor,
+                constant: .sideMargin
+            ),
+            titleAndDescriptionView.trailingAnchor.constraint(
+                equalTo: scrollView.trailingAnchor,
+                constant: -.sideMargin
+            ),
             titleAndDescriptionView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             titleAndDescriptionView.topAnchor.constraint(equalTo: scrollView.topAnchor)
         ])
@@ -84,7 +90,10 @@ final class ShareEmergencyKitView: UIView {
         scrollView.addSubview(optionsStackView)
 
         NSLayoutConstraint.activate([
-            optionsStackView.topAnchor.constraint(equalTo: titleAndDescriptionView.bottomAnchor, constant: 24),
+            optionsStackView.topAnchor.constraint(
+                equalTo: titleAndDescriptionView.bottomAnchor,
+                constant: 24
+            ),
             optionsStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             optionsStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor)
         ])
@@ -109,8 +118,11 @@ final class ShareEmergencyKitView: UIView {
 
         NSLayoutConstraint.activate([
             manualExport.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-            manualExport.topAnchor.constraint(equalTo: optionsStackView.bottomAnchor, constant: .spacing),
-            scrollView.bottomAnchor.constraint(equalTo: manualExport.bottomAnchor),
+            manualExport.topAnchor.constraint(
+                equalTo: optionsStackView.bottomAnchor,
+                constant: .spacing
+            ),
+            scrollView.bottomAnchor.constraint(equalTo: manualExport.bottomAnchor)
         ])
     }
 

@@ -17,8 +17,7 @@ public extension JSONDecoder.DateDecodingStrategy {
         if let date =
             Formatter.iso8601.date(from: string)
             ??
-            Formatter.iso8601noFS.date(from: string)
-        {
+            Formatter.iso8601noFS.date(from: string) {
             return date
         }
 

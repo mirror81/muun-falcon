@@ -8,14 +8,16 @@
 
 import Foundation
 
-
 import RxSwift
 
-class TurboChannelSettingsTogglePresenter<Delegate: SettingsTogglePresenterDelegate>: BasePresenter<Delegate> {
+class TurboChannelSettingsTogglePresenter<Delegate: SettingsTogglePresenterDelegate>:
+    BasePresenter<Delegate> {
     private let userPreferencesResolver: SettingToggleUserPreferenciesResolver
 
-    init(delegate: Delegate,
-         userPreferencesResolver: SettingToggleUserPreferenciesResolver) {
+    init(
+        delegate: Delegate,
+        userPreferencesResolver: SettingToggleUserPreferenciesResolver
+    ) {
         self.userPreferencesResolver = userPreferencesResolver
         super.init(delegate: delegate)
     }
@@ -48,16 +50,22 @@ class TurboChannelSettingsTogglePresenter<Delegate: SettingsTogglePresenterDeleg
     static func createView() -> SettingsToggleView {
         let updateUserPreferences: UpdateUserPreferencesAction = AppDelegate.resolve()
         let userPreferencesSelector: UserPreferencesSelector = AppDelegate.resolve()
-        let userPrefrences = SettingToggleUserPreferenciesResolver(updateUserPreferences: updateUserPreferences,
-                                                                   userPreferencesSelector: userPreferencesSelector)
+        let userPrefrences = SettingToggleUserPreferenciesResolver(
+            updateUserPreferences: updateUserPreferences,
+            userPreferencesSelector: userPreferencesSelector
+        )
 
         let learnMoreLabel = createLearnMoreLabel()
-        let view = SettingsToggleView(title: L10n.LightningNetworkSettings.turboChannels,
-                                      subtitle: learnMoreLabel,
-                                      toggleIdentifierForTesting: .turboChannels)
+        let view = SettingsToggleView(
+            title: L10n.LightningNetworkSettings.turboChannels,
+            subtitle: learnMoreLabel,
+            toggleIdentifierForTesting: .turboChannels
+        )
         // swiftlint:disable force_cast
-        let presenter = TurboChannelSettingsTogglePresenter(delegate: view as! Delegate,
-                                                            userPreferencesResolver: userPrefrences)
+        let presenter = TurboChannelSettingsTogglePresenter(
+            delegate: view as! Delegate,
+            userPreferencesResolver: userPrefrences
+        )
         view.presenter = presenter
         return view
     }
@@ -73,7 +81,10 @@ class TurboChannelSettingsTogglePresenter<Delegate: SettingsTogglePresenterDeleg
         learnMoreLabel.translatesAutoresizingMaskIntoConstraints = false
         learnMoreLabel.attributedText = L10n.LightningNetworkSettings.learnMore
             .set(font: Constant.Fonts.system(size: .notice))
-            .set(underline: L10n.LightningNetworkSettings.learnMoreUnderline, color: Asset.Colors.muunBlue.color)
+            .set(
+                underline: L10n.LightningNetworkSettings.learnMoreUnderline,
+                color: Asset.Colors.muunBlue.color
+            )
         learnMoreLabel.setContentHuggingPriority(.required, for: .vertical)
         learnMoreLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         learnMoreLabel.isUserInteractionEnabled = true
@@ -102,16 +113,18 @@ extension TurboChannelSettingsTogglePresenter: SettingsTogglePresenter {
 
     private func showDisableTurboChannelsAlert() {
         let disableText = L10n.LightningNetworkSettings.disable
-        let alertData = SettingsToggleAlertData(title: L10n.LightningNetworkSettings.confirmTitle,
-                                                message: L10n.LightningNetworkSettings.confirmDescription,
-                                                cancelButtonTitle: L10n.SettingsViewController.cancel,
-                                                cancelButtonBlock: { [weak self] in
-            self?.delegate.enabled = true
-        },
-                                                destructiveButtonTitle: disableText,
-                                                destructiveButtonBlock: { [weak self] in
-            self?.toggleConfig()
-        })
+        let alertData = SettingsToggleAlertData(
+            title: L10n.LightningNetworkSettings.confirmTitle,
+            message: L10n.LightningNetworkSettings.confirmDescription,
+            cancelButtonTitle: L10n.SettingsViewController.cancel,
+            cancelButtonBlock: { [weak self] in
+                self?.delegate.enabled = true
+            },
+            destructiveButtonTitle: disableText,
+            destructiveButtonBlock: { [weak self] in
+                self?.toggleConfig()
+            }
+        )
         delegate.showAlert(data: alertData)
     }
 }

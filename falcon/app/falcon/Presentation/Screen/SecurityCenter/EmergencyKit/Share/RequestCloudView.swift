@@ -6,7 +6,6 @@
 import Foundation
 import UIKit
 
-
 protocol RequestCloudViewDelegate: AnyObject {
     func dismiss(requestCloud: UIView)
     func request(cloud: String)

@@ -30,11 +30,13 @@ class LibwalletLogHelper: NSObject, App_provided_dataAppLogSinkProtocol {
 
         let extraData = extractExtraData(from: json)
 
-        Logger.logExplicit(level: level,
-                           message: format(message: message, extras: extraData),
-                           filename: filename ?? "<libwallet>",
-                           line: line ?? 0,
-                           funcName: function ?? "<unknown>")
+        Logger.logExplicit(
+            level: level,
+            message: format(message: message, extras: extraData),
+            filename: filename ?? "<libwallet>",
+            line: line ?? 0,
+            funcName: function ?? "<unknown>"
+        )
     }
 
     private func logLevel(fromGo level: String?) -> LogLevel {

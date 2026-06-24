@@ -27,14 +27,16 @@ struct FeedbackModel {
     // FIXME: delete me once the taproot thing is done cause this is the hackiest hack ever
     let blocksLeft: UInt?
 
-    init(title: String,
-         description: NSAttributedString,
-         buttonText: String?,
-         buttonAction: FeedbackButtonAction?,
-         image: UIImage?,
-         lottieAnimationName: String?,
-         loggingParameters: [String: String],
-         blocksLeft: UInt? = nil) {
+    init(
+        title: String,
+        description: NSAttributedString,
+        buttonText: String?,
+        buttonAction: FeedbackButtonAction?,
+        image: UIImage?,
+        lottieAnimationName: String?,
+        loggingParameters: [String: String],
+        blocksLeft: UInt? = nil
+    ) {
         self.title = title
         self.description = description
         self.buttonText = buttonText

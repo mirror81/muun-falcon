@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 
-
 struct OperationFormatter {
 
     let operation: Operation

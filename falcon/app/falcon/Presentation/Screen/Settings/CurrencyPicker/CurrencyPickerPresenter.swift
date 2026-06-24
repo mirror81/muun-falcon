@@ -9,7 +9,6 @@
 import UIKit
 import Libwallet
 
-
 protocol CurrencyPickerPresenterDelegate: BasePresenterDelegate {
     func gotCurrencyList()
 }
@@ -22,9 +21,11 @@ class CurrencyPickerPresenter<Delegate: CurrencyPickerPresenterDelegate>: BasePr
     private var displayableCurrencies: [Currency] = []
     private var userSelector: UserSelector
 
-    init(delegate: Delegate,
-         state: CurrenciesForPickerRetriever,
-         userSelector: UserSelector) {
+    init(
+        delegate: Delegate,
+        state: CurrenciesForPickerRetriever,
+        userSelector: UserSelector
+    ) {
         self.currenciesRepostory = state
         self.userSelector = userSelector
 

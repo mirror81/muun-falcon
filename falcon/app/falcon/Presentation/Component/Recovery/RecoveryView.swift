@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 protocol RecoveryViewDelegate: AnyObject {
     func recoveryViewDidChange(_ recoveryView: RecoveryView, code: RecoveryCode?)
 }
@@ -77,7 +76,9 @@ class RecoveryView: MUView {
 
             textfield.attributedPlaceholder = NSAttributedString(
                 string: "XXXX",
-                attributes: [NSAttributedString.Key.foregroundColor: Asset.Colors.muunGrayLight.color]
+                attributes: [
+                    NSAttributedString.Key.foregroundColor: Asset.Colors.muunGrayLight.color
+                ]
             )
             textfield.adjustsFontSizeToFitWidth = false
             textfield.textAlignment = .center
@@ -99,7 +100,9 @@ class RecoveryView: MUView {
             case .display:
                 textfield.textColor = Asset.Colors.title.color
             case .editable:
-                textfield.textColor = hasPreset ? Asset.Colors.muunDisabled.color : Asset.Colors.title.color
+                textfield.textColor = hasPreset
+                    ? Asset.Colors.muunDisabled.color
+                    : Asset.Colors.title.color
             }
 
             if index == firstEmptyIndex {
@@ -157,7 +160,8 @@ extension RecoveryView: UITextFieldDelegate {
     func textField(
         _ textField: UITextField,
         shouldChangeCharactersIn range: NSRange,
-        replacementString string: String) -> Bool {
+        replacementString string: String
+    ) -> Bool {
 
         for char in string.uppercased() {
 
@@ -180,7 +184,8 @@ extension RecoveryView: UITextFieldDelegate {
             } else if updatedText.count >= RecoveryCode.segmentLength {
 
                 // We might overflow if we accept this change
-                // This should only happen if the user pastes his full code, and we won't support that
+                // This should only happen if the user pastes his full code, and we won't support
+                // that
 
                 // If there's space left in this field, fill it
                 if text.count < RecoveryCode.segmentLength {

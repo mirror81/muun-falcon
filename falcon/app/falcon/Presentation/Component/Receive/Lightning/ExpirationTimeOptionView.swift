@@ -30,7 +30,12 @@ class ExpirationTimeOptionView: UIStackView {
         axis = .horizontal
         alignment = .center
         isLayoutMarginsRelativeArrangement = true
-        layoutMargins = UIEdgeInsets(top: .verticalRowMargin, left: 8, bottom: .verticalRowMargin, right: 8)
+        layoutMargins = UIEdgeInsets(
+            top: .verticalRowMargin,
+            left: 8,
+            bottom: .verticalRowMargin,
+            right: 8
+        )
 
         setUpLabel()
         setUpValue()

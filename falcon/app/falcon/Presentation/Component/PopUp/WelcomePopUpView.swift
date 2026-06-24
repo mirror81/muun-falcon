@@ -71,7 +71,10 @@ class WelcomePopUpView: UIView {
         card.addSubview(astronautImage)
         NSLayoutConstraint.activate([
             astronautImage.centerXAnchor.constraint(equalTo: card.centerXAnchor),
-            astronautImage.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: .sideMargin),
+            astronautImage.topAnchor.constraint(
+                equalTo: messageLabel.bottomAnchor,
+                constant: .sideMargin
+            ),
             astronautImage.heightAnchor.constraint(equalToConstant: 256),
             astronautImage.widthAnchor.constraint(equalToConstant: 290),
             astronautImage.bottomAnchor.constraint(equalTo: card.bottomAnchor),

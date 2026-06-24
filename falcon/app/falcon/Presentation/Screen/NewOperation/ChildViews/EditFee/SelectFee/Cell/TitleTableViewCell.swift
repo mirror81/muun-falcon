@@ -26,7 +26,10 @@ class TitleTableViewCell: UITableViewCell {
     fileprivate func setUpLabel() {
         titleLabel.style = .description
         titleLabel.isUserInteractionEnabled = true
-        titleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: .titleLabelTouched))
+        titleLabel.addGestureRecognizer(UITapGestureRecognizer(
+            target: self,
+            action: .titleLabelTouched
+        ))
     }
 
     func setUp(text: String, delegate: TitleTableViewCellDelegate? = nil) {

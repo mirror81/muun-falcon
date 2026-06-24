@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class DebugRequestDetail: MUViewController {
     private let closeButton = UIButton()
     private let stack = UIStackView()
@@ -46,13 +45,19 @@ class DebugRequestDetail: MUViewController {
         addData(title: "Request Headers", data: headersToString(dictionary: request.headers))
         addData(title: "Request Body", data: request.body)
 
-        addData(title: "Response Status Code",
-                data: "\(String(describing: request.response.statusCode))")
-        addData(title: "Response Headers",
-                data: headersToString(dictionary: request.response.headers))
+        addData(
+            title: "Response Status Code",
+            data: "\(String(describing: request.response.statusCode))"
+        )
+        addData(
+            title: "Response Headers",
+            data: headersToString(dictionary: request.response.headers)
+        )
         addData(title: "Response Body", data: request.response.responseBody)
-        addData(title: "Response Error",
-                data: request.response.error?.localizedDescription)
+        addData(
+            title: "Response Error",
+            data: request.response.error?.localizedDescription
+        )
     }
 
     func addData(title: String, data: String?) {
@@ -67,10 +72,14 @@ class DebugRequestDetail: MUViewController {
             valueLabel.text = data
             valueLabel.backgroundColor = .white
             valueLabel.textColor = .black
-            let tapGesture = UITapGestureRecognizer(target: self,
-                                                    action: #selector(didTapLabel(sender:)))
-            let longTapGesture = UILongPressGestureRecognizer(target: self,
-                                                              action: #selector(didLongTapLabel(sender:)))
+            let tapGesture = UITapGestureRecognizer(
+                target: self,
+                action: #selector(didTapLabel(sender:))
+            )
+            let longTapGesture = UILongPressGestureRecognizer(
+                target: self,
+                action: #selector(didLongTapLabel(sender:))
+            )
             valueLabel.isUserInteractionEnabled = true
             valueLabel.addGestureRecognizer(tapGesture)
             valueLabel.addGestureRecognizer(longTapGesture)
@@ -114,10 +123,14 @@ class DebugRequestDetail: MUViewController {
         closeButton.setTitleColor(.black, for: .normal)
         closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
         view.addSubview(closeButton)
-        closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                             constant: 16).isActive = true
-        closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                         constant: 16).isActive = true
+        closeButton.leadingAnchor.constraint(
+            equalTo: view.leadingAnchor,
+            constant: 16
+        ).isActive = true
+        closeButton.topAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.topAnchor,
+            constant: 16
+        ).isActive = true
     }
 
     @objc func closeButtonTapped() {
@@ -154,8 +167,10 @@ class DebugRequestDetail: MUViewController {
             return
         }
 
-        let activityViewController = UIActivityViewController(activityItems: [label.text!],
-                                                              applicationActivities: nil)
+        let activityViewController = UIActivityViewController(
+            activityItems: [label.text!],
+            applicationActivities: nil
+        )
 
         self.present(activityViewController, animated: true, completion: nil)
     }

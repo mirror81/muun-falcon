@@ -14,8 +14,10 @@ protocol TransactionListViewControllerDelegate: AnyObject {
 
 class TransactionListViewController: MUViewController {
 
-    fileprivate lazy var presenter = instancePresenter(TransactionListPresenter.init,
-                                                       delegate: self)
+    fileprivate lazy var presenter = instancePresenter(
+        TransactionListPresenter.init,
+        delegate: self
+    )
 
     private weak var delegate: TransactionListViewControllerDelegate?
     private var txListView: TransactionListView!

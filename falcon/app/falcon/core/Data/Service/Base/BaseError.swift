@@ -54,6 +54,12 @@ public struct DeveloperError: Codable, LocalizedError {
     }
 }
 
+extension DeveloperError: ClassifiedError {
+    public var classification: ErrorClassification {
+        return getKindOfError().classification
+    }
+}
+
 public enum ExactDeveloperError {
     case defaultError
     case tooManyRequests
@@ -108,6 +114,54 @@ public enum ServiceError: Error {
             return true
         default:
             return false
+        }
+    }
+}
+
+// MARK: - ClassifiedError conformance
+
+extension ExactDeveloperError: ClassifiedError {
+    public var classification: ErrorClassification {
+        switch self {
+        // Expected - errors anticipated from user input or external factors
+        case .invalidInvoice,
+             .invoiceExpiresTooSoon,
+             .invoiceAlreadyUsed,
+             .cyclicalSwap,
+             .amountLessInvoicesNotSupported,
+             .invalidEmail,
+             .emailNotRegistered,
+             .emailAlreadyUsed,
+             .invalidChallengeSignature,
+             .credentialsDontMatch,
+             .recoveryCodeNotSetUp,
+             .staleChallengeKey:
+            return .expected
+
+        // Unexpected - bugs or unusual conditions that need investigation
+        case .defaultError,
+             .tooManyRequests,
+             .notAuthorized,
+             .forceUpdate,
+             .sessionExpired,
+             .nonUserFacing,
+             .swapFailed,
+             .incomingSwapAlreadyFulfilled,
+             .exchangeRateWindowTooOld,
+             .noPaymentRoute,
+             .invoiceUnreachableNode:
+            return .unexpected
+        }
+    }
+}
+
+extension ServiceError: ClassifiedError {
+    public var classification: ErrorClassification {
+        switch self {
+        case .customError(let devError):
+            return devError.getKindOfError().classification
+        case .codableError, .defaultError, .serviceFailure, .internetError, .timeOut:
+            return .unexpected
         }
     }
 }

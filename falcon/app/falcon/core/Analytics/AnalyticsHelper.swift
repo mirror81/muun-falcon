@@ -11,7 +11,6 @@ import FirebaseAnalytics
 import FirebaseCrashlytics
 import FirebaseCore
 
-
 class AnalyticsHelper: Resolver {
 
     // This constants can be found on: https://support.google.com/firebase/answer/9237506?hl=en
@@ -31,8 +30,9 @@ class AnalyticsHelper: Resolver {
     ]
 
     static func configure() {
-        guard let firebaseOptions = FirebaseOptions(contentsOfFile: Environment.current.firebaseOptionsPath)
-            else { Logger.fatal("failed to load firebase") }
+        guard let firebaseOptions = FirebaseOptions(
+            contentsOfFile: Environment.current.firebaseOptionsPath
+        ) else { Logger.fatal("failed to load firebase") }
         FirebaseApp.configure(options: firebaseOptions)
     }
 
@@ -45,15 +45,20 @@ class AnalyticsHelper: Resolver {
     static func setUserProperty(_ value: String, forName name: String) {
 
         guard name.count <= maxLengthUserPropertyName  else {
-            Logger.fatal("Property name: \(name) can't be longer than \(maxLengthUserPropertyName) characters")
+            Logger.fatal(
+                "Property name: \(name) can't be longer than"
+                + " \(maxLengthUserPropertyName) characters"
+            )
         }
 
         if value.count <= maxLengthUserPropertyValue {
             Analytics.setUserProperty(value, forName: name)
         } else {
             // Truncate value to 36 chars
-            Analytics.setUserProperty(value.truncate(maxLength: maxLengthUserPropertyValue),
-                                      forName: name)
+            Analytics.setUserProperty(
+                value.truncate(maxLength: maxLengthUserPropertyValue),
+                forName: name
+            )
         }
     }
 
@@ -69,9 +74,11 @@ class AnalyticsHelper: Resolver {
         additionalInfo?.forEach { (key, value) in
           currentUserInfo["\(key)"] = value
         }
-        let updatedNSError = NSError(domain: tempNSError.domain,
-                                     code: tempNSError.code,
-                                     userInfo: currentUserInfo)
+        let updatedNSError = NSError(
+            domain: tempNSError.domain,
+            code: tempNSError.code,
+            userInfo: currentUserInfo
+        )
         crashlytics.record(error: updatedNSError)
     }
 
@@ -80,11 +87,11 @@ class AnalyticsHelper: Resolver {
     static func setAnalyticsCollection(enabled: Bool) {
         Analytics.setAnalyticsCollectionEnabled(enabled)
     }
-    
+
     @available(
         *,
         deprecated,
-        message: "Use logEvent(_:) with AnalyticsEvent to enable typed, maintainable analytics tracking."
+        message: "Use logEvent(_:) with AnalyticsEvent for typed, maintainable analytics."
     )
     static func logEvent(_ event: String, parameters: [String: Any]? = nil) {
         let eventName = "e_\(event)"
@@ -96,12 +103,15 @@ class AnalyticsHelper: Resolver {
     /// Accepts an `AnalyticsEvent`, converts its typed parameters to raw values,
     /// and delegates to the legacy logging pipeline.
     static func logEvent(_ event: AnalyticsEvent) {
-        guard let parameters = event.parameters else {
+        var params = event.parameters ?? [:]
+        addClassificationParam(to: &params, for: event)
+
+        if params.isEmpty {
             actuallyLogEvent(event.name)
-            return
+        } else {
+            let processedParams = safelyTrimParamValue(params)
+            actuallyLogEvent(event.name, parameters: processedParams)
         }
-        let processedParams = safelyTrimParamValue(parameters)
-        actuallyLogEvent(event.name, parameters: processedParams)
     }
 
     /// Same as `logEvent(_:)` but allows enriching parameters at call site.
@@ -109,12 +119,27 @@ class AnalyticsHelper: Resolver {
     static func logEvent(_ event: AnalyticsEvent, extraParameters: [String: AnalyticsValue]) {
         var params = event.parameters ?? [:]
         params.merge(extraParameters) { _, new in new } // hidrate with extra data
+        addClassificationParam(to: &params, for: event)
         let processedParams = safelyTrimParamValue(params)
         actuallyLogEvent(event.name, parameters: processedParams)
     }
 
+    /// Adds `error_classification` parameter for ClassifiedErrorEvent.
+    /// This allows filtering on the analytics backend and decide if an action is needed.
+    private static func addClassificationParam(
+        to params: inout [String: AnalyticsValue],
+        for event: AnalyticsEvent
+    ) {
+        if let classified = event as? ClassifiedErrorEvent {
+            params["error_classification"] = classified.errorClassification
+        }
+    }
+
     static func logScreen(_ name: String, parameters: [String: Any]?) {
-        Analytics.logEvent(AnalyticsEventScreenView, parameters: [AnalyticsParameterScreenName: name])
+        Analytics.logEvent(
+            AnalyticsEventScreenView,
+            parameters: [AnalyticsParameterScreenName: name]
+        )
 
         let screenName = "s_\(name)"
 
@@ -146,7 +171,8 @@ class AnalyticsHelper: Resolver {
             #endif
             Logger.log(
                 .info,
-                "Event: '\(event)' with parameters: \(finalParams.description) logged to Firebase Analytics\n"
+                "Event: '\(event)' with parameters: \(finalParams.description)"
+                + " logged to Firebase Analytics\n"
             )
         } else {
             Logger.log(
@@ -159,7 +185,9 @@ class AnalyticsHelper: Resolver {
                 """
             )
             #if DEBUG
-            fatalError("We are not logging this event: \(event). Parameters: \(finalParams.description)")
+            fatalError(
+                "We are not logging this event: \(event). Parameters: \(finalParams.description)"
+            )
             #endif
         }
     }
@@ -214,7 +242,9 @@ class AnalyticsHelper: Resolver {
     /// BQ accepts parameters value until 100 characteres, so truncate extra char if it is needed.
     /// If the maximum length exceeds the number of elements in the collection,
     /// the result contains all the elements in the collection.
-    private static func safelyTrimParamValue(_ params: [String : any AnalyticsValue]) -> [String : String] {
+    private static func safelyTrimParamValue(
+        _ params: [String: any AnalyticsValue]
+    ) -> [String: String] {
         return params.mapValues {
             $0.trackingValue.truncate(maxLength: maxLengthEventParameterValue)
         }

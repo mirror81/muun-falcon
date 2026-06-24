@@ -58,7 +58,10 @@ final class HelpEmergencyKitView: UIView {
 
         addSubview(imageView)
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: titleAndDescripionView.bottomAnchor, constant: 24),
+            imageView.topAnchor.constraint(
+                equalTo: titleAndDescripionView.bottomAnchor,
+                constant: 24
+            ),
             imageView.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
     }

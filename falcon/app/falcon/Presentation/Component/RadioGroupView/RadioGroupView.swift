@@ -44,7 +44,9 @@ class RadioGroupView: UIStackView {
             addArrangedSubview(optionView)
 
             optionView.isUserInteractionEnabled = true
-            optionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: .didTapOption))
+            optionView.addGestureRecognizer(
+                UITapGestureRecognizer(target: self, action: .didTapOption)
+            )
 
             optionViews.append(optionView)
         }

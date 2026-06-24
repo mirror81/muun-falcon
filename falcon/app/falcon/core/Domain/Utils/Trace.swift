@@ -44,7 +44,13 @@ final class Trace {
         finished = true
         let elapsedMs = (clock_gettime_nsec_np(CLOCK_MONOTONIC_RAW) - startTime) / 1_000_000
         let childMap = Dictionary(uniqueKeysWithValues: children.map { $0.result() })
-        AnalyticsHelper.logEvent(TimeTrackerEvent(label: label, elapsedMs: Int(elapsedMs), children: childMap))
+        AnalyticsHelper.logEvent(
+            TimeTrackerEvent(
+                label: label,
+                elapsedMs: Int(elapsedMs),
+                children: childMap
+            )
+        )
     }
 
     /// Execute block and report elapsed time when it returns, even if it throws.

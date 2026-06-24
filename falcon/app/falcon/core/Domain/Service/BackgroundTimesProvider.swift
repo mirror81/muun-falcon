@@ -21,13 +21,18 @@ public class BackgroundTimesProcessor {
     public func onEnterForeground() {
         pruneTimeLapsesToAvoidLongArrays()
 
-        guard let backgroundTimestamp = backgroundTimesRepository.lastWentBackgroundTimeLapse() else {
+        guard let backgroundTimestamp = backgroundTimesRepository.lastWentBackgroundTimeLapse()
+        else {
             return
         }
 
-        let diffBetweenNowAndBackgroundTimestamp = Date().timeIntervalSince1970 - backgroundTimestamp
+        let diffBetweenNowAndBackgroundTimestamp =
+            Date().timeIntervalSince1970 - backgroundTimestamp
         let backgroundLapseInMili = Int64(diffBetweenNowAndBackgroundTimestamp * 1000)
-        let backgroundTimeLapse = BackgroundTimeLapse(beginTimestampInMillis: Int64(backgroundTimestamp*1000), durationInMillis: backgroundLapseInMili)
+        let backgroundTimeLapse = BackgroundTimeLapse(
+            beginTimestampInMillis: Int64(backgroundTimestamp*1000),
+            durationInMillis: backgroundLapseInMili
+        )
 
         backgroundTimesRepository.saveBackgroundLapse(lapse: backgroundTimeLapse)
         backgroundTimesRepository.wipeBackgroundTimestamp()

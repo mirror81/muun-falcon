@@ -16,7 +16,8 @@ public class EmergencyKitRepository {
     // Store a verification code in the verification codes array
     public func store(code: String) {
         var updatedCodes = [String]()
-        if let verificationCodes = preferences.array(forKey: .emergencyKitVerificationCodes) as? [String] {
+        if let verificationCodes = preferences
+            .array(forKey: .emergencyKitVerificationCodes) as? [String] {
             updatedCodes = verificationCodes
         }
 
@@ -29,7 +30,8 @@ public class EmergencyKitRepository {
 
     // Returns a boolean indicated if a code is old. i.e: is stored in the old codes array
     public func isOld(code: String) -> Bool {
-        guard let verificationCodes = preferences.array(forKey: .emergencyKitVerificationCodes) as? [String] else {
+        guard let verificationCodes = preferences
+            .array(forKey: .emergencyKitVerificationCodes) as? [String] else {
             return false
         }
 

@@ -10,7 +10,10 @@ import UIKit
 
 class SignInAuthorizeEmailViewController: MUViewController {
 
-    fileprivate lazy var presenter = instancePresenter(SignInAuthorizeEmailPresenter.init, delegate: self)
+    fileprivate lazy var presenter = instancePresenter(
+        SignInAuthorizeEmailPresenter.init,
+        delegate: self
+    )
     private var verifyView: WaitForEmailView!
 
     private var nextVc: UIViewController!
@@ -94,8 +97,16 @@ class SignInAuthorizeEmailViewController: MUViewController {
     }
 
     fileprivate func removeObservers() {
-        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
     }
 
     fileprivate func setUpNavigation() {

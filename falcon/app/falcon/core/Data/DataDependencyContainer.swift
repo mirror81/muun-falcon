@@ -29,8 +29,10 @@ public extension DependencyContainer {
             container.register(.singleton, factory: DatabaseCoordinator.init)
 
             container.register {
-                KeychainRepository(keyPrefix: try container.resolve(tag: DataTags.secureStoragePrefix),
-                                   group: try container.resolve(tag: DataTags.secureStorageGroup))
+                KeychainRepository(
+                    keyPrefix: try container.resolve(tag: DataTags.secureStoragePrefix),
+                    group: try container.resolve(tag: DataTags.secureStorageGroup)
+                )
             }
             container.register(factory: SecureStorage.init)
             container.register(.singleton, factory: Preferences.init)
@@ -90,17 +92,21 @@ extension DependencyContainer {
         tag: DependencyTagConvertible? = nil,
         factory: @escaping ((A, B, C, D, E, F, G)) throws -> T
     ) -> Definition<T, (A, B, C, D, E, F, G)> {
-        return register(scope: scope,
-                        type: type,
-                        tag: tag,
-                        factory: factory,
-                        numberOfArguments: 7) { container, tag in
-            try factory((container.resolve(tag: tag),
-                         container.resolve(tag: tag),
-                         container.resolve(tag: tag),
-                         container.resolve(tag: tag),
-                         container.resolve(tag: tag),
-                         container.resolve(tag: tag),
-                         container.resolve(tag: tag))) }
+        return register(
+            scope: scope,
+            type: type,
+            tag: tag,
+            factory: factory,
+            numberOfArguments: 7
+        ) { container, tag in
+            try factory((
+                container.resolve(tag: tag),
+                container.resolve(tag: tag),
+                container.resolve(tag: tag),
+                container.resolve(tag: tag),
+                container.resolve(tag: tag),
+                container.resolve(tag: tag),
+                container.resolve(tag: tag)
+            )) }
     }
 }

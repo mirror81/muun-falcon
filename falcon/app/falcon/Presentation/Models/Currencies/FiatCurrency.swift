@@ -18,14 +18,23 @@ struct FiatCurrency: Currency {
         return getNumberFormatter(style: .currency).maximumFractionDigits
     }
 
-    func toAmountWithoutCode(amount: Decimal, btcCurrencyFormat: BitcoinCurrencyFormat = .long) -> String {
+    func toAmountWithoutCode(
+        amount: Decimal,
+        btcCurrencyFormat: BitcoinCurrencyFormat = .long
+    ) -> String {
         let formatter = getFormatter(numberStyle: .currency, currencyCode: code)
 
         guard let value = formatter.string(for: amount) else {
             let localeDescription = LocaleAmountFormatter.locale.description
-            Logger.fatal(error: MuunError(LocaleAmountFormatter.Errors.format(value: amount,
-                                                                              currency: code,
-                                                                              locale: localeDescription)))
+            Logger.fatal(
+                error: MuunError(
+                    LocaleAmountFormatter.Errors.format(
+                        value: amount,
+                        currency: code,
+                        locale: localeDescription
+                    )
+                )
+            )
         }
 
         // The currency formatter returns a leading space in numbers so kill it
@@ -45,7 +54,10 @@ struct FiatCurrency: Currency {
         return getFormatter(numberStyle: style, currencyCode: self.code)
     }
 
-    private func getFormatter(numberStyle: NumberFormatter.Style, currencyCode: String) -> NumberFormatter {
+    private func getFormatter(
+        numberStyle: NumberFormatter.Style,
+        currencyCode: String
+    ) -> NumberFormatter {
         let id = "\(LocaleAmountFormatter.locale.identifier)@currency=\(currencyCode)"
         let canonical = NSLocale.canonicalLocaleIdentifier(from: id)
         let currencyLocale = Locale(identifier: canonical)

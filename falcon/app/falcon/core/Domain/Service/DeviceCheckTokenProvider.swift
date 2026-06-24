@@ -22,7 +22,8 @@ public class DeviceCheckTokenProvider {
     }
 
     /// Provides device check token
-    /// - parameter ignoreRateLimit: if *true* Token will be provided rotating value each 60 seconds unless DCDevice API is not supported by the device.
+    /// - parameter ignoreRateLimit: if *true* Token will be provided rotating value each 60 seconds
+    /// unless DCDevice API is not supported by the device.
     /// If *false* after the token is provided you will need to wait 60 seconds to get a new one.
     func provide(ignoreRateLimit: Bool) -> String? {
         guard ignoreRateLimit else {
@@ -32,8 +33,10 @@ public class DeviceCheckTokenProvider {
         }
 
         if deviceCheckAdapter.isSupported() && cachedDeviceToken == nil {
-            Logger.log(error: NSError(domain: "device_check_persistent_token_not_found",
-                                      code: 1))
+            Logger.log(error: NSError(
+                domain: "device_check_persistent_token_not_found",
+                code: 1
+            ))
         }
 
         return cachedDeviceToken
@@ -103,10 +106,12 @@ private extension DeviceCheckTokenProvider {
 
     func startTimer(refreshTime: TimeInterval) {
         timer.stop()
-        timer.start(timeInterval: refreshTime,
-                    target: self,
-                    selector: #selector(self.checkForToken),
-                    repeats: true)
+        timer.start(
+            timeInterval: refreshTime,
+            target: self,
+            selector: #selector(self.checkForToken),
+            repeats: true
+        )
     }
 
     func neverSuccededGeneratingAToken() -> Bool {
@@ -122,6 +127,8 @@ private extension DeviceCheckTokenProvider {
     }
 
     private func hasReachedMaxAttemptsForRequestSucceed() -> Bool {
-        return attemptsBurnToGenerateTokenOnRequestSucceed < attemptsLeftToGenerateTokenOnRequestSucceed
+        let burned = attemptsBurnToGenerateTokenOnRequestSucceed
+        let remaining = attemptsLeftToGenerateTokenOnRequestSucceed
+        return burned < remaining
     }
 }

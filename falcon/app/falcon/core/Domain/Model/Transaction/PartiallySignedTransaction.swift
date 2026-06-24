@@ -36,7 +36,12 @@ struct PartiallySignedTransaction {
         let bytes: Data
     }
 
-    func sign(key: WalletPrivateKey, muunKey: WalletPublicKey, expectations: Expectations, nonces: LibwalletMusigNonces)
+    func sign(
+        key: WalletPrivateKey,
+        muunKey: WalletPublicKey,
+        expectations: Expectations,
+        nonces: LibwalletMusigNonces
+    )
         throws -> SignedTransaction {
 
         let inputList = LibwalletInputList()
@@ -45,7 +50,12 @@ struct PartiallySignedTransaction {
         }
 
         let partial = try doWithError({ error in
-            LibwalletNewPartiallySignedTransaction(inputList, Data(hex: hexTransaction), nonces, error)
+            LibwalletNewPartiallySignedTransaction(
+                inputList,
+                Data(hex: hexTransaction),
+                nonces,
+                error
+            )
         })
 
         let expectations = LibwalletNewSigningExpectations(
@@ -53,10 +63,15 @@ struct PartiallySignedTransaction {
             expectations.amount.value,
             expectations.change,
             expectations.fee.value,
-            expectations.alternative)
+            expectations.alternative
+        )
 
         do {
-            try partial.verify(expectations, userPublicKey: key.walletPublicKey().key, muunPublickKey: muunKey.key)
+            try partial.verify(
+                expectations,
+                userPublicKey: key.walletPublicKey().key,
+                muunPublickKey: muunKey.key
+            )
         } catch {
             Logger.log(error: error)
         }
@@ -71,5 +86,14 @@ struct PartiallySignedTransaction {
 
     enum Errors: Error {
         case noMuunSignature
+    }
+}
+
+extension PartiallySignedTransaction.Errors: ClassifiedError {
+    var classification: ErrorClassification {
+        switch self {
+        case .noMuunSignature:
+            return .unexpected
+        }
     }
 }

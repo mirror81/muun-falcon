@@ -15,10 +15,12 @@ public class CreateSessionAction: AsyncAction<CreateSessionOk> {
     private let preferences: Preferences
     private let clientSelector: ClientSelector
 
-    init(houstonService: HoustonService,
-                logoutAction: LogoutAction,
-                preferences: Preferences,
-                clientSelector: ClientSelector) {
+    init(
+        houstonService: HoustonService,
+        logoutAction: LogoutAction,
+        preferences: Preferences,
+        clientSelector: ClientSelector
+    ) {
         self.houstonService = houstonService
         self.logoutAction = logoutAction
         self.preferences = preferences

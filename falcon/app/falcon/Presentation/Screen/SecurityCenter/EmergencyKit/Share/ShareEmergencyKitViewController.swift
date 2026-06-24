@@ -11,10 +11,12 @@ import GoogleSignIn
 import GoogleAPIClientForREST
 import AppAuth
 
-
 class ShareEmergencyKitViewController: MUViewController {
 
-    fileprivate lazy var presenter = instancePresenter(ShareEmergencyKitPresenter.init, delegate: self)
+    fileprivate lazy var presenter = instancePresenter(
+        ShareEmergencyKitPresenter.init,
+        delegate: self
+    )
 
     private let flow: EmergencyKitFlow
 
@@ -164,7 +166,8 @@ extension ShareEmergencyKitViewController: ShareEmergencyKitViewDelegate {
 
             if GIDSignIn.sharedInstance.hasPreviousSignIn() {
                 // This will call the sign in callback
-                GIDSignIn.sharedInstance.restorePreviousSignIn(completion: sign(didSignInFor:withError:))
+                GIDSignIn.sharedInstance
+                    .restorePreviousSignIn(completion: sign(didSignInFor:withError:))
             } else {
                 logEvent("ek_drive", parameters: ["type": "sign_in_start"])
                 signInWithGoogle()
@@ -179,9 +182,11 @@ extension ShareEmergencyKitViewController: ShareEmergencyKitViewDelegate {
 
         case .anotherCloud:
             logScreen("emergency_kit_cloud_feedback", parameters: [:])
-            dismissSuggestCloud = show(popUp: RequestCloudView(delegate: self),
-                                       duration: nil,
-                                       isDismissableOnTap: true)
+            dismissSuggestCloud = show(
+                popUp: RequestCloudView(delegate: self),
+                duration: nil,
+                isDismissableOnTap: true
+            )
         }
     }
 
@@ -221,23 +226,31 @@ extension ShareEmergencyKitViewController: ShareEmergencyKitViewDelegate {
         )
 
         alert.addAction(
-            UIAlertAction(title: L10n.ShareEmergencyKitViewController.alertCancel, style: .destructive, handler: { _ in
-                alert.dismiss(animated: true)
-            })
+            UIAlertAction(
+                title: L10n.ShareEmergencyKitViewController.alertCancel,
+                style: .destructive,
+                handler: { _ in
+                    alert.dismiss(animated: true)
+                }
+            )
         )
 
         alert.addAction(
-            UIAlertAction(title: L10n.ShareEmergencyKitViewController.alertRetry, style: .default, handler: { _ in
-                if option == .drive {
-                    if let user = self.googleUser {
-                        self.uploadEKToDrive(user)
-                    } else {
-                        self.signInWithGoogle()
+            UIAlertAction(
+                title: L10n.ShareEmergencyKitViewController.alertRetry,
+                style: .default,
+                handler: { _ in
+                    if option == .drive {
+                        if let user = self.googleUser {
+                            self.uploadEKToDrive(user)
+                        } else {
+                            self.signInWithGoogle()
+                        }
+                    } else if option == .icloud {
+                        self.uploadEKToICloud()
                     }
-                } else if option == .icloud {
-                    self.uploadEKToICloud()
                 }
-            })
+            )
         )
 
         alert.view.tintColor = Asset.Colors.muunBlue.color
@@ -288,7 +301,10 @@ extension ShareEmergencyKitViewController: ShareEmergencyKitPresenterDelegate {
             }
         }
 
-        logEvent("emergency_kit_fail", parameters: ["type": "upload_error", "shared_option": "\(option)"])
+        logEvent(
+            "emergency_kit_fail",
+            parameters: ["type": "upload_error", "shared_option": "\(option)"]
+        )
         presentErrorUploading(option: option)
     }
 
@@ -320,7 +336,8 @@ extension ShareEmergencyKitViewController {
 
         googleUser = user
 
-        // Check if the file scope has been given cause it's actually optional in spite of us requesting it
+        // Check if the file scope has been given cause it's actually optional in spite of us
+        // requesting it
         if let userGrantedScopes = user.grantedScopes,
            userGrantedScopes.contains(kGTLRAuthScopeDriveFile) {
             uploadEKToDrive(user)
@@ -336,9 +353,11 @@ extension ShareEmergencyKitViewController {
 
     func signInWithGoogle() {
         let scopes = [kGTLRAuthScopeDriveFile]
-        GIDSignIn.sharedInstance.signIn(withPresenting: self,
-                                        hint: nil,
-                                        additionalScopes: scopes) { [weak self] result, error in
+        GIDSignIn.sharedInstance.signIn(
+            withPresenting: self,
+            hint: nil,
+            additionalScopes: scopes
+        ) { [weak self] result, error in
             self?.sign(didSignInFor: result?.user, withError: error)
         }
     }
@@ -363,11 +382,13 @@ extension ShareEmergencyKitViewController {
         } else { // unhandled error
             Logger.log(error: error)
             logEvent("ek_drive", parameters: ["type": "sign_in_error"])
-            nextVisualActionAfterDismiss = { [weak self] in self?.presentErrorUploading(option: .drive) }
+            nextVisualActionAfterDismiss = { [weak self] in
+                self?.presentErrorUploading(option: .drive) }
             googleUser = nil
         }
 
-        // ensure loading is dismissed before trying anything. Otherwise next visual action will be not executed
+        // ensure loading is dismissed before trying anything. Otherwise next visual action will be
+        // not executed
         hideUploadingEKView {
             nextVisualActionAfterDismiss()
         }

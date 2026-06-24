@@ -55,7 +55,8 @@ class QRCodeView: UIImageView {
         }
 
         filter.setValue(data, forKey: "inputMessage")
-        // We need a low InputCorrectionLevel because the raw invoice is too long and the QR becomes too dense otherwise
+        // We need a low InputCorrectionLevel because the raw invoice is too long and the QR becomes
+        // too dense otherwise
         // "L" is the lowest one
         filter.setValue("L", forKey: "inputCorrectionLevel")
 

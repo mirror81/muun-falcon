@@ -27,10 +27,12 @@ class OperationRepository: BaseDatabaseRepository<OperationDB, Operation> {
     private let submarineSwapRepository: SubmarineSwapRepository
     private let incomingSwapRepository: IncomingSwapRepository
 
-    init(queue: DatabaseQueue,
-         publicProfileRepository: PublicProfileRepository,
-         submarineSwapRepository: SubmarineSwapRepository,
-         incomingSwapRepository: IncomingSwapRepository) {
+    init(
+        queue: DatabaseQueue,
+        publicProfileRepository: PublicProfileRepository,
+        submarineSwapRepository: SubmarineSwapRepository,
+        incomingSwapRepository: IncomingSwapRepository
+    ) {
         self.publicProfileRepository = publicProfileRepository
         self.submarineSwapRepository = submarineSwapRepository
         self.incomingSwapRepository = incomingSwapRepository
@@ -158,7 +160,8 @@ class OperationRepository: BaseDatabaseRepository<OperationDB, Operation> {
         let query = OperationDB
             .joining(required: OperationDB.submarineSwap)
             .filter(Column("status") == OperationStatus.SWAP_PENDING.rawValue)
-            .filter(Column("confirmationsNeeded").qualifiedExpression(with: TableAlias(name: "submarineSwapDB")) == 0)
+            .filter(Column("confirmationsNeeded")
+                .qualifiedExpression(with: TableAlias(name: "submarineSwapDB")) == 0)
 
         return exists(query: query)
     }

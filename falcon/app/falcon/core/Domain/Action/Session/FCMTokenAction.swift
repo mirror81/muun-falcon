@@ -17,10 +17,12 @@ public class FCMTokenAction: AsyncAction<()>, Runnable {
     private let timer: MUTimer
     private let failureModeRetryInSeconds: TimeInterval = 30
 
-    public init(houstonService: HoustonService,
-                preferences: Preferences,
-                sessionActions: SessionActions,
-                timer: MUTimer) {
+    public init(
+        houstonService: HoustonService,
+        preferences: Preferences,
+        sessionActions: SessionActions,
+        timer: MUTimer
+    ) {
         self.houstonService = houstonService
         self.preferences = preferences
         self.sessionActions = sessionActions
@@ -41,20 +43,25 @@ public class FCMTokenAction: AsyncAction<()>, Runnable {
      Runned from TaskRunner.
      */
     func run() {
-        // This if is to avoid users who never has permissions or has the token synced from running by mistake.
+        // This if is to avoid users who never has permissions or has the token synced from running
+        // by mistake.
         if preferences.has(key: .gcmToken) && !preferences.bool(forKey: .gcmTokenSynced) {
             self.runOnFailureMode()
         }
     }
 
     /**
-     Attempt to sync FCMToken with houston. If the token is not successfully synced it will enter in failure mode.
+     Attempt to sync FCMToken with houston. If the token is not successfully synced it will
+     enter in failure mode.
      Failure mode attempts to send the token again every 15 seconds.
-     In case of killing the app with a syncing error the app will sync with the old fcm token when waking up. If a new fcm token arrives
-     while we are already syncing, that token will be processed by runAgainIfSyncedTokenIsNotTheLastOne.
+     In case of killing the app with a syncing error the app will sync with the old fcm token
+     when waking up. If a new fcm token arrives while we are already syncing, that token will
+     be processed by runAgainIfSyncedTokenIsNotTheLastOne.
      */
-    public func run(token: String,
-                    runFromFailureMode: Bool = false) {
+    public func run(
+        token: String,
+        runFromFailureMode: Bool = false
+    ) {
         // This must be run here because the implementation of runSingle() ignores calls if the 
         // asyncAction is already running. Otherwise, incoming tokens will be lost.
 
@@ -72,7 +79,8 @@ public class FCMTokenAction: AsyncAction<()>, Runnable {
 
             // Firebase token callback runs this action on every startup.
             // As we already are in failure mode we are ignoring that manual call but keeping
-            // the new token. That way as soon as the failure mode ends the last FCMToken will be synced
+            // the new token. That way as soon as the failure mode ends the last FCMToken will be
+            // synced
             // by #runAgainIfSyncedTokenIsNotTheLastOne.
             if self.shouldAvoidADirectCallDueToFailureMode(runFromFailureMode) {
                 return Single.just(())
@@ -117,10 +125,12 @@ public class FCMTokenAction: AsyncAction<()>, Runnable {
 
     private func enterFailureMode() {
         timer.stop()
-        timer.start(timeInterval: failureModeRetryInSeconds,
-                         target: self,
-                         selector: #selector(self.runOnFailureMode),
-                         repeats: true)
+        timer.start(
+            timeInterval: failureModeRetryInSeconds,
+            target: self,
+            selector: #selector(self.runOnFailureMode),
+            repeats: true
+        )
     }
 
     private func shouldAvoidADirectCallDueToFailureMode(_ runFromFailureMode: Bool) -> Bool {

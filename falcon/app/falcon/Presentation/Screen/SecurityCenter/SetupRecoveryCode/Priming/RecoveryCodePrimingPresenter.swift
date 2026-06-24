@@ -6,20 +6,21 @@
 //  Copyright © 2022 muun. All rights reserved.
 //
 
-
-
 protocol RecoveryCodePrimingPresenterDelegate: BasePresenterDelegate {
     func goToNextScreen(recoveryCode: RecoveryCode)
     func continueButtonIs(loading: Bool)
     func showStartRecoveryCodeSetupError()
 }
 
-class RecoveryCodePrimingPresenter<Delegate: RecoveryCodePrimingPresenterDelegate>: BasePresenter<Delegate> {
+class RecoveryCodePrimingPresenter<Delegate: RecoveryCodePrimingPresenterDelegate>:
+    BasePresenter<Delegate> {
     let startRecoverySetup: StartRecoverCodeSetupAction
     var recoveryCode: RecoveryCode?
 
-    init(delegate: Delegate,
-         startRecoverySetupAction: StartRecoverCodeSetupAction) {
+    init(
+        delegate: Delegate,
+        startRecoverySetupAction: StartRecoverCodeSetupAction
+    ) {
         self.startRecoverySetup = startRecoverySetupAction
         super.init(delegate: delegate)
     }

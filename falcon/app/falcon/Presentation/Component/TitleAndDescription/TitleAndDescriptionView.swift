@@ -76,7 +76,9 @@ class TitleAndDescriptionView: MUView {
         descriptionLabel.alpha = 0
 
         descriptionLabel.isUserInteractionEnabled = true
-        descriptionLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: .descriptionTextTouched))
+        descriptionLabel.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: .descriptionTextTouched)
+        )
     }
 
     func animate(completion: (() -> Void)? = nil) {

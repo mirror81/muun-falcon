@@ -98,10 +98,12 @@ class SecurityCenterViewController: MUViewController {
     }
 
     private func setUpBackUpInProgressView() {
-        backUpInProgressProgressionBox.roundCorners(cornerRadius: backUpInProgressProgressionBox.bounds.height / 2)
+        backUpInProgressProgressionBox
+            .roundCorners(cornerRadius: backUpInProgressProgressionBox.bounds.height / 2)
         backUpInProgressProgressionBox.backgroundColor = Asset.Colors.muunAlmostWhite.color
 
-        backUpInProgressProgression.roundCorners(cornerRadius: backUpInProgressProgression.bounds.height / 2)
+        backUpInProgressProgression
+            .roundCorners(cornerRadius: backUpInProgressProgression.bounds.height / 2)
         backUpInProgressProgression.backgroundColor = Asset.Colors.muunRed.color
 
         backUpInProgressLabel.font = Constant.Fonts.system(size: .desc, weight: .semibold)
@@ -158,7 +160,8 @@ class SecurityCenterViewController: MUViewController {
 
     private func updateProgressBar() {
         backUpInProgressProgressionWidthConstraint =
-            backUpInProgressProgressionWidthConstraint.setMultiplier(multiplier: presenter.backUpProgressMultiplier())
+            backUpInProgressProgressionWidthConstraint
+            .setMultiplier(multiplier: presenter.backUpProgressMultiplier())
 
         UIView.animate(withDuration: 0.3) {
             self.backUpInProgressView.layoutIfNeeded()

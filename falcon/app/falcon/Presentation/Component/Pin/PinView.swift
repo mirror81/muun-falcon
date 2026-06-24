@@ -97,14 +97,16 @@ class PinView: MUView {
                 view.layer.borderColor = color.cgColor
             }
 
-        }, completion: { (_) in
-            if !isValid {
-                self.pinViewContainer.shake(completion: {
-                    self.clearInput()
-                })
+            }, completion: { (_) in
+                if !isValid {
+                    self.pinViewContainer.shake(
+                        completion: {
+                            self.clearInput()
+                        }
+                    )
+                }
             }
-        })
-
+        )
     }
 
     public func clearInput() {

@@ -25,7 +25,11 @@ public class NotificationScheduler {
 
     public func notifyPending(paymentHash: Data, title: String, body: String) {
 
-        Logger.log(.info, "Scheduling notification for pending lightning payment with hash \(paymentHash.toHexString())")
+        Logger.log(
+            .info,
+            "Scheduling notification for pending lightning"
+            + " payment with hash \(paymentHash.toHexString())"
+        )
 
         let content = UNMutableNotificationContent()
         content.title = title
@@ -62,7 +66,11 @@ public class NotificationScheduler {
             trigger: UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
         )
 
-        Logger.log(.info, "Scheduling notification for pending lightning payment with hash \(paymentHash.toHexString()) at \(date)")
+        Logger.log(
+            .info,
+            "Scheduling notification for pending lightning payment"
+            + " with hash \(paymentHash.toHexString()) at \(date)"
+        )
 
         userNotificationCenter.add(request) { error in
             if let error = error {
@@ -73,7 +81,10 @@ public class NotificationScheduler {
     }
 
     public func cancelNotifications(paymentHash: Data) {
-        Logger.log(.info, "Canceling notifications for lightning payment from \(paymentHash.toHexString())")
+        Logger.log(
+            .info,
+            "Canceling notifications for lightning payment from \(paymentHash.toHexString())"
+        )
 
         userNotificationCenter.removePendingNotificationRequests(withIdentifiers: [
             generateId(.pending, paymentHash),

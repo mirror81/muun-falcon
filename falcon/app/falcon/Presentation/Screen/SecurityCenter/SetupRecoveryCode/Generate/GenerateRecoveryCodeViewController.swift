@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class GenerateRecoveryCodeViewController: MUViewController {
 
     @IBOutlet private weak var buttonView: ButtonView!
@@ -17,7 +16,10 @@ class GenerateRecoveryCodeViewController: MUViewController {
 
     @IBOutlet private weak var buttonBottomConstraint: NSLayoutConstraint!
 
-    fileprivate lazy var presenter = instancePresenter(GenerateRecoveryCodePresenter.init, delegate: self)
+    fileprivate lazy var presenter = instancePresenter(
+        GenerateRecoveryCodePresenter.init,
+        delegate: self
+    )
     fileprivate let recoveryCode: RecoveryCode
 
     private var wording: SetUpRecoveryCodeWording
@@ -109,21 +111,31 @@ class GenerateRecoveryCodeViewController: MUViewController {
 
     @objc func abortSetup() {
         let desc = L10n.GenerateRecoveryCodeViewController.s7
-        let alert = UIAlertController(title: L10n.GenerateRecoveryCodeViewController.s4,
-                                      message: desc,
-                                      preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: L10n.GenerateRecoveryCodeViewController.s5,
-                                      style: .default,
-                                      handler: { _ in
-            alert.dismiss(animated: true)
-        }))
+        let alert = UIAlertController(
+            title: L10n.GenerateRecoveryCodeViewController.s4,
+            message: desc,
+            preferredStyle: .alert
+        )
+        alert.addAction(
+            UIAlertAction(
+                title: L10n.GenerateRecoveryCodeViewController.s5,
+                style: .default,
+                handler: { _ in
+                    alert.dismiss(animated: true)
+                }
+            )
+        )
 
-        alert.addAction(UIAlertAction(title: L10n.GenerateRecoveryCodeViewController.s6,
-                                      style: .destructive,
-                                      handler: { _ in
-            self.logEvent("setup_recovery_code_aborted")
-            self.navigationController!.popTo(type: SecurityCenterViewController.self)
-        }))
+        alert.addAction(
+            UIAlertAction(
+                title: L10n.GenerateRecoveryCodeViewController.s6,
+                style: .destructive,
+                handler: { _ in
+                    self.logEvent("setup_recovery_code_aborted")
+                    self.navigationController!.popTo(type: SecurityCenterViewController.self)
+                }
+            )
+        )
 
         alert.view.tintColor = Asset.Colors.muunGrayDark.color
 

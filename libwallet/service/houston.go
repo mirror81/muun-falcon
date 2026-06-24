@@ -9,15 +9,24 @@ type HoustonService interface {
 	HealthCheck() error
 	ChallengeKeySetupStart(req model.ChallengeSetupJson) (model.SetupChallengeResponseJson, error)
 	ChallengeKeySetupFinish(req model.ChallengeSetupVerifyJson) error
-	ChallengeSetupFinishWithVerifiableMuunKey(req model.ChallengeSetupVerifyJson) (model.VerifiableMuunKeyJson, error)
+	ChallengeSetupFinishWithVerifiableMuunKey(
+		req model.ChallengeSetupVerifyJson,
+	) (model.VerifiableMuunKeyJson, error)
 	VerifiableMuunKey() (model.VerifiableMuunKeyJson, error)
-	CreateFirstSession(createSessionJson model.CreateFirstSessionJson) (model.CreateFirstSessionOkJson, error)
+	CreateFirstSession(
+		createSessionJson model.CreateFirstSessionJson, //nolint:staticcheck // TODO: interface method parameter createSessionJson should be createSessionJSON
+	) (model.CreateFirstSessionOkJson, error)
 	FetchFeeWindow() (model.FeeWindowJson, error)
 	SubmitDiagnosticsScanData(req model.DiagnosticScanDataJson) error
 	ChallengeSecurityCardPair() (model.ChallengeSecurityCardPairJson, error)
-	RegisterSecurityCard(req model.RegisterSecurityCardJson) (model.RegisterSecurityCardOkJson, error)
-	ChallengeSecurityCardSign(req model.ChallengeSecurityCardSignJson) (model.ChallengeSecurityCardSignResponseJson, error)
+	RegisterSecurityCard(
+		req model.RegisterSecurityCardJson,
+	) (model.RegisterSecurityCardOkJson, error)
+	ChallengeSecurityCardSign(
+		req model.ChallengeSecurityCardSignJson,
+	) (model.ChallengeSecurityCardSignResponseJson, error)
 	SolveSecurityCardChallenge(req model.SolveSecurityCardChallengeJson) error
+	FetchSecurityCardsMarketplace() (model.SecurityCardsMarketplaceJson, error)
 }
 
 type HoustonClient struct {
@@ -40,7 +49,9 @@ func (h *HoustonClient) HealthCheck() error {
 	return err
 }
 
-func (h *HoustonClient) ChallengeKeySetupStart(req model.ChallengeSetupJson) (model.SetupChallengeResponseJson, error) {
+func (h *HoustonClient) ChallengeKeySetupStart(
+	req model.ChallengeSetupJson,
+) (model.SetupChallengeResponseJson, error) {
 	r := request[model.SetupChallengeResponseJson]{
 		Method: MethodPost,
 		Path:   "/user/challenge/setup/start",
@@ -60,7 +71,9 @@ func (h *HoustonClient) ChallengeKeySetupFinish(req model.ChallengeSetupVerifyJs
 	return err
 }
 
-func (h *HoustonClient) ChallengeSetupFinishWithVerifiableMuunKey(req model.ChallengeSetupVerifyJson) (model.VerifiableMuunKeyJson, error) {
+func (h *HoustonClient) ChallengeSetupFinishWithVerifiableMuunKey(
+	req model.ChallengeSetupVerifyJson,
+) (model.VerifiableMuunKeyJson, error) {
 
 	r := request[model.VerifiableMuunKeyJson]{
 		Method: MethodPost,
@@ -81,7 +94,7 @@ func (h *HoustonClient) VerifiableMuunKey() (model.VerifiableMuunKeyJson, error)
 }
 
 func (h *HoustonClient) CreateFirstSession(
-	createSessionJson model.CreateFirstSessionJson,
+	createSessionJson model.CreateFirstSessionJson, //nolint:staticcheck // TODO: method parameter createSessionJson should be createSessionJSON
 ) (model.CreateFirstSessionOkJson, error) {
 
 	r := request[model.CreateFirstSessionOkJson]{
@@ -116,20 +129,30 @@ func (h *HoustonClient) ChallengeSecurityCardPair() (model.ChallengeSecurityCard
 }
 
 func (h *HoustonClient) RegisterSecurityCard(
-	req model.RegisterSecurityCardJson,
+	req model.RegisterSecurityCardJson, //nolint:revive // TODO: use or remove req
 ) (model.RegisterSecurityCardOkJson, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
 func (h *HoustonClient) ChallengeSecurityCardSign(
-	req model.ChallengeSecurityCardSignJson,
+	req model.ChallengeSecurityCardSignJson, //nolint:revive // TODO: use or remove req
 ) (model.ChallengeSecurityCardSignResponseJson, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (h *HoustonClient) SolveSecurityCardChallenge(req model.SolveSecurityCardChallengeJson) error {
+func (h *HoustonClient) SolveSecurityCardChallenge(
+	req model.SolveSecurityCardChallengeJson, //nolint:revive // TODO: use or remove req
+) error {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (h *HoustonClient) FetchSecurityCardsMarketplace() (
+	model.SecurityCardsMarketplaceJson,
+	error,
+) {
 	//TODO implement me
 	panic("implement me")
 }

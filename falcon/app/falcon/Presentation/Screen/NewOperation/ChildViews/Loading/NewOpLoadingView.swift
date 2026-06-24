@@ -8,11 +8,12 @@
 
 import UIKit
 
-
 protocol OpLoadingTransitions: AnyObject {
-    func didLoad(feeInfo: FeeInfo,
-                 user: User,
-                 paymentRequestType: PaymentRequestType)
+    func didLoad(
+        feeInfo: FeeInfo,
+        user: User,
+        paymentRequestType: PaymentRequestType
+    )
     func expiredInvoice()
     func invalidAddress()
     func swapError(_ error: NewOpError)
@@ -22,15 +23,21 @@ protocol OpLoadingTransitions: AnyObject {
 
 class NewOpLoadingView: MUView, PresenterInstantior {
 
-    fileprivate lazy var presenter = instancePresenter(NewOpLoadingPresenter.init, delegate: self, state: paymentIntent)
+    fileprivate lazy var presenter = instancePresenter(
+        NewOpLoadingPresenter.init,
+        delegate: self,
+        state: paymentIntent
+    )
 
     private let paymentIntent: PaymentIntent
     private let origin: Constant.NewOpAnalytics.Origin
     weak var delegate: OpLoadingTransitions?
 
-    init(paymentIntent: PaymentIntent,
-         delegate: OpLoadingTransitions?,
-         origin: Constant.NewOpAnalytics.Origin) {
+    init(
+        paymentIntent: PaymentIntent,
+        delegate: OpLoadingTransitions?,
+        origin: Constant.NewOpAnalytics.Origin
+    ) {
         self.paymentIntent = paymentIntent
         self.delegate = delegate
         self.origin = origin
@@ -82,9 +89,11 @@ extension NewOpLoadingView: NewOpLoadingPresenterDelegate {
         delegate?.expiredInvoice()
     }
 
-    func loadingDidFinish(feeInfo: FeeInfo,
-                          user: User,
-                          paymentRequestType: PaymentRequestType) {
+    func loadingDidFinish(
+        feeInfo: FeeInfo,
+        user: User,
+        paymentRequestType: PaymentRequestType
+    ) {
         delegate?.didLoad(feeInfo: feeInfo, user: user, paymentRequestType: paymentRequestType)
     }
 }

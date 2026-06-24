@@ -40,7 +40,10 @@ class ToastView: MUView {
         toastGradient.startPoint = CGPoint(x: 0.0, y: 0.5)
         toastGradient.endPoint = CGPoint(x: 1.0, y: 0.5)
 
-        toastGradient.colors = [Asset.Colors.toastLeft.color.cgColor, Asset.Colors.toastRight.color.cgColor]
+        toastGradient.colors = [
+            Asset.Colors.toastLeft.color.cgColor,
+            Asset.Colors.toastRight.color.cgColor
+        ]
 
         toastCardView.layer.addSublayer(toastGradient)
     }
@@ -57,9 +60,14 @@ class ToastView: MUView {
         self.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(self)
 
-        self.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16).isActive = true
+        self.bottomAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+            constant: -16
+        ).isActive = true
 
-        self.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 48).isActive = true
+        self.widthAnchor.constraint(
+            equalToConstant: UIScreen.main.bounds.width - 48
+        ).isActive = true
         self.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
 
         self.alpha = 0

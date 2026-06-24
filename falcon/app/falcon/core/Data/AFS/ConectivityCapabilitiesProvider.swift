@@ -58,7 +58,8 @@ public class ConectivityCapabilitiesProvider {
             .serviceSubscriberCellularProviders?
             .values
             .compactMap { $0.mobileCountryCode }
-        guard let mobileCountryCodes = cellularProvidersCountryCodes, !mobileCountryCodes.isEmpty else {
+        guard let mobileCountryCodes = cellularProvidersCountryCodes,
+              !mobileCountryCodes.isEmpty else {
             return .absent
         }
 
@@ -113,7 +114,7 @@ public class ConectivityCapabilitiesProvider {
          }
          return SignalConstants.intDisabled
      }
-    
+
     private func getProxyType(key: ProxyKey) -> Int {
         guard let settings = getProxySettingsDict() else {
             return AddressesType.unknown.rawValue
@@ -267,7 +268,7 @@ enum ProxyKey: String {
 struct SignalConstants {
     static let empty = ""
     static let unknown = "UNKNOWN"
-    
+
     static let intUnknown = -1
     static let intDisabled = 0
 }

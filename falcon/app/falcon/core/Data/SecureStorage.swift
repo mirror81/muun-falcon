@@ -59,3 +59,12 @@ public class SecureStorage {
         return try keychainRepository.has(key.rawValue)
     }
 }
+
+extension SecureStorage.Errors: ClassifiedError {
+    var classification: ErrorClassification {
+        switch self {
+        case .secureStorageError, .invalidData:
+            return .unexpected
+        }
+    }
+}

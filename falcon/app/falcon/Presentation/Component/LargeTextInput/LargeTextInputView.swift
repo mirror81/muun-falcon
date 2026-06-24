@@ -110,7 +110,11 @@ extension LargeTextInputView: UITextViewDelegate {
         bottomBarHeightConstraint.constant = 1
     }
 
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText string: String) -> Bool {
+    func textView(
+        _ textView: UITextView,
+        shouldChangeTextIn range: NSRange,
+        replacementText string: String
+    ) -> Bool {
 
         bottomBar.backgroundColor = Asset.Colors.muunBlue.color
         topLabel.textColor = Asset.Colors.muunBlue.color

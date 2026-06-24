@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 protocol UnifiedAdvancedOptionsViewDelegate: AnyObject {
     func didTapAddAmount()
     func didToggleOptions(visible: Bool)
@@ -71,7 +70,9 @@ class UnifiedAdvancedOptionsView: UIView {
         headerStackView.axis = .vertical
         headerStackView.alignment = .center
         headerStackView.isUserInteractionEnabled = true
-        headerStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: .didTapToggle))
+        headerStackView.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: .didTapToggle)
+        )
         headerStackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubview(headerStackView)
 

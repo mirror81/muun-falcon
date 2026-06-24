@@ -8,22 +8,24 @@
 
 import RxSwift
 
-
 protocol ChangePasswordVerifyPresenterDelegate: BasePresenterDelegate {
     func showLoading()
     func onEmailVerified()
 }
 
-class ChangePasswordVerifyPresenter<Delegate: ChangePasswordVerifyPresenterDelegate>: BasePresenter<Delegate> {
+class ChangePasswordVerifyPresenter<Delegate: ChangePasswordVerifyPresenterDelegate>:
+    BasePresenter<Delegate> {
 
     private let sessionActions: SessionActions
     internal let fetchNotificationsAction: FetchNotificationsAction
     private let authorizeEmailAction: AuthorizeEmailAction
 
-    init(delegate: Delegate,
-         sessionActions: SessionActions,
-         fetchNotificationsAction: FetchNotificationsAction,
-         authorizeEmailAction: AuthorizeEmailAction) {
+    init(
+        delegate: Delegate,
+        sessionActions: SessionActions,
+        fetchNotificationsAction: FetchNotificationsAction,
+        authorizeEmailAction: AuthorizeEmailAction
+    ) {
         self.sessionActions = sessionActions
         self.fetchNotificationsAction = fetchNotificationsAction
         self.authorizeEmailAction = authorizeEmailAction
@@ -37,7 +39,10 @@ class ChangePasswordVerifyPresenter<Delegate: ChangePasswordVerifyPresenterDeleg
         // Delay by one second to avoid hammering the backend with requests
         let periodicFetch = buildFetchNotificationsPeriodicAction(intervalInSeconds: 1)
 
-        subscribeTo(sessionActions.watchChangePasswordVerification(), onNext: self.onEmailAuthorization)
+        subscribeTo(
+            sessionActions.watchChangePasswordVerification(),
+            onNext: self.onEmailAuthorization
+        )
         subscribeTo(periodicFetch, onNext: { _ in })
     }
 

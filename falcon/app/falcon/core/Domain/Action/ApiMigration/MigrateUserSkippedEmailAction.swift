@@ -11,8 +11,10 @@ public class MigrateUserSkippedEmailAction {
     let updateUserPreferencesAction: UpdateUserPreferencesAction
     let userLocalStorage: UserRepository
 
-    init(updateUserPreferencesAction: UpdateUserPreferencesAction,
-         userRepository: UserRepository) {
+    init(
+        updateUserPreferencesAction: UpdateUserPreferencesAction,
+        userRepository: UserRepository
+    ) {
         self.updateUserPreferencesAction = updateUserPreferencesAction
         self.userLocalStorage = userRepository
     }

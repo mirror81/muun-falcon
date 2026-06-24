@@ -61,15 +61,25 @@ extension OnchainSettingsViewController: OnchainSettingsViewDelegate {
                 preferredStyle: .alert
             )
 
-            alert.addAction(UIAlertAction(title: L10n.SettingsViewController.cancel,
-                                          style: .destructive,
-                                          handler: { _ in
-                self.settingsView.enabled = false
-            }))
+            alert.addAction(
+                UIAlertAction(
+                    title: L10n.SettingsViewController.cancel,
+                    style: .destructive,
+                    handler: { _ in
+                        self.settingsView.enabled = false
+                    }
+                )
+            )
 
-            alert.addAction(UIAlertAction(title: L10n.OnchainSettings.confirm, style: .default, handler: { _ in
-                self.presenter.toggle()
-            }))
+            alert.addAction(
+                UIAlertAction(
+                    title: L10n.OnchainSettings.confirm,
+                    style: .default,
+                    handler: { _ in
+                        self.presenter.toggle()
+                    }
+                )
+            )
 
             present(alert, animated: true)
         }

@@ -19,10 +19,12 @@ class BaseRequest {
 
     public var request: URLRequest
 
-    public init(_ url: URL,
-                _ method: HTTPMethod,
-                body: Data? = nil,
-                queryParams: [String: Any]? = nil) {
+    public init(
+        _ url: URL,
+        _ method: HTTPMethod,
+        body: Data? = nil,
+        queryParams: [String: Any]? = nil
+    ) {
 
         self.url = url
         self.method = method

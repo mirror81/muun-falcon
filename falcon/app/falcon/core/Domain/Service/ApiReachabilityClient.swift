@@ -16,10 +16,12 @@ class ApiReachabilityClient: ReachabilityService {
     private let reachabilityStatusRepository: ReachabilityStatusRepository
     private let pingService: PingURLService
 
-    init(sessionActions: SessionActions,
-         featureFlagsRepository: FeatureFlagsRepository,
-         reachabilityStatusRepository: ReachabilityStatusRepository,
-         pingService: PingURLService) {
+    init(
+        sessionActions: SessionActions,
+        featureFlagsRepository: FeatureFlagsRepository,
+        reachabilityStatusRepository: ReachabilityStatusRepository,
+        pingService: PingURLService
+    ) {
         self.reachabilityStatusRepository = reachabilityStatusRepository
         self.sessionActions = sessionActions
         self.featureFlagsRepository = featureFlagsRepository
@@ -62,12 +64,15 @@ private extension ApiReachabilityClient {
             return
         }
 
-        Single.zip(canReachDeviceCheck(),
-                   canReachHouston()
+        Single.zip(
+            canReachDeviceCheck(),
+            canReachHouston()
         ).subscribe { [weak self] in
             let (canReachDeviceCheck, canReachHouston) = $0
-            let status = ReachabilityStatus(houston: canReachHouston,
-                                            deviceCheck: canReachDeviceCheck)
+            let status = ReachabilityStatus(
+                houston: canReachHouston,
+                deviceCheck: canReachDeviceCheck
+            )
 
             self?.reachabilityStatusRepository.set(status)
         }.disposed(by: disposeBag)

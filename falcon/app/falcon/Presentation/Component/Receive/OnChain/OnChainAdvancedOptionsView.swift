@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 protocol OnChainAdvancedOptionsViewDelegate: AnyObject {
     func didTapOnAddressTypeControl()
     func didTapAddAmount()
@@ -69,7 +68,9 @@ class OnChainAdvancedOptionsView: UIView {
         headerStackView.axis = .vertical
         headerStackView.alignment = .center
         headerStackView.isUserInteractionEnabled = true
-        headerStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: .didTapToggle))
+        headerStackView.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: .didTapToggle)
+        )
         headerStackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubview(headerStackView)
 

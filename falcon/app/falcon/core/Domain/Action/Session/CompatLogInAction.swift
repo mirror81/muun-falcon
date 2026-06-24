@@ -12,9 +12,11 @@ public class CompatLogInAction: AsyncAction<KeySet> {
     private let storeKeySetAction: StoreKeySetAction
     private let setUpChallengeAction: SetupChallengeAction
 
-    init(houstonService: HoustonService,
-         storeKeySetAction: StoreKeySetAction,
-         setUpChallengeAction: SetupChallengeAction) {
+    init(
+        houstonService: HoustonService,
+        storeKeySetAction: StoreKeySetAction,
+        setUpChallengeAction: SetupChallengeAction
+    ) {
         self.houstonService = houstonService
         self.storeKeySetAction = storeKeySetAction
         self.setUpChallengeAction = setUpChallengeAction

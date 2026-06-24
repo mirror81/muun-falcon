@@ -8,15 +8,18 @@
 
 import Foundation
 
-private func operationFailed(_ value1: Decimal,
-                             _ value2: Decimal,
-                             _ roundingMode: Decimal.RoundingMode,
-                             _ error: NSDecimalNumber.CalculationError,
-                             operation: String = #function,
-                             file: StaticString = #file,
-                             line: UInt = #line) -> Never {
+private func operationFailed(
+    _ value1: Decimal,
+    _ value2: Decimal,
+    _ roundingMode: Decimal.RoundingMode,
+    _ error: NSDecimalNumber.CalculationError,
+    operation: String = #function,
+    file: StaticString = #file,
+    line: UInt = #line
+) -> Never {
 
-    let str = "Operation \(operation)(\(value1), \(value2)) with rounding \(roundingMode) failed with status \(error)"
+    let str = "Operation \(operation)(\(value1), \(value2)) with"
+              + " rounding \(roundingMode) failed with status \(error)"
     fatalError(str, file: file, line: line)
 }
 
@@ -31,7 +34,10 @@ extension Decimal {
         NSDecimalCompact(&self)
     }
 
-    public func round(scale: Int = Int(NSDecimalNoScale), roundingMode: RoundingMode = .plain) -> Decimal {
+    public func round(
+        scale: Int = Int(NSDecimalNoScale),
+        roundingMode: RoundingMode = .plain
+    ) -> Decimal {
 
         var out: Decimal = 0
         var mutableSelf = self
@@ -41,9 +47,11 @@ extension Decimal {
         return out
     }
 
-    public static func normalize(_ decimal1: inout Decimal,
-                                 _ decimal2: inout Decimal,
-                                 roundingMode: RoundingMode = .plain) {
+    public static func normalize(
+        _ decimal1: inout Decimal,
+        _ decimal2: inout Decimal,
+        roundingMode: RoundingMode = .plain
+    ) {
 
         let error = NSDecimalNormalize(&decimal1, &decimal2, roundingMode)
         guard error == .noError else {

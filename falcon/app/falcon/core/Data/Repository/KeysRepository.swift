@@ -176,7 +176,7 @@ class KeysRepository {
             markChallengeKeyAsVerifiedForPassword()
         }
     }
-    
+
     func storeUnverified(challengeKey: ChallengeKey) throws {
         let type = challengeKey.type
         if let salt = challengeKey.salt {
@@ -195,7 +195,7 @@ class KeysRepository {
             userRepository.setUser(user)
         }
     }
-    
+
     func markChallengeKeyAsVerifiedForRecoveryCode() {
         if var user = userRepository.getUser() {
             user.hasRecoveryCodeChallengeKey = true
@@ -225,4 +225,13 @@ enum KeyStorageError: Error {
     case secureStorageError
     case missingKey
     case noSaltForUserKey
+}
+
+extension KeyStorageError: ClassifiedError {
+    var classification: ErrorClassification {
+        switch self {
+        case .secureStorageError, .missingKey, .noSaltForUserKey:
+            return .unexpected
+        }
+    }
 }

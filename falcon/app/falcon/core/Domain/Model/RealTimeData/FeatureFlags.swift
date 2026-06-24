@@ -14,7 +14,7 @@ public enum FeatureFlags: String, RawRepresentable, CaseIterable {
     case highFeesReceiveFlow = "HIGH_FEES_RECEIVE_FLOW"
     case collectDeviceCheckReachability = "COLLECT_DEVICE_CHECK_REACHABILITY"
     case effectiveFeesCalculation = "EFFECTIVE_FEES_CALCULATION"
-    case nfcCard = "NFC_CARD"
+    case nfcCard = "NFC_CARD" // Deprecated: V1 card firmware removed, use nfcCardV2
     case nfcCardV2 = "NFC_CARD_V2"
     case securityCardsMarketplace = "SECURITY_CARDS_MARKETPLACE"
     case ekGoRendering = "EK_GO_RENDERING"

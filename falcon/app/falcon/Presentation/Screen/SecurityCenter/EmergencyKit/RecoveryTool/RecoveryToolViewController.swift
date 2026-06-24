@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class RecoveryToolViewController: MUViewController {
 
     @IBOutlet fileprivate weak var titleAndDescriptionView: TitleAndDescriptionView!
@@ -44,10 +43,12 @@ class RecoveryToolViewController: MUViewController {
 
     private func setUpLabels() {
         titleAndDescriptionView.titleText = L10n.RecoveryToolViewController.s2
-        titleAndDescriptionView.descriptionText = L10n.RecoveryToolViewController.s3.attributedForDescription()
+        titleAndDescriptionView.descriptionText = L10n.RecoveryToolViewController.s3
+            .attributedForDescription()
 
         extraDescriptionLabel.style = .description
-        extraDescriptionLabel.attributedText = L10n.RecoveryToolViewController.s4.attributedForDescription()
+        extraDescriptionLabel.attributedText = L10n.RecoveryToolViewController.s4
+            .attributedForDescription()
         extraDescriptionLabel.alpha = 0
 
         linkLabel.style = .description
@@ -68,9 +69,11 @@ class RecoveryToolViewController: MUViewController {
         let recoveryToolUrl = "https://github.com/muun/recovery"
         let params = ["name": "recovery_tool", "url": recoveryToolUrl]
         logEvent("open_web", parameters: params)
-        UIApplication.shared.open(URL(string: recoveryToolUrl)!,
-                                  options: [:],
-                                  completionHandler: nil)
+        UIApplication.shared.open(
+            URL(string: recoveryToolUrl)!,
+            options: [:],
+            completionHandler: nil
+        )
     }
 
 }

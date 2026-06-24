@@ -28,25 +28,31 @@ public class Logger {
 
     /// (if build == debug) logs in console
     /// (if build != debug) attach a log to the next crash
-    public static func log(_ level: LogLevel,
-                           _ string: String,
-                           filename: StaticString = #file,
-                           line: UInt = #line,
-                           funcName: StaticString = #function) {
-        logExplicit(level: level,
-                    message: string,
-                    filename: MuunError.sourceFileName(filePath: filename),
-                    line: line,
-                    funcName: "\(funcName)")
+    public static func log(
+        _ level: LogLevel,
+        _ string: String,
+        filename: StaticString = #file,
+        line: UInt = #line,
+        funcName: StaticString = #function
+    ) {
+        logExplicit(
+            level: level,
+            message: string,
+            filename: MuunError.sourceFileName(filePath: filename),
+            line: line,
+            funcName: "\(funcName)"
+        )
     }
 
     /// (if build == debug) logs in console
     /// (if build != debug) attach a log to the next crash
-    public static func logExplicit(level: LogLevel,
-                                   message: String,
-                                   filename: String,
-                                   line: UInt,
-                                   funcName: String) {
+    public static func logExplicit(
+        level: LogLevel,
+        message: String,
+        filename: String,
+        line: UInt,
+        funcName: String
+    ) {
 
         #if !DEBUG
         switch level {
@@ -71,75 +77,102 @@ public class Logger {
     /// (if build == debug) logs an error in the console.
     /// (if build == debug) send a non-fatal to crashlytics.
     @inline(never)
-    public static func log(error: Error,
-                           filename: StaticString = #file,
-                           line: UInt = #line,
-                           funcName: StaticString = #function) {
+    public static func log(
+        error: Error,
+        filename: StaticString = #file,
+        line: UInt = #line,
+        funcName: StaticString = #function
+    ) {
 
         #if DEBUG
         log(.err, error.localizedDescription, filename: filename, line: line, funcName: funcName)
         #else
-        reportToCrashlytics(error: error,
-                            filename: filename,
-                            line: line,
-                            funcName: funcName)
+        reportToCrashlytics(
+            error: error,
+            filename: filename,
+            line: line,
+            funcName: funcName
+        )
         #endif
 
     }
 
     /// Send a non-fatal to crashlytis and then crash with a fatal.
     @inline(never)
-    public static func fatal(error: Error,
-                             filename: StaticString = #file,
-                             line: UInt = #line,
-                             funcName: StaticString = #function) -> Never {
+    public static func fatal(
+        error: Error,
+        filename: StaticString = #file,
+        line: UInt = #line,
+        funcName: StaticString = #function
+    ) -> Never {
 
-        reportToCrashlytics(error: error,
-                            filename: filename,
-                            line: line,
-                            funcName: funcName)
+        reportToCrashlytics(
+            error: error,
+            filename: filename,
+            line: line,
+            funcName: funcName
+        )
 
         fatalError(file: filename, line: line)
     }
-    
+
     /// (If build == debug) log in console then crash with a fatal.
     /// (if build != debug) attach a crash log to the next crash and then crash with a fatal.
     @inline(never)
-    public static func fatal(_ string: String,
-                             filename: StaticString = #file,
-                             line: UInt = #line,
-                             funcName: StaticString = #function) -> Never {
+    public static func fatal(
+        _ string: String,
+        filename: StaticString = #file,
+        line: UInt = #line,
+        funcName: StaticString = #function
+    ) -> Never {
 
-        Logger.log(.err,
-                   string,
-                   filename: filename,
-                   line: line,
-                   funcName: funcName)
+        Logger.log(
+            .err,
+            string,
+            filename: filename,
+            line: line,
+            funcName: funcName
+        )
 
         fatalError(file: filename, line: line)
     }
 
     @inline(never)
-    private static func reportToCrashlytics(error: Error,
-                                            filename: StaticString = #file,
-                                            line: UInt = #line,
-                                            funcName: StaticString = #function) {
+    private static func reportToCrashlytics(
+        error: Error,
+        filename: StaticString = #file,
+        line: UInt = #line,
+        funcName: StaticString = #function
+    ) {
 
-        // It is quite important that this method be called in one level of nesting inside the Logger
-        // We do a hack of dropping the first 2 lines of the trace to make sure the report caught site is
+        // It is quite important that this method be called in one level of nesting inside the
+        // Logger
+        // We do a hack of dropping the first 2 lines of the trace to make sure the report caught
+        // site is
         // outside the logger.
 
         if let muunError = error as? MuunError {
-            let exception = ExceptionModel(name: String(describing: muunError.kind), reason: muunError.localizedDescription)
+            let exception = ExceptionModel(
+                name: String(describing: muunError.kind),
+                reason: muunError.localizedDescription
+            )
 
             var trace = [StackFrame]()
             trace.append(StackFrame(symbol: "<<<<<<<<<< Caught at >>>>>>>>>>", file: "", line: 0))
             // First two frames are the caller to the logger and this own method
-            trace.append(contentsOf: Thread.callStackReturnAddresses.dropFirst(2).map { StackFrame(address: $0.uintValue) })
+            trace
+                .append(contentsOf: Thread.callStackReturnAddresses.dropFirst(2)
+                .map { StackFrame(address: $0.uintValue) })
 
-            trace.append(StackFrame(symbol: "<<<<<<<<<< Original callsite >>>>>>>>>>", file: "", line: 0))
+            trace.append(StackFrame(
+                symbol: "<<<<<<<<<< Original callsite >>>>>>>>>>",
+                file: "",
+                line: 0
+            ))
             // First line is the constructor of MuunError
-            trace.append(contentsOf: muunError.stacktrace.dropFirst().map { StackFrame(address: $0.uintValue) })
+            trace
+                .append(contentsOf: muunError.stacktrace.dropFirst()
+                .map { StackFrame(address: $0.uintValue) })
 
             exception.stackTrace = trace
 
@@ -155,10 +188,12 @@ public class Logger {
         }
     }
 
-    private static func transformError(error: Error,
-                                       filename: StaticString = #file,
-                                       line: UInt = #line,
-                                       funcName: StaticString = #function) -> Error {
+    private static func transformError(
+        error: Error,
+        filename: StaticString = #file,
+        line: UInt = #line,
+        funcName: StaticString = #function
+    ) -> Error {
 
         let caller = "\(MuunError.sourceFileName(filePath: filename)) \(line) \(funcName)"
         let additionalInfo: [String: Any] = [
@@ -166,8 +201,9 @@ public class Logger {
             "caught_at": caller
         ]
 
-        let domain = "\(error.localizedDescription) - \(caller)"
-        return NSError(domain: domain, code: 0, userInfo: additionalInfo)
+        // Use the caller as the NSError domain so Crashlytics groups by callsite, not by the
+        // variable error message. The full description is still attached via userInfo.
+        return NSError(domain: caller, code: 0, userInfo: additionalInfo)
     }
 
 }

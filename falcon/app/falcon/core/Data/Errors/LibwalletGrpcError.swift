@@ -94,3 +94,17 @@ struct LibwalletGrpcError: Error {
         }
     }
 }
+
+extension LibwalletGrpcError: ClassifiedError {
+    var classification: ErrorClassification {
+        guard let detail = errorDetail else {
+            return .unexpected
+        }
+        switch detail.libwalletCode {
+        case .challengeExpired, .noSlotsAvailable, .muunAppletNotFound:
+            return .expected
+        case .signInternalError, .signMacValidationFailed, .pairInternalError, .unknown:
+            return .unexpected
+        }
+    }
+}

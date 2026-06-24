@@ -39,13 +39,17 @@ class DebugMenuViewController: MUViewController {
 extension DebugMenuViewController: DebugMenuPresenterDelegate {
     func askUserForText(message: String, completion: @escaping (String) -> Void) {
         DispatchQueue.main.async {
-            let alertController = UIAlertController(title: message,
-                                                    message: nil,
-                                                    preferredStyle: .alert)
+            let alertController = UIAlertController(
+                title: message,
+                message: nil,
+                preferredStyle: .alert
+            )
             alertController.addTextField()
 
-            let textFieldAction = UIAlertAction(title: "Accept",
-                                                style: .default) { [weak alertController] _ in
+            let textFieldAction = UIAlertAction(
+                title: "Accept",
+                style: .default
+            ) { [weak alertController] _ in
                 let loadedValue = alertController!.textFields![0]
                 completion(loadedValue.text!)
             }
@@ -58,26 +62,34 @@ extension DebugMenuViewController: DebugMenuPresenterDelegate {
 
     func showRequests() {
         DispatchQueue.main.async {
-            self.navigationController?.pushViewController(DebugRequestsViewController(),
-                                                          animated: true)
+            self.navigationController?.pushViewController(
+                DebugRequestsViewController(),
+                animated: true
+            )
         }
     }
 
     func showAnalytics() {
         DispatchQueue.main.async {
-            self.navigationController?.pushViewController(DebugAnalyticsViewController(),
-                                                          animated: true)
+            self.navigationController?.pushViewController(
+                DebugAnalyticsViewController(),
+                animated: true
+            )
         }
     }
 
     func showAlert(title: String?, message: String?) {
         DispatchQueue.main.async {
-            let alertController = UIAlertController(title: title,
-                                                    message: message,
-                                                    preferredStyle: .alert)
+            let alertController = UIAlertController(
+                title: title,
+                message: message,
+                preferredStyle: .alert
+            )
 
-            let acceptAction = UIAlertAction(title: "Accept",
-                                                style: .default)
+            let acceptAction = UIAlertAction(
+                title: "Accept",
+                style: .default
+            )
 
             alertController.addAction(acceptAction)
 
@@ -110,10 +122,14 @@ private extension DebugMenuViewController {
         closeButton.setTitleColor(.black, for: .normal)
         closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
         view.addSubview(closeButton)
-        closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                             constant: 16).isActive = true
-        closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                         constant: 16).isActive = true
+        closeButton.leadingAnchor.constraint(
+            equalTo: view.leadingAnchor,
+            constant: 16
+        ).isActive = true
+        closeButton.topAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.topAnchor,
+            constant: 16
+        ).isActive = true
     }
 
     @objc func closeButtonTapped() {
@@ -123,8 +139,10 @@ private extension DebugMenuViewController {
 
 extension DebugMenuViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        presenter.onExecutableSelected(groupIndex: indexPath.section,
-                                       executableIndex: indexPath.row)
+        presenter.onExecutableSelected(
+            groupIndex: indexPath.section,
+            executableIndex: indexPath.row
+        )
     }
 }
 
@@ -139,8 +157,10 @@ extension DebugMenuViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        let cellTitle = presenter.titleFor(groupIndex: indexPath.section,
-                                           executableIndex: indexPath.row)
+        let cellTitle = presenter.titleFor(
+            groupIndex: indexPath.section,
+            executableIndex: indexPath.row
+        )
         let title = UILabel()
         title.text = cellTitle
         title.translatesAutoresizingMaskIntoConstraints = false
@@ -162,4 +182,3 @@ extension DebugMenuViewController: UITableViewDataSource {
         presenter.titleFor(groupIndex: section)
     }
 }
-

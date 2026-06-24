@@ -45,7 +45,9 @@ class CreateInvoiceView: UIView, SmallButtonViewDelegate {
         }
     }
 
-    func addAsFullSizeSubviewBindingDelegateTo<T: UIView & CreateInvoiceViewDelegate>(superView: T) {
+    func addAsFullSizeSubviewBindingDelegateTo<T: UIView & CreateInvoiceViewDelegate>(
+        superView: T
+    ) {
         superView.addSubview(self)
         delegate = superView
 
@@ -84,10 +86,14 @@ class CreateInvoiceView: UIView, SmallButtonViewDelegate {
         addSubview(overlayStackView)
 
         NSLayoutConstraint.activate([
-            overlayStackView.leadingAnchor.constraint(equalTo: leadingAnchor,
-                                                      constant: .sideMargin),
-            overlayStackView.trailingAnchor.constraint(equalTo: trailingAnchor,
-                                                       constant: -.sideMargin),
+            overlayStackView.leadingAnchor.constraint(
+                equalTo: leadingAnchor,
+                constant: .sideMargin
+            ),
+            overlayStackView.trailingAnchor.constraint(
+                equalTo: trailingAnchor,
+                constant: -.sideMargin
+            ),
             overlayStackView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
 

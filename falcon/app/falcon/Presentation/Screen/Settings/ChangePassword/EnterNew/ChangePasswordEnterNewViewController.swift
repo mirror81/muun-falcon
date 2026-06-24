@@ -11,7 +11,10 @@ import UIKit
 class ChangePasswordEnterNewViewController: MUViewController {
 
     private var changePasswordView: ChangePasswordEnterNewView!
-    private lazy var presenter = instancePresenter(ChangePasswordEnterNewPresenter.init, delegate: self)
+    private lazy var presenter = instancePresenter(
+        ChangePasswordEnterNewPresenter.init,
+        delegate: self
+    )
     private var pendingUpdateUuid: String
 
     override var screenLoggingName: String {
@@ -62,26 +65,41 @@ class ChangePasswordEnterNewViewController: MUViewController {
         navigationItem.rightBarButtonItem = .stepCounter(step: 3, end: 3)
 
         let backImage = Constant.Images.back
-        let newBackButton = UIBarButtonItem(image: backImage, style: .plain, target: self, action: .backButtonTouched)
+        let newBackButton = UIBarButtonItem(
+            image: backImage,
+            style: .plain,
+            target: self,
+            action: .backButtonTouched
+        )
         navigationItem.leftBarButtonItem = newBackButton
     }
 
     @objc func presentAlertView() {
-        let alert = UIAlertController(title: L10n.ChangePasswordEnterNewViewController.s2,
-                                      message: L10n.ChangePasswordEnterNewViewController.s3,
-                                      preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: L10n.ChangePasswordEnterNewViewController.s4,
-                                      style: .default,
-                                      handler: { _ in
-            alert.dismiss(animated: true)
-        }))
+        let alert = UIAlertController(
+            title: L10n.ChangePasswordEnterNewViewController.s2,
+            message: L10n.ChangePasswordEnterNewViewController.s3,
+            preferredStyle: .alert
+        )
+        alert.addAction(
+            UIAlertAction(
+                title: L10n.ChangePasswordEnterNewViewController.s4,
+                style: .default,
+                handler: { _ in
+                    alert.dismiss(animated: true)
+                }
+            )
+        )
 
-        alert.addAction(UIAlertAction(title: L10n.ChangePasswordEnterNewViewController.s5,
-                                      style: .destructive,
-                                      handler: { _ in
-            self.logEvent("password_change_aborted")
-            self.navigationController!.popToRootViewController(animated: true)
-        }))
+        alert.addAction(
+            UIAlertAction(
+                title: L10n.ChangePasswordEnterNewViewController.s5,
+                style: .destructive,
+                handler: { _ in
+                    self.logEvent("password_change_aborted")
+                    self.navigationController!.popToRootViewController(animated: true)
+                }
+            )
+        )
 
         alert.view.tintColor = Asset.Colors.muunGrayDark.color
 

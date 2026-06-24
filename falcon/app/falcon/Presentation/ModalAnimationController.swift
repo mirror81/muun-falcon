@@ -40,9 +40,11 @@ import UIKit
                 view.transform = CGAffineTransform.identity
             }
 
-            UIView.animate(withDuration: transitionDuration(using: transitionContext),
-                           animations: animation,
-                           completion: transitionContext.completeTransition)
+            UIView.animate(
+                withDuration: transitionDuration(using: transitionContext),
+                animations: animation,
+                completion: transitionContext.completeTransition
+            )
         } else {
             let view = transitionContext.view(forKey: .from)!
 
@@ -55,9 +57,11 @@ import UIKit
                 view.removeFromSuperview()
             }
 
-            UIView.animate(withDuration: transitionDuration(using: transitionContext),
-                           animations: animation,
-                           completion: completion)
+            UIView.animate(
+                withDuration: transitionDuration(using: transitionContext),
+                animations: animation,
+                completion: completion
+            )
         }
     }
 

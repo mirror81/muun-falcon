@@ -19,10 +19,12 @@ enum BiometricsStatus {
 }
 
 final class BiometricsStatusProvider {
-    /// Raw biometric status for analytics. Used in *s_settings* event parameters in `SettingsViewController`
+    /// Raw biometric status for analytics. Used in *s_settings* event parameters in
+    /// `SettingsViewController`
     var analyticsBiometricsStatus: String = "unknown"
 
-    /// Raw biometric status reason for analytics. Used in *s_settings* event parameters in `SettingsViewController`
+    /// Raw biometric status reason for analytics. Used in *s_settings* event parameters in
+    /// `SettingsViewController`
     var analyticsBiometricsStatusReason: String?
 
     /// Determines the current biometric status of the device.
@@ -59,14 +61,15 @@ final class BiometricsStatusProvider {
             return biometricsStatusWhenDisabled()
         }
     }
-    
+
     func requestAuthentication(completion: @escaping () -> Void, failure: @escaping () -> Void) {
 
         let myContext = LAContext()
         var text = ""
         var authError: NSError?
 
-        if myContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &authError) {
+        if myContext
+            .canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &authError) {
             analyticsBiometricsStatus = "enabled"
             switch myContext.biometryType {
             case .faceID:
@@ -78,9 +81,12 @@ final class BiometricsStatusProvider {
             @unknown default:
                 fatalError("Implement the new biometric type")
             }
-            
+
             AnalyticsHelper.logScreen("biometrics_auth", parameters: nil)
-            myContext.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: text) { success, error in
+            myContext.evaluatePolicy(
+                .deviceOwnerAuthenticationWithBiometrics,
+                localizedReason: text
+            ) { success, error in
                 DispatchQueue.main.async {
                     if success {
                         AnalyticsHelper.logEvent("biometrics_auth_success")
@@ -102,7 +108,7 @@ final class BiometricsStatusProvider {
             // TODO: Show a "Face id not set up" pop up
             analyticsBiometricsStatus = "disabled"
             analyticsBiometricsStatusReason = authError?.localizedDescription ?? "unknown error"
-            
+
             failure()
         }
     }

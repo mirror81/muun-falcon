@@ -10,12 +10,17 @@ import UIKit
 
 final class CenterScalingFlowLayout: UICollectionViewFlowLayout {
 
-    private let minScale: CGFloat = 0.80
-    private let maxScale: CGFloat = 0.95
+    private enum Constants {
+        static let minScale: CGFloat = 0.80
+        static let maxScale: CGFloat = 1.0
+        static let minAlpha: CGFloat = 0.6
+        static let maxAlpha: CGFloat = 1.0
+    }
 
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool { true }
 
-    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+    override func layoutAttributesForElements(in rect: CGRect)
+        -> [UICollectionViewLayoutAttributes]? {
         guard let attrs = super.layoutAttributesForElements(in: rect),
               let cv = collectionView else { return nil }
 
@@ -25,16 +30,22 @@ final class CenterScalingFlowLayout: UICollectionViewFlowLayout {
         return attrs.compactMap { $0.copy() as? UICollectionViewLayoutAttributes }.map { attr in
             let distance = abs(attr.center.y - centerY)
             let t = min(distance / maxDistance, 1)
-            let scale = maxScale - (maxScale - minScale) * t
+            let scale = Constants.maxScale - (Constants.maxScale - Constants.minScale) * t
             attr.transform = CGAffineTransform(scaleX: scale, y: scale)
+            attr.alpha = Constants.maxAlpha - (Constants.maxAlpha - Constants.minAlpha) * t
             return attr
         }
     }
 
-    override func targetContentOffset(forProposedContentOffset proposed: CGPoint,
-                                      withScrollingVelocity velocity: CGPoint) -> CGPoint {
+    override func targetContentOffset(
+        forProposedContentOffset proposed: CGPoint,
+        withScrollingVelocity velocity: CGPoint
+    ) -> CGPoint {
         guard let cv = collectionView else {
-            return super.targetContentOffset(forProposedContentOffset: proposed, withScrollingVelocity: velocity)
+            return super.targetContentOffset(
+                forProposedContentOffset: proposed,
+                withScrollingVelocity: velocity
+            )
         }
 
         let halfHeight = cv.bounds.height / 2
@@ -42,7 +53,8 @@ final class CenterScalingFlowLayout: UICollectionViewFlowLayout {
         let rect = CGRect(x: 0, y: proposed.y, width: cv.bounds.width, height: cv.bounds.height)
 
         guard let attrs = super.layoutAttributesForElements(in: rect),
-              let closest = attrs.min(by: { abs($0.center.y - proposedCenterY) < abs($1.center.y - proposedCenterY) })
+              let closest = attrs
+              .min(by: { abs($0.center.y - proposedCenterY) < abs($1.center.y - proposedCenterY) })
         else { return proposed }
 
         return CGPoint(x: proposed.x, y: closest.center.y - halfHeight)

@@ -6,7 +6,7 @@
 //  Copyright © 2026 muun. All rights reserved.
 //
 
-struct ScreenNewOpErrorEvent: AnalyticsEvent {
+struct ScreenNewOpErrorEvent: ClassifiedErrorEvent {
     enum ErrorEventType: String {
         case invalidAddress = "invalid_address"
         case expiredInvoice = "expired_invoice"
@@ -30,19 +30,13 @@ struct ScreenNewOpErrorEvent: AnalyticsEvent {
     var name: String { "s_new_op_error" }
 
     var parameters: [String: AnalyticsValue]? {
-        var params: [String: AnalyticsValue] = [:]
+        var params: [String: AnalyticsValue] = ["error_type": type.rawValue]
 
-        params = [
-                     "type": type.rawValue
-                 ]
-
-        if let cause = cause {
-            params.merge(buildParamsFor(error: cause)) { (_, new) in new }
-        }
-
+        // Include error details, error message provides useful context.
+        params.merge(buildParamsFor(error: error)) { (_, new) in new }
         return params
     }
 
     var type: ErrorEventType
-    var cause: Error?
+    var error: Error
 }

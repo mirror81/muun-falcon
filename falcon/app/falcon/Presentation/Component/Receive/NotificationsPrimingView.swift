@@ -57,12 +57,20 @@ final class NotificationsPrimingView: UIView {
         contentContainerView.addSubview(contentStackView)
 
         NSLayoutConstraint.activate([
-            contentContainerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: .sideMargin),
-            contentContainerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -.sideMargin),
+            contentContainerView.leadingAnchor.constraint(
+                equalTo: leadingAnchor,
+                constant: .sideMargin
+            ),
+            contentContainerView.trailingAnchor.constraint(
+                equalTo: trailingAnchor,
+                constant: -.sideMargin
+            ),
             contentContainerView.topAnchor.constraint(equalTo: topAnchor),
 
             contentStackView.leadingAnchor.constraint(equalTo: contentContainerView.leadingAnchor),
-            contentStackView.trailingAnchor.constraint(equalTo: contentContainerView.trailingAnchor),
+            contentStackView.trailingAnchor.constraint(
+                equalTo: contentContainerView.trailingAnchor
+            ),
             contentStackView.centerYAnchor.constraint(equalTo: contentContainerView.centerYAnchor)
         ])
 
@@ -103,8 +111,14 @@ final class NotificationsPrimingView: UIView {
         buttonsStackView.addArrangedSubview(skipButton)
 
         NSLayoutConstraint.activate([
-            buttonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: .sideMargin),
-            buttonsStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -.sideMargin),
+            buttonsStackView.leadingAnchor.constraint(
+                equalTo: leadingAnchor,
+                constant: .sideMargin
+            ),
+            buttonsStackView.trailingAnchor.constraint(
+                equalTo: trailingAnchor,
+                constant: -.sideMargin
+            ),
             buttonsStackView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor),
             buttonsStackView.topAnchor.constraint(equalTo: contentContainerView.bottomAnchor),
             enableButton.widthAnchor.constraint(equalTo: buttonsStackView.widthAnchor),

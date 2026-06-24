@@ -40,7 +40,10 @@ class ManualSaveEmergencyKitView: UIScrollView {
                 leadingAnchor.constraint(equalTo: parent.leadingAnchor, constant: .sideMargin),
                 parent.trailingAnchor.constraint(equalTo: trailingAnchor, constant: .sideMargin),
                 topAnchor.constraint(greaterThanOrEqualTo: parent.topAnchor, constant: .sideMargin),
-                parent.bottomAnchor.constraint(greaterThanOrEqualTo: bottomAnchor, constant: .sideMargin)
+                parent.bottomAnchor.constraint(
+                    greaterThanOrEqualTo: bottomAnchor,
+                    constant: .sideMargin
+                )
             ])
         }
     }

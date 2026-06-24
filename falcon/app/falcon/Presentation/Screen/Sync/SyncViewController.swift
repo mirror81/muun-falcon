@@ -33,8 +33,10 @@ class SyncViewController: MUViewController {
     /**
      Be aware this screen will behave differently depending on how its invoked. If it is invoked
      from pinViewController it will work because SyncAction already has an state with success or
-     failure so as soon as the presenter subscribes it gets the last state triggering either a retry or going to the home.
-     If it is invoked from the appDelegate shouldRunSyncAction will be true so the action will be run and handle by
+     failure so as soon as the presenter subscribes it gets the last state triggering
+     either a retry or going to the home.
+     If it is invoked from the appDelegate shouldRunSyncAction will be true so the action
+     will be run and handle by
      SyncPresenter#onResponse.
      */
     convenience init(existingUser: Bool, shouldRunSyncAction: Bool = false) {

@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 protocol HomeViewDelegate: AnyObject {
     func sendButtonTap()
     func receiveButtonTap()
@@ -45,7 +44,8 @@ final class HomeView: UIView {
 
     private weak var delegate: HomeViewDelegate?
 
-    // We should set the max width to 480px so it doesn't break on larger screens (like iPads in the future)
+    // We should set the max width to 480px so it doesn't break on larger screens (like iPads in the
+    // future)
     private let maxStackViewWidth: CGFloat = 480
 
     init(delegate: HomeViewDelegate?) {
@@ -80,8 +80,10 @@ final class HomeView: UIView {
             blockClock.centerYAnchor.constraint(equalTo: blockClockContainer.centerYAnchor),
             blockClock.heightAnchor.constraint(equalTo: blockClockContainer.heightAnchor),
 
-            blockClockContainer.leadingAnchor.constraint(lessThanOrEqualTo: blockClock.leadingAnchor),
-            blockClock.trailingAnchor.constraint(lessThanOrEqualTo: blockClockContainer.trailingAnchor)
+            blockClockContainer.leadingAnchor
+                .constraint(lessThanOrEqualTo: blockClock.leadingAnchor),
+            blockClock.trailingAnchor
+            .constraint(lessThanOrEqualTo: blockClockContainer.trailingAnchor)
         ])
 
         blockClock.isUserInteractionEnabled = true
@@ -98,7 +100,10 @@ final class HomeView: UIView {
             securityCardsButton.heightAnchor.constraint(equalToConstant: .securityCardsButtonWidth),
             securityCardsButton
                 .trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            securityCardsButton.bottomAnchor.constraint(equalTo: chevronView.topAnchor, constant: -.spacing)
+            securityCardsButton.bottomAnchor.constraint(
+                equalTo: chevronView.topAnchor,
+                constant: -.spacing
+            )
         ])
     }
 
@@ -137,17 +142,22 @@ final class HomeView: UIView {
 
         contentView.addSubview(contentVerticalStack)
 
-        let leadingConstraint = contentVerticalStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
-                                                                              constant: .sideMargin)
+        let leadingConstraint = contentVerticalStack.leadingAnchor.constraint(
+            equalTo: contentView.leadingAnchor,
+            constant: .sideMargin
+        )
         leadingConstraint.priority = UILayoutPriority(999)
-        let trailingConstraint = contentVerticalStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
-                                                                               constant: -.sideMargin)
+        let trailingConstraint = contentVerticalStack.trailingAnchor.constraint(
+            equalTo: contentView.trailingAnchor,
+            constant: -.sideMargin
+        )
         trailingConstraint.priority = UILayoutPriority(999)
 
         NSLayoutConstraint.activate([
             contentVerticalStack.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             contentVerticalStack.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            contentVerticalStack.widthAnchor.constraint(lessThanOrEqualToConstant: maxStackViewWidth),
+            contentVerticalStack.widthAnchor
+            .constraint(lessThanOrEqualToConstant: maxStackViewWidth),
             leadingConstraint,
             trailingConstraint
         ])
@@ -198,7 +208,11 @@ final class HomeView: UIView {
     }
 
     func setUp(btcBalance: MonetaryAmount, primaryBalance: MonetaryAmount, isBalanceHidden: Bool) {
-        balanceView.setUp(btcBalance: btcBalance, primaryBalance: primaryBalance, isBalanceHidden: isBalanceHidden)
+        balanceView.setUp(
+            btcBalance: btcBalance,
+            primaryBalance: primaryBalance,
+            isBalanceHidden: isBalanceHidden
+        )
     }
 
     func setBalanceHidden(_ isHidden: Bool) {
@@ -229,7 +243,10 @@ final class HomeView: UIView {
         opsBadgeView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(opsBadgeView)
         NSLayoutConstraint.activate([
-            opsBadgeView.bottomAnchor.constraint(equalTo: balanceView.topAnchor, constant: -.sideMargin),
+            opsBadgeView.bottomAnchor.constraint(
+                equalTo: balanceView.topAnchor,
+                constant: -.sideMargin
+            ),
             opsBadgeView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor),
             opsBadgeView.trailingAnchor.constraint(greaterThanOrEqualTo: trailingAnchor),
             opsBadgeView.centerXAnchor.constraint(equalTo: centerXAnchor)

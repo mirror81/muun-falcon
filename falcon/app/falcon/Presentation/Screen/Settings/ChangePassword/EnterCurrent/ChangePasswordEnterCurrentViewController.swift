@@ -11,7 +11,10 @@ import UIKit
 class ChangePasswordEnterCurrentViewController: MUViewController {
 
     private var changePasswordView: ChangePasswordEnterCurrentView!
-    private lazy var presenter = instancePresenter(ChangePasswordEnterCurrentPresenter.init, delegate: self)
+    private lazy var presenter = instancePresenter(
+        ChangePasswordEnterCurrentPresenter.init,
+        delegate: self
+    )
 
     override var screenLoggingName: String {
         return "password_change_enter_current"
@@ -81,9 +84,15 @@ extension ChangePasswordEnterCurrentViewController: ChangePasswordEnterCurrentVi
 
     func didTapForgotPasswordButton() {
         if presenter.hasRecoveryCode() {
-            navigationController!.pushViewController(ChangePasswordEnterRecoveryCodeViewController(), animated: true)
+            navigationController!.pushViewController(
+                ChangePasswordEnterRecoveryCodeViewController(),
+                animated: true
+            )
         } else {
-            navigationController!.pushViewController(RecoveryCodeMissingViewController(), animated: true)
+            navigationController!.pushViewController(
+                RecoveryCodeMissingViewController(),
+                animated: true
+            )
         }
     }
 }
@@ -96,7 +105,10 @@ extension ChangePasswordEnterCurrentViewController: ChangePasswordEnterCurrentPr
 
     func pendingUpdateReceived(challengeType: String, updateUuid: String) {
         navigationController!.pushViewController(
-            ChangePasswordVerifyViewController(challengeType: challengeType, pendingUpdateUuid: updateUuid),
+            ChangePasswordVerifyViewController(
+                challengeType: challengeType,
+                pendingUpdateUuid: updateUuid
+            ),
             animated: true
         )
     }

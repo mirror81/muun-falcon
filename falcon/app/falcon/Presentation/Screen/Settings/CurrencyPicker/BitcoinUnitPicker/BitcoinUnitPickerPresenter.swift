@@ -8,10 +8,10 @@
 
 import UIKit
 
-
 protocol BitcoinUnitPickerPresenterDelegate: BasePresenterDelegate {}
 
-class BitcoinUnitPickerPresenter<Delegate: BitcoinUnitPickerPresenterDelegate>: BasePresenter<Delegate> {
+class BitcoinUnitPickerPresenter<Delegate: BitcoinUnitPickerPresenterDelegate>:
+    BasePresenter<Delegate> {
 
     private var currencies: [Currency] = []
     private var preferences: Preferences
@@ -25,8 +25,10 @@ class BitcoinUnitPickerPresenter<Delegate: BitcoinUnitPickerPresenterDelegate>: 
     override func setUp() {
         super.setUp()
 
-        currencies = [VisualCurrency(code: "BTC", symbol: "", name: "Bitcoin", flag: nil),
-                      VisualCurrency(code: satSymbol, symbol: "", name: "Satoshi", flag: nil)]
+        currencies = [
+            VisualCurrency(code: "BTC", symbol: "", name: "Bitcoin", flag: nil),
+            VisualCurrency(code: satSymbol, symbol: "", name: "Satoshi", flag: nil)
+        ]
     }
 
     func isSelected(_ currency: Currency) -> Bool {

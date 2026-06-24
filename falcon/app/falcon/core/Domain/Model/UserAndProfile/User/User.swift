@@ -27,7 +27,8 @@ public struct User: Codable {
     var hasRecoveryCodeChallengeKey: Bool
     let hasP2PEnabled: Bool
 
-    // These properties have te be optional because the object user was stored on preferences without these fields
+    // These properties have te be optional because the object user was stored on preferences
+    // without these fields
     // in previous versions:
     var hasExportedKeys: Bool?
     public let createdAt: Date?
@@ -98,7 +99,13 @@ public struct ExportEmergencyKit: Codable {
     let version: Int
     let method: Method?
 
-    public init(lastExportedAt: Date, verificationCode: String, verified: Bool, version: Int, method: Method?) {
+    public init(
+        lastExportedAt: Date,
+        verificationCode: String,
+        verified: Bool,
+        version: Int,
+        method: Method?
+    ) {
         self.lastExportedAt = lastExportedAt
         self.verificationCode = verificationCode
         self.verified = verified
@@ -124,12 +131,14 @@ public struct UserPreferences: Codable {
     public let defaultAddressType: AddressType
     public let receiveFormatPreference: ReceiveFormatPreference
 
-    public func copy(receiveStrictMode: Bool? = nil,
-                     seenNewHome: Bool? = nil,
-                     seenLnurlFirstTime: Bool? = nil,
-                     skippedEmailSetup: Bool? = nil,
-                     defaultAddressType: AddressType? = nil,
-                     receiveFormatPreference: ReceiveFormatPreference? = nil) -> UserPreferences {
+    public func copy(
+        receiveStrictMode: Bool? = nil,
+        seenNewHome: Bool? = nil,
+        seenLnurlFirstTime: Bool? = nil,
+        skippedEmailSetup: Bool? = nil,
+        defaultAddressType: AddressType? = nil,
+        receiveFormatPreference: ReceiveFormatPreference? = nil
+    ) -> UserPreferences {
 
         return UserPreferences(
             receiveStrictMode: receiveStrictMode ?? self.receiveStrictMode,

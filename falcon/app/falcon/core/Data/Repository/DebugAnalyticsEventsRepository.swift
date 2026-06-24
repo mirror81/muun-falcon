@@ -10,8 +10,10 @@ import Foundation
 public class DebugAnalyticsRepository {
     var storedEvents = [DebugAnalyticsEvent]()
 
-    public func save(event: String,
-                     params: [String: Any]) {
+    public func save(
+        event: String,
+        params: [String: Any]
+    ) {
         #if DEBUG
         let debugRequest = DebugAnalyticsEvent(event: event, params: params)
         storedEvents.append(debugRequest)

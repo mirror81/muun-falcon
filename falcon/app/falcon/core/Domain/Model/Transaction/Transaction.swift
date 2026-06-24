@@ -31,7 +31,8 @@ public struct NextTransactionSize: Codable {
         return debt
     }
 
-    // UI Balance is calculated by substracting the debt from the last item in the next transaction size.
+    // UI Balance is calculated by substracting the debt from the last item in the next transaction
+    // size.
     func uiBalance() -> Satoshis {
         guard let utxoBalanceInSat = sizeProgression.last?.amountInSatoshis else {
             // If the user does not have any utxo the balance should be 0
@@ -47,28 +48,34 @@ public struct NextTransactionSize: Codable {
     // NOTE: we're choosing to init status as CONFIRMED as this field won't be used right away and
     // for our intended first use CONFIRMED will be handled gracefully as "ignorable".
     func initUtxoStatus() -> NextTransactionSize {
-        return NextTransactionSize(sizeProgression: sizeProgression.map({ $0.initUtxoStatus() }),
-                                   validAtOperationHid: validAtOperationHid,
-                                   _expectedDebt: _expectedDebt)
+        return NextTransactionSize(
+            sizeProgression: sizeProgression.map({ $0.initUtxoStatus() }),
+            validAtOperationHid: validAtOperationHid,
+            _expectedDebt: _expectedDebt
+        )
     }
 }
 
 public struct SizeForAmount: Codable {
     let amountInSatoshis: Satoshis
-    // The sizeInBytes actually returns the size in WeightUnit, we need to divide that number by 4 to have vBytes
+    // The sizeInBytes actually returns the size in WeightUnit, we need to divide that number by 4
+    // to have vBytes
     let sizeInBytes: Int64
 
     // This property can't be nullable in versions > 46
     let outpoint: String?
 
-    // This property can't be nullable in versions > 1035 (just nullable to support migrating old, preexisting SizeForAmounts)
+    // This property can't be nullable in versions > 1035 (just nullable to support migrating old,
+    // preexisting SizeForAmounts)
     let utxoStatus: UtxoStatus?
 
     func initUtxoStatus() -> SizeForAmount {
-        return SizeForAmount(amountInSatoshis: amountInSatoshis,
-                             sizeInBytes: sizeInBytes,
-                             outpoint: outpoint,
-                             utxoStatus: .CONFIRMED)
+        return SizeForAmount(
+            amountInSatoshis: amountInSatoshis,
+            sizeInBytes: sizeInBytes,
+            outpoint: outpoint,
+            utxoStatus: .CONFIRMED
+        )
     }
 }
 

@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 protocol OpConfirmTransitions: NewOperationTransitions {
     func didConfirm()
 }

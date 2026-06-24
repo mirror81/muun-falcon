@@ -14,25 +14,30 @@ extension String {
         return data(using: String.Encoding.utf8, allowLossyConversion: true)?.bytes ?? Array(utf8)
     }
 
-    func attributedForDescription(alignment: NSTextAlignment = .natural,
-                                  paragraphLineBreakMode: NSLineBreakMode? = nil) -> NSMutableAttributedString {
-        return self.set(font: Constant.Fonts.description,
-                        lineSpacing: Constant.FontAttributes.lineSpacing,
-                        kerning: Constant.FontAttributes.kerning,
-                        alignment: alignment,
-                        paragraphLineBreakMode: paragraphLineBreakMode)
+    func attributedForDescription(
+        alignment: NSTextAlignment = .natural,
+        paragraphLineBreakMode: NSLineBreakMode? = nil
+    ) -> NSMutableAttributedString {
+        return self.set(
+            font: Constant.Fonts.description,
+            lineSpacing: Constant.FontAttributes.lineSpacing,
+            kerning: Constant.FontAttributes.kerning,
+            alignment: alignment,
+            paragraphLineBreakMode: paragraphLineBreakMode
+        )
     }
 
     func toAttributedString() -> NSMutableAttributedString {
         NSMutableAttributedString(string: self)
     }
 
-    func set(font: UIFont,
-             lineSpacing: CGFloat = 0,
-             kerning: CGFloat? = nil,
-             alignment: NSTextAlignment? = nil,
-             paragraphLineBreakMode: NSLineBreakMode? = nil)
-        -> NSMutableAttributedString {
+    func set(
+        font: UIFont,
+        lineSpacing: CGFloat = 0,
+        kerning: CGFloat? = nil,
+        alignment: NSTextAlignment? = nil,
+        paragraphLineBreakMode: NSLineBreakMode? = nil
+    ) -> NSMutableAttributedString {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.setParagraphStyle(NSParagraphStyle.default)
         paragraphLineBreakMode.map { paragraphStyle.lineBreakMode = $0 }
@@ -60,9 +65,11 @@ extension String {
 
 extension NSMutableAttributedString {
 
-    func set(bold text: String,
-             color: UIColor = Asset.Colors.black.color,
-             weight: UIFont.Weight = .bold) -> NSMutableAttributedString {
+    func set(
+        bold text: String,
+        color: UIColor = Asset.Colors.black.color,
+        weight: UIFont.Weight = .bold
+    ) -> NSMutableAttributedString {
         let boldFontAttribute: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: getFont().pointSize, weight: .bold),
             .foregroundColor: color

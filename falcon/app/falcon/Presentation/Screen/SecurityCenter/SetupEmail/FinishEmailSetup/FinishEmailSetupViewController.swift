@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class FinishEmailSetupViewController: MUViewController {
 
     @IBOutlet private weak var button: ButtonView!
@@ -19,7 +18,10 @@ class FinishEmailSetupViewController: MUViewController {
     private let secondCheck = CheckView()
     private let whyLabel = UILabel()
 
-    fileprivate lazy var presenter = instancePresenter(FinishEmailSetupPresenter.init, delegate: self)
+    fileprivate lazy var presenter = instancePresenter(
+        FinishEmailSetupPresenter.init,
+        delegate: self
+    )
     private let passphrase: String
     private var wording: SetUpEmailWording
 
@@ -65,7 +67,12 @@ class FinishEmailSetupViewController: MUViewController {
         navigationItem.rightBarButtonItem = .stepCounter(step: 4, end: 4)
 
         let backImage = Constant.Images.back
-        let newBackButton = UIBarButtonItem(image: backImage, style: .plain, target: self, action: .backButtonTouched)
+        let newBackButton = UIBarButtonItem(
+            image: backImage,
+            style: .plain,
+            target: self,
+            action: .backButtonTouched
+        )
         navigationItem.leftBarButtonItem = newBackButton
     }
 
@@ -145,15 +152,25 @@ class FinishEmailSetupViewController: MUViewController {
             message: msg,
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: L10n.FinishEmailSetupViewController.s6, style: .default, handler: { _ in
-            alert.dismiss(animated: true)
-        }))
+        alert.addAction(
+            UIAlertAction(
+                title: L10n.FinishEmailSetupViewController.s6,
+                style: .default,
+                handler: { _ in
+                    alert.dismiss(animated: true)
+                }
+            )
+        )
 
         alert.addAction(
-            UIAlertAction(title: L10n.FinishEmailSetupViewController.s7, style: .destructive, handler: { _ in
-                self.logEvent("email_setup_aborted")
-                self.navigationController!.popTo(type: SecurityCenterViewController.self)
-            })
+            UIAlertAction(
+                title: L10n.FinishEmailSetupViewController.s7,
+                style: .destructive,
+                handler: { _ in
+                    self.logEvent("email_setup_aborted")
+                    self.navigationController!.popTo(type: SecurityCenterViewController.self)
+                }
+            )
         )
 
         alert.view.tintColor = Asset.Colors.muunGrayDark.color

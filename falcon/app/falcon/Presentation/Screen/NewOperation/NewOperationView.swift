@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 
-
 protocol NewOperationViewDelegate: AnyObject {
     func invoiceJustExpired()
     func didPressInfoButton(info: MoreInfo)
@@ -88,10 +87,12 @@ class NewOperationView: MUView {
     private func setUpOneConfNotice() {
         oneConfNoticeView.style = .notice
         oneConfNoticeView.text = L10n.NewOperationView.s2
-            .set(font: Constant.Fonts.system(size: .opHelper),
-                 lineSpacing: Constant.FontAttributes.lineSpacing,
-                 kerning: Constant.FontAttributes.kerning,
-                 alignment: .left)
+            .set(
+                font: Constant.Fonts.system(size: .opHelper),
+                lineSpacing: Constant.FontAttributes.lineSpacing,
+                kerning: Constant.FontAttributes.kerning,
+                alignment: .left
+            )
             .set(underline: L10n.NewOperationView.s3, color: Asset.Colors.muunBlue.color)
 
         oneConfNoticeView.delegate = self
@@ -124,9 +125,11 @@ class NewOperationView: MUView {
             previousView.removeFromSuperview()
         }
 
-        UIView.animate(withDuration: 0.3,
-                       animations: animate,
-                       completion: completion)
+        UIView.animate(
+            withDuration: 0.3,
+            animations: animate,
+            completion: completion
+        )
     }
 
     fileprivate func replace(loadingView: NewOpLoadingView, with view: MUView) {
@@ -152,9 +155,11 @@ class NewOperationView: MUView {
                 loadingView.removeFromSuperview()
             }
 
-            UIView.animate(withDuration: 0.3,
-                           animations: animate,
-                           completion: completion)
+            UIView.animate(
+                withDuration: 0.3,
+                animations: animate,
+                completion: completion
+            )
         } else {
             animate(in: view, out: loadingView, isBack: false)
         }
@@ -196,12 +201,18 @@ class NewOperationView: MUView {
 
     func animateButtonTransition(height: CGFloat) {
 
-        UIView.animate(withDuration: 0.25, delay: 0, options: [.beginFromCurrentState], animations: {
+        UIView.animate(
+            withDuration: 0.25,
+            delay: 0,
+            options: [.beginFromCurrentState],
+            animations: {
             self.buttonBottomConstraint.constant = height
 
             self.layoutIfNeeded()
 
-        }, completion: nil)
+        },
+            completion: nil
+        )
     }
 
     fileprivate func display(filledData: [MUView]) {
